@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneWork - Dashboard</title>
+  <link rel="stylesheet" href="app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- MSAL Browser (authentification Microsoft pour le web) -->
+  <script src="https://alcdn.msauth.net/browser/3.27.0/js/msal-browser.min.js"></script>
+</head>
+<body>
+
+  <!-- Écran 1: Onboarding / Connexion -->
+  <div id="onboarding-screen" class="screen active">
+    <div class="onboarding-container">
+      <div class="logo-area">
+        <div class="knob-inner-large"></div>
+        <h1>OneWork</h1>
+      </div>
+      <p class="subtitle">Votre assistant de bureau connecté.</p>
+
+      <div class="auth-box">
+        <h3>Connectez-vous à votre espace</h3>
+        <p>OneWork a besoin de se connecter à Microsoft 365 pour analyser votre travail, vos objectifs et préparer votre journée.</p>
+
+        <div class="permissions-list scrollable-list">
+          <label class="toggle-row">
+            <span class="left"><span class="icon" style="color:#0078D4;">📧</span> Outlook</span>
+            <input type="checkbox" checked><span class="slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span class="left"><span class="icon" style="color:#6264A7;">💬</span> Microsoft Teams</span>
+            <input type="checkbox" checked><span class="slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span class="left"><span class="icon" style="color:#217346;">📊</span> Excel</span>
+            <input type="checkbox" checked><span class="slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span class="left"><span class="icon" style="color:#0364B8;">☁️</span> OneDrive</span>
+            <input type="checkbox" checked><span class="slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span class="left"><span class="icon" style="color:#3982CA;">✅</span> Microsoft To Do</span>
+            <input type="checkbox" checked><span class="slider"></span>
+          </label>
+        </div>
+
+        <button id="btn-connect-ms" class="primary-btn">Se connecter avec Microsoft</button>
+        <p class="back-link"><a href="index.html">← Retour à l'accueil</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Écran 2: Full Dashboard -->
+  <div id="dashboard-screen" class="screen" style="display: none;">
+    <main class="dashboard-content">
+      <header class="topbar">
+        <div class="greeting">
+          <h1 id="greeting-name">Bonjour 👋</h1>
+          <p class="date" id="greeting-date">Chargement en cours...</p>
+        </div>
+        <div class="top-right-actions">
+          <button class="icon-btn search-btn" title="Rechercher">🔍</button>
+          <div class="profile-dropdown">
+            <div class="avatar-img-mini" id="user-avatar"></div>
+            <div class="profile-dropdown-menu-container">
+              <div class="dropdown-menu">
+                <a href="#"><span class="icon">⚙️</span> Paramètres</a>
+                <a href="#" id="btn-logout" class="logout"><span class="icon">🚪</span> Déconnexion</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="bento-grid">
+
+        <div class="bento-card kpi-card blue-glow">
+          <div class="card-header">
+            <h3>Emails Prioritaires</h3>
+            <span class="icon">📧</span>
+          </div>
+          <div class="messages-preview" id="email-container">
+            <div class="loading-msg">Analyse en cours...</div>
+          </div>
+          <p class="trend" id="email-trend"></p>
+        </div>
+
+        <div class="bento-card kpi-card purple-glow">
+          <div class="card-header">
+            <h3>Messages Teams</h3>
+            <span class="icon">💬</span>
+          </div>
+          <div class="messages-preview" id="teams-container">
+            <div class="loading-msg">Analyse en cours...</div>
+          </div>
+        </div>
+
+        <div class="bento-card alert-card red-glow">
+          <div class="card-header">
+            <h3>À traiter urgemment</h3>
+            <span class="badge" id="alert-badge">...</span>
+          </div>
+          <ul class="simple-list" id="alert-container">
+            <li>Chargement...</li>
+          </ul>
+        </div>
+
+        <div class="bento-card agenda-card">
+          <div class="card-header">
+            <h3>Aujourd'hui</h3>
+            <a href="https://outlook.office.com/calendar/view/day" target="_blank" class="link">Voir le calendrier</a>
+          </div>
+          <div class="timeline" id="calendar-container">
+            <p style="color:#64748b;font-size:0.85rem;">Chargement de l'agenda...</p>
+          </div>
+        </div>
+
+        <div class="bento-card ai-card green-glow">
+          <div class="card-header">
+            <h3>Suggestions de l'IA</h3>
+            <span class="icon">✨</span>
+          </div>
+          <p class="insight" id="ai-insight">Analyse en cours...</p>
+          <button class="action-btn">Ajouter à la To-Do</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

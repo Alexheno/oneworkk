@@ -1,0 +1,500 @@
+/* Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8fafc; /* Blanc/Gris très clair et premium */
+  color: #0f172a;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* Écrans */
+.screen {
+  width: 100%;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* === ECRAN ONBOARDING === */
+#onboarding-screen {
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+}
+
+.onboarding-container {
+  width: 500px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  padding: 50px;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+/* Rappel visuel du rond AssistiveTouch */
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.knob-inner-large {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+}
+
+.logo-area h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: #64748b;
+  margin-bottom: 40px;
+}
+
+/* Auth Box */
+.auth-box {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+}
+
+.auth-box h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.auth-box p {
+  font-size: 0.85rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+/* Liste Scrollable Discrète */
+.scrollable-list {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+.scrollable-list::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollable-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 10px;
+}
+
+/* Toggles d'autorisations façon ChatGPT */
+.permissions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 5px 0;
+}
+
+.toggle-row input {
+  display: none;
+}
+
+.toggle-row .slider {
+  width: 40px;
+  height: 22px;
+  background-color: #cbd5e1;
+  border-radius: 20px;
+  position: relative;
+  transition: 0.3s;
+  flex-shrink: 0;
+}
+
+.toggle-row .slider::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  top: 2px;
+  left: 3px;
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toggle-row input:checked + .slider {
+  background-color: #3b82f6; /* Bleu Premium */
+}
+
+.toggle-row input:checked + .slider::after {
+  transform: translateX(16px);
+}
+
+
+.primary-btn {
+  width: 100%;
+  padding: 14px;
+  background: #0f172a;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.primary-btn:hover {
+  background: #1e293b;
+}
+
+
+/* === ECRAN DASHBOARD === */
+#dashboard-screen {
+  flex-direction: column; /* Le dashboard prend tout l'espace maintenant */
+}
+
+
+/* Main Content */
+.dashboard-content {
+  flex-grow: 1;
+  padding: 40px 60px; /* Plus d'espace car plus de sidebar */
+  background: radial-gradient(circle at top left, #ffffff 0%, #f1f5f9 100%);
+  overflow-y: auto;
+  min-height: 100vh;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.greeting h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  letter-spacing: -0.02em;
+}
+
+.greeting .date {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+/* Actions Top Right */
+.top-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-btn.search-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  transition: all 0.2s;
+}
+
+.icon-btn.search-btn:hover {
+  background: #f8fafc;
+}
+
+/* Profil Top Right Menu */
+.profile-dropdown {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-img-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: url('https://ui-avatars.com/api/?name=HO&background=0f172a&color=fff&size=128') center center;
+  background-size: cover;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  border: 1px solid rgba(0,0,0,0.05); /* Contour très léger */
+}
+
+.profile-dropdown:hover .avatar-img-mini {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: rgba(0,0,0,0.1);
+}
+
+/* Dropdown Menu avec animation super fluide OpenAI style */
+.profile-dropdown-menu-container {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding-top: 12px; /* Le "pont" invisible */
+  z-index: 100;
+  transform: translateY(-8px);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+}
+
+.profile-dropdown:hover .profile-dropdown-menu-container {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-menu {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Plus diffus, très premium */
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 8px 0; /* Padding interne pour détacher les liens des bords */
+}
+
+.dropdown-menu a {
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-menu a:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.dropdown-menu a.logout {
+  color: #ef4444;
+  border-top: 1px solid #f1f5f9;
+  margin-top: 4px;
+}
+
+.dropdown-menu a.logout:hover {
+  background: #fef2f2;
+}
+
+/* Bento Grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: minmax(180px, auto);
+  gap: 24px;
+}
+
+.bento-card {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+/* Liste de Messages Preview */
+.messages-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: auto;
+}
+
+.msg {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 3px solid #3b82f6; 
+}
+
+.teams-msg {
+  border-left-color: #8b5cf6;
+}
+
+.msg .sender {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.msg .subject {
+  font-size: 0.85rem;
+  color: #475569;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trend {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 15px;
+  font-weight: 500;
+}
+
+/* Alert Card */
+.alert-card {
+  grid-column: span 1;
+  background: rgba(239, 68, 68, 0.03);
+  border-color: rgba(239, 68, 68, 0.1);
+}
+
+.badge.red {
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.simple-list {
+  list-style: none;
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.simple-list li {
+  margin-bottom: 12px;
+  position: relative;
+  padding-left: 15px;
+}
+.simple-list li::before {
+  content: "•";
+  color: #ef4444;
+  position: absolute;
+  left: 0;
+}
+
+/* Agenda Card */
+.agenda-card {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.link {
+  font-size: 0.85rem;
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timeline-event {
+  display: flex;
+  gap: 20px;
+}
+
+.timeline-event .time {
+  font-weight: 600;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  width: 45px;
+}
+
+.timeline-event .details {
+  background: #f8fafc;
+  padding: 12px 16px;
+  border-radius: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid #3b82f6;
+}
+
+.timeline-event .details strong { color: #0f172a; font-size: 0.95rem; }
+.timeline-event .details span { color: #64748b; font-size: 0.8rem; margin-top: 4px; }
+
+
+/* AI Suggestions Card */
+.ai-card {
+  grid-column: span 1;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(74, 222, 128, 0.05) 100%);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.insight {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #1e293b;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  margin-top: auto; /* Pousse le bouton en bas */
+  transition: 0.2s;
+}
+
+.action-btn:hover {
+  background: #f8fafc;
+}

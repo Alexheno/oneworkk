@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "@openrouter/sdk": "^0.9.11",
+    "@supabase/supabase-js": "^2.99.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "isomorphic-fetch": "^3.0.0"
+  }
+}

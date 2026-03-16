@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning AI</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Police premium et minimaliste : Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <div id="widget-container" class="widget-closed">
+    
+    <!-- État fermé : le cercle discret -->
+    <div class="knob">
+      <div class="knob-inner"></div>
+    </div>
+
+    <!-- État ouvert : la carte Morning AI -->
+    <div class="card">
+      <div class="header">
+        <h2>Bonjour, Henri ! 👋</h2>
+        <p class="date" id="current-date">Lundi 16 Mars</p>
+      </div>
+
+      <!-- Alerte Rouge Transparent -->
+      <div class="todo-item alert-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Valider le MVP
+        </label>
+        <span class="badge red-outline">Urgent</span>
+      </div>
+
+      <!-- Accordéon Réunions Bleu Transparent -->
+      <div class="meetings-accordion" id="meetings-accordion">
+        <div class="meetings-header">
+          <span class="icon">📅</span>
+          <span class="title">3 Réunions aujourd'hui</span>
+          <span class="chevron">▼</span>
+        </div>
+        <div class="meetings-list">
+          <div class="meeting-item">
+            <span class="time">11:00</span>
+            <span class="name">Point Investisseurs</span>
+          </div>
+          <div class="meeting-item">
+            <span class="time">14:30</span>
+            <span class="name">Sync Tech Team</span>
+          </div>
+          <div class="meeting-item">
+            <span class="time">16:00</span>
+            <span class="name">Demo Produit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions normales blanches -->
+      <div class="todo-item normal-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Envoyer la newsletter
+        </label>
+      </div>
+      <div class="todo-item normal-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Publier sur LinkedIn
+        </label>
+      </div>
+      <div class="todo-item normal-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Préparer le pitch deck
+        </label>
+      </div>
+      <div class="todo-item normal-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Relancer le client X
+        </label>
+      </div>
+      <div class="todo-item normal-item">
+        <label class="checkbox-container">
+          <input type="checkbox">
+          <span class="checkmark"></span>
+          Faire un point comptable
+        </label>
+      </div>
+      
+      <div class="footer">
+        <span class="status">⚡ IA Connectée</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

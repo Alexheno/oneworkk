@@ -1,0 +1,377 @@
+/* Reset et base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Pas de scroll */
+  background: transparent; /* Fond transparent pour voir le bureau */
+  font-family: 'Inter', sans-serif;
+  color: #1a1a2e;
+}
+
+/* 
+  Container principal.
+  On le place en bas à droite de cette fenêtre transparente de 350x500.
+*/
+#widget-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* La zone de survole englobe carte + rond */
+  padding-top: 20px;
+  padding-left: 20px;
+  pointer-events: auto; /* Pour être sûr qu'on capte la souris sur tout le bloc si besoin */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* === ETAT FERME : LE CIRCLE DISCRET === */
+.knob {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4); /* Très transparent au repos */
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre très légère */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab; /* Indique qu'on peut attraper */
+  transition: all 0.3s ease;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Quand on clique pour déplacer (optionnel pour le style, mais agréable) */
+.knob:active {
+  cursor: grabbing;
+}
+
+.knob-inner {
+  width: 16px;
+  height: 16px;
+  background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+
+/* Devient plus visible au hover */
+.widget-closed .knob:hover {
+  background: rgba(255, 255, 255, 0.8); 
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.widget-closed .knob:hover .knob-inner {
+  opacity: 1;
+}
+
+/* === ETAT OUVERT : LA CARTE === */
+.card {
+  width: 310px;
+  max-height: 400px; /* Limiter la hauteur pour forcer le scroll */
+  overflow-y: auto; /* Permet le défilement */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none; /* Ne capte pas les clics quand caché */
+  position: absolute;
+  bottom: 60px; /* Au dessus du knob */
+  right: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-app-region: no-drag; /* Exclure la carte du drag & drop */
+}
+
+/* Custom Webkit Scrollbar */
+.card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.card::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.card::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+.widget-open .card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto; /* Capte les clics */
+}
+
+.widget-open .knob {
+  transform: scale(0.8);
+  opacity: 0.5;
+}
+
+/* === DESIGN DE LA CARTE === */
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+
+.header .date {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* === NOUVEAU DESIGN TODO LIST === */
+
+.todo-item {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* Base Checkbox alignée pour la ToDo */
+.todo-item .checkbox-container {
+  margin: 0;
+  width: 100%;
+}
+
+/* 1. Alerte Rouge transparent */
+.alert-item {
+  background: rgba(239, 68, 68, 0.08); /* rouge très transparent */
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.alert-item:hover {
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.alert-item .checkbox-container {
+  color: #991b1b;
+  font-weight: 500;
+}
+
+.alert-item .checkmark {
+  background-color: rgba(239, 68, 68, 0.15);
+}
+
+.alert-item .checkbox-container input:checked ~ .checkmark {
+  background-color: #ef4444; 
+}
+
+.badge.red-outline {
+  font-size: 0.65rem;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 2px 6px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  margin-left: 10px;
+}
+
+/* 2. Actions Normales blanches */
+.normal-item {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.normal-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 3. Accordéon Réunions Bleu Foncé transparent */
+.meetings-accordion {
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(59, 130, 246, 0.1); /* Bleu transparent */
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.meetings-header {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.meetings-header .icon {
+  margin-right: 10px;
+  font-size: 1.1rem;
+}
+
+.meetings-header .title {
+  flex-grow: 1;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1e3a8a; /* Bleu très foncé pour le texte */
+}
+
+.meetings-header .chevron {
+  font-size: 0.7rem;
+  color: #3b82f6;
+  transition: transform 0.3s ease;
+}
+
+.meetings-accordion.open .chevron {
+  transform: rotate(-180deg);
+}
+
+.meetings-list {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meetings-accordion.open .meetings-list {
+  max-height: 300px;
+  opacity: 1;
+}
+
+.meeting-item {
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(59, 130, 246, 0.1);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.meeting-item:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.meeting-item .time {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #3b82f6;
+  min-width: 45px;
+}
+
+.meeting-item .name {
+  font-size: 0.85rem;
+  color: #1e3a8a;
+  font-weight: 500;
+}
+
+/* Custom Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #4b5563;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.checkbox-container:hover {
+  color: #111827;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 18px;
+  width: 18px;
+  background-color: #e5e7eb;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #d1d5db;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #3b82f6; /* Bleu Premium */
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 3px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-container input:checked ~ span {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.footer {
+  margin-top: 10px;
+  text-align: right;
+}
+
+.footer .status {
+  font-size: 0.7rem;
+  color: #10b981; /* Vert success */
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
