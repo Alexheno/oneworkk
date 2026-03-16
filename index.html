@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneWork - Votre assistant de bureau intelligent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="logo-dot"></div>
+      <span>OneWork</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Fonctionnalités</a>
+      <a href="app.html" class="btn-nav-try">Essayer en ligne</a>
+      <a href="#download" class="btn-nav-download">Télécharger</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Intelligence Artificielle · Microsoft 365</div>
+      <h1 class="hero-title">
+        Votre journée de travail,<br>
+        <span class="gradient-text">analysée en 10 secondes.</span>
+      </h1>
+      <p class="hero-subtitle">
+        OneWork connecte Microsoft 365 à une IA et vous donne un brief complet de votre journée : mails urgents, réunions, messages Teams — tout au même endroit.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger pour Windows
+        </a>
+        <a href="app.html" class="btn-secondary">
+          Essayer dans le navigateur →
+        </a>
+      </div>
+      <p class="hero-note">Gratuit · Données privées · Aucun stockage de mots de passe</p>
+    </div>
+
+    <!-- Dashboard Preview -->
+    <div class="hero-preview">
+      <div class="preview-window">
+        <div class="preview-topbar">
+          <div class="preview-greeting">
+            <div class="preview-avatar"></div>
+            <div>
+              <div class="preview-name">Bonjour, Henri 👋</div>
+              <div class="preview-date">3 réunions aujourd'hui</div>
+            </div>
+          </div>
+        </div>
+        <div class="preview-grid">
+          <div class="preview-card blue">
+            <div class="preview-card-title">📧 Emails Prioritaires</div>
+            <div class="preview-msg"><b>Jean (Investisseur)</b><br><span>Suite à notre appel...</span></div>
+            <div class="preview-msg"><b>Marc Dubois</b><br><span>Bugs prod landing page</span></div>
+          </div>
+          <div class="preview-card purple">
+            <div class="preview-card-title">💬 Messages Teams</div>
+            <div class="preview-msg"><b>Sarah (Marketing)</b><br><span>@Henri peux-tu valider ?</span></div>
+          </div>
+          <div class="preview-card red">
+            <div class="preview-card-title">🚨 Alertes</div>
+            <div class="preview-msg"><b>Valider le MVP SaaS</b><br><span>Retard de 1 jour</span></div>
+          </div>
+          <div class="preview-card green">
+            <div class="preview-card-title">✨ Suggestion IA</div>
+            <div class="preview-insight">"Préparez le pitch deck avant 11h."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-label">Ce que fait OneWork</div>
+    <h2 class="section-title">Tout ce dont vous avez besoin<br>pour démarrer la journée</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📧</div>
+        <h3>Mails analysés par l'IA</h3>
+        <p>L'IA lit vos emails non lus et identifie ceux qui nécessitent une action immédiate. Fini le tri manuel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>Messages Teams filtrés</h3>
+        <p>Vos mentions et messages urgents sur Microsoft Teams remontés en priorité, sans le bruit.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Agenda intelligent</h3>
+        <p>Vos réunions du jour affichées avec leur contexte. OneWork vous rappelle ce que vous devez préparer.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Fichiers Excel & OneDrive</h3>
+        <p>Les fichiers récemment modifiés dans votre espace sont analysés pour détecter des tâches en cours.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✨</div>
+        <h3>Suggestions de l'IA</h3>
+        <p>Basé sur vos données M365, l'IA vous suggère les 3 actions les plus importantes à faire maintenant.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Données privées</h3>
+        <p>Votre token Microsoft ne quitte jamais votre machine. Le backend ne stocke que les analyses générées.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section class="download" id="download">
+    <div class="download-card">
+      <div class="download-info">
+        <div class="logo-dot large"></div>
+        <div>
+          <h2>OneWork pour Windows</h2>
+          <p>Application bureau légère. Se lance au démarrage et reste en arrière-plan.</p>
+          <div class="download-meta">
+            <span>Windows 10/11</span>
+            <span>•</span>
+            <span>Electron</span>
+            <span>•</span>
+            <span>v1.0.0</span>
+          </div>
+        </div>
+      </div>
+      <div class="download-actions">
+        <a href="https://github.com/Alexheno/oneworkk/releases/latest" target="_blank" class="btn-primary large">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger .exe
+        </a>
+        <a href="app.html" class="btn-outline">Utiliser en ligne →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">
+      <div class="logo-dot small"></div>
+      <span>OneWork</span>
+    </div>
+    <p>Conçu pour les entrepreneurs et managers occupés.</p>
+    <a href="https://github.com/Alexheno/oneworkk" target="_blank">GitHub</a>
+  </footer>
+
+</body>
+</html>
