@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       btnConnect.innerHTML = "<span class='icon'>⏳</span> Analyse IA en cours...";
 
       // 2. Appel du Backend (qui gère Supabase + Graph API + OpenRouter)
-      const response = await fetch('http://localhost:3000/api/analyze', {
+      const response = await fetch('https://oneworkk-production.up.railway.app/api/analyze', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

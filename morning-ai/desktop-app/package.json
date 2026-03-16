@@ -1,17 +1,36 @@
 {
-  "name": "desktop-app",
+  "name": "onework",
   "version": "1.0.0",
-  "description": "",
+  "description": "Votre assistant de bureau intelligent connecté à Microsoft 365",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder --win --x64"
   },
   "keywords": [],
-  "author": "",
+  "author": "OneWork",
   "license": "ISC",
   "type": "commonjs",
+  "build": {
+    "appId": "com.onework.app",
+    "productName": "OneWork",
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "shortcutName": "OneWork"
+    },
+    "files": [
+      "**/*",
+      "!node_modules/electron/**",
+      "!node_modules/.cache/**"
+    ]
+  },
   "devDependencies": {
-    "electron": "^41.0.2"
+    "electron": "^41.0.2",
+    "electron-builder": "^25.1.8"
   },
   "dependencies": {
     "@azure/msal-node": "^5.1.0"
