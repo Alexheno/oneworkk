@@ -10,6 +10,15 @@
   "keywords": [],
   "author": "OneWork",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alexheno/oneworkk"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "Alexheno",
+    "repo": "oneworkk"
+  },
   "type": "commonjs",
   "build": {
     "appId": "com.onework.app",
