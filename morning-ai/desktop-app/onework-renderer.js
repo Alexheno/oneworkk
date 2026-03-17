@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } catch (err) {
       console.error(err);
-      alert("Erreur de connexion au serveur ! Verifiez que node server.js tourne.");
+      alert("Erreur : " + err.message);
       btnConnect.textContent = "Réessayer";
       btnConnect.disabled = false;
       btnConnect.style.opacity = "1";
