@@ -16,7 +16,7 @@ app.get('/api/test', (req, res) => {
   res.json({ message: 'Serveur Morning-AI en ligne et fonctionnel !', timestamp: new Date() });
 });
 
-const { getRecentEmails, getTodaySchedule, getTeamsMessages } = require('./graph.service');
+const { getRecentEmails, getTodaySchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages } = require('./graph.service');
 
 // Nouvelle route d'analyse IA "OneWork" avec VRAIES données via Token Microsoft
 app.post('/api/analyze', async (req, res) => {
@@ -48,17 +48,19 @@ app.post('/api/analyze', async (req, res) => {
     console.log(`📡 Graph API: Téléchargement des données Microsoft pour ${name}...`);
     
     // 2. Extraire les vraies données depuis Microsoft 365 (via le token de l'app Electron)
-    const [realEmails, realSchedule, realTeams, realExcel] = await Promise.all([
+    const [realEmails, realSchedule, realTeams, realOfficeFiles, realTodoTasks, realOneNotePages] = await Promise.all([
         getRecentEmails(accessToken),
         getTodaySchedule(accessToken),
         getTeamsMessages(accessToken),
-        getRecentExcelData(accessToken)
+        getRecentOfficeFiles(accessToken),
+        getToDoTasks(accessToken),
+        getOneNotePages(accessToken)
     ]);
-    
-    console.log(`✅ Récupéré: ${realEmails.length} Mails, ${realSchedule.length} Events, ${realTeams.length} Chats, ${realExcel.length} Tableurs Excel.`);
 
-    // 3. Appel à notre "Executive Assistant" Gemini via OpenRouter avec les VRAIES DONNÉES !
-    const analysis = await analyzeWorkData(realEmails, realTeams, realSchedule, realExcel);
+    console.log(`✅ Récupéré: ${realEmails.length} Mails, ${realSchedule.length} Events, ${realTeams.length} Chats, ${realOfficeFiles.length} Fichiers Office, ${realTodoTasks.length} Tâches To Do, ${realOneNotePages.length} Notes OneNote.`);
+
+    // 3. Analyse IA croisée avec toutes les sources
+    const analysis = await analyzeWorkData(realEmails, realTeams, realSchedule, realOfficeFiles, realTodoTasks, realOneNotePages);
     
     if (analysis.error) {
        return res.status(500).json({ success: false, error: analysis.error });
@@ -84,7 +86,9 @@ app.post('/api/analyze', async (req, res) => {
             emails: realEmails.length,
             events: realSchedule.length,
             chats: realTeams.length,
-            excel: realExcel.length
+            officeFiles: realOfficeFiles.length,
+            todoTasks: realTodoTasks.length,
+            oneNotePages: realOneNotePages.length
         }
     });
 
