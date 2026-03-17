@@ -3,217 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneWork - Overview</title>
+  <title>OneWork</title>
   <link rel="stylesheet" href="onework-style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- Écran 1: Onboarding / Connexion -->
+  <!-- ═══ ONBOARDING ═══ -->
   <div id="onboarding-screen" class="screen active">
-    <div class="onboarding-container">
-      <div class="logo-area">
-        <div class="knob-inner-large"></div>
-        <h1>OneWork</h1>
-      </div>
-      <p class="subtitle">Votre assistant de bureau connecté.</p>
-      
-      <div class="auth-box">
-        <h3>Connectez-vous à votre espace</h3>
-        <p>OneWork a besoin de se connecter à Microsoft 365 pour analyser votre travail, vos objectifs et préparer votre journée.</p>
-        
-        <div class="permissions-list scrollable-list">
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#0078D4;">📧</span> Outlook
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#6264A7;">💬</span> Microsoft Teams
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#2B579A;">📝</span> Word
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#217346;">📊</span> Excel
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#B7472A;">📽️</span> PowerPoint
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#7719AA;">📓</span> OneNote
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#0364B8;">☁️</span> OneDrive
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#0078D7;">🌐</span> Microsoft Edge
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span class="left">
-              <span class="icon" style="color:#3982CA;">✅</span> Microsoft To Do
-            </span>
-            <input type="checkbox" checked>
-            <span class="slider"></span>
-          </label>
-        </div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
 
-        <button id="btn-connect-ms" class="primary-btn">Se connecter avec Microsoft</button>
+    <div class="onboarding-card">
+      <div class="onboarding-logo">
+        <div class="logo-orb"></div>
+        <span>OneWork</span>
       </div>
+
+      <h2 class="onboarding-title">Votre journée,<br>analysée en 10 secondes.</h2>
+      <p class="onboarding-sub">Connectez Microsoft 365 — OneWork lit tout et organise votre travail à votre place.</p>
+
+      <div class="permissions-block">
+        <p class="permissions-label">Autorisations demandées</p>
+        <div class="permissions-list">
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#0078D4;">M</span>Outlook & Mail</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#6264A7;">T</span>Microsoft Teams</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#217346;">X</span>Excel & OneDrive</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#2B579A;">W</span>Word</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#B7472A;">P</span>PowerPoint</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#7719AA;">N</span>OneNote</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#3982CA;">✓</span>Microsoft To Do</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
+        </div>
+      </div>
+
+      <button id="btn-connect-ms" class="btn-connect">
+        <svg width="18" height="18" viewBox="0 0 21 21" fill="none"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+        Continuer avec Microsoft
+      </button>
+      <p class="onboarding-note">Vos données ne quittent jamais votre machine.</p>
     </div>
   </div>
 
-  <!-- Écran 2: Full Dashboard (Overview) -->
-  <div id="dashboard-screen" class="screen" style="display: none;">
+  <!-- ═══ DASHBOARD ═══ -->
+  <div id="dashboard-screen" class="screen">
 
-    <!-- Main Content -->
-    <main class="dashboard-content">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-orb sm"></div>
+      </div>
+
+      <div class="sidebar-nav">
+        <button class="nav-btn active" data-tab="overview" title="Vue d'ensemble">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </button>
+        <button class="nav-btn" data-tab="tasks" title="Plan du jour">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </button>
+        <button class="nav-btn" data-tab="projects" title="Projets détectés">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </button>
+        <button class="nav-btn" id="btn-open-calendar" title="Ouvrir le calendrier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        </button>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="nav-btn" id="btn-open-excel" title="Ouvrir Excel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+        </button>
+        <button class="nav-btn" id="btn-logout" title="Déconnexion">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+        <div class="sidebar-avatar" id="user-avatar" title="Profil"></div>
+      </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Topbar -->
       <header class="topbar">
-        <div class="greeting">
-          <h1>Bonjour, Henri 👋</h1>
-          <p class="date">Il vous reste 3 réunions aujourd'hui.</p>
+        <div>
+          <h1 class="greeting-name" id="greeting-name">Bonjour 👋</h1>
+          <p class="greeting-date" id="greeting-date"></p>
         </div>
-        
-        <div class="top-right-actions">
-          <button class="icon-btn search-btn" title="Rechercher">🔍</button>
-          <button class="icon-btn excel-btn" id="btn-open-excel" title="Ouvrir Microsoft Excel" style="color: #217346;">📊</button>
-          
-          <div class="profile-dropdown">
-            <div class="avatar-img-mini"></div>
-            <!-- Menu déroulant -->
-            <div class="profile-dropdown-menu-container">
-              <div class="dropdown-menu">
-                <a href="#"><span class="icon">⚙️</span> Paramètres</a>
-                <a href="#" class="logout"><span class="icon">🚪</span> Déconnexion</a>
-              </div>
-            </div>
-          </div>
+        <div class="topbar-right">
+          <button class="btn-refresh" id="btn-refresh" title="Réanalyser">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Réanalyser
+          </button>
         </div>
       </header>
 
-      <div class="bento-grid">
-        
-        <!-- Bulle 1 : Mails non lus -->
-        <div class="bento-card kpi-card blue-glow">
-          <div class="card-header">
-            <h3>Emails Prioritaires</h3>
-            <span class="icon">📧</span>
-          </div>
-          <div class="messages-preview">
-            <div class="msg">
-              <span class="sender">Jean (Investisseur)</span>
-              <span class="subject">Suite à notre appel de ce matin...</span>
-            </div>
-            <div class="msg">
-              <span class="sender">Microsoft Azure</span>
-              <span class="subject">Alerte de facturation : +20%</span>
-            </div>
-            <div class="msg">
-              <span class="sender">Marc Dubois</span>
-              <span class="subject">Bugs prod sur la landing page</span>
-            </div>
-          </div>
-          <p class="trend">+ 9 autres non lus</p>
+      <!-- AI Banner -->
+      <div class="ai-banner" id="ai-banner">
+        <div class="ai-star">✦</div>
+        <div class="ai-banner-content">
+          <p class="ai-banner-text" id="ai-banner-text">Connexion à Microsoft 365 en cours...</p>
+          <div class="ai-chips" id="ai-chips"></div>
         </div>
-
-        <!-- Bulle 2 : Teams -->
-        <div class="bento-card kpi-card purple-glow">
-          <div class="card-header">
-            <h3>Messages Teams</h3>
-            <span class="icon">💬</span>
-          </div>
-          <div class="messages-preview">
-            <div class="msg teams-msg">
-              <span class="sender">Sarah (Marketing)</span>
-              <span class="subject">@Henri peux-tu valider le post ?</span>
-            </div>
-            <div class="msg teams-msg">
-              <span class="sender">Paul (Tech)</span>
-              <span class="subject">Le déploiement est terminé ✅</span>
-            </div>
-          </div>
-          <p class="trend">Aucune autre mention</p>
-        </div>
-
-        <!-- Bulle 3 : Alertes -->
-        <div class="bento-card alert-card red-glow">
-          <div class="card-header">
-            <h3>À traiter urgemment</h3>
-            <span class="badge red">Alerte</span>
-          </div>
-          <ul class="simple-list">
-            <li>Valider le MVP SaaS (Retard de 1j)</li>
-            <li>Relancer le contrat "Client X"</li>
-          </ul>
-        </div>
-
-        <!-- Bulle 4 : Agenda du Jour -->
-        <div class="bento-card agenda-card">
-          <div class="card-header">
-            <h3>Aujourd'hui</h3>
-            <a href="#" class="link" id="btn-open-calendar">Voir le calendrier</a>
-          </div>
-          <div class="timeline">
-            <div class="timeline-event">
-              <span class="time">11:00</span>
-              <div class="details">
-                <strong>Point Investisseurs</strong>
-                <span>Teams Meeting</span>
-              </div>
-            </div>
-            <div class="timeline-event">
-              <span class="time">14:30</span>
-              <div class="details">
-                <strong>Sync Tech Team</strong>
-                <span>Salle de réunion A</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bulle 5 : Actions suggérées par l'IA -->
-        <div class="bento-card ai-card green-glow">
-          <div class="card-header">
-            <h3>Suggestions de l'IA</h3>
-            <span class="icon">✨</span>
-          </div>
-          <p class="insight">
-            "D'après vos récents échanges par mail, vous devriez préparer le pitch deck avant la réunion de 11h."
-          </p>
-          <button class="action-btn">Ajouter à la To-Do</button>
-        </div>
-
       </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" data-tab="overview">Aujourd'hui</button>
+        <button class="tab" data-tab="tasks">Plan du jour</button>
+        <button class="tab" data-tab="projects">Projets</button>
+      </div>
+
+      <!-- ── Tab: Aujourd'hui ── -->
+      <div class="tab-pane active" id="tab-overview">
+        <div class="bento">
+
+          <div class="card card-emails" id="card-emails">
+            <div class="card-head">
+              <span class="card-title">Emails prioritaires</span>
+              <span class="card-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </span>
+            </div>
+            <div class="msg-list" id="email-list">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line"></div>
+            </div>
+            <p class="card-foot" id="email-count"></p>
+          </div>
+
+          <div class="card card-teams" id="card-teams">
+            <div class="card-head">
+              <span class="card-title">Messages Teams</span>
+              <span class="card-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              </span>
+            </div>
+            <div class="msg-list" id="teams-list">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+
+          <div class="card card-alerts" id="card-alerts">
+            <div class="card-head">
+              <span class="card-title">Urgences</span>
+              <span class="alert-badge" id="alert-badge">—</span>
+            </div>
+            <ul class="alert-list" id="alert-list">
+              <li class="skeleton-line"></li>
+              <li class="skeleton-line short"></li>
+            </ul>
+          </div>
+
+          <div class="card card-agenda" id="card-agenda">
+            <div class="card-head">
+              <span class="card-title">Agenda — 7 jours</span>
+              <button class="link-btn" id="btn-open-calendar-main">Ouvrir →</button>
+            </div>
+            <div class="timeline" id="timeline">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+
+          <div class="card card-ai" id="card-ai">
+            <div class="card-head">
+              <span class="card-title">Suggestions IA</span>
+              <span class="card-icon green">✦</span>
+            </div>
+            <div class="ai-suggestions" id="ai-suggestions">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+            <button class="btn-todo" id="btn-add-todo">Ouvrir Microsoft To Do →</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Tab: Plan du jour ── -->
+      <div class="tab-pane" id="tab-tasks">
+        <div class="section-header">
+          <h2>Plan du jour</h2>
+          <p>Généré par l'IA à partir de vos données Microsoft 365</p>
+        </div>
+        <div class="task-list" id="task-list">
+          <div class="empty-state">Lance une analyse pour voir ton plan du jour.</div>
+        </div>
+      </div>
+
+      <!-- ── Tab: Projets ── -->
+      <div class="tab-pane" id="tab-projects">
+        <div class="section-header">
+          <h2>Projets détectés</h2>
+          <p>L'IA a identifié ces projets en analysant vos emails, fichiers et tâches</p>
+        </div>
+        <div class="projects-grid" id="projects-grid">
+          <div class="empty-state">Lance une analyse pour voir tes projets actifs.</div>
+        </div>
+      </div>
+
     </main>
   </div>
 
