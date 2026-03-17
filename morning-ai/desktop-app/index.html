@@ -3,104 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Morning AI</title>
+  <title>OneWork</title>
   <link rel="stylesheet" href="style.css">
-  <!-- Police premium et minimaliste : Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  
   <div id="widget-container" class="widget-closed">
-    
-    <!-- État fermé : le cercle discret -->
+
+    <!-- Cercle discret au repos -->
     <div class="knob">
       <div class="knob-inner"></div>
     </div>
 
-    <!-- État ouvert : la carte Morning AI -->
+    <!-- Carte principale -->
     <div class="card">
-      <div class="header">
-        <h2>Bonjour, Henri ! 👋</h2>
-        <p class="date" id="current-date">Lundi 16 Mars</p>
-      </div>
 
-      <!-- Alerte Rouge Transparent -->
-      <div class="todo-item alert-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Valider le MVP
-        </label>
-        <span class="badge red-outline">Urgent</span>
-      </div>
-
-      <!-- Accordéon Réunions Bleu Transparent -->
-      <div class="meetings-accordion" id="meetings-accordion">
-        <div class="meetings-header">
-          <span class="icon">📅</span>
-          <span class="title">3 Réunions aujourd'hui</span>
-          <span class="chevron">▼</span>
+      <div class="card-header">
+        <div class="card-header-info">
+          <div class="card-greeting" id="greeting">Bonjour 👋</div>
+          <div class="card-date" id="current-date"></div>
         </div>
-        <div class="meetings-list">
-          <div class="meeting-item">
-            <span class="time">11:00</span>
-            <span class="name">Point Investisseurs</span>
-          </div>
-          <div class="meeting-item">
-            <span class="time">14:30</span>
-            <span class="name">Sync Tech Team</span>
-          </div>
-          <div class="meeting-item">
-            <span class="time">16:00</span>
-            <span class="name">Demo Produit</span>
-          </div>
+        <div class="card-status" id="card-status" title="Analyse IA">
+          <span class="status-dot"></span>
         </div>
       </div>
 
-      <!-- Actions normales blanches -->
-      <div class="todo-item normal-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Envoyer la newsletter
-        </label>
+      <!-- Réunions (données réelles) -->
+      <div class="meetings-block" id="meetings-block">
+        <div class="meetings-header" id="meetings-header">
+          <span class="meetings-icon">📅</span>
+          <span class="meetings-title" id="meetings-title">Chargement...</span>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+        <div class="meetings-list" id="meetings-list"></div>
       </div>
-      <div class="todo-item normal-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Publier sur LinkedIn
-        </label>
-      </div>
-      <div class="todo-item normal-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Préparer le pitch deck
-        </label>
-      </div>
-      <div class="todo-item normal-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Relancer le client X
-        </label>
-      </div>
-      <div class="todo-item normal-item">
-        <label class="checkbox-container">
-          <input type="checkbox">
-          <span class="checkmark"></span>
-          Faire un point comptable
-        </label>
-      </div>
-      
-      <div class="footer">
-        <span class="status">⚡ IA Connectée</span>
+
+      <!-- Tâches (drag, edit, urgent) -->
+      <div class="tasks-list" id="tasks-list"></div>
+
+      <div class="card-footer">
+        <span id="footer-status">En attente d'analyse...</span>
       </div>
     </div>
 
   </div>
-
   <script src="renderer.js"></script>
 </body>
 </html>

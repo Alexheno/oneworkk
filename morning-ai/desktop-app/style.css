@@ -1,4 +1,3 @@
-/* Reset et base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,16 +7,13 @@
 body, html {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Pas de scroll */
-  background: transparent; /* Fond transparent pour voir le bureau */
+  overflow: hidden;
+  background: transparent;
   font-family: 'Inter', sans-serif;
-  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 
-  Container principal.
-  On le place en bas à droite de cette fenêtre transparente de 350x500.
-*/
+/* ─── Container ─── */
 #widget-container {
   position: absolute;
   bottom: 20px;
@@ -26,352 +22,447 @@ body, html {
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
-  /* La zone de survole englobe carte + rond */
   padding-top: 20px;
   padding-left: 20px;
-  pointer-events: auto; /* Pour être sûr qu'on capte la souris sur tout le bloc si besoin */
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  pointer-events: auto;
 }
 
-/* === ETAT FERME : LE CIRCLE DISCRET === */
+/* ─── Knob ─── */
 .knob {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.4); /* Très transparent au repos */
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Ombre très légère */
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255,255,255,0.6) inset;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: grab; /* Indique qu'on peut attraper */
-  transition: all 0.3s ease;
+  cursor: grab;
+  transition: all 0.25s ease;
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Quand on clique pour déplacer (optionnel pour le style, mais agréable) */
-.knob:active {
-  cursor: grabbing;
-}
+.knob:active { cursor: grabbing; }
 
 .knob-inner {
-  width: 16px;
-  height: 16px;
-  background: linear-gradient(135deg, #4ade80 0%, #3b82f6 100%);
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
-  opacity: 0.8;
-  transition: opacity 0.3s;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  transition: all 0.25s ease;
 }
 
-/* Devient plus visible au hover */
 .widget-closed .knob:hover {
-  background: rgba(255, 255, 255, 0.8); 
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
 .widget-closed .knob:hover .knob-inner {
-  opacity: 1;
-}
-
-/* === ETAT OUVERT : LA CARTE === */
-.card {
-  width: 310px;
-  max-height: 400px; /* Limiter la hauteur pour forcer le scroll */
-  overflow-y: auto; /* Permet le défilement */
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  pointer-events: none; /* Ne capte pas les clics quand caché */
-  position: absolute;
-  bottom: 60px; /* Au dessus du knob */
-  right: 0;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  -webkit-app-region: no-drag; /* Exclure la carte du drag & drop */
-}
-
-/* Custom Webkit Scrollbar */
-.card::-webkit-scrollbar {
-  width: 6px;
-}
-
-.card::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.card::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-}
-
-.card::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
-}
-.widget-open .card {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto; /* Capte les clics */
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.7);
 }
 
 .widget-open .knob {
-  transform: scale(0.8);
-  opacity: 0.5;
+  transform: scale(0.75);
+  opacity: 0.4;
 }
 
-/* === DESIGN DE LA CARTE === */
-
-.header {
-  margin-bottom: 20px;
+/* ─── Card ─── */
+.card {
+  width: 320px;
+  max-height: 480px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.14),
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+  border: 1px solid rgba(220, 220, 230, 0.6);
+  padding: 18px 16px 14px;
+  opacity: 0;
+  transform: translateY(16px) scale(0.96);
+  pointer-events: none;
+  position: absolute;
+  bottom: 56px;
+  right: 0;
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+  -webkit-app-region: no-drag;
 }
 
-.header h2 {
-  font-size: 1.2rem;
-  font-weight: 600;
+.card::-webkit-scrollbar { width: 4px; }
+.card::-webkit-scrollbar-track { background: transparent; }
+.card::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 4px; }
+.card::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.15); }
+
+.widget-open .card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* ─── Card Header ─── */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-greeting {
+  font-size: 1rem;
+  font-weight: 700;
   color: #111827;
   letter-spacing: -0.02em;
 }
 
-.header .date {
-  font-size: 0.85rem;
-  color: #6b7280;
-  margin-top: 4px;
+.card-date {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 2px;
+  font-weight: 400;
 }
 
-/* === NOUVEAU DESIGN TODO LIST === */
-
-.todo-item {
-  margin-bottom: 10px;
-  padding: 12px 14px;
-  border-radius: 12px;
+.card-status {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  backdrop-filter: blur(10px);
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* Base Checkbox alignée pour la ToDo */
-.todo-item .checkbox-container {
-  margin: 0;
-  width: 100%;
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+  animation: pulse-green 2s infinite;
 }
 
-/* 1. Alerte Rouge transparent */
-.alert-item {
-  background: rgba(239, 68, 68, 0.08); /* rouge très transparent */
-  border-color: rgba(239, 68, 68, 0.2);
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); }
+  50% { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.1); }
 }
 
-.alert-item:hover {
-  background: rgba(239, 68, 68, 0.12);
+.card-status.waiting .status-dot {
+  background: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+  animation: none;
 }
 
-.alert-item .checkbox-container {
-  color: #991b1b;
-  font-weight: 500;
-}
-
-.alert-item .checkmark {
-  background-color: rgba(239, 68, 68, 0.15);
-}
-
-.alert-item .checkbox-container input:checked ~ .checkmark {
-  background-color: #ef4444; 
-}
-
-.badge.red-outline {
-  font-size: 0.65rem;
-  color: #ef4444;
-  border: 1px solid #ef4444;
-  padding: 2px 6px;
-  border-radius: 6px;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  margin-left: 10px;
-}
-
-/* 2. Actions Normales blanches */
-.normal-item {
-  background: rgba(255, 255, 255, 0.6);
-  border-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
-}
-
-.normal-item:hover {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* 3. Accordéon Réunions Bleu Foncé transparent */
-.meetings-accordion {
+/* ─── Meetings Block ─── */
+.meetings-block {
   margin-bottom: 10px;
-  border-radius: 12px;
-  background: rgba(59, 130, 246, 0.1); /* Bleu transparent */
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.07), rgba(99, 102, 241, 0.07));
+  border: 1px solid rgba(99, 102, 241, 0.15);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .meetings-header {
-  padding: 12px 14px;
+  padding: 11px 13px;
   display: flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
+  gap: 8px;
 }
 
-.meetings-header .icon {
-  margin-right: 10px;
-  font-size: 1.1rem;
+.meetings-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
 }
 
-.meetings-header .title {
-  flex-grow: 1;
-  font-size: 0.85rem;
+.meetings-title {
+  flex: 1;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: #1e3a8a; /* Bleu très foncé pour le texte */
+  color: #1e3a8a;
+  letter-spacing: -0.01em;
 }
 
-.meetings-header .chevron {
-  font-size: 0.7rem;
-  color: #3b82f6;
-  transition: transform 0.3s ease;
+.chevron {
+  width: 14px;
+  height: 14px;
+  color: #6366f1;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
 }
 
-.meetings-accordion.open .chevron {
+.meetings-block.open .chevron {
   transform: rotate(-180deg);
 }
 
 .meetings-list {
   max-height: 0;
-  opacity: 0;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.3s ease, opacity 0.25s ease;
+  opacity: 0;
 }
 
-.meetings-accordion.open .meetings-list {
-  max-height: 300px;
+.meetings-block.open .meetings-list {
+  max-height: 250px;
   opacity: 1;
 }
 
 .meeting-item {
-  padding: 8px 14px;
+  padding: 8px 13px;
   display: flex;
   align-items: center;
-  border-top: 1px solid rgba(59, 130, 246, 0.1);
-  background: rgba(255, 255, 255, 0.3);
+  gap: 10px;
+  border-top: 1px solid rgba(99, 102, 241, 0.08);
+  background: rgba(255, 255, 255, 0.4);
+  transition: background 0.15s;
 }
 
-.meeting-item:last-child {
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-}
+.meeting-item:hover { background: rgba(255, 255, 255, 0.8); }
 
-.meeting-item .time {
+.meeting-time {
   font-size: 0.75rem;
-  font-weight: 600;
-  color: #3b82f6;
-  min-width: 45px;
+  font-weight: 700;
+  color: #6366f1;
+  min-width: 40px;
+  font-variant-numeric: tabular-nums;
 }
 
-.meeting-item .name {
-  font-size: 0.85rem;
+.meeting-name {
+  font-size: 0.82rem;
   color: #1e3a8a;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* Custom Checkbox */
-.checkbox-container {
+.no-meeting {
+  padding: 9px 13px;
+  font-size: 0.78rem;
+  color: #6b7280;
+  border-top: 1px solid rgba(99, 102, 241, 0.08);
+  font-style: italic;
+}
+
+/* ─── Tasks List ─── */
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+/* ─── Task Item ─── */
+.task-item {
   display: flex;
   align-items: center;
+  gap: 8px;
+  padding: 10px 11px;
+  border-radius: 12px;
+  background: rgba(249, 250, 251, 0.8);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  cursor: default;
   position: relative;
-  padding-left: 28px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: #4b5563;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(209, 213, 219, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.task-item.urgent {
+  background: rgba(254, 242, 242, 0.9);
+  border-color: rgba(252, 165, 165, 0.5);
+}
+
+.task-item.urgent:hover {
+  background: rgba(254, 226, 226, 0.9);
+}
+
+.task-item.done {
+  opacity: 0.45;
+}
+
+.task-item.done .task-text {
+  text-decoration: line-through;
+}
+
+.task-item.is-dragging {
+  opacity: 0.5;
+  transform: scale(0.98);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 100;
+  border-color: #6366f1;
+}
+
+.task-item.drop-before::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+.task-item.drop-after::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: #6366f1;
+  border-radius: 2px;
+}
+
+/* Drag Handle */
+.task-drag-handle {
+  font-size: 14px;
+  color: #d1d5db;
+  cursor: grab;
   user-select: none;
-  transition: color 0.2s;
+  flex-shrink: 0;
+  line-height: 1;
+  padding: 0 1px;
+  transition: color 0.15s;
+  touch-action: none;
 }
 
-.checkbox-container:hover {
-  color: #111827;
-}
+.task-item:hover .task-drag-handle { color: #9ca3af; }
+.task-drag-handle:active { cursor: grabbing; color: #6366f1; }
 
-.checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkmark {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  height: 18px;
+/* Checkbox */
+.task-check {
   width: 18px;
-  background-color: #e5e7eb;
+  height: 18px;
   border-radius: 6px;
-  transition: all 0.2s;
+  border: 1.5px solid #d1d5db;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s;
 }
 
-.checkbox-container:hover input ~ .checkmark {
-  background-color: #d1d5db;
+.task-check:hover {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.05);
 }
 
-.checkbox-container input:checked ~ .checkmark {
-  background-color: #3b82f6; /* Bleu Premium */
+.task-check.checked {
+  background: #6366f1;
+  border-color: #6366f1;
 }
 
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
+.task-check svg {
+  width: 11px;
+  height: 11px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.15s;
 }
 
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
+.task-check.checked svg { opacity: 1; }
+
+/* Task text */
+.task-text {
+  flex: 1;
+  font-size: 0.82rem;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: text;
+  outline: none;
+  min-width: 0;
+  word-break: break-word;
 }
 
-.checkbox-container .checkmark:after {
-  left: 6px;
-  top: 3px;
-  width: 4px;
-  height: 8px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
+.task-text[contenteditable="true"] {
+  background: rgba(99, 102, 241, 0.06);
+  border-radius: 6px;
+  padding: 2px 5px;
+  margin: -2px -5px;
+  outline: 2px solid rgba(99, 102, 241, 0.3);
+  caret-color: #6366f1;
 }
 
-.checkbox-container input:checked ~ span {
-    text-decoration: line-through;
-    opacity: 0.6;
+/* Urgent badge */
+.task-urgent-btn {
+  flex-shrink: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
-.footer {
-  margin-top: 10px;
+.badge-urgent {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  padding: 2px 6px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.badge-urgent:hover {
+  background: rgba(239, 68, 68, 0.2);
+}
+
+.badge-urgent-add {
+  font-size: 0.75rem;
+  color: #d1d5db;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+
+.task-item:hover .badge-urgent-add {
+  opacity: 1;
+}
+
+.badge-urgent-add:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ─── Footer ─── */
+.card-footer {
+  border-top: 1px solid rgba(229, 231, 235, 0.6);
+  padding-top: 10px;
   text-align: right;
 }
 
-.footer .status {
-  font-size: 0.7rem;
-  color: #10b981; /* Vert success */
+#footer-status {
+  font-size: 0.68rem;
+  color: #10b981;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
+}
+
+/* Empty tasks state */
+.tasks-empty {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  padding: 12px 0 6px;
+  font-style: italic;
 }
