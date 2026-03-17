@@ -25,26 +25,26 @@ jobs:
         working-directory: morning-ai/desktop-app
         run: npm install
 
-      - name: Build .exe
+      - name: Build .exe (sans publication auto)
         working-directory: morning-ai/desktop-app
-        run: npm run build
+        run: npx electron-builder --win --x64 --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload release
+      - name: Create GitHub Release and upload .exe
         uses: softprops/action-gh-release@v2
         with:
-          files: morning-ai/desktop-app/dist/*.exe
+          tag_name: ${{ github.ref_name }}
           name: OneWork ${{ github.ref_name }}
+          files: morning-ai/desktop-app/dist/*.exe
           body: |
             ## OneWork ${{ github.ref_name }}
 
             Assistant de bureau intelligent connecté à Microsoft 365.
 
             ### Installation
-            1. Télécharge **OneWork-Setup.exe**
-            2. Lance le fichier
-            3. Connecte-toi avec ton compte Microsoft
+            1. Télécharge **OneWork Setup.exe**
+            2. Lance le fichier — l'installation est automatique
+            3. Connecte-toi avec ton compte Microsoft 365
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
