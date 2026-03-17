@@ -93,8 +93,8 @@ app.post('/api/analyze', async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Erreur serveur lors de l'analyse M365:", error);
-    res.status(500).json({ success: false, error: "Erreur interne Microsoft Graph ou IA." });
+    console.error("Erreur serveur lors de l'analyse M365:", error.message, error.stack);
+    res.status(500).json({ success: false, error: error.message || "Erreur interne" });
   }
 });
 

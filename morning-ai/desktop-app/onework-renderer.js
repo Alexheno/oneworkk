@@ -54,21 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
       await runAnalysis();
 
     } catch (err) {
-      console.error(err);
-      setConnectState('error', 'Erreur : ' + err.message);
+      console.error('AUTH ERROR:', err);
+      setConnectState('error');
+      showAuthError(err.message || JSON.stringify(err));
     }
   });
 
   function setConnectState(state, label) {
+    const errEl = document.getElementById('auth-error');
+    if (errEl && state !== 'error') errEl.style.display = 'none';
+
     btnConnect.disabled = state === 'loading' || state === 'analyzing';
     btnConnect.innerHTML = state === 'loading'
-      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> ${label}`
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> ${label || 'Connexion...'}`
       : state === 'analyzing'
-      ? `<span style="animation:shimmer 1s infinite">✦</span> ${label}`
-      : label;
+      ? `✦ ${label || 'Analyse en cours...'}`
+      : label || 'Continuer avec Microsoft';
     if (state === 'error') {
       btnConnect.disabled = false;
       btnConnect.innerHTML = 'Réessayer';
+    }
+  }
+
+  function showAuthError(msg) {
+    const errEl = document.getElementById('auth-error');
+    if (errEl) {
+      errEl.textContent = '⚠ ' + msg;
+      errEl.style.display = 'block';
     }
   }
 
@@ -103,10 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
       populateDashboard(result.data, result.rawCounts, currentAccount);
 
     } catch (err) {
-      console.error(err);
-      aiBannerText.textContent = '⚠ Erreur d\'analyse : ' + err.message;
-      btnConnect.disabled = false;
-      btnConnect.innerHTML = 'Réessayer';
+      console.error('ANALYSE ERROR:', err);
+      setConnectState('error');
+      showAuthError('Erreur backend : ' + err.message);
     }
   }
 

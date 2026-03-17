@@ -1,6 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 
+// Fix GPU/network crashes on Windows
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('no-sandbox');
+
 let mainWindow; // Le widget
 let overviewWindow; // L'interface principale OneWork
 
@@ -86,10 +91,13 @@ function createWindow() {
   const { login } = require('./auth');
   ipcMain.handle('connect-microsoft', async () => {
       try {
-          return await login();
+          console.log('[AUTH] Démarrage de la connexion Microsoft...');
+          const result = await login();
+          console.log('[AUTH] Résultat:', JSON.stringify({ success: result?.success, hasToken: !!result?.accessToken, error: result?.error }));
+          return result;
       } catch(e) {
-          console.error("IPC Auth Error: ", e);
-          return { success: false, error: e.message };
+          console.error('[AUTH] Erreur IPC complète:', e.message, e.stack);
+          return { success: false, error: e.message + ' | ' + (e.stack || '').split('\n')[1] };
       }
   });
 
