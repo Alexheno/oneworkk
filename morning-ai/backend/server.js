@@ -3,116 +3,79 @@ const express = require('express');
 const cors = require('cors');
 const { analyzeWorkData } = require('./ai.service');
 const { supabase } = require('./supabase');
+const { getRecentEmails, getTodayMeetings, getWeekSchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages } = require('./graph.service');
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 app.use(cors());
 app.use(express.json());
 
-// --- ROUTES API ---
-
-app.get('/api/test', (req, res) => {
-  res.json({ message: 'Serveur Morning-AI en ligne et fonctionnel !', timestamp: new Date() });
+app.get('/api/status', (_req, res) => {
+    res.json({ status: 'ok', message: 'OneWork Backend is running ⚡' });
 });
 
-const { getRecentEmails, getTodaySchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages } = require('./graph.service');
-
-// Nouvelle route d'analyse IA "OneWork" avec VRAIES données via Token Microsoft
 app.post('/api/analyze', async (req, res) => {
-  try {
-    const { accessToken, email = "demo@onework.app", name = "Utilisateur" } = req.body;
-    
-    if (!accessToken) {
-        return res.status(401).json({ success: false, error: "Jeton d'accès Microsoft (accessToken) manquant."});
-    }
+    try {
+        const { accessToken, email = 'demo@onework.app', name = 'Utilisateur', currentTime, currentDay, timeOfDay, habits } = req.body;
 
-    // 1. Trouver ou créer l'utilisateur dans Supabase (Identité)
-    let { data: user, error: userError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', email)
-        .single();
-        
-    if (!user) {
-        // Création du profil si inexistant
-        const { data: newUser, error: createError } = await supabase
-            .from('users')
-            .insert([{ email, name }])
-            .select()
-            .single();
-            
-        if (!createError) user = newUser;
-    }
+        if (!accessToken) return res.status(401).json({ success: false, error: 'Token Microsoft manquant.' });
 
-    console.log(`📡 Graph API: Téléchargement des données Microsoft pour ${name}...`);
-    
-    // 2. Extraire les vraies données depuis Microsoft 365 (via le token de l'app Electron)
-    const [realEmails, realSchedule, realTeams, realOfficeFiles, realTodoTasks, realOneNotePages] = await Promise.all([
-        getRecentEmails(accessToken),
-        getTodaySchedule(accessToken),
-        getTeamsMessages(accessToken),
-        getRecentOfficeFiles(accessToken),
-        getToDoTasks(accessToken),
-        getOneNotePages(accessToken)
-    ]);
+        // Upsert utilisateur Supabase
+        let { data: user } = await supabase.from('users').select('*').eq('email', email).single();
+        if (!user) {
+            const { data: newUser } = await supabase.from('users').insert([{ email, name }]).select().single();
+            user = newUser;
+        }
 
-    console.log(`✅ Récupéré: ${realEmails.length} Mails, ${realSchedule.length} Events, ${realTeams.length} Chats, ${realOfficeFiles.length} Fichiers Office, ${realTodoTasks.length} Tâches To Do, ${realOneNotePages.length} Notes OneNote.`);
+        console.log(`📡 Récupération données M365 pour ${name} (${currentDay} ${currentTime})...`);
 
-    // 3. Analyse IA croisée avec toutes les sources
-    const analysis = await analyzeWorkData(realEmails, realTeams, realSchedule, realOfficeFiles, realTodoTasks, realOneNotePages);
-    
-    if (analysis.error) {
-       return res.status(500).json({ success: false, error: analysis.error });
-    }
+        const [emails, todayMeetings, weekSchedule, teamsMessages, officeFiles, todoTasks, oneNotePages] = await Promise.all([
+            getRecentEmails(accessToken, email),
+            getTodayMeetings(accessToken),
+            getWeekSchedule(accessToken),
+            getTeamsMessages(accessToken),
+            getRecentOfficeFiles(accessToken),
+            getToDoTasks(accessToken),
+            getOneNotePages(accessToken)
+        ]);
 
-    // 4. Sauvegarde de l'analyse dans Supabase (table daily_briefs)
-    if (user) {
-        await supabase
-            .from('daily_briefs')
-            .insert([{
+        console.log(`✅ ${emails.length} emails, ${todayMeetings.length} réunions, ${teamsMessages.length} Teams, ${todoTasks.length} tâches`);
+
+        const context = { userName: name, currentTime, currentDay, timeOfDay, habits };
+        const analysis = await analyzeWorkData(emails, teamsMessages, weekSchedule, todayMeetings, officeFiles, todoTasks, oneNotePages, context);
+
+        if (analysis.error) return res.status(500).json({ success: false, error: analysis.error });
+
+        // Sauvegarde Supabase
+        if (user) {
+            await supabase.from('daily_briefs').insert([{
                 user_id: user.id,
                 urgent_alerts: analysis.urgentAlerts || [],
-                priority_emails: analysis.priorityEmails || [],
-                ai_suggestions: analysis.aiSuggestions || [] // Inclus les tâches Excel/Agenda !
+                priority_emails: analysis.directEmails || [],
+                ai_suggestions: analysis.aiSuggestions || []
             }]);
-    }
-
-    // 5. On retourne l'analyse + les données brutes extraites au FrontEnd
-    res.json({
-        success: true,
-        data: analysis,
-        rawCounts: {
-            emails: realEmails.length,
-            events: realSchedule.length,
-            chats: realTeams.length,
-            officeFiles: realOfficeFiles.length,
-            todoTasks: realTodoTasks.length,
-            oneNotePages: realOneNotePages.length
         }
-    });
 
-  } catch (error) {
-    console.error("Erreur serveur lors de l'analyse M365:", error.message, error.stack);
-    res.status(500).json({ success: false, error: error.message || "Erreur interne" });
-  }
-});
+        res.json({
+            success: true,
+            data: analysis,
+            rawCounts: {
+                emails: emails.length,
+                directEmails: emails.filter(e => !e.isCc).length,
+                ccEmails: emails.filter(e => e.isCc).length,
+                meetings: todayMeetings.length,
+                teams: teamsMessages.length,
+                tasks: todoTasks.length,
+                files: officeFiles.length
+            }
+        });
 
-app.get('/api/status', (req, res) => {
-  res.json({ status: 'ok', message: 'Morning AI Backend is running ⚡' });
-});
-
-app.get('/api/daily-brief', (req, res) => {
-  // L'ancienne route mockée (pour rétrocompatibilité de l'AssistivTouch pendant le DEV)
-  res.json({
-    date: new Date().toISOString(),
-    alert: { type: 'Urgent', message: 'Valider le MVP' },
-    meetings: [],
-    tasks: []
-  });
+    } catch (error) {
+        console.error('Erreur /api/analyze:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 app.listen(port, () => {
-  console.log(`🚀 Serveur démarré sur http://localhost:${port}`);
-  console.log('API "OneWork Intelligence" prête avec Supabase.');
+    console.log(`🚀 OneWork Backend sur port ${port}`);
 });

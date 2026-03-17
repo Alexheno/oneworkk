@@ -9,205 +9,258 @@
 </head>
 <body>
 
-  <!-- ═══ ONBOARDING ═══ -->
-  <div id="onboarding-screen" class="screen active">
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-
-    <div class="onboarding-card">
-      <div class="onboarding-logo">
-        <div class="logo-orb"></div>
-        <span>OneWork</span>
-      </div>
-
-      <h2 class="onboarding-title">Votre journée,<br>analysée en 10 secondes.</h2>
-      <p class="onboarding-sub">Connectez Microsoft 365 — OneWork lit tout et organise votre travail à votre place.</p>
-
-      <div class="permissions-block">
-        <p class="permissions-label">Autorisations demandées</p>
-        <div class="permissions-list">
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#0078D4;">M</span>Outlook & Mail</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#6264A7;">T</span>Microsoft Teams</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#217346;">X</span>Excel & OneDrive</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#2B579A;">W</span>Word</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#B7472A;">P</span>PowerPoint</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#7719AA;">N</span>OneNote</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-          <label class="perm-row"><span class="perm-left"><span class="perm-icon" style="background:#3982CA;">✓</span>Microsoft To Do</span><input type="checkbox" checked><span class="toggle-track"><span class="toggle-thumb"></span></span></label>
-        </div>
-      </div>
-
-      <button id="btn-connect-ms" class="btn-connect">
-        <svg width="18" height="18" viewBox="0 0 21 21" fill="none"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
-        Continuer avec Microsoft
-      </button>
-      <p id="auth-error" style="display:none;margin-top:12px;padding:10px 14px;background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);border-radius:8px;font-size:0.8rem;color:#f87171;line-height:1.4;word-break:break-word;"></p>
-      <p class="onboarding-note">Vos données ne quittent jamais votre machine.</p>
+<!-- ══════════════════════ ONBOARDING ══════════════════════ -->
+<div id="onboarding-screen" class="screen active">
+  <div class="ob-bg-orb ob-orb1"></div>
+  <div class="ob-bg-orb ob-orb2"></div>
+  <div class="ob-card">
+    <div class="ob-logo">
+      <div class="logo-pill"></div>
+      <span>OneWork</span>
     </div>
+    <h2 class="ob-title">Votre journée,<br>analysée en 10 secondes.</h2>
+    <p class="ob-sub">Connectez Microsoft 365 — OneWork lit tout et organise votre travail à votre place.</p>
+    <p class="ob-perm-label">Autorisations demandées</p>
+    <div class="ob-perms">
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#0078D4"></span>Outlook & Mail</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#6264A7"></span>Microsoft Teams</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#217346"></span>Excel & OneDrive</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#2B579A"></span>Word</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#B7472A"></span>PowerPoint</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#7719AA"></span>OneNote</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+      <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#3982CA"></span>Microsoft To Do</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
+    </div>
+    <button id="btn-connect-ms" class="btn-connect">
+      <svg width="18" height="18" viewBox="0 0 21 21" fill="none"><rect x="1" y="1" width="9" height="9" fill="#f25022"/><rect x="11" y="1" width="9" height="9" fill="#7fba00"/><rect x="1" y="11" width="9" height="9" fill="#00a4ef"/><rect x="11" y="11" width="9" height="9" fill="#ffb900"/></svg>
+      Continuer avec Microsoft
+    </button>
+    <p id="auth-error" class="auth-error"></p>
+    <p class="ob-note">Vos données ne quittent jamais votre machine.</p>
   </div>
+</div>
 
-  <!-- ═══ DASHBOARD ═══ -->
-  <div id="dashboard-screen" class="screen">
+<!-- ══════════════════════ DASHBOARD ══════════════════════ -->
+<div id="dashboard-screen" class="screen">
 
-    <!-- Sidebar -->
-    <nav class="sidebar">
-      <div class="sidebar-logo">
-        <div class="logo-orb sm"></div>
-      </div>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-avatar" id="user-avatar"></div>
+    </div>
 
-      <div class="sidebar-nav">
-        <button class="nav-btn active" data-tab="overview" title="Vue d'ensemble">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        </button>
-        <button class="nav-btn" data-tab="tasks" title="Plan du jour">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        </button>
-        <button class="nav-btn" data-tab="projects" title="Projets détectés">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-        </button>
-        <button class="nav-btn" id="btn-open-calendar" title="Ouvrir le calendrier">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        </button>
-      </div>
-
-      <div class="sidebar-bottom">
-        <button class="nav-btn" id="btn-open-excel" title="Ouvrir Excel">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-        </button>
-        <button class="nav-btn" id="btn-logout" title="Déconnexion">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </button>
-        <div class="sidebar-avatar" id="user-avatar" title="Profil"></div>
-      </div>
+    <nav class="sidebar-nav">
+      <button class="snav-btn active" data-view="main" title="Vue d'ensemble">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>Accueil</span>
+      </button>
+      <button class="snav-btn" data-view="projects" id="btn-projects" title="Projets">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        <span>Projets</span>
+        <span class="nav-badge" id="projects-badge" style="display:none"></span>
+      </button>
+      <button class="snav-btn" data-view="plan" title="Plan du jour">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span>Plan du jour</span>
+      </button>
     </nav>
 
-    <!-- Main -->
-    <main class="main">
+    <div class="sidebar-bottom">
+      <div class="sidebar-user" id="sidebar-user">
+        <div class="su-avatar" id="su-avatar"></div>
+        <div class="su-info">
+          <span class="su-name" id="su-name">OneWork</span>
+          <span class="su-plan">Plus</span>
+        </div>
+        <svg class="su-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+      </div>
 
-      <!-- Topbar -->
+      <!-- Profile popup menu -->
+      <div class="profile-menu" id="profile-menu">
+        <div class="pm-user">
+          <div class="pm-avatar" id="pm-avatar"></div>
+          <div>
+            <div class="pm-name" id="pm-name">OneWork</div>
+            <div class="pm-email" id="pm-email"></div>
+          </div>
+        </div>
+        <div class="pm-divider"></div>
+        <button class="pm-item" id="btn-upgrade">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Passer au forfait supérieur
+        </button>
+        <button class="pm-item" id="btn-personalisation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+          Personnalisation
+        </button>
+        <button class="pm-item" id="btn-settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          Paramètres
+        </button>
+        <button class="pm-item" id="btn-help">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Aide
+        </button>
+        <div class="pm-divider"></div>
+        <button class="pm-item danger" id="btn-logout">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Se déconnecter
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+
+    <!-- ── View: Accueil ── -->
+    <div class="view active" id="view-main">
+
       <header class="topbar">
         <div>
-          <h1 class="greeting-name" id="greeting-name">Bonjour 👋</h1>
-          <p class="greeting-date" id="greeting-date"></p>
+          <h1 class="topbar-title" id="greeting-name">Bonjour 👋</h1>
+          <p class="topbar-date" id="greeting-date"></p>
         </div>
-        <div class="topbar-right">
-          <button class="btn-refresh" id="btn-refresh" title="Réanalyser">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-            Réanalyser
-          </button>
-        </div>
+        <button class="btn-refresh" id="btn-refresh" title="Réanalyser">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Réanalyser
+        </button>
       </header>
 
-      <!-- AI Banner -->
-      <div class="ai-banner" id="ai-banner">
-        <div class="ai-star">✦</div>
-        <div class="ai-banner-content">
-          <p class="ai-banner-text" id="ai-banner-text">Connexion à Microsoft 365 en cours...</p>
-          <div class="ai-chips" id="ai-chips"></div>
-        </div>
+      <!-- Phrase recap -->
+      <div class="recap-card" id="recap-card">
+        <div class="recap-star">✦</div>
+        <p class="recap-text" id="recap-text">Connexion à Microsoft 365...</p>
       </div>
 
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="tab active" data-tab="overview">Aujourd'hui</button>
-        <button class="tab" data-tab="tasks">Plan du jour</button>
-        <button class="tab" data-tab="projects">Projets</button>
+      <!-- Bento 2×2 -->
+      <div class="bento">
+
+        <!-- Emails -->
+        <div class="card card-emails">
+          <div class="card-head">
+            <span class="card-title">Emails</span>
+            <div class="email-tabs">
+              <button class="etab active" data-etab="direct">À vous</button>
+              <button class="etab" data-etab="cc">Vous en copie</button>
+            </div>
+          </div>
+          <div class="email-pane active" id="email-direct">
+            <div class="skeleton-list"><div class="sk"></div><div class="sk short"></div><div class="sk"></div></div>
+          </div>
+          <div class="email-pane" id="email-cc">
+            <div class="skeleton-list"><div class="sk short"></div><div class="sk"></div></div>
+          </div>
+        </div>
+
+        <!-- Teams -->
+        <div class="card card-teams">
+          <div class="card-head">
+            <span class="card-title">Teams</span>
+            <span class="card-badge purple" id="teams-badge"></span>
+          </div>
+          <div id="teams-list">
+            <div class="skeleton-list"><div class="sk"></div><div class="sk short"></div></div>
+          </div>
+        </div>
+
+        <!-- Réunions -->
+        <div class="card card-meetings">
+          <div class="card-head">
+            <span class="card-title">Réunions</span>
+            <button class="card-link" id="btn-calendar">Ouvrir →</button>
+          </div>
+          <div id="meetings-list">
+            <div class="skeleton-list"><div class="sk"></div><div class="sk short"></div><div class="sk"></div></div>
+          </div>
+        </div>
+
+        <!-- To Do -->
+        <div class="card card-todo">
+          <div class="card-head">
+            <span class="card-title">To Do</span>
+            <button class="card-link" id="btn-todo">Ouvrir →</button>
+          </div>
+          <div id="todo-list">
+            <div class="skeleton-list"><div class="sk"></div><div class="sk short"></div><div class="sk"></div></div>
+          </div>
+        </div>
+
       </div>
+    </div>
 
-      <!-- ── Tab: Aujourd'hui ── -->
-      <div class="tab-pane active" id="tab-overview">
-        <div class="bento">
-
-          <div class="card card-emails" id="card-emails">
-            <div class="card-head">
-              <span class="card-title">Emails prioritaires</span>
-              <span class="card-icon blue">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-              </span>
-            </div>
-            <div class="msg-list" id="email-list">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
-              <div class="skeleton-line"></div>
-            </div>
-            <p class="card-foot" id="email-count"></p>
-          </div>
-
-          <div class="card card-teams" id="card-teams">
-            <div class="card-head">
-              <span class="card-title">Messages Teams</span>
-              <span class="card-icon purple">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-              </span>
-            </div>
-            <div class="msg-list" id="teams-list">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
-            </div>
-          </div>
-
-          <div class="card card-alerts" id="card-alerts">
-            <div class="card-head">
-              <span class="card-title">Urgences</span>
-              <span class="alert-badge" id="alert-badge">—</span>
-            </div>
-            <ul class="alert-list" id="alert-list">
-              <li class="skeleton-line"></li>
-              <li class="skeleton-line short"></li>
-            </ul>
-          </div>
-
-          <div class="card card-agenda" id="card-agenda">
-            <div class="card-head">
-              <span class="card-title">Agenda — 7 jours</span>
-              <button class="link-btn" id="btn-open-calendar-main">Ouvrir →</button>
-            </div>
-            <div class="timeline" id="timeline">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
-              <div class="skeleton-line"></div>
-            </div>
-          </div>
-
-          <div class="card card-ai" id="card-ai">
-            <div class="card-head">
-              <span class="card-title">Suggestions IA</span>
-              <span class="card-icon green">✦</span>
-            </div>
-            <div class="ai-suggestions" id="ai-suggestions">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
-            </div>
-            <button class="btn-todo" id="btn-add-todo">Ouvrir Microsoft To Do →</button>
-          </div>
-
+    <!-- ── View: Projets ── -->
+    <div class="view" id="view-projects">
+      <header class="topbar">
+        <div>
+          <h1 class="topbar-title">Projets</h1>
+          <p class="topbar-date">Détectés automatiquement par l'IA</p>
         </div>
+      </header>
+      <div class="projects-filters">
+        <button class="pf-btn active" data-filter="all">Tous</button>
+        <button class="pf-btn" data-filter="En cours">En cours</button>
+        <button class="pf-btn" data-filter="En retard">En retard</button>
+        <button class="pf-btn" data-filter="Bloqué">Bloqué</button>
+        <button class="pf-btn" data-filter="Terminé">Terminé</button>
       </div>
-
-      <!-- ── Tab: Plan du jour ── -->
-      <div class="tab-pane" id="tab-tasks">
-        <div class="section-header">
-          <h2>Plan du jour</h2>
-          <p>Généré par l'IA à partir de vos données Microsoft 365</p>
-        </div>
-        <div class="task-list" id="task-list">
-          <div class="empty-state">Lance une analyse pour voir ton plan du jour.</div>
-        </div>
+      <div class="projects-grid" id="projects-grid">
+        <div class="empty-state">Lance une analyse pour voir tes projets.</div>
       </div>
+    </div>
 
-      <!-- ── Tab: Projets ── -->
-      <div class="tab-pane" id="tab-projects">
-        <div class="section-header">
-          <h2>Projets détectés</h2>
-          <p>L'IA a identifié ces projets en analysant vos emails, fichiers et tâches</p>
+    <!-- ── View: Plan du jour ── -->
+    <div class="view" id="view-plan">
+      <header class="topbar">
+        <div>
+          <h1 class="topbar-title">Plan du jour</h1>
+          <p class="topbar-date">Généré par l'IA à partir de vos données</p>
         </div>
-        <div class="projects-grid" id="projects-grid">
-          <div class="empty-state">Lance une analyse pour voir tes projets actifs.</div>
-        </div>
+      </header>
+      <div class="plan-list" id="plan-list">
+        <div class="empty-state">Lance une analyse pour voir ton plan.</div>
       </div>
+    </div>
 
-    </main>
+  </main>
+</div>
+
+<!-- ── Project edit modal ── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Modifier le projet</h3>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body">
+      <label class="modal-label">Nom du projet</label>
+      <input type="text" class="modal-input" id="modal-name" placeholder="Nom du projet">
+      <label class="modal-label">Statut</label>
+      <select class="modal-select" id="modal-status">
+        <option>En cours</option>
+        <option>En retard</option>
+        <option>Bloqué</option>
+        <option>À lancer</option>
+        <option>Terminé</option>
+      </select>
+      <label class="modal-label">Prochaine étape</label>
+      <input type="text" class="modal-input" id="modal-action" placeholder="Prochaine étape">
+      <label class="modal-label">Notes</label>
+      <textarea class="modal-textarea" id="modal-notes" placeholder="Notes libres..."></textarea>
+    </div>
+    <div class="modal-foot">
+      <button class="modal-btn-cancel" id="modal-cancel">Annuler</button>
+      <button class="modal-btn-save" id="modal-save">Enregistrer</button>
+    </div>
   </div>
+</div>
 
-  <script src="onework-renderer.js"></script>
+<!-- ── New project notification ── -->
+<div class="notif" id="notif" style="display:none">
+  <span class="notif-icon">✦</span>
+  <span id="notif-text"></span>
+  <button class="notif-close" id="notif-close">✕</button>
+</div>
+
+<script src="onework-renderer.js"></script>
 </body>
 </html>
