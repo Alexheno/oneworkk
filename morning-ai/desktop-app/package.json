@@ -19,13 +19,13 @@
     "owner": "Alexheno",
     "repo": "oneworkk"
   },
-  "type": "commonjs",
   "build": {
     "appId": "com.onework.app",
     "productName": "OneWork",
     "win": {
       "target": "nsis",
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.ico",
+      "artifactName": "OneWork-Setup.exe"
     },
     "nsis": {
       "oneClick": true,
@@ -38,10 +38,10 @@
     ]
   },
   "devDependencies": {
-    "electron": "^41.0.2",
+    "electron": "^13.6.9",
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
-    "@azure/msal-node": "^5.1.0"
+    "@azure/msal-node": "^2.16.3"
   }
 }
