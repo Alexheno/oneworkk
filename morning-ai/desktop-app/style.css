@@ -421,6 +421,65 @@ body, html {
 .task-item:hover .badge-urgent-add { opacity: 1; }
 .badge-urgent-add:hover { color: #f87171; }
 
+/* ─── Light theme override (card only, knob reste discret) ─── */
+.card[data-theme="light"] {
+  background: rgba(244, 251, 246, 0.97);
+  border: 1px solid rgba(187, 247, 208, 0.7);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10), 0 0 0 0.5px rgba(22, 163, 74, 0.08) inset;
+  color: #0d1f16;
+}
+.card[data-theme="light"] .card-greeting { color: #0d1f16; }
+.card[data-theme="light"] .card-date { color: rgba(0,0,0,0.35); }
+.card[data-theme="light"] .meetings-block {
+  background: rgba(22, 163, 74, 0.07);
+  border-color: rgba(22, 163, 74, 0.18);
+}
+.card[data-theme="light"] .meetings-title { color: #14532d; }
+.card[data-theme="light"] .chevron { color: rgba(22, 163, 74, 0.5); }
+.card[data-theme="light"] .meeting-item { border-top-color: rgba(22, 163, 74, 0.08); }
+.card[data-theme="light"] .meeting-item:hover { background: rgba(255,255,255,0.7); }
+.card[data-theme="light"] .meeting-time { color: #16a34a; }
+.card[data-theme="light"] .meeting-name { color: #14532d; }
+.card[data-theme="light"] .no-meeting { color: rgba(0,0,0,0.3); border-top-color: rgba(22,163,74,0.08); }
+.card[data-theme="light"] .task-item {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(22, 163, 74, 0.1);
+}
+.card[data-theme="light"] .task-item:hover {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(22, 163, 74, 0.2);
+}
+.card[data-theme="light"] .task-item.urgent {
+  background: rgba(254, 242, 242, 0.9);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+.card[data-theme="light"] .task-drag-handle { color: rgba(0,0,0,0.15); }
+.card[data-theme="light"] .task-item:hover .task-drag-handle { color: rgba(0,0,0,0.3); }
+.card[data-theme="light"] .task-check { border-color: rgba(0,0,0,0.2); background: white; }
+.card[data-theme="light"] .task-check.checked { background: #16a34a; border-color: #16a34a; }
+.card[data-theme="light"] .task-text { color: rgba(0,0,0,0.75); }
+.card[data-theme="light"] .task-text[contenteditable="true"] {
+  color: #0d1f16;
+  background: rgba(22, 163, 74, 0.08);
+  outline-color: rgba(22, 163, 74, 0.3);
+}
+.card[data-theme="light"] .badge-urgent-add { color: rgba(0,0,0,0.15); }
+.card[data-theme="light"] .card-footer { border-top-color: rgba(0,0,0,0.07); }
+.card[data-theme="light"] #footer-status { color: rgba(0,0,0,0.25); }
+.card[data-theme="light"] .tasks-empty { color: rgba(0,0,0,0.2); }
+.card[data-theme="light"] .task-add-btn { color: rgba(0,0,0,0.25); border-color: rgba(22,163,74,0.15); }
+.card[data-theme="light"] .task-add-btn:hover { color: #16a34a; border-color: rgba(22,163,74,0.35); background: rgba(22,163,74,0.05); }
+.card[data-theme="light"] .task-add-input {
+  background: white;
+  border-color: rgba(22, 163, 74, 0.25);
+  color: #0d1f16;
+}
+.card[data-theme="light"] .task-add-input:focus { border-color: #16a34a; }
+.card[data-theme="light"] .task-item.drop-before::before,
+.card[data-theme="light"] .task-item.drop-after::after { background: #16a34a; }
+.card[data-theme="light"] .status-dot { background: #16a34a; }
+.card[data-theme="light"] .card-status { background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+
 /* ─── Footer ─── */
 .card-footer {
   border-top: 1px solid rgba(255,255,255,0.06);
@@ -434,6 +493,45 @@ body, html {
   font-weight: 400;
   letter-spacing: 0.01em;
 }
+
+/* ─── Add task ─── */
+.task-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px dashed rgba(255,255,255,0.1);
+  background: transparent;
+  color: rgba(255,255,255,0.2);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+.task-add-btn:hover {
+  color: rgba(255,255,255,0.5);
+  border-color: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.03);
+}
+
+.task-add-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(99,102,241,0.35);
+  background: rgba(255,255,255,0.06);
+  color: #f5f5f7;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.task-add-input:focus { border-color: #818cf8; }
+.task-add-input::placeholder { color: rgba(255,255,255,0.25); }
 
 /* Empty tasks state */
 .tasks-empty {

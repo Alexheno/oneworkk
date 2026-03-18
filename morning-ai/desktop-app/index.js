@@ -108,6 +108,13 @@ function createWindow() {
       }
   });
 
+  // Relais du thème vers le Widget
+  ipcMain.on('set-theme', (_event, theme) => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('apply-theme', theme);
+      }
+  });
+
   // Navigation vers liens externes
   const { shell } = require('electron');
   ipcMain.on('open-url', (event, url) => {

@@ -1,7 +1,7 @@
 // ─── State ───────────────────────────────────────────────
 const state = {
   tasks: [],    // [{ id, text, urgent, done }]
-  meetings: [], // [{ time, title }]
+  meetings: [],
 };
 
 function loadState() {
@@ -17,7 +17,24 @@ function saveState() {
 
 loadState();
 
-// ─── Date & Greeting ────────────────────────────────────
+// ─── Theme ───────────────────────────────────────────────
+const card = document.querySelector('.card');
+
+function applyTheme(t) {
+  card.dataset.theme = t;
+  localStorage.setItem('widget-theme', t);
+}
+
+// Init from localStorage (set by main dashboard)
+applyTheme(localStorage.getItem('widget-theme') || 'dark');
+
+if (window.electronAPI && window.electronAPI.onThemeChange) {
+  window.electronAPI.onThemeChange((theme) => {
+    applyTheme(theme === 'light' ? 'light' : 'dark');
+  });
+}
+
+// ─── Date ────────────────────────────────────────────────
 function updateDate() {
   const opts = { weekday: 'long', day: 'numeric', month: 'long' };
   const s = new Date().toLocaleDateString('fr-FR', opts);
@@ -67,10 +84,7 @@ knob.addEventListener('pointermove', (e) => {
 });
 
 knob.addEventListener('pointerup', () => { isDraggingWindow = false; });
-
-knob.addEventListener('dblclick', () => {
-  if (window.electronAPI) window.electronAPI.openOverview();
-});
+knob.addEventListener('dblclick', () => { if (window.electronAPI) window.electronAPI.openOverview(); });
 
 // ─── Meetings Accordion ──────────────────────────────────
 const meetingsBlock = document.getElementById('meetings-block');
@@ -84,13 +98,12 @@ function renderMeetings() {
 
   if (!state.meetings.length) {
     titleEl.textContent = 'Aucune réunion aujourd\'hui';
-    listEl.innerHTML = '<div class="no-meeting">Votre journée est libre 🎉</div>';
+    listEl.innerHTML = '<div class="no-meeting">Journée libre 🎉</div>';
     return;
   }
 
   const n = state.meetings.length;
   titleEl.textContent = `${n} Réunion${n > 1 ? 's' : ''} aujourd'hui`;
-
   listEl.innerHTML = state.meetings.map(m => `
     <div class="meeting-item">
       <span class="meeting-time">${m.time || ''}</span>
@@ -102,19 +115,34 @@ function renderMeetings() {
 renderMeetings();
 
 // ─── Task Rendering ──────────────────────────────────────
+function sortTasks() {
+  // Urgents always first, then non-urgents — stable sort
+  state.tasks.sort((a, b) => {
+    if (a.urgent && !b.urgent) return -1;
+    if (!a.urgent && b.urgent) return 1;
+    return 0;
+  });
+}
+
 function renderTasks() {
+  sortTasks();
   const list = document.getElementById('tasks-list');
   list.innerHTML = '';
 
   if (!state.tasks.length) {
     list.innerHTML = '<div class="tasks-empty">Lance une analyse pour voir tes tâches ✨</div>';
-    return;
+  } else {
+    state.tasks.forEach((task, idx) => {
+      list.appendChild(buildTaskEl(task, idx));
+    });
   }
 
-  state.tasks.forEach((task, idx) => {
-    const el = buildTaskEl(task, idx);
-    list.appendChild(el);
-  });
+  // Add task button always at bottom
+  const addBtn = document.createElement('button');
+  addBtn.className = 'task-add-btn';
+  addBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Ajouter une tâche`;
+  addBtn.addEventListener('click', showAddInput);
+  list.appendChild(addBtn);
 
   attachDragHandlers();
 }
@@ -124,41 +152,63 @@ function buildTaskEl(task, idx) {
   div.className = `task-item${task.done ? ' done' : ''}${task.urgent ? ' urgent' : ''}`;
   div.dataset.idx = String(idx);
 
-  // Drag handle
   const handle = document.createElement('div');
   handle.className = 'task-drag-handle';
   handle.textContent = '⠿';
   handle.dataset.dragHandle = '1';
 
-  // Checkbox
   const check = document.createElement('div');
   check.className = `task-check${task.done ? ' checked' : ''}`;
   check.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
   check.addEventListener('click', () => toggleDone(idx));
 
-  // Text (double-click to edit)
   const text = document.createElement('span');
   text.className = 'task-text';
   text.textContent = task.text;
   text.addEventListener('dblclick', () => startEdit(text, idx));
 
-  // Urgent button
   const urgentBtn = document.createElement('div');
   urgentBtn.className = 'task-urgent-btn';
   urgentBtn.title = task.urgent ? 'Retirer urgence' : 'Marquer urgent';
-  if (task.urgent) {
-    urgentBtn.innerHTML = `<span class="badge-urgent">⚡ URGENT</span>`;
-  } else {
-    urgentBtn.innerHTML = `<span class="badge-urgent-add" title="Marquer urgent">⚡</span>`;
-  }
+  urgentBtn.innerHTML = task.urgent
+    ? `<span class="badge-urgent">⚡ URGENT</span>`
+    : `<span class="badge-urgent-add" title="Marquer urgent">⚡</span>`;
   urgentBtn.addEventListener('click', () => toggleUrgent(idx));
 
   div.appendChild(handle);
   div.appendChild(check);
   div.appendChild(text);
   div.appendChild(urgentBtn);
-
   return div;
+}
+
+// ─── Add Task ────────────────────────────────────────────
+function showAddInput() {
+  const list = document.getElementById('tasks-list');
+  const addBtn = list.querySelector('.task-add-btn');
+  if (!addBtn) return;
+
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'task-add-input';
+  input.placeholder = 'Nouvelle tâche... (Entrée pour valider)';
+  list.insertBefore(input, addBtn);
+  input.focus();
+
+  const confirm = () => {
+    const text = input.value.trim();
+    if (text) {
+      state.tasks.push({ id: `manual-${Date.now()}`, text, urgent: false, done: false });
+      saveState();
+    }
+    renderTasks();
+  };
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') confirm();
+    if (e.key === 'Escape') renderTasks();
+  });
+  input.addEventListener('blur', confirm);
 }
 
 // ─── Toggle Done ─────────────────────────────────────────
@@ -168,24 +218,17 @@ function toggleDone(idx) {
   renderTasks();
 }
 
-// ─── Toggle Urgent ───────────────────────────────────────
+// ─── Toggle Urgent (trie automatiquement) ────────────────
 function toggleUrgent(idx) {
   state.tasks[idx].urgent = !state.tasks[idx].urgent;
-  // Move urgent tasks to top
-  if (state.tasks[idx].urgent) {
-    const [task] = state.tasks.splice(idx, 1);
-    state.tasks.unshift(task);
-  }
   saveState();
-  renderTasks();
+  renderTasks(); // sortTasks() appelé dans renderTasks
 }
 
 // ─── Inline Edit ─────────────────────────────────────────
 function startEdit(textEl, idx) {
   textEl.contentEditable = 'true';
   textEl.focus();
-
-  // Select all text
   const range = document.createRange();
   range.selectNodeContents(textEl);
   window.getSelection().removeAllRanges();
@@ -205,20 +248,15 @@ function startEdit(textEl, idx) {
   textEl.addEventListener('blur', save, { once: true });
   textEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); textEl.blur(); }
-    if (e.key === 'Escape') {
-      textEl.textContent = state.tasks[idx].text;
-      textEl.contentEditable = 'false';
-    }
+    if (e.key === 'Escape') { textEl.textContent = state.tasks[idx].text; textEl.contentEditable = 'false'; }
   }, { once: true });
 }
 
-// ─── Drag & Drop Task Reorder ────────────────────────────
+// ─── Drag & Drop ─────────────────────────────────────────
 let dragSrc = -1;
-let dragPointerId = null;
 
 function attachDragHandlers() {
-  const list = document.getElementById('tasks-list');
-  list.querySelectorAll('.task-drag-handle').forEach((handle) => {
+  document.getElementById('tasks-list').querySelectorAll('.task-drag-handle').forEach(handle => {
     handle.addEventListener('pointerdown', onDragStart);
   });
 }
@@ -226,14 +264,11 @@ function attachDragHandlers() {
 function onDragStart(e) {
   e.preventDefault();
   e.stopPropagation();
-
   const item = e.currentTarget.closest('.task-item');
   if (!item) return;
-
   dragSrc = parseInt(item.dataset.idx);
-  dragPointerId = e.pointerId;
   item.classList.add('is-dragging');
-
+  window._lastDropTarget = undefined;
   e.currentTarget.setPointerCapture(e.pointerId);
   e.currentTarget.addEventListener('pointermove', onDragMove);
   e.currentTarget.addEventListener('pointerup', onDragEnd);
@@ -243,69 +278,49 @@ function onDragStart(e) {
 function onDragMove(e) {
   if (dragSrc < 0) return;
   e.stopPropagation();
-
-  const list = document.getElementById('tasks-list');
-  const items = [...list.querySelectorAll('.task-item')];
-  const mouseY = e.clientY;
-
-  // Clear previous indicators
+  const items = [...document.querySelectorAll('.task-item')];
   items.forEach(el => el.classList.remove('drop-before', 'drop-after'));
-
-  let targetIdx = null;
+  const mouseY = e.clientY;
   let placed = false;
 
-  for (let i = 0; i < items.length; i++) {
-    const idx = parseInt(items[i].dataset.idx);
-    if (idx === dragSrc) continue;
-    const rect = items[i].getBoundingClientRect();
+  for (const item of items) {
+    if (parseInt(item.dataset.idx) === dragSrc) continue;
+    const rect = item.getBoundingClientRect();
     if (!placed && mouseY < rect.top + rect.height / 2) {
-      items[i].classList.add('drop-before');
-      targetIdx = idx;
+      item.classList.add('drop-before');
+      window._lastDropTarget = parseInt(item.dataset.idx);
       placed = true;
     }
   }
 
-  if (!placed && items.length > 0) {
-    const lastItem = items[items.length - 1];
-    if (parseInt(lastItem.dataset.idx) !== dragSrc) {
-      lastItem.classList.add('drop-after');
-      targetIdx = -1; // append at end
-    }
+  if (!placed) {
+    const last = items.filter(el => parseInt(el.dataset.idx) !== dragSrc).pop();
+    if (last) { last.classList.add('drop-after'); window._lastDropTarget = -1; }
   }
-
-  e._dropTarget = targetIdx;
-  window._lastDropTarget = targetIdx;
 }
 
 function onDragEnd(e) {
   if (dragSrc < 0) return;
   e.stopPropagation();
-
-  const list = document.getElementById('tasks-list');
-  const items = [...list.querySelectorAll('.task-item')];
-
-  // Clear visuals
-  items.forEach(el => el.classList.remove('drop-before', 'drop-after', 'is-dragging'));
+  document.querySelectorAll('.task-item').forEach(el =>
+    el.classList.remove('is-dragging', 'drop-before', 'drop-after'));
 
   const dropTarget = window._lastDropTarget;
   window._lastDropTarget = undefined;
 
-  // Reorder array
   if (dropTarget !== undefined && dropTarget !== dragSrc) {
     const [task] = state.tasks.splice(dragSrc, 1);
-    if (dropTarget === null || dropTarget === -1) {
+    if (dropTarget === -1) {
       state.tasks.push(task);
     } else {
-      // Adjust for removed element
-      const adjustedTarget = dropTarget > dragSrc ? dropTarget - 1 : dropTarget;
-      state.tasks.splice(adjustedTarget, 0, task);
+      const adj = dropTarget > dragSrc ? dropTarget - 1 : dropTarget;
+      state.tasks.splice(adj, 0, task);
     }
     saveState();
     renderTasks();
   }
 
   dragSrc = -1;
-  dragPointerId = null;
 }
 
 // ─── Receive data from Dashboard ────────────────────────
@@ -314,76 +329,38 @@ if (window.electronAPI && window.electronAPI.onWidgetData) {
     if (!payload || !payload.data) return;
     const ai = payload.data;
 
-    // Update greeting with user name from analysis
-    if (ai.recap) {
-      // Extract first name from recap for greeting (keep it simple)
-    }
-
-    // ── Meetings: use real todayMeetings from API ──────
+    // Meetings réelles
     if (ai.todayMeetings && Array.isArray(ai.todayMeetings)) {
-      state.meetings = ai.todayMeetings.map(m => ({
-        time: m.time || '',
-        title: m.title || m.name || '',
-      }));
-    } else if (payload.rawCounts && payload.rawCounts.meetings !== undefined) {
-      // Fallback: we only know the count
-      const n = payload.rawCounts.meetings;
-      document.getElementById('meetings-title').textContent =
-        `${n} Réunion${n > 1 ? 's' : ''} aujourd'hui`;
+      state.meetings = ai.todayMeetings.map(m => ({ time: m.time || '', title: m.title || '' }));
     }
     renderMeetings();
     if (state.meetings.length > 0) meetingsBlock.classList.add('open');
 
-    // ── Tasks: urgentAlerts + topTasks + aiSuggestions ──
+    // Tâches depuis l'IA
     const newTasks = [];
-
-    // Urgent alerts → urgent tasks
-    const alerts = ai.urgentAlerts || [];
-    alerts.slice(0, 3).forEach((a, i) => {
-      newTasks.push({
-        id: `alert-${i}`,
-        text: a.sender ? `${a.sender}: ${a.text}` : a.text,
-        urgent: true,
-        done: false,
-      });
+    (ai.urgentAlerts || []).slice(0, 3).forEach((a, i) => {
+      newTasks.push({ id: `alert-${i}`, text: a.sender ? `${a.sender}: ${a.text}` : a.text, urgent: true, done: false });
+    });
+    (ai.topTasks || []).slice(0, 4).forEach((t, i) => {
+      newTasks.push({ id: `task-${i}`, text: t.title, urgent: t.priority === 'high', done: false });
+    });
+    (ai.aiSuggestions || []).slice(0, 3).forEach((s, i) => {
+      newTasks.push({ id: `sug-${i}`, text: typeof s === 'string' ? s : s.text || s, urgent: false, done: false });
     });
 
-    // Top tasks from To Do
-    const top = ai.topTasks || [];
-    top.slice(0, 4).forEach((t, i) => {
-      newTasks.push({
-        id: `task-${i}`,
-        text: t.title,
-        urgent: t.priority === 'high',
-        done: false,
-      });
-    });
-
-    // AI suggestions as normal tasks
-    const sugs = ai.aiSuggestions || [];
-    sugs.slice(0, 3).forEach((s, i) => {
-      newTasks.push({
-        id: `sug-${i}`,
-        text: typeof s === 'string' ? s : s.text || s,
-        urgent: false,
-        done: false,
-      });
-    });
-
-    // Merge with existing tasks (preserve done/urgent edits by id)
+    // Merge: préserve les éditions manuelles et les tâches ajoutées à la main
     const existingMap = {};
     state.tasks.forEach(t => { existingMap[t.id] = t; });
-
-    state.tasks = newTasks.map(t => {
-      const existing = existingMap[t.id];
-      if (existing) return { ...t, done: existing.done, urgent: existing.urgent, text: existing.text };
-      return t;
-    });
+    const merged = newTasks.map(t => existingMap[t.id]
+      ? { ...t, done: existingMap[t.id].done, urgent: existingMap[t.id].urgent, text: existingMap[t.id].text }
+      : t
+    );
+    // Garde les tâches manuelles (id commence par "manual-")
+    const manualTasks = state.tasks.filter(t => t.id.startsWith('manual-'));
+    state.tasks = [...merged, ...manualTasks];
 
     saveState();
     renderTasks();
-
-    // Status
     document.getElementById('footer-status').textContent = '⚡ Données Microsoft en direct';
     document.getElementById('card-status').classList.remove('waiting');
   });

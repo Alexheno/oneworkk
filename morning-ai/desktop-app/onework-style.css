@@ -21,6 +21,31 @@
   --r:        10px;
   --r-sm:     6px;
 }
+
+/* ── Light mode ── */
+[data-theme="light"] {
+  --bg:       #f4fbf6;
+  --surface:  #ffffff;
+  --surface2: #edf7f1;
+  --surface3: #ddf0e6;
+  --border:   rgba(22,100,60,0.09);
+  --border2:  rgba(22,100,60,0.17);
+  --text:     #0d1f16;
+  --text2:    #4b7a60;
+  --text3:    #8fb09a;
+  --accent:   #16a34a;
+  --green:    #16a34a;
+  --red:      #ef4444;
+  --orange:   #f59e0b;
+  --blue:     #3b82f6;
+  --purple:   #8b5cf6;
+}
+[data-theme="light"] .ob-orb1{background:radial-gradient(circle,#16a34a,transparent)}
+[data-theme="light"] .ob-orb2{background:radial-gradient(circle,#4ade80,transparent)}
+[data-theme="light"] .logo-pill{background:linear-gradient(135deg,#16a34a,#4ade80)}
+[data-theme="light"] .btn-connect{background:var(--text);color:#fff}
+[data-theme="light"] .modal-overlay{background:rgba(0,0,0,0.35)}
+[data-theme="light"] .card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(22,100,60,0.06)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100vh;overflow:hidden;font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 

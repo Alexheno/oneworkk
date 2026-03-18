@@ -77,6 +77,23 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-help').addEventListener('click', () => openUrl('https://onework.app/help'));
   $('btn-logout').addEventListener('click', logout);
 
+  // ─── Theme toggle ───────────────────────────────────────
+  let currentTheme = localStorage.getItem('ow-theme') || 'dark';
+
+  function applyTheme(t) {
+    currentTheme = t;
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('ow-theme', t);
+    $('theme-label').textContent = t === 'dark' ? 'Thème clair' : 'Thème sombre';
+    window.overviewAPI?.setTheme?.(t);
+  }
+
+  applyTheme(currentTheme);
+
+  $('btn-theme').addEventListener('click', () => {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+
   // ─── Email tabs ────────────────────────────────────────
   document.querySelectorAll('.etab').forEach(tab => {
     tab.addEventListener('click', () => {
