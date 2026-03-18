@@ -280,3 +280,21 @@ html,body { height:100vh; overflow:hidden; font-family:'Inter',-apple-system,san
 @keyframes spin    { from{transform:rotate(0)} to{transform:rotate(360deg)} }
 .fade-in { animation:fadeUp .28s cubic-bezier(.16,1,.3,1) }
 #onboarding-screen { transition:opacity .28s ease }
+
+/* ── Alarm time picker ───────────────────────────────────── */
+.pm-alarm { cursor: default; justify-content: space-between; }
+.pm-alarm:hover { background: transparent; }
+.pm-alarm span { flex: 1; }
+.alarm-time-input {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: .8rem;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .15s;
+}
+.alarm-time-input:focus { border-color: var(--accent); }

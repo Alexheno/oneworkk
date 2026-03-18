@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 
 // Fix GPU/network crashes on Windows
@@ -6,9 +6,18 @@ app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-software-rasterizer');
 app.commandLine.appendSwitch('no-sandbox');
 
-let mainWindow; // Le widget
+let mainWindow;    // Le widget
 let overviewWindow; // L'interface principale OneWork
+let tray = null;
 
+// ─── Morning Brief State ──────────────────────────────────
+let cachedAuth = null;   // { account, email, name }
+let alarmTime = '07:30'; // HH:MM format
+let alarmFiredToday = null; // prevent double-fire
+
+const BACKEND_URL = 'https://oneworkk-production.up.railway.app';
+
+// ─── Windows ──────────────────────────────────────────────
 function createOverviewWindow() {
   if (overviewWindow) {
     overviewWindow.focus();
@@ -19,10 +28,10 @@ function createOverviewWindow() {
     width: 1200,
     height: 800,
     title: 'OneWork - Overview',
-    frame: true, // Avec bordure classique pour cette fenêtre
-    autoHideMenuBar: true, // Supprime le menu (File, Edit, etc.)
-    show: false, // Cache la fenêtre le temps de chargement pour éviter la page blanche
-    backgroundColor: '#f8fafc', // Couleur de fond similaire à l'application
+    frame: true,
+    autoHideMenuBar: true,
+    show: false,
+    backgroundColor: '#f8fafc',
     webPreferences: {
       preload: path.join(__dirname, 'overview-preload.js'),
       nodeIntegration: false,
@@ -30,19 +39,10 @@ function createOverviewWindow() {
     },
   });
 
-  // Force la suppression absolue du menu natif
   overviewWindow.removeMenu();
-
   overviewWindow.loadFile('onework.html');
-
-  // N'affiche la fenêtre que lorsqu'elle a fini de dessiner son contenu
-  overviewWindow.once('ready-to-show', () => {
-    overviewWindow.show();
-  });
-
-  overviewWindow.on('closed', () => {
-    overviewWindow = null;
-  });
+  overviewWindow.once('ready-to-show', () => overviewWindow.show());
+  overviewWindow.on('closed', () => { overviewWindow = null; });
 }
 
 function createWindow() {
@@ -51,13 +51,13 @@ function createWindow() {
   const { width, height } = primaryDisplay.workAreaSize;
 
   mainWindow = new BrowserWindow({
-    width: width,   // Prend toute la largeur de l'écran
-    height: height, // Prend toute la hauteur
+    width,
+    height,
     transparent: true,
     frame: false,
     alwaysOnTop: true,
     resizable: false,
-    skipTaskbar: true, // N'apparait pas dans la barre des tâches
+    skipTaskbar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
@@ -66,72 +66,167 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
-
-  // Ignorer les clics de souris là où c'est transparent
   mainWindow.setIgnoreMouseEvents(true, { forward: true });
 
-  // On écoute les événements du renderer pour activer/désactiver le clic
   ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
     const win = BrowserWindow.fromWebContents(event.sender);
-    if(win) win.setIgnoreMouseEvents(ignore, options);
+    if (win) win.setIgnoreMouseEvents(ignore, options);
   });
-  
-  // Custom Drag & Drop pour éviter les bugs natifs d'Electron sur Windows
+
   ipcMain.on('move-window', (event, x, y) => {
     const win = BrowserWindow.fromWebContents(event.sender);
-    if(win) win.setPosition(Math.round(x), Math.round(y));
+    if (win) win.setPosition(Math.round(x), Math.round(y));
   });
 
-  // Ouvrir l'Overview depuis le widget
-  ipcMain.on('open-overview', () => {
-    createOverviewWindow();
-  });
+  ipcMain.on('open-overview', () => createOverviewWindow());
 
-  // Gestion du process SignIn Microsoft (MSAL)
   const { login } = require('./auth');
   ipcMain.handle('connect-microsoft', async () => {
-      try {
-          console.log('[AUTH] Démarrage de la connexion Microsoft...');
-          const result = await login();
-          console.log('[AUTH] Résultat:', JSON.stringify({ success: result?.success, hasToken: !!result?.accessToken, error: result?.error }));
-          return result;
-      } catch(e) {
-          console.error('[AUTH] Erreur IPC complète:', e.message, e.stack);
-          return { success: false, error: e.message + ' | ' + (e.stack || '').split('\n')[1] };
-      }
+    try {
+      const result = await login();
+      return result;
+    } catch (e) {
+      return { success: false, error: e.message };
+    }
   });
 
-  // Relais des données du Dashboard vers le Widget
-  ipcMain.on('update-widget', (event, data) => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('widget-data', data);
-      }
+  // Relay dashboard → widget
+  ipcMain.on('update-widget', (_event, data) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('widget-data', data);
+    }
   });
 
-  // Relais du thème vers le Widget
+  // Relay theme → widget
   ipcMain.on('set-theme', (_event, theme) => {
-      if (mainWindow && !mainWindow.isDestroyed()) {
-          mainWindow.webContents.send('apply-theme', theme);
-      }
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('apply-theme', theme);
+    }
   });
 
-  // Navigation vers liens externes
+  // Cache auth credentials for background morning brief
+  ipcMain.on('cache-auth', (_event, data) => {
+    cachedAuth = data; // { account, email, name }
+    console.log(`[MORNING] Auth caché pour ${data.name}`);
+    updateTrayMenu();
+  });
+
+  // Update alarm time
+  ipcMain.on('set-alarm-time', (_event, time) => {
+    alarmTime = time;
+    alarmFiredToday = null; // Reset so it fires today if time matches
+    console.log(`[MORNING] Réveil programmé à ${time}`);
+    updateTrayMenu();
+  });
+
   const { shell } = require('electron');
-  ipcMain.on('open-url', (event, url) => {
-      shell.openExternal(url);
+  ipcMain.on('open-url', (_event, url) => shell.openExternal(url));
+}
+
+// ─── System Tray ──────────────────────────────────────────
+function createTray() {
+  const iconPath = path.join(__dirname, 'assets', 'icon.ico');
+  let trayImage;
+  try {
+    trayImage = nativeImage.createFromPath(iconPath);
+    if (trayImage.isEmpty()) throw new Error('empty');
+  } catch {
+    trayImage = nativeImage.createEmpty();
+  }
+
+  tray = new Tray(trayImage);
+  tray.setToolTip('OneWork');
+  updateTrayMenu();
+
+  tray.on('double-click', () => {
+    createOverviewWindow();
+    if (overviewWindow) overviewWindow.focus();
   });
 }
 
-// On lance les deux fenêtres au démarrage par défaut (pour l'instant, pour simplifier les tests)
+function updateTrayMenu() {
+  if (!tray) return;
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Ouvrir OneWork',
+      click: () => { createOverviewWindow(); if (overviewWindow) overviewWindow.focus(); }
+    },
+    {
+      label: `Brief matinal maintenant${cachedAuth ? '' : ' (non connecté)'}`,
+      enabled: !!cachedAuth,
+      click: () => triggerMorningBrief()
+    },
+    {
+      label: `Réveil : ${alarmTime}`,
+      enabled: false
+    },
+    { type: 'separator' },
+    { label: 'Quitter OneWork', click: () => app.exit(0) }
+  ]);
+  tray.setContextMenu(menu);
+}
+
+// ─── Morning Brief Trigger ────────────────────────────────
+async function triggerMorningBrief() {
+  if (!cachedAuth) return;
+
+  console.log('[MORNING] Déclenchement brief matinal...');
+
+  try {
+    const { getSilentToken } = require('./auth');
+    const token = await getSilentToken(cachedAuth.account);
+    if (!token) {
+      console.error('[MORNING] Impossible d\'obtenir un token silencieux.');
+      return;
+    }
+
+    const resp = await fetch(`${BACKEND_URL}/api/morning-brief`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accessToken: token, email: cachedAuth.email, name: cachedAuth.name })
+    });
+
+    const data = await resp.json();
+    if (data.success && mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('morning-brief', { script: data.script, name: cachedAuth.name });
+      console.log('[MORNING] Brief envoyé au widget.');
+    }
+  } catch (err) {
+    console.error('[MORNING] Erreur:', err.message);
+  }
+}
+
+// ─── Morning Brief Scheduler (check every minute) ─────────
+function startMorningBriefScheduler() {
+  setInterval(() => {
+    if (!cachedAuth) return;
+
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const currentTime = `${hh}:${mm}`;
+    const today = now.toDateString();
+
+    if (currentTime === alarmTime && alarmFiredToday !== today) {
+      alarmFiredToday = today;
+      triggerMorningBrief();
+    }
+  }, 60000);
+}
+
+// ─── App Init ─────────────────────────────────────────────
 app.whenReady().then(() => {
-  createOverviewWindow(); // Lance la vue d'ensemble OneWork
-  createWindow(); // Lance le widget
+  createOverviewWindow();
+  createWindow();
+  createTray();
+  startMorningBriefScheduler();
 });
 
-app.on('activate', function () {
+app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
 
-app.on('window-all-closed', function () {
-  if (process.platform !== 'darwin') app.quit();
+// Hide to tray instead of quitting
+app.on('window-all-closed', () => {
+  // Don't quit — stay alive in system tray for morning brief
 });

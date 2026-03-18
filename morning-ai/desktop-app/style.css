@@ -905,3 +905,113 @@ body, html {
 
 .card[data-theme="light"] .send-btn { background: #0284c7; }
 .card[data-theme="light"] .send-btn:hover { background: #0369a1; }
+
+/* ── MORNING BRIEF OVERLAY ──────────────────────────────── */
+.morning-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: rgba(10, 10, 14, 0.97);
+  backdrop-filter: blur(24px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 22px 20px 18px;
+  gap: 10px;
+  z-index: 100;
+  animation: morning-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.morning-overlay.visible { display: flex; }
+
+@keyframes morning-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.morning-orb {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+}
+.morning-orb .orb-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #6366f1 0%, #a78bfa 40%, #06b6d4 70%, #6366f1 100%);
+  animation: orb-spin 2s linear infinite;
+}
+.morning-orb .orb-core {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #7c3aed, #312e81);
+}
+.morning-orb.speaking .orb-ring { animation: orb-spin 0.5s linear infinite; }
+
+.morning-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #a78bfa;
+  text-transform: uppercase;
+}
+
+.morning-script {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.88);
+  text-align: left;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 200px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.07);
+  flex: 1;
+}
+
+.morning-script .highlight-word {
+  color: #a78bfa;
+  font-weight: 600;
+}
+
+.morning-close {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.6);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  justify-content: center;
+}
+.morning-close:hover {
+  background: rgba(255,255,255,0.14);
+  color: rgba(255,255,255,0.9);
+}
+
+/* Light theme morning overlay */
+.card[data-theme="light"] .morning-overlay {
+  background: rgba(220, 238, 248, 0.98);
+}
+.card[data-theme="light"] .morning-script {
+  color: #1e3a5f;
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(2,132,199,0.2);
+}
+.card[data-theme="light"] .morning-label { color: #0284c7; }
+.card[data-theme="light"] .morning-close {
+  background: rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.1);
+  color: #1e3a5f;
+}

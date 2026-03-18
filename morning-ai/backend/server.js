@@ -4,7 +4,7 @@ const cors = require('cors');
 const { analyzeWorkData } = require('./ai.service');
 const { supabase } = require('./supabase');
 const { getRecentEmails, getTodayMeetings, getWeekSchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages } = require('./graph.service');
-const { processAgentMessage, executeAgentAction } = require('./agent.service');
+const { processAgentMessage, executeAgentAction, generateMorningScript } = require('./agent.service');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -100,6 +100,33 @@ app.post('/api/chat', async (req, res) => {
 
     } catch (error) {
         console.error('Erreur /api/chat:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/morning-brief', async (req, res) => {
+    try {
+        const { accessToken, email, name } = req.body;
+        if (!accessToken) return res.status(401).json({ success: false, error: 'Token manquant.' });
+
+        const [emails, todayMeetings, todoTasks] = await Promise.all([
+            getRecentEmails(accessToken, email || ''),
+            getTodayMeetings(accessToken),
+            getToDoTasks(accessToken)
+        ]);
+
+        const dateStr = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+        const script = await generateMorningScript({
+            name: name || 'vous',
+            date: dateStr,
+            emails: emails.slice(0, 5).map(e => ({ sender: e.sender, subject: e.subject, isUrgent: e.isUrgent })),
+            meetings: todayMeetings.map(m => ({ title: m.title, time: m.time || m.start })),
+            tasks: todoTasks.slice(0, 5).map(t => ({ title: t.title, priority: t.priority }))
+        });
+
+        res.json({ success: true, script });
+    } catch (error) {
+        console.error('Erreur /api/morning-brief:', error.message);
         res.status(500).json({ success: false, error: error.message });
     }
 });

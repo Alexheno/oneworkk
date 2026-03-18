@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openOverview: () => ipcRenderer.send('open-overview'),
   onWidgetData: (callback) => ipcRenderer.on('widget-data', (_event, data) => callback(data)),
   onThemeChange: (callback) => ipcRenderer.on('apply-theme', (_event, theme) => callback(theme)),
+  onMorningBrief: (callback) => ipcRenderer.on('morning-brief', (_event, data) => callback(data)),
 });

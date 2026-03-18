@@ -563,5 +563,74 @@ if (window.electronAPI && window.electronAPI.onWidgetData) {
   });
 }
 
+// ─── Morning Brief ───────────────────────────────────────
+const morningOverlay = document.getElementById('morning-overlay');
+const morningOrb     = document.getElementById('morning-orb');
+const morningLabel   = document.getElementById('morning-label');
+const morningScript  = document.getElementById('morning-script');
+const morningClose   = document.getElementById('morning-close');
+
+let morningUtterance = null;
+
+function openMorningBrief(script) {
+  // Force widget open
+  widgetContainer.classList.remove('widget-closed');
+  widgetContainer.classList.add('widget-open');
+  if (window.electronAPI) window.electronAPI.setIgnoreMouseEvents(false);
+
+  morningScript.textContent = script;
+  morningOverlay.classList.add('visible');
+  morningOrb.classList.add('speaking');
+  morningLabel.textContent = 'Alex · Lecture en cours...';
+
+  // Read aloud with TTS
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    morningUtterance = new SpeechSynthesisUtterance(script);
+    morningUtterance.lang = 'fr-FR';
+    morningUtterance.rate = 0.95;
+    morningUtterance.pitch = 1.05;
+
+    // Pick a French voice if available
+    const voices = window.speechSynthesis.getVoices();
+    const frVoice = voices.find(v => v.lang.startsWith('fr'));
+    if (frVoice) morningUtterance.voice = frVoice;
+
+    morningUtterance.onend = () => {
+      morningOrb.classList.remove('speaking');
+      morningLabel.textContent = 'Alex · Terminé';
+    };
+    morningUtterance.onerror = () => {
+      morningOrb.classList.remove('speaking');
+    };
+
+    // Voices may not be loaded yet — wait for them
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith('fr'));
+        if (v) morningUtterance.voice = v;
+        window.speechSynthesis.speak(morningUtterance);
+      };
+    } else {
+      window.speechSynthesis.speak(morningUtterance);
+    }
+  }
+}
+
+function closeMorningBrief() {
+  if (morningUtterance) window.speechSynthesis.cancel();
+  morningOrb.classList.remove('speaking');
+  morningOverlay.classList.remove('visible');
+  morningLabel.textContent = 'Alex · Brief matinal';
+}
+
+morningClose.addEventListener('click', closeMorningBrief);
+
+if (window.electronAPI && window.electronAPI.onMorningBrief) {
+  window.electronAPI.onMorningBrief((data) => {
+    openMorningBrief(data.script);
+  });
+}
+
 // ─── Initial render ──────────────────────────────────────
 renderTasks();

@@ -50,4 +50,14 @@ async function login() {
     }
 }
 
-module.exports = { login };
+async function getSilentToken(account) {
+    try {
+        const response = await pca.acquireTokenSilent({ scopes, account });
+        return response.accessToken;
+    } catch (error) {
+        console.error('[AUTH] Silent token failed:', error.message);
+        return null;
+    }
+}
+
+module.exports = { login, getSilentToken };

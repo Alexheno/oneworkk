@@ -5,4 +5,6 @@ contextBridge.exposeInMainWorld('overviewAPI', {
     updateWidget: (data) => ipcRenderer.send('update-widget', data),
     openUrl: (url) => ipcRenderer.send('open-url', url),
     setTheme: (theme) => ipcRenderer.send('set-theme', theme),
+    cacheAuth: (data) => ipcRenderer.send('cache-auth', data),
+    setAlarmTime: (time) => ipcRenderer.send('set-alarm-time', time),
 });

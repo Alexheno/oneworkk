@@ -71,6 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   profileMenu.addEventListener('click', e => e.stopPropagation());
 
+  // ─── Alarm time (morning brief) ────────────────────────
+  const alarmInput = $('alarm-time-input');
+  const savedAlarm = localStorage.getItem('ow-alarm') || '07:30';
+  alarmInput.value = savedAlarm;
+  window.overviewAPI?.setAlarmTime?.(savedAlarm);
+
+  alarmInput.addEventListener('change', () => {
+    const t = alarmInput.value;
+    localStorage.setItem('ow-alarm', t);
+    window.overviewAPI?.setAlarmTime?.(t);
+    showNotif(`Brief matinal programmé à ${t}`);
+  });
+
   $('btn-upgrade').addEventListener('click', () => openUrl('https://onework.app/pricing'));
   $('btn-personalisation').addEventListener('click', () => showNotif('Personnalisation disponible dans la prochaine version.'));
   $('btn-settings').addEventListener('click', () => showNotif('Paramètres disponibles dans la prochaine version.'));
@@ -170,6 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!auth?.success) throw new Error(auth?.error || 'Échec de l\'authentification');
       token = auth.accessToken;
       account = auth.account;
+      // Cache auth for background morning brief scheduler
+      window.overviewAPI?.cacheAuth?.({ account, email: account.username, name: account.name });
       setBtnState('analyzing');
       await runAnalysis();
     } catch (err) {

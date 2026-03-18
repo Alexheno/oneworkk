@@ -101,4 +101,44 @@ async function executeAgentAction(action, accessToken) {
     }
 }
 
-module.exports = { processAgentMessage, executeAgentAction };
+async function generateMorningScript(m365Data) {
+    try {
+        const prompt = `Tu es Alex, l'assistant IA de OneWork. Génère un brief matinal à lire à voix haute.
+
+STYLE : Chaleureux, naturel, comme un assistant personnel qui brief son patron chaque matin. Parle directement à la personne. Sois vivant, pas robotique. Maximum 130 mots.
+
+STRUCTURE OBLIGATOIRE :
+1. Salutation avec prénom + jour
+2. Emails importants (max 2, cite expéditeur + sujet en 1 phrase)
+3. Réunions du jour (heure + titre)
+4. Tâches prioritaires (max 2)
+5. Une phrase d'encouragement finale
+
+DONNÉES :
+${JSON.stringify(m365Data, null, 2)}
+
+Réponds UNIQUEMENT avec le texte à lire à voix haute. Pas de JSON, pas de tirets, pas de balises. Du texte naturel fluide.`;
+
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'google/gemini-2.5-flash-lite',
+                messages: [{ role: 'user', content: prompt }],
+                temperature: 0.7
+            })
+        });
+
+        if (!response.ok) throw new Error(`OpenRouter ${response.status}`);
+        const data = await response.json();
+        return data.choices[0].message.content.trim();
+    } catch (error) {
+        console.error('Erreur generateMorningScript:', error.message);
+        throw error;
+    }
+}
+
+module.exports = { processAgentMessage, executeAgentAction, generateMorningScript };
