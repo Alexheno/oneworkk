@@ -4,6 +4,7 @@ const cors = require('cors');
 const { analyzeWorkData } = require('./ai.service');
 const { supabase } = require('./supabase');
 const { getRecentEmails, getTodayMeetings, getWeekSchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages } = require('./graph.service');
+const { processAgentMessage, executeAgentAction } = require('./agent.service');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -67,11 +68,38 @@ app.post('/api/analyze', async (req, res) => {
                 teams: teamsMessages.length,
                 tasks: todoTasks.length,
                 files: officeFiles.length
+            },
+            rawData: {
+                emails: emails.slice(0, 10).map(e => ({ id: e.id, sender: e.sender, senderEmail: e.senderEmail, subject: e.subject })),
+                meetings: todayMeetings.map(m => ({ id: m.id, title: m.title, start: m.start })),
+                tasks: todoTasks.slice(0, 10).map(t => ({ title: t.title, list: t.list }))
             }
         });
 
     } catch (error) {
         console.error('Erreur /api/analyze:', error.message);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+app.post('/api/chat', async (req, res) => {
+    try {
+        const { accessToken, message, conversationHistory, context, executeAction } = req.body;
+
+        if (!accessToken) return res.status(401).json({ success: false, error: 'Token manquant.' });
+
+        // Execute a confirmed action
+        if (executeAction) {
+            const result = await executeAgentAction(executeAction, accessToken);
+            return res.json({ success: true, executed: true, result });
+        }
+
+        // Process chat message
+        const agentResponse = await processAgentMessage(message, conversationHistory || [], context);
+        res.json({ success: true, ...agentResponse });
+
+    } catch (error) {
+        console.error('Erreur /api/chat:', error.message);
         res.status(500).json({ success: false, error: error.message });
     }
 });

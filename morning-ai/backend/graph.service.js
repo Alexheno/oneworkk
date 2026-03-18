@@ -10,7 +10,7 @@ async function getRecentEmails(accessToken, userEmail) {
     try {
         const client = getAuthenticatedClient(accessToken);
         const res = await client.api('/me/messages')
-            .select('sender,subject,bodyPreview,isRead,receivedDateTime,importance,toRecipients,ccRecipients')
+            .select('id,sender,subject,bodyPreview,isRead,receivedDateTime,importance,toRecipients,ccRecipients')
             .top(40)
             .orderby('receivedDateTime DESC')
             .get();
@@ -20,7 +20,9 @@ async function getRecentEmails(accessToken, userEmail) {
             const ccList = (msg.ccRecipients || []).map(r => r.emailAddress?.address?.toLowerCase());
             const isCc = userEmail ? ccList.includes(userEmail.toLowerCase()) && !toList.includes(userEmail.toLowerCase()) : false;
             return {
+                id: msg.id,
                 sender: msg.sender?.emailAddress?.name || msg.sender?.emailAddress?.address || 'Inconnu',
+                senderEmail: msg.sender?.emailAddress?.address,
                 subject: msg.subject,
                 body: msg.bodyPreview,
                 isRead: msg.isRead,
@@ -44,11 +46,12 @@ async function getTodayMeetings(accessToken) {
         const start = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0).toISOString();
         const end   = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59).toISOString();
         const res = await client.api(`/me/calendarview?startDateTime=${start}&endDateTime=${end}`)
-            .select('subject,start,end,isOnlineMeeting,organizer,bodyPreview')
+            .select('id,subject,start,end,isOnlineMeeting,organizer,bodyPreview')
             .orderby('start/dateTime')
             .top(20)
             .get();
         return res.value.map(e => ({
+            id: e.id,
             title: e.subject,
             start: new Date(e.start.dateTime + 'Z').toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
             end:   new Date(e.end.dateTime + 'Z').toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
@@ -176,4 +179,54 @@ async function getOneNotePages(accessToken) {
     }
 }
 
-module.exports = { getRecentEmails, getTodayMeetings, getWeekSchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages };
+// ── WRITE OPERATIONS ─────────────────────────────────────
+
+async function sendEmailMessage(accessToken, { to, subject, body }) {
+    try {
+        const client = getAuthenticatedClient(accessToken);
+        await client.api('/me/sendMail').post({
+            message: {
+                subject,
+                body: { contentType: 'Text', content: body },
+                toRecipients: [{ emailAddress: { address: to } }]
+            },
+            saveToSentItems: true
+        });
+        return { success: true };
+    } catch (e) {
+        console.error('Erreur sendEmail:', e.message);
+        throw e;
+    }
+}
+
+async function replyToEmail(accessToken, messageId, replyBody) {
+    try {
+        const client = getAuthenticatedClient(accessToken);
+        await client.api(`/me/messages/${messageId}/reply`).post({
+            message: {},
+            comment: replyBody
+        });
+        return { success: true };
+    } catch (e) {
+        console.error('Erreur replyEmail:', e.message);
+        throw e;
+    }
+}
+
+async function createTodoTask(accessToken, { title, notes }) {
+    try {
+        const client = getAuthenticatedClient(accessToken);
+        const lists = await client.api('/me/todo/lists').get();
+        const listId = lists.value?.[0]?.id;
+        if (!listId) throw new Error('Aucune liste To Do trouvée');
+        const taskBody = { title, status: 'notStarted', importance: 'normal' };
+        if (notes) taskBody.body = { content: notes, contentType: 'text' };
+        const task = await client.api(`/me/todo/lists/${listId}/tasks`).post(taskBody);
+        return { success: true, task };
+    } catch (e) {
+        console.error('Erreur createTask:', e.message);
+        throw e;
+    }
+}
+
+module.exports = { getRecentEmails, getTodayMeetings, getWeekSchedule, getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages, sendEmailMessage, replyToEmail, createTodoTask };

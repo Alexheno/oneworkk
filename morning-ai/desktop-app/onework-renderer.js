@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await resp.json();
       if (!result.success || !result.data) throw new Error(result.error || 'Réponse invalide');
 
-      showDashboard(result.data, account);
+      showDashboard(result.data, account, result.rawCounts);
     } catch (err) {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── Show dashboard ────────────────────────────────────
-  function showDashboard(ai, acc) {
+  function showDashboard(ai, acc, rawCounts) {
     // Transition
     $('onboarding-screen').style.opacity = '0';
     setTimeout(() => {
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mergeProjects(ai.projectOverview || []);
 
     // Widget
-    window.overviewAPI?.updateWidget?.({ success: true, data: ai });
+    window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts });
   }
 
   // ─── Fill emails ───────────────────────────────────────

@@ -10,7 +10,7 @@
 <body>
   <div id="widget-container" class="widget-closed">
 
-    <!-- Cercle discret au repos -->
+    <!-- Cercle discret -->
     <div class="knob">
       <div class="knob-inner"></div>
     </div>
@@ -18,36 +18,92 @@
     <!-- Carte principale -->
     <div class="card">
 
-      <div class="card-header">
-        <div class="card-header-info">
-          <div class="card-greeting" id="greeting">Bonjour 👋</div>
-          <div class="card-date" id="current-date"></div>
-        </div>
-        <div class="card-status" id="card-status" title="Analyse IA">
-          <span class="status-dot"></span>
-        </div>
+      <!-- Mode bar -->
+      <div class="mode-bar">
+        <button class="mode-btn active" id="mode-brief" title="Vue résumée">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Brief
+        </button>
+        <button class="mode-btn" id="mode-chat" title="Parler à l'agent">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Agent IA
+        </button>
       </div>
 
-      <!-- Réunions (données réelles) -->
-      <div class="meetings-block" id="meetings-block">
-        <div class="meetings-header" id="meetings-header">
-          <span class="meetings-icon">📅</span>
-          <span class="meetings-title" id="meetings-title">Chargement...</span>
-          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+      <!-- ── BRIEF PANEL ── -->
+      <div id="brief-panel">
+
+        <div class="card-header">
+          <div class="card-header-info">
+            <div class="card-greeting" id="greeting">Bonjour 👋</div>
+            <div class="card-date" id="current-date"></div>
+          </div>
+          <div class="card-status" id="card-status">
+            <span class="status-dot"></span>
+          </div>
         </div>
-        <div class="meetings-list" id="meetings-list"></div>
+
+        <!-- Réunions -->
+        <div class="meetings-block" id="meetings-block">
+          <div class="meetings-header" id="meetings-header">
+            <span class="meetings-icon">📅</span>
+            <span class="meetings-title" id="meetings-title">Chargement...</span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="meetings-list" id="meetings-list"></div>
+        </div>
+
+        <!-- Tâches -->
+        <div class="tasks-list" id="tasks-list"></div>
+
+        <div class="card-footer">
+          <span id="footer-status">En attente d'analyse...</span>
+        </div>
+
       </div>
 
-      <!-- Tâches (drag, edit, urgent) -->
-      <div class="tasks-list" id="tasks-list"></div>
+      <!-- ── CHAT PANEL ── -->
+      <div id="chat-panel" style="display:none">
 
-      <div class="card-footer">
-        <span id="footer-status">En attente d'analyse...</span>
+        <!-- Orb IA -->
+        <div class="ai-orb-row">
+          <div class="ai-orb" id="ai-orb">
+            <div class="orb-ring"></div>
+            <div class="orb-core"></div>
+          </div>
+          <span class="ai-orb-label" id="ai-orb-label">Alex · Prêt</span>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-msg ai">
+            <span>Bonjour ! Que puis-je faire pour vous aujourd'hui ?</span>
+          </div>
+        </div>
+
+        <!-- Confirmation -->
+        <div class="confirm-card" id="confirm-card">
+          <p class="confirm-text" id="confirm-text-el"></p>
+          <div class="confirm-btns">
+            <button class="confirm-cancel" id="confirm-cancel-btn">Annuler</button>
+            <button class="confirm-ok" id="confirm-ok-btn">Confirmer →</button>
+          </div>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input-row">
+          <button class="mic-btn" id="mic-btn" title="Parler">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </button>
+          <input type="text" class="chat-input" id="chat-input" placeholder="Demandez quelque chose...">
+          <button class="send-btn" id="send-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+
       </div>
+
     </div>
-
   </div>
   <script src="renderer.js"></script>
 </body>
