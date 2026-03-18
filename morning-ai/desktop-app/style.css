@@ -421,64 +421,66 @@ body, html {
 .task-item:hover .badge-urgent-add { opacity: 1; }
 .badge-urgent-add:hover { color: #f87171; }
 
-/* ─── Light theme override (card only, knob reste discret) ─── */
+/* ─── Light theme — mer tropicale (knob reste discret) ─── */
 .card[data-theme="light"] {
-  background: rgba(244, 251, 246, 0.97);
-  border: 1px solid rgba(187, 247, 208, 0.7);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.10), 0 0 0 0.5px rgba(22, 163, 74, 0.08) inset;
-  color: #0d1f16;
+  background: rgba(220, 238, 248, 0.96);
+  border: 1px solid rgba(5, 148, 196, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 40, 80, 0.12), 0 0 0 0.5px rgba(5,148,196,0.08) inset;
+  color: #071824;
 }
-.card[data-theme="light"] .card-greeting { color: #0d1f16; }
-.card[data-theme="light"] .card-date { color: rgba(0,0,0,0.35); }
+.card[data-theme="light"] .card-greeting { color: #071824; }
+.card[data-theme="light"] .card-date { color: rgba(5,90,130,0.5); }
 .card[data-theme="light"] .meetings-block {
-  background: rgba(22, 163, 74, 0.07);
-  border-color: rgba(22, 163, 74, 0.18);
+  background: rgba(2, 132, 199, 0.08);
+  border-color: rgba(2, 132, 199, 0.2);
 }
-.card[data-theme="light"] .meetings-title { color: #14532d; }
-.card[data-theme="light"] .chevron { color: rgba(22, 163, 74, 0.5); }
-.card[data-theme="light"] .meeting-item { border-top-color: rgba(22, 163, 74, 0.08); }
-.card[data-theme="light"] .meeting-item:hover { background: rgba(255,255,255,0.7); }
-.card[data-theme="light"] .meeting-time { color: #16a34a; }
-.card[data-theme="light"] .meeting-name { color: #14532d; }
-.card[data-theme="light"] .no-meeting { color: rgba(0,0,0,0.3); border-top-color: rgba(22,163,74,0.08); }
+.card[data-theme="light"] .meetings-title { color: #074e7a; }
+.card[data-theme="light"] .chevron { color: rgba(2,132,199,0.5); }
+.card[data-theme="light"] .meeting-item { border-top-color: rgba(2,132,199,0.07); }
+.card[data-theme="light"] .meeting-item:hover { background: rgba(255,255,255,0.5); }
+.card[data-theme="light"] .meeting-time { color: #0284c7; }
+.card[data-theme="light"] .meeting-name { color: #074e7a; }
+.card[data-theme="light"] .no-meeting { color: rgba(5,90,130,0.4); border-top-color: rgba(2,132,199,0.07); }
 .card[data-theme="light"] .task-item {
-  background: rgba(255, 255, 255, 0.75);
-  border-color: rgba(22, 163, 74, 0.1);
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(2, 132, 199, 0.1);
 }
 .card[data-theme="light"] .task-item:hover {
-  background: rgba(255, 255, 255, 0.97);
-  border-color: rgba(22, 163, 74, 0.2);
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(2, 132, 199, 0.2);
 }
 .card[data-theme="light"] .task-item.urgent {
-  background: rgba(254, 242, 242, 0.9);
+  background: rgba(254, 235, 235, 0.8);
   border-color: rgba(239, 68, 68, 0.2);
 }
-.card[data-theme="light"] .task-drag-handle { color: rgba(0,0,0,0.15); }
-.card[data-theme="light"] .task-item:hover .task-drag-handle { color: rgba(0,0,0,0.3); }
-.card[data-theme="light"] .task-check { border-color: rgba(0,0,0,0.2); background: white; }
-.card[data-theme="light"] .task-check.checked { background: #16a34a; border-color: #16a34a; }
-.card[data-theme="light"] .task-text { color: rgba(0,0,0,0.75); }
+.card[data-theme="light"] .task-drag-handle { color: rgba(5,90,130,0.2); }
+.card[data-theme="light"] .task-item:hover .task-drag-handle { color: rgba(5,90,130,0.4); }
+.card[data-theme="light"] .task-check { border-color: rgba(5,90,130,0.25); background: rgba(255,255,255,0.7); }
+.card[data-theme="light"] .task-check.checked { background: #0284c7; border-color: #0284c7; }
+.card[data-theme="light"] .task-text { color: rgba(7,24,36,0.75); }
 .card[data-theme="light"] .task-text[contenteditable="true"] {
-  color: #0d1f16;
-  background: rgba(22, 163, 74, 0.08);
-  outline-color: rgba(22, 163, 74, 0.3);
+  color: #071824;
+  background: rgba(2, 132, 199, 0.08);
+  outline-color: rgba(2, 132, 199, 0.3);
+  caret-color: #0284c7;
 }
-.card[data-theme="light"] .badge-urgent-add { color: rgba(0,0,0,0.15); }
-.card[data-theme="light"] .card-footer { border-top-color: rgba(0,0,0,0.07); }
-.card[data-theme="light"] #footer-status { color: rgba(0,0,0,0.25); }
-.card[data-theme="light"] .tasks-empty { color: rgba(0,0,0,0.2); }
-.card[data-theme="light"] .task-add-btn { color: rgba(0,0,0,0.25); border-color: rgba(22,163,74,0.15); }
-.card[data-theme="light"] .task-add-btn:hover { color: #16a34a; border-color: rgba(22,163,74,0.35); background: rgba(22,163,74,0.05); }
+.card[data-theme="light"] .badge-urgent-add { color: rgba(5,90,130,0.2); }
+.card[data-theme="light"] .card-footer { border-top-color: rgba(2,132,199,0.1); }
+.card[data-theme="light"] #footer-status { color: rgba(5,90,130,0.35); }
+.card[data-theme="light"] .tasks-empty { color: rgba(5,90,130,0.3); }
+.card[data-theme="light"] .task-add-btn { color: rgba(5,90,130,0.3); border-color: rgba(2,132,199,0.15); }
+.card[data-theme="light"] .task-add-btn:hover { color: #0284c7; border-color: rgba(2,132,199,0.35); background: rgba(2,132,199,0.05); }
 .card[data-theme="light"] .task-add-input {
-  background: white;
-  border-color: rgba(22, 163, 74, 0.25);
-  color: #0d1f16;
+  background: rgba(255,255,255,0.7);
+  border-color: rgba(2, 132, 199, 0.25);
+  color: #071824;
 }
-.card[data-theme="light"] .task-add-input:focus { border-color: #16a34a; }
+.card[data-theme="light"] .task-add-input::placeholder { color: rgba(5,90,130,0.35); }
+.card[data-theme="light"] .task-add-input:focus { border-color: #0284c7; }
 .card[data-theme="light"] .task-item.drop-before::before,
-.card[data-theme="light"] .task-item.drop-after::after { background: #16a34a; }
-.card[data-theme="light"] .status-dot { background: #16a34a; }
-.card[data-theme="light"] .card-status { background: rgba(22,163,74,0.08); border-color: rgba(22,163,74,0.2); }
+.card[data-theme="light"] .task-item.drop-after::after { background: #0284c7; }
+.card[data-theme="light"] .status-dot { background: #0891b2; }
+.card[data-theme="light"] .card-status { background: rgba(8,145,178,0.1); border-color: rgba(8,145,178,0.22); }
 
 /* ─── Footer ─── */
 .card-footer {
