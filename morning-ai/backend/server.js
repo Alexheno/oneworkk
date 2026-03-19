@@ -140,6 +140,54 @@ app.post('/api/morning-brief', async (req, res) => {
     }
 });
 
+// ── TTS OpenAI (même moteur que ChatGPT) ─────────────────────────────────
+app.post('/api/tts', async (req, res) => {
+    try {
+        const { text } = req.body;
+        if (!text) return res.status(400).json({ error: 'text requis' });
+
+        if (!process.env.OPENAI_API_KEY) {
+            return res.status(503).json({ error: 'OPENAI_API_KEY non configurée' });
+        }
+
+        const response = await fetch('https://api.openai.com/v1/audio/speech', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'tts-1-hd',   // Qualité maximale
+                voice: 'nova',        // Voix la plus naturelle en français
+                input: text,
+                speed: 0.95
+            })
+        });
+
+        if (!response.ok) {
+            const err = await response.text();
+            console.error('OpenAI TTS error:', err);
+            return res.status(500).json({ error: err });
+        }
+
+        res.setHeader('Content-Type', 'audio/mpeg');
+        res.setHeader('Cache-Control', 'no-cache');
+        // Stream direct vers le client
+        const reader = response.body.getReader();
+        const pump = async () => {
+            const { done, value } = await reader.read();
+            if (done) { res.end(); return; }
+            res.write(Buffer.from(value));
+            return pump();
+        };
+        await pump();
+
+    } catch (error) {
+        console.error('Erreur /api/tts:', error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.listen(port, () => {
     console.log(`🚀 OneWork Backend sur port ${port}`);
 });

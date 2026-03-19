@@ -572,7 +572,7 @@ const morningClose   = document.getElementById('morning-close');
 
 let morningUtterance = null;
 
-function openMorningBrief(script) {
+async function openMorningBrief(script) {
   // Force widget open
   widgetContainer.classList.remove('widget-closed');
   widgetContainer.classList.add('widget-open');
@@ -581,44 +581,33 @@ function openMorningBrief(script) {
   morningScript.textContent = script;
   morningOverlay.classList.add('visible');
   morningOrb.classList.add('speaking');
-  morningLabel.textContent = 'Alex · Lecture en cours...';
+  morningLabel.textContent = 'Alex · Génération voix...';
 
-  // Read aloud with TTS
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    morningUtterance = new SpeechSynthesisUtterance(script);
-    morningUtterance.lang = 'fr-FR';
-    morningUtterance.rate = 0.95;
-    morningUtterance.pitch = 1.05;
-
-    // Pick a French voice if available
-    const voices = window.speechSynthesis.getVoices();
-    const frVoice = voices.find(v => v.lang.startsWith('fr'));
-    if (frVoice) morningUtterance.voice = frVoice;
-
-    morningUtterance.onend = () => {
+  // TTS via OpenAI (backend)
+  try {
+    const resp = await fetch(`${BACKEND_URL}/api/tts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: script })
+    });
+    if (!resp.ok) throw new Error('TTS indisponible');
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    morningUtterance = new Audio(url);
+    morningLabel.textContent = 'Alex · Lecture en cours...';
+    morningUtterance.onended = () => {
       morningOrb.classList.remove('speaking');
       morningLabel.textContent = 'Alex · Terminé';
     };
-    morningUtterance.onerror = () => {
-      morningOrb.classList.remove('speaking');
-    };
-
-    // Voices may not be loaded yet — wait for them
-    if (voices.length === 0) {
-      window.speechSynthesis.onvoiceschanged = () => {
-        const v = window.speechSynthesis.getVoices().find(v => v.lang.startsWith('fr'));
-        if (v) morningUtterance.voice = v;
-        window.speechSynthesis.speak(morningUtterance);
-      };
-    } else {
-      window.speechSynthesis.speak(morningUtterance);
-    }
+    morningUtterance.play();
+  } catch {
+    morningOrb.classList.remove('speaking');
+    morningLabel.textContent = 'Alex · Brief matinal';
   }
 }
 
 function closeMorningBrief() {
-  if (morningUtterance) window.speechSynthesis.cancel();
+  if (morningUtterance) { morningUtterance.pause(); morningUtterance.src = ''; }
   morningOrb.classList.remove('speaking');
   morningOverlay.classList.remove('visible');
   morningLabel.textContent = 'Alex · Brief matinal';

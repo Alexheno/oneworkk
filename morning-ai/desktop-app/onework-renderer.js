@@ -453,8 +453,9 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProjects();
 
   // ─── Welcome Morning Brief ─────────────────────────────
-  let wcUtterance = null;
-  let wcListening = false;
+  const TTS_URL = 'https://oneworkk-production.up.railway.app/api/tts';
+  let wcAudio = null;
+  let wcPlaying = false;
 
   function showWelcomeBrief(script, acc) {
     const firstName = (acc.name || 'vous').split(' ')[0];
@@ -463,60 +464,68 @@ document.addEventListener('DOMContentLoaded', () => {
     $('wc-title').textContent = `Bonjour, ${firstName} 👋`;
     $('wc-subtitle').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
     $('wc-script-text').textContent = script;
-
-    const overlay = $('welcome-overlay');
-    overlay.classList.add('visible');
+    $('welcome-overlay').classList.add('visible');
   }
 
   function closeWelcomeBrief() {
-    stopWcSpeech();
+    stopWcAudio();
     $('welcome-overlay').classList.remove('visible');
   }
 
-  function stopWcSpeech() {
-    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-    wcListening = false;
-    const btn = $('wc-btn-listen');
-    btn.classList.remove('listening');
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg> Écouter`;
+  function stopWcAudio() {
+    if (wcAudio) { wcAudio.pause(); wcAudio.src = ''; wcAudio = null; }
+    wcPlaying = false;
+    setListenBtn('idle');
     $('wc-orb').classList.remove('speaking');
   }
 
-  $('wc-btn-listen').addEventListener('click', () => {
-    if (!('speechSynthesis' in window)) return;
-
-    if (wcListening) {
-      stopWcSpeech();
-      return;
-    }
-
-    wcListening = true;
+  function setListenBtn(state) {
     const btn = $('wc-btn-listen');
-    btn.classList.add('listening');
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Arrêter`;
+    if (state === 'loading') {
+      btn.disabled = true;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg> Génération...`;
+      btn.classList.remove('listening');
+    } else if (state === 'playing') {
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Arrêter`;
+      btn.classList.add('listening');
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg> Écouter`;
+      btn.classList.remove('listening');
+    }
+  }
+
+  $('wc-btn-listen').addEventListener('click', async () => {
+    if (wcPlaying) { stopWcAudio(); return; }
+
+    const text = $('wc-script-text').textContent;
+    if (!text) return;
+
+    setListenBtn('loading');
     $('wc-orb').classList.add('speaking');
 
-    window.speechSynthesis.cancel();
-    wcUtterance = new SpeechSynthesisUtterance($('wc-script-text').textContent);
-    wcUtterance.lang = 'fr-FR';
-    wcUtterance.rate = 0.93;
-    wcUtterance.pitch = 1.05;
+    try {
+      const resp = await fetch(TTS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
 
-    const setVoiceAndSpeak = () => {
-      const voices = window.speechSynthesis.getVoices();
-      const frVoice = voices.find(v => v.lang.startsWith('fr'));
-      if (frVoice) wcUtterance.voice = frVoice;
-      window.speechSynthesis.speak(wcUtterance);
-    };
+      if (!resp.ok) throw new Error('TTS indisponible');
 
-    wcUtterance.onend = stopWcSpeech;
-    wcUtterance.onerror = stopWcSpeech;
-
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length === 0) {
-      window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
-    } else {
-      setVoiceAndSpeak();
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+      wcAudio = new Audio(url);
+      wcAudio.onended = stopWcAudio;
+      wcAudio.onerror = stopWcAudio;
+      wcPlaying = true;
+      setListenBtn('playing');
+      wcAudio.play();
+    } catch (err) {
+      console.error('[TTS]', err);
+      stopWcAudio();
+      showNotif('Voix indisponible — ajoutez OPENAI_API_KEY sur Railway.');
     }
   });
 
