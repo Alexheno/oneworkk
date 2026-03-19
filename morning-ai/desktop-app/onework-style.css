@@ -86,6 +86,18 @@ html,body { height:100vh; overflow:hidden; font-family:'Inter',-apple-system,san
 .auth-error { display:none; margin-top:12px; padding:9px 12px; background:rgba(240,71,71,.08); border:1px solid rgba(240,71,71,.2); border-radius:var(--r-sm); font-size:.78rem; color:var(--red); line-height:1.5 }
 .ob-note { text-align:center; font-size:.73rem; color:var(--text3); margin-top:14px }
 
+.ob-legal { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px; font-size:.72rem; color:var(--text3) }
+.ob-legal a { color:var(--text2); text-decoration:underline; cursor:pointer }
+.ob-legal a:hover { color:var(--accent) }
+
+.ob-admin-banner { display:flex; align-items:center; gap:12px; margin-top:20px; background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2); border-radius:12px; padding:14px 16px; text-align:left }
+.ob-admin-banner svg { width:18px; height:18px; color:var(--accent); flex-shrink:0 }
+.ob-admin-banner div { flex:1 }
+.ob-admin-banner strong { display:block; font-size:.8rem; font-weight:600; color:var(--text); margin-bottom:2px }
+.ob-admin-banner span { font-size:.75rem; color:var(--text2) }
+.ob-admin-banner button { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:7px 14px; font-size:.78rem; font-weight:600; font-family:inherit; cursor:pointer; white-space:nowrap; transition:opacity .15s }
+.ob-admin-banner button:hover { opacity:.85 }
+
 /* ════════════════════════════════
    DASHBOARD LAYOUT
 ════════════════════════════════ */

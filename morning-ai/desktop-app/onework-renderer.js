@@ -84,6 +84,21 @@ document.addEventListener('DOMContentLoaded', () => {
     showNotif(`Brief matinal programmé à ${t}`);
   });
 
+  // ─── Legal / Admin consent ─────────────────────────────
+  const CLIENT_ID = '6ba5635c-5459-4c73-a599-04f669c610ad';
+  $('btn-privacy').addEventListener('click', (e) => {
+    e.preventDefault();
+    openUrl('https://onework.app/privacy');
+  });
+  $('btn-terms').addEventListener('click', (e) => {
+    e.preventDefault();
+    openUrl('https://onework.app/terms');
+  });
+  $('btn-admin-consent').addEventListener('click', () => {
+    const consentUrl = `https://login.microsoftonline.com/organizations/adminconsent?client_id=${CLIENT_ID}&redirect_uri=https://onework.app/admin-consent-success`;
+    openUrl(consentUrl);
+  });
+
   $('btn-upgrade').addEventListener('click', () => openUrl('https://onework.app/pricing'));
   $('btn-personalisation').addEventListener('click', () => showNotif('Personnalisation disponible dans la prochaine version.'));
   $('btn-settings').addEventListener('click', () => showNotif('Paramètres disponibles dans la prochaine version.'));

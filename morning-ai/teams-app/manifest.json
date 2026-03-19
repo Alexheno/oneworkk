@@ -1,0 +1,74 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "a1b2c3d4-e5f6-7890-abcd-onework12345",
+  "packageName": "com.onework.app",
+
+  "developer": {
+    "name": "OneWork",
+    "websiteUrl": "https://onework.app",
+    "privacyUrl": "https://onework.app/privacy",
+    "termsOfUseUrl": "https://onework.app/terms",
+    "mpnId": ""
+  },
+
+  "name": {
+    "short": "OneWork",
+    "full": "OneWork — Assistant IA Microsoft 365"
+  },
+
+  "description": {
+    "short": "Votre chief of staff IA connecté à Microsoft 365",
+    "full": "OneWork analyse vos emails, réunions et tâches Microsoft 365 pour générer un brief intelligent chaque matin. L'agent conversationnel Alex répond à vos questions en langage naturel et exécute des actions directement (envoyer un email, créer une tâche, planifier). Disponible en tant qu'application de bureau Windows avec un widget discret toujours accessible."
+  },
+
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+
+  "accentColor": "#5865f2",
+
+  "staticTabs": [
+    {
+      "entityId": "overview",
+      "name": "Mon Brief",
+      "contentUrl": "https://onework.app/teams-tab",
+      "websiteUrl": "https://onework.app",
+      "scopes": ["personal"]
+    }
+  ],
+
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+
+  "devicePermissions": [],
+
+  "validDomains": [
+    "onework.app",
+    "oneworkk-production.up.railway.app"
+  ],
+
+  "webApplicationInfo": {
+    "id": "6ba5635c-5459-4c73-a599-04f669c610ad",
+    "resource": "api://onework.app/6ba5635c-5459-4c73-a599-04f669c610ad"
+  },
+
+  "authorization": {
+    "permissions": {
+      "resourceSpecific": [
+        {
+          "name": "MailboxItem.Read.User",
+          "type": "Delegated"
+        }
+      ]
+    }
+  },
+
+  "localizationInfo": {
+    "defaultLanguageTag": "fr"
+  }
+}

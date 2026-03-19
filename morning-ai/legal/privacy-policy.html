@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de confidentialité — OneWork</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #0f0f0f; color: #e2e8f0; line-height: 1.7; }
+    .container { max-width: 760px; margin: 0 auto; padding: 60px 24px; }
+    .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 48px; }
+    .logo-dot { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+    .logo span { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    h1 { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .meta { color: #64748b; font-size: 0.875rem; margin-bottom: 48px; }
+    h2 { font-size: 1.1rem; font-weight: 600; color: #c7d2fe; margin: 36px 0 12px; }
+    p { color: #94a3b8; margin-bottom: 12px; }
+    ul { color: #94a3b8; padding-left: 20px; margin-bottom: 12px; }
+    ul li { margin-bottom: 6px; }
+    .highlight { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); border-radius: 12px; padding: 20px 24px; margin: 24px 0; }
+    .highlight p { color: #a5b4fc; margin: 0; }
+    a { color: #818cf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid #1e293b; color: #475569; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="logo">
+      <div class="logo-dot"></div>
+      <span>OneWork</span>
+    </div>
+
+    <h1>Politique de confidentialité</h1>
+    <p class="meta">Dernière mise à jour : mars 2024 · Version 1.0</p>
+
+    <div class="highlight">
+      <p>🔒 <strong>Résumé simple :</strong> OneWork accède à vos données Microsoft 365 uniquement pour générer votre brief quotidien. Vos emails, réunions et tâches ne sont jamais stockés de manière permanente sur nos serveurs.</p>
+    </div>
+
+    <h2>1. Qui sommes-nous ?</h2>
+    <p>OneWork est un assistant de bureau intelligent développé par OneWork SAS. Notre application se connecte à Microsoft 365 pour analyser votre journée de travail et vous fournir un résumé actionnable.</p>
+    <p>Contact : <a href="mailto:privacy@onework.app">privacy@onework.app</a></p>
+
+    <h2>2. Données collectées</h2>
+    <p>OneWork accède aux données suivantes via Microsoft Graph API, avec votre consentement explicite :</p>
+    <ul>
+      <li><strong>Emails (Outlook)</strong> — Objet, expéditeur, résumé du contenu (pas le corps complet)</li>
+      <li><strong>Calendrier</strong> — Titre et horaires des réunions du jour et de la semaine</li>
+      <li><strong>Tâches (To Do)</strong> — Titre et statut des tâches en cours</li>
+      <li><strong>Teams</strong> — Messages récents des conversations actives</li>
+      <li><strong>OneDrive / SharePoint</strong> — Noms des fichiers récemment modifiés</li>
+      <li><strong>OneNote</strong> — Titres des pages récentes</li>
+      <li><strong>Profil utilisateur</strong> — Nom et adresse email (pour personnaliser l'interface)</li>
+    </ul>
+
+    <h2>3. Comment nous utilisons vos données</h2>
+    <ul>
+      <li>Générer votre brief quotidien personnalisé via un modèle IA (Google Gemini)</li>
+      <li>Alimenter l'agent conversationnel Alex pour répondre à vos questions</li>
+      <li>Exécuter des actions que vous demandez explicitement (envoyer un email, créer une tâche)</li>
+    </ul>
+    <p>Vos données sont transmises de manière chiffrée (HTTPS/TLS 1.3) à notre serveur backend hébergé sur Railway (USA, SOC 2 Type II).</p>
+
+    <h2>4. Stockage et rétention</h2>
+    <p>OneWork <strong>ne stocke pas</strong> le contenu de vos emails, réunions ou tâches de manière permanente. Les données sont traitées en temps réel pour générer le brief, puis supprimées.</p>
+    <p>Nous conservons uniquement :</p>
+    <ul>
+      <li>Votre adresse email (pour associer votre compte)</li>
+      <li>L'historique des analyses quotidiennes (méta-données : nombre d'emails, réunions — pas le contenu)</li>
+    </ul>
+
+    <h2>5. Partage avec des tiers</h2>
+    <p>Vos données sont partagées avec :</p>
+    <ul>
+      <li><strong>Google (Gemini API)</strong> — Pour l'analyse IA. Google s'engage à ne pas utiliser ces données pour entraîner ses modèles dans le cadre de l'API commerciale.</li>
+      <li><strong>OpenAI (TTS API)</strong> — Uniquement pour la synthèse vocale du brief matinal. Le texte envoyé est le brief généré, pas vos données brutes.</li>
+      <li><strong>Railway</strong> — Hébergement du backend. Données chiffrées au repos et en transit.</li>
+      <li><strong>Supabase</strong> — Base de données pour les métadonnées de compte. Hébergé dans l'UE.</li>
+    </ul>
+    <p>Nous ne vendons jamais vos données à des tiers.</p>
+
+    <h2>6. Vos droits (RGPD)</h2>
+    <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez des droits suivants :</p>
+    <ul>
+      <li><strong>Droit d'accès</strong> — Demandez une copie de vos données</li>
+      <li><strong>Droit de rectification</strong> — Corrigez des données inexactes</li>
+      <li><strong>Droit à l'effacement</strong> — Demandez la suppression de votre compte</li>
+      <li><strong>Droit à la portabilité</strong> — Exportez vos données</li>
+      <li><strong>Droit d'opposition</strong> — Révoquez votre consentement à tout moment</li>
+    </ul>
+    <p>Pour exercer ces droits : <a href="mailto:privacy@onework.app">privacy@onework.app</a></p>
+
+    <h2>7. Révocation de l'accès Microsoft</h2>
+    <p>Vous pouvez révoquer l'accès de OneWork à votre compte Microsoft à tout moment :</p>
+    <ol style="color:#94a3b8; padding-left:20px;">
+      <li>Rendez-vous sur <a href="https://myapps.microsoft.com" target="_blank">myapps.microsoft.com</a></li>
+      <li>Cliquez sur OneWork → "Révoquer les autorisations"</li>
+    </ol>
+
+    <h2>8. Sécurité</h2>
+    <p>Nous implémentons les mesures suivantes pour protéger vos données :</p>
+    <ul>
+      <li>Chiffrement HTTPS/TLS 1.3 pour tous les transferts</li>
+      <li>Tokens Microsoft OAuth2 avec durée de vie limitée (1h)</li>
+      <li>Aucun stockage de mot de passe (authentification déléguée à Microsoft)</li>
+      <li>Infrastructure sécurisée (Railway SOC 2, Supabase ISO 27001)</li>
+    </ul>
+
+    <h2>9. Modifications</h2>
+    <p>Nous pouvons mettre à jour cette politique. Vous serez notifié via l'application en cas de changements significatifs.</p>
+
+    <h2>10. Contact</h2>
+    <p>Pour toute question relative à cette politique :<br>
+    📧 <a href="mailto:privacy@onework.app">privacy@onework.app</a><br>
+    🌐 <a href="https://onework.app">onework.app</a>
+    </p>
+
+    <div class="footer">
+      <p>© 2024 OneWork. Tous droits réservés. · <a href="terms.html">Conditions d'utilisation</a></p>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -5,10 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win --x64"
+    "build": "electron-builder --win --x64",
+    "build:signed": "electron-builder --win --x64 --publish never"
   },
-  "keywords": [],
-  "author": "OneWork",
+  "keywords": ["microsoft365", "productivity", "ai", "assistant"],
+  "author": {
+    "name": "OneWork",
+    "email": "contact@onework.app",
+    "url": "https://onework.app"
+  },
   "license": "ISC",
   "repository": {
     "type": "git",
@@ -22,21 +27,46 @@
   "build": {
     "appId": "com.onework.app",
     "productName": "OneWork",
+    "copyright": "Copyright © 2024 OneWork. Tous droits réservés.",
+
     "win": {
-      "target": "nsis",
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
       "icon": "assets/icon.ico",
-      "artifactName": "OneWork-Setup.exe"
+      "artifactName": "OneWork-Setup-${version}.exe",
+      "publisherName": "OneWork",
+      "requestedExecutionLevel": "asInvoker",
+      "signingHashAlgorithms": ["sha256"],
+      "verifyUpdateCodeSignature": false
     },
+
     "nsis": {
-      "oneClick": true,
-      "shortcutName": "OneWork"
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "perMachine": false,
+      "shortcutName": "OneWork",
+      "uninstallDisplayName": "OneWork - Assistant IA Microsoft 365",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeader": "assets/icon.ico",
+      "installerSidebar": "assets/icon.ico",
+      "deleteAppDataOnUninstall": false,
+      "include": "assets/installer.nsh"
     },
+
     "files": [
       "**/*",
       "!node_modules/electron/**",
-      "!node_modules/.cache/**"
+      "!node_modules/.cache/**",
+      "!dist/**"
+    ],
+
+    "extraResources": [
+      { "from": "assets/", "to": "assets/", "filter": ["**/*"] }
     ]
   },
+
   "devDependencies": {
     "electron": "^28.3.3",
     "electron-builder": "^25.1.8"

@@ -25,11 +25,22 @@ jobs:
         working-directory: morning-ai/desktop-app
         run: npm install
 
-      - name: Build .exe (sans publication auto)
+      # ── Code Signing (actif si CSC_LINK est configuré dans GitHub Secrets) ──
+      # Pour activer :
+      #   1. Achète certificat EV Code Signing (DigiCert / Sectigo ~300€/an)
+      #   2. Exporte en .pfx → encode base64 → ajoute dans GitHub Secrets :
+      #      CSC_LINK          = contenu base64 du .pfx
+      #      CSC_KEY_PASSWORD  = mot de passe du .pfx
+      - name: Build & Sign .exe
         working-directory: morning-ai/desktop-app
         run: npx electron-builder --win --x64 --publish never
         env:
-          CSC_IDENTITY_AUTO_DISCOVERY: false
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          WIN_CSC_LINK: ${{ secrets.CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          # Auto-désactive si les secrets sont vides
+          CSC_IDENTITY_AUTO_DISCOVERY: ${{ secrets.CSC_LINK != '' }}
 
       - name: Create GitHub Release and upload .exe
         uses: softprops/action-gh-release@v2
@@ -43,8 +54,20 @@ jobs:
             Assistant de bureau intelligent connecté à Microsoft 365.
 
             ### Installation
-            1. Télécharge **OneWork Setup.exe**
+            1. Télécharge **OneWork-Setup-${{ github.ref_name }}.exe**
             2. Lance le fichier — l'installation est automatique
             3. Connecte-toi avec ton compte Microsoft 365
+
+            ### Déploiement entreprise (IT Admin)
+            Si votre organisation restreint les apps tierces, autorisez OneWork en un clic :
+            https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-5459-4c73-a599-04f669c610ad
+
+            ### Liens
+            - Politique de confidentialité : https://onework.app/privacy
+            - Conditions d'utilisation : https://onework.app/terms
+            - Support : contact@onework.app
+
+            ---
+            🔒 Vos données Microsoft 365 sont analysées en temps réel. Rien n'est stocké de manière permanente.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
