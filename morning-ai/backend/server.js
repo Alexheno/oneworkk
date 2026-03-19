@@ -47,19 +47,28 @@ app.post('/api/analyze', async (req, res) => {
 
         if (analysis.error) return res.status(500).json({ success: false, error: analysis.error });
 
-        // Sauvegarde Supabase
-        if (user) {
-            await supabase.from('daily_briefs').insert([{
+        // Génère le script vocal + sauvegarde Supabase en parallèle
+        const dateStr = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+        const [morningScript] = await Promise.all([
+            generateMorningScript({
+                name: name || 'vous',
+                date: dateStr,
+                emails: emails.slice(0, 5).map(e => ({ sender: e.sender, subject: e.subject, isUrgent: e.isUrgent })),
+                meetings: todayMeetings.map(m => ({ title: m.title, time: m.time || m.start })),
+                tasks: todoTasks.slice(0, 5).map(t => ({ title: t.title, priority: t.priority }))
+            }).catch(() => null),
+            user ? supabase.from('daily_briefs').insert([{
                 user_id: user.id,
                 urgent_alerts: analysis.urgentAlerts || [],
                 priority_emails: analysis.directEmails || [],
                 ai_suggestions: analysis.aiSuggestions || []
-            }]);
-        }
+            }]) : Promise.resolve()
+        ]);
 
         res.json({
             success: true,
             data: analysis,
+            morningScript,
             rawCounts: {
                 emails: emails.length,
                 directEmails: emails.filter(e => !e.isCc).length,

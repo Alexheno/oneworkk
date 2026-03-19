@@ -225,6 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!result.success || !result.data) throw new Error(result.error || 'Réponse invalide');
 
       showDashboard(result.data, account, result.rawCounts);
+      if (result.morningScript) showWelcomeBrief(result.morningScript, account);
     } catch (err) {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
@@ -450,4 +451,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Init
   loadProjects();
-});
+
+  // ─── Welcome Morning Brief ─────────────────────────────
+  let wcUtterance = null;
+  let wcListening = false;
+
+  function showWelcomeBrief(script, acc) {
+    const firstName = (acc.name || 'vous').split(' ')[0];
+    const dateStr = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    $('wc-title').textContent = `Bonjour, ${firstName} 👋`;
+    $('wc-subtitle').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+    $('wc-script-text').textContent = script;
+
+    const overlay = $('welcome-overlay');
+    overlay.classList.add('visible');
+  }
+
+  function closeWelcomeBrief() {
+    stopWcSpeech();
+    $('welcome-overlay').classList.remove('visible');
+  }
+
+  function stopWcSpeech() {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    wcListening = false;
+    const btn = $('wc-btn-listen');
+    btn.classList.remove('listening');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg> Écouter`;
+    $('wc-orb').classList.remove('speaking');
+  }
+
+  $('wc-btn-listen').addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) return;
+
+    if (wcListening) {
+      stopWcSpeech();
+      return;
+    }
+
+    wcListening = true;
+    const btn = $('wc-btn-listen');
+    btn.classList.add('listening');
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg> Arrêter`;
+    $('wc-orb').classList.add('speaking');
+
+    window.speechSynthesis.cancel();
+    wcUtterance = new SpeechSynthesisUtterance($('wc-script-text').textContent);
+    wcUtterance.lang = 'fr-FR';
+    wcUtterance.rate = 0.93;
+    wcUtterance.pitch = 1.05;
+
+    const setVoiceAndSpeak = () => {
+      const voices = window.speechSynthesis.getVoices();
+      const frVoice = voices.find(v => v.lang.startsWith('fr'));
+      if (frVoice) wcUtterance.voice = frVoice;
+      window.speechSynthesis.speak(wcUtterance);
+    };
+
+    wcUtterance.onend = stopWcSpeech;
+    wcUtterance.onerror = stopWcSpeech;
+
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length === 0) {
+      window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+    } else {
+      setVoiceAndSpeak();
+    }
+  });
+
+  $('wc-btn-start').addEventListener('click', closeWelcomeBrief);
+
+});  // end DOMContentLoaded
