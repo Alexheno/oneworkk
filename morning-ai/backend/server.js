@@ -147,8 +147,11 @@ app.post('/api/tts', async (req, res) => {
         if (!text) return res.status(400).json({ error: 'text requis' });
 
         if (!process.env.OPENAI_API_KEY) {
+            console.error('[TTS] OPENAI_API_KEY manquante');
             return res.status(503).json({ error: 'OPENAI_API_KEY non configurée' });
         }
+
+        console.log(`[TTS] Génération audio (${text.length} chars)...`);
 
         const response = await fetch('https://api.openai.com/v1/audio/speech', {
             method: 'POST',
@@ -166,21 +169,16 @@ app.post('/api/tts', async (req, res) => {
 
         if (!response.ok) {
             const err = await response.text();
-            console.error('OpenAI TTS error:', err);
+            console.error('[TTS] OpenAI error:', response.status, err);
             return res.status(500).json({ error: err });
         }
 
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        console.log(`[TTS] Audio généré: ${buffer.length} bytes`);
         res.setHeader('Content-Type', 'audio/mpeg');
-        res.setHeader('Cache-Control', 'no-cache');
-        // Stream direct vers le client
-        const reader = response.body.getReader();
-        const pump = async () => {
-            const { done, value } = await reader.read();
-            if (done) { res.end(); return; }
-            res.write(Buffer.from(value));
-            return pump();
-        };
-        await pump();
+        res.setHeader('Content-Length', buffer.length);
+        res.send(buffer);
 
     } catch (error) {
         console.error('Erreur /api/tts:', error.message);
