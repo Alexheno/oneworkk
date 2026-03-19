@@ -77,7 +77,7 @@ let hoverTimeout;
 widgetContainer.addEventListener('mouseenter', () => {
   clearTimeout(hoverTimeout);
   if (window.electronAPI && !isDraggingWindow) window.electronAPI.setIgnoreMouseEvents(false);
-  if (!isDraggingWindow) {
+  if (!isDraggingWindow && !widgetContainer.classList.contains('widget-open')) {
     widgetContainer.classList.remove('widget-closed');
     widgetContainer.classList.add('widget-open');
   }

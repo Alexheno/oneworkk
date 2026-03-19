@@ -24,7 +24,7 @@ const msalConfig = {
 
 const pca = new msal.PublicClientApplication(msalConfig);
 
-const scopes = ["User.Read", "Mail.Read", "Calendars.Read", "Chat.Read", "Files.Read.All", "Tasks.Read", "Notes.Read"];
+const scopes = ["User.Read", "Mail.Read", "Mail.ReadWrite", "Mail.Send", "Calendars.Read", "Chat.Read", "Files.Read.All", "Tasks.Read", "Tasks.ReadWrite", "Notes.Read"];
 
 async function login() {
     const request = {
