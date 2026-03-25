@@ -3,8 +3,11 @@ const path = require('path');
 
 // Fix GPU/network crashes on Windows
 app.commandLine.appendSwitch('disable-gpu');
-app.commandLine.appendSwitch('disable-software-rasterizer');
 app.commandLine.appendSwitch('disable-gpu-sandbox');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('disable-accelerated-2d-canvas');
+app.commandLine.appendSwitch('disable-features', 'VizDisplayCompositor');
 app.commandLine.appendSwitch('no-sandbox');
 
 // Single instance lock — prevents GPU cache conflicts from multiple instances
