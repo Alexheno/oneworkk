@@ -194,7 +194,9 @@ app.post('/api/analyze', analysisLimiter, async (req, res) => {
                 urgent_alerts:  analysis.urgentAlerts  || [],
                 priority_emails: analysis.directEmails || [],
                 ai_suggestions: analysis.aiSuggestions || [],
-            }]).catch(e => console.warn(`[${req.id}] Supabase brief:`, e.message));
+            }]).then(({ error }) => {
+                if (error) console.warn(`[${req.id}] Supabase brief:`, error.message);
+            });
         }
 
         logResponse(req, 200);
