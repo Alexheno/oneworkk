@@ -1,36 +1,33 @@
 /* ════════════════════════════════════════════════════════════
-   ONEWORK — Dark Intelligence · Design System
+   ONEWORK — Premium Dark · ChatGPT × Apple Design System
    ════════════════════════════════════════════════════════════ */
 :root {
-  /* ── Palette sombre premium — Apple Intelligence inspired ── */
-  --bg:          #08080F;
-  --bg2:         #0D0D18;
-  --surface:     #111120;
-  --surface2:    #16162A;
-  --surface3:    #1E1E36;
-  --border:      rgba(120,120,255,0.08);
-  --border2:     rgba(120,120,255,0.15);
-  --border3:     rgba(120,120,255,0.24);
-  --text:        #F5F5F7;
+  /* ── Palette dark premium — ChatGPT neutral × Apple precision ── */
+  --bg:          #212121;
+  --bg2:         #171717;
+  --surface:     #2F2F2F;
+  --surface2:    #383838;
+  --surface3:    #404040;
+  --border:      rgba(255,255,255,0.09);
+  --border2:     rgba(255,255,255,0.14);
+  --border3:     rgba(255,255,255,0.22);
+  --text:        #ECECEC;
   --text2:       #8E8EA0;
-  --text3:       #3D3D58;
-  --indigo:      #7B7BFF;
-  --indigo-dim:  rgba(123,123,255,0.14);
-  --indigo-glow: rgba(123,123,255,0.24);
-  --cyan:        #00CCFF;
+  --text3:       #505060;
+  /* ring gradient accent palette */
+  --accent:      #9B35FF;
+  --g-blue:      #8ECDF8;
+  --g-indigo:    #6B8EF5;
+  --g-purple:    #9B35FF;
+  --g-pink:      #F472B6;
+  --g-orange:    #FB923C;
+  /* system colors */
   --green:       #30D158;
   --red:         #FF453A;
-  --orange:      #FF9F0A;
-  --purple:      #BF5AF2;
-  --blue:        #1464FF;
-  --pink:        #FF2D78;
-  --accent:      #7B7BFF;
-  /* gradient couleurs — identiques au logo */
-  --g-cyan:      #00CCFF;
-  --g-blue:      #1464FF;
-  --g-purple:    #9B35FF;
-  --g-pink:      #FF2D78;
-  --g-orange:    #FF8C38;
+  --orange-sys:  #FF9F0A;
+  --indigo:      #6B8EF5;
+  --indigo-dim:  rgba(107,142,245,0.14);
+  --indigo-glow: rgba(107,142,245,0.22);
   --sidebar-w:   64px;
   --r:           14px;
   --r-sm:        9px;
