@@ -4,7 +4,14 @@ const path = require('path');
 // Fix GPU/network crashes on Windows
 app.commandLine.appendSwitch('disable-gpu');
 app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('disable-gpu-sandbox');
 app.commandLine.appendSwitch('no-sandbox');
+
+// Single instance lock — prevents GPU cache conflicts from multiple instances
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+  process.exit(0);
+}
 
 let mainWindow;    // Le widget
 let overviewWindow; // L'interface principale OneWork
