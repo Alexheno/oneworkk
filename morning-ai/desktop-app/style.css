@@ -27,78 +27,101 @@ body, html {
   pointer-events: auto;
 }
 
-/* ─── Knob — visible mais discret ─── */
+/* ─── Knob — Coconut logo ─── */
 .knob {
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(20, 20, 28, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(8,12,9,0.88);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
-  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: box-shadow 0.35s cubic-bezier(0.25,0.8,0.25,1),
+              background 0.25s ease;
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.15);
+  border: 1.5px solid rgba(255,255,255,0.18);
+  box-shadow:
+    0 6px 24px rgba(0,0,0,0.55),
+    0 0 0 1px rgba(109,191,120,0.12),
+    0 0 14px rgba(109,191,120,0.08);
+  padding: 4px;
+  overflow: hidden;
 }
 
 .knob:active { cursor: grabbing; }
 
-.knob-inner {
-  width: 9px;
-  height: 9px;
-  background: rgba(130, 140, 255, 0.85);
+/* Coconut SVG inside the knob */
+.knob-coconut {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 8px rgba(99,102,241,0.6);
+  object-fit: cover;
+  /* smooth 1/3 turn rotation */
+  transition: transform 0.65s cubic-bezier(0.34,1.56,0.64,1),
+              filter 0.3s ease;
+  filter: drop-shadow(0 0 3px rgba(109,191,120,0.25));
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* Survol knob fermé */
+/* Knob hover (closed state) */
 .widget-closed .knob:hover {
-  background: rgba(25, 25, 38, 0.96);
-  border-color: rgba(99,102,241,0.5);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 12px rgba(99,102,241,0.3);
+  background: rgba(12,18,13,0.95);
+  border-color: rgba(109,191,120,0.40);
+  box-shadow:
+    0 6px 28px rgba(0,0,0,0.60),
+    0 0 0 1px rgba(109,191,120,0.30),
+    0 0 20px rgba(109,191,120,0.15);
 }
 
-.widget-closed .knob:hover .knob-inner {
-  background: #818cf8;
-  box-shadow: 0 0 12px rgba(99,102,241,0.8);
-}
-
-/* Knob se réduit quand la carte est ouverte */
+/* Coconut rotates 120° (1/3 turn) when widget opens */
 .widget-open .knob {
-  transform: scale(0.65);
-  opacity: 0.25;
+  background: rgba(8,12,9,0.92);
+  border-color: rgba(109,191,120,0.28);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.65),
+    0 0 0 1.5px rgba(109,191,120,0.25),
+    0 0 24px rgba(109,191,120,0.12);
 }
 
-/* ─── Card ─── */
+.widget-open .knob-coconut {
+  transform: rotate(120deg);
+  filter: drop-shadow(0 0 5px rgba(109,191,120,0.35));
+}
+
+/* Compatibility: hide old inner dot */
+.knob-inner { display: none; }
+
+/* ─── Card — Coconut Beach dark ─── */
 .card {
   width: 318px;
-  max-height: 480px;
+  max-height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: rgba(10, 11, 16, 0.99);
-  backdrop-filter: blur(40px) saturate(1.8);
-  -webkit-backdrop-filter: blur(40px) saturate(1.8);
-  border-radius: 20px;
+  background: rgba(9, 14, 11, 0.98);
+  backdrop-filter: blur(48px) saturate(2.0);
+  -webkit-backdrop-filter: blur(48px) saturate(2.0);
+  border-radius: 22px;
   box-shadow:
-    0 32px 80px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-    0 0 40px rgba(99,102,241,0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+    0 36px 90px rgba(0, 0, 0, 0.72),
+    0 0 0 1px rgba(255,255,255,0.09) inset,
+    0 0 48px rgba(109,191,120,0.05),
+    0 0 0 0.5px rgba(109,191,120,0.08);
+  border: 1px solid rgba(100,188,110,0.13);
   padding: 18px 16px 15px;
   opacity: 0;
-  transform: translateY(12px) scale(0.97);
+  transform: translateY(14px) scale(0.96);
   pointer-events: none;
   position: absolute;
-  bottom: 50px;
+  bottom: 56px;
   right: 0;
-  transition: opacity 0.28s ease, transform 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  transition: opacity 0.30s ease, transform 0.34s cubic-bezier(0.175,0.885,0.32,1.15);
   -webkit-app-region: no-drag;
-  color: #f2f2f7;
+  color: #EDE8DC;
 }
 
 .card::-webkit-scrollbar { width: 3px; }
@@ -230,7 +253,7 @@ body, html {
 .meeting-time {
   font-size: 0.7rem;
   font-weight: 700;
-  color: #818cf8;
+  color: #6DBF78;
   min-width: 38px;
   font-variant-numeric: tabular-nums;
 }
@@ -304,7 +327,7 @@ body, html {
   left: 6px;
   right: 6px;
   height: 1.5px;
-  background: #818cf8;
+  background: #6DBF78;
   border-radius: 2px;
 }
 
@@ -315,7 +338,7 @@ body, html {
   left: 6px;
   right: 6px;
   height: 1.5px;
-  background: #818cf8;
+  background: #6DBF78;
   border-radius: 2px;
 }
 
@@ -332,7 +355,7 @@ body, html {
 }
 
 .task-item:hover .task-drag-handle { color: rgba(255,255,255,0.3); }
-.task-drag-handle:active { cursor: grabbing; color: #818cf8; }
+.task-drag-handle:active { cursor: grabbing; color: #6DBF78; }
 
 /* Checkbox */
 .task-check {
@@ -352,8 +375,8 @@ body, html {
 .task-check:hover { border-color: rgba(129, 140, 248, 0.6); }
 
 .task-check.checked {
-  background: #6366f1;
-  border-color: #6366f1;
+  background: #52A862;
+  border-color: #52A862;
 }
 
 .task-check svg {
@@ -386,7 +409,7 @@ body, html {
   padding: 1px 5px;
   margin: -1px -5px;
   outline: 1px solid rgba(99, 102, 241, 0.4);
-  caret-color: #818cf8;
+  caret-color: #6DBF78;
 }
 
 /* Urgent badge */
@@ -526,7 +549,7 @@ body, html {
   width: 100%;
   padding: 8px 10px;
   border-radius: 10px;
-  border: 1px solid rgba(99,102,241,0.35);
+  border: 1px solid rgba(109,191,120,0.35);
   background: rgba(255,255,255,0.06);
   color: #f5f5f7;
   font-family: 'Inter', sans-serif;
@@ -534,7 +557,7 @@ body, html {
   outline: none;
   transition: border-color 0.15s;
 }
-.task-add-input:focus { border-color: #818cf8; }
+.task-add-input:focus { border-color: #6DBF78; }
 .task-add-input::placeholder { color: rgba(255,255,255,0.25); }
 
 /* Empty tasks state */
@@ -623,7 +646,7 @@ body, html {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #6366f1 0%, #8b5cf6 30%, #06b6d4 60%, #a78bfa 80%, #6366f1 100%);
+  background: conic-gradient(from 0deg, #6DBF78 0%, #C4A882 30%, #58A89A 60%, #EDE4CC 80%, #6DBF78 100%);
   animation: orb-spin 4s linear infinite;
 }
 
@@ -693,7 +716,7 @@ body, html {
 
 .chat-msg.user {
   align-self: flex-end;
-  background: #6366f1;
+  background: #52A862;
   color: white;
   border-bottom-right-radius: 4px;
 }
@@ -826,7 +849,7 @@ body, html {
 }
 
 .chat-input-row:focus-within {
-  border-color: rgba(99,102,241,0.5);
+  border-color: rgba(109,191,120,0.5);
   background: rgba(255,255,255,0.08);
 }
 
@@ -892,7 +915,7 @@ body, html {
   height: 28px;
   border-radius: 8px;
   border: none;
-  background: #6366f1;
+  background: #52A862;
   color: white;
   display: flex;
   align-items: center;
@@ -942,7 +965,7 @@ body, html {
   position: absolute;
   inset: -3px;
   border-radius: 50%;
-  background: conic-gradient(from 0deg, #6366f1 0%, #a78bfa 40%, #06b6d4 70%, #6366f1 100%);
+  background: conic-gradient(from 0deg, #6DBF78 0%, #C4A882 40%, #58A89A 70%, #6DBF78 100%);
   animation: orb-spin 2s linear infinite;
 }
 .morning-orb .orb-core {

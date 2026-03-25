@@ -1,60 +1,62 @@
 /* ════════════════════════════════════════════════════════════
-   ONEWORK — Design System · Apple-grade UI
+   ONEWORK — Coconut Beach Premium · Design System
    ════════════════════════════════════════════════════════════ */
 :root {
-  --bg:        #08090d;
-  --bg2:       #0e0f14;
-  --surface:   #111318;
-  --surface2:  #171920;
-  --surface3:  #1e2028;
-  --border:    rgba(255,255,255,0.065);
-  --border2:   rgba(255,255,255,0.12);
-  --border3:   rgba(255,255,255,0.18);
-  --text:      #f2f2f7;
-  --text2:     #8e8ea0;
-  --text3:     #3d3d50;
-  --indigo:    #818cf8;
-  --indigo-dim: rgba(99,102,241,0.15);
-  --indigo-glow: rgba(99,102,241,0.25);
-  --cyan:      #22d3ee;
-  --green:     #34d399;
-  --red:       #f87171;
-  --orange:    #fb923c;
-  --purple:    #a78bfa;
-  --blue:      #60a5fa;
-  --accent:    #6366f1;
-  --sidebar-w: 216px;
-  --r:         14px;
-  --r-sm:      9px;
-  --r-xs:      6px;
+  /* ── Palette sombre · Noix de coco & Plage ── */
+  --bg:         #070A08;   /* nuit tropicale profonde */
+  --bg2:        #0C1110;
+  --surface:    #111A13;   /* jungle sombre */
+  --surface2:   #162019;
+  --surface3:   #1D2C21;
+  --border:     rgba(100,188,110,0.07);
+  --border2:    rgba(100,188,110,0.13);
+  --border3:    rgba(100,188,110,0.21);
+  --text:       #EDE8DC;   /* crème de noix de coco */
+  --text2:      #7A9A82;   /* vert palmier atténué */
+  --text3:      #374D3C;
+  --indigo:     #6DBF78;   /* vert palm – remplace indigo */
+  --indigo-dim: rgba(109,191,120,0.13);
+  --indigo-glow: rgba(109,191,120,0.22);
+  --cyan:       #58A89A;   /* teal tropical */
+  --green:      #52B878;   /* vert noix de coco */
+  --red:        #E07070;
+  --orange:     #C4956A;   /* couleur coque / sable */
+  --purple:     #8B9EAB;   /* bleu océan lointain */
+  --blue:       #6AAFB8;
+  --accent:     #6DBF78;   /* accent principal vert */
+  --sand:       #C4A882;   /* sable de plage */
+  --cream:      #EDE4CC;   /* chair de noix de coco */
+  --sidebar-w:  64px;
+  --r:          14px;
+  --r-sm:       9px;
+  --r-xs:       6px;
 }
 
-/* ── Light theme ── */
+/* ── Light theme — aube sur la plage ── */
 [data-theme="light"] {
-  --bg:        #f0f4f8;
-  --bg2:       #e8eef4;
-  --surface:   #ffffff;
-  --surface2:  #f4f7fb;
-  --surface3:  #e8eef4;
-  --border:    rgba(0,80,160,0.08);
-  --border2:   rgba(0,80,160,0.16);
-  --border3:   rgba(0,80,160,0.24);
-  --text:      #0a0c14;
-  --text2:     #4a5568;
-  --text3:     #a0aec0;
-  --indigo:    #4f46e5;
-  --indigo-dim: rgba(79,70,229,0.1);
-  --indigo-glow: rgba(79,70,229,0.2);
-  --cyan:      #0891b2;
-  --green:     #059669;
-  --red:       #dc2626;
-  --orange:    #d97706;
-  --accent:    #4f46e5;
+  --bg:         #F2EEE5;
+  --bg2:        #E8E2D6;
+  --surface:    #FDFAF4;
+  --surface2:   #F5F0E6;
+  --surface3:   #EDE6D8;
+  --border:     rgba(80,130,80,0.10);
+  --border2:    rgba(80,130,80,0.18);
+  --border3:    rgba(80,130,80,0.28);
+  --text:       #1A2C1E;
+  --text2:      #527258;
+  --text3:      #A0B8A4;
+  --indigo:     #3D9B52;
+  --indigo-dim: rgba(61,155,82,0.10);
+  --indigo-glow: rgba(61,155,82,0.20);
+  --cyan:       #2B8C80;
+  --green:      #2E9E58;
+  --red:        #C0392B;
+  --orange:     #A0692A;
+  --accent:     #3D9B52;
 }
-[data-theme="light"] .ob-orb1 { background: radial-gradient(circle,#818cf8,transparent) }
-[data-theme="light"] .ob-orb2 { background: radial-gradient(circle,#22d3ee,transparent) }
-[data-theme="light"] .logo-pill { background: linear-gradient(135deg,#6366f1,#22d3ee) }
-[data-theme="light"] .btn-connect { background: #0f172a; color: #fff }
+[data-theme="light"] .ob-orb1 { background: radial-gradient(circle,rgba(109,191,120,0.5),transparent) }
+[data-theme="light"] .ob-orb2 { background: radial-gradient(circle,rgba(196,168,130,0.4),transparent) }
+[data-theme="light"] .btn-connect { background: #1A2C1E; color: #EDE8DC }
 
 * { box-sizing: border-box; margin: 0; padding: 0 }
 html, body {
@@ -90,13 +92,13 @@ html, body {
 }
 .ob-orb1 {
   width: 600px; height: 600px;
-  background: radial-gradient(circle, #6366f1, transparent);
+  background: radial-gradient(circle, rgba(109,191,120,0.7), transparent);
   top: -200px; left: -150px;
   animation: orb-float 9s ease-in-out infinite;
 }
 .ob-orb2 {
   width: 500px; height: 500px;
-  background: radial-gradient(circle, #22d3ee, transparent);
+  background: radial-gradient(circle, rgba(196,168,130,0.6), transparent);
   bottom: -150px; right: -100px;
   animation: orb-float 11s ease-in-out infinite reverse;
 }
@@ -135,11 +137,11 @@ html, body {
 }
 
 .logo-pill {
-  width: 28px; height: 28px;
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
-  border-radius: 8px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 16px rgba(99,102,241,0.4);
+  overflow: hidden;
+  box-shadow: 0 0 16px rgba(109,191,120,0.28), 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .ob-logo span {
@@ -347,11 +349,20 @@ html, body {
 }
 
 .sl-mark {
-  width: 28px; height: 28px;
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
-  border-radius: 8px;
-  box-shadow: 0 0 14px rgba(99,102,241,0.4);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 14px rgba(109,191,120,0.25), 0 2px 8px rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
+.sl-mark img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  transition: transform 0.65s cubic-bezier(0.34,1.56,0.64,1);
+}
+.sl-mark:hover img { transform: rotate(120deg); }
 
 .sidebar-nav {
   display: flex;
@@ -669,34 +680,35 @@ html, body {
 }
 
 .acb-orb-btn {
-  width: 28px; height: 28px;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--cyan));
+  background: transparent;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   position: relative;
   cursor: default;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(109,191,120,0.18), 0 2px 6px rgba(0,0,0,0.35);
 }
 
-.acb-orb-inner {
-  width: 10px; height: 10px;
+.acb-orb-btn img {
+  width: 100%; height: 100%;
+  object-fit: cover;
   border-radius: 50%;
-  background: rgba(255,255,255,0.85);
-  animation: orb-pulse-soft 2.5s ease-in-out infinite;
+  transition: transform 0.55s cubic-bezier(0.34,1.56,0.64,1);
+  filter: drop-shadow(0 0 3px rgba(109,191,120,0.2));
 }
 
-@keyframes orb-pulse-soft {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.15); }
+.acb-orb-btn.thinking img {
+  animation: coconut-spin-thinking 1.8s cubic-bezier(0.4,0,0.2,1) infinite;
 }
 
-.acb-orb-btn.thinking .acb-orb-inner {
-  animation: orb-pulse-fast 0.5s ease-in-out infinite;
+@keyframes coconut-spin-thinking {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
-@keyframes orb-pulse-fast {
-  0%, 100% { transform: scale(0.85); opacity: 0.6; }
-  50%       { transform: scale(1.2);  opacity: 1; }
-}
+
+.acb-orb-inner { display: none; } /* kept for compat, hidden */
 
 .acb-input {
   flex: 1;
@@ -722,7 +734,7 @@ html, body {
   transition: all 0.15s;
   flex-shrink: 0;
 }
-.acb-send:hover { background: var(--accent); color: #fff; border-color: transparent; box-shadow: 0 0 12px rgba(99,102,241,0.4); }
+.acb-send:hover { background: var(--accent); color: #fff; border-color: transparent; box-shadow: 0 0 12px rgba(109,191,120,0.4); }
 
 /* Response bubble */
 .acb-response {
