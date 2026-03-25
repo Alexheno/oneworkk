@@ -241,8 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       showDashboard(result.data, account, result.rawCounts, result.rawData);
       if (result.morningScript) showWelcomeBrief(result.morningScript, account);
-      // Masque la fenêtre overview après l'analyse — le widget prend le relais
-      setTimeout(() => window.overviewAPI?.hideOverview?.(), 1500);
     } catch (err) {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
