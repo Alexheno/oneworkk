@@ -3,10 +3,10 @@ require('dotenv').config();
 
 // ─── Model Config ────────────────────────────────────────────────────────────
 const MODELS = {
-    ANALYSIS:  'google/gemini-2.5-flash-preview',   // Reasoning lourd
-    AGENT:     'google/gemini-2.5-flash-preview',   // Conversationnel
-    SCRIPT:    'google/gemini-2.5-flash-preview',   // Brief vocal
-    FALLBACK:  'google/gemini-2.0-flash-001',       // Fallback universel
+    ANALYSIS:  'google/gemini-2.0-flash-001',       // Reasoning lourd
+    AGENT:     'google/gemini-2.0-flash-001',       // Conversationnel
+    SCRIPT:    'google/gemini-2.0-flash-001',       // Brief vocal
+    FALLBACK:  'google/gemini-2.0-flash-lite-001',  // Fallback universel
 };
 
 const MAX_RETRIES    = 3;
