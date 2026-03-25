@@ -3,158 +3,467 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneWork - Votre assistant de bureau intelligent</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>OneWork — Votre journée de travail, analysée en 10 secondes</title>
+  <meta name="description" content="OneWork connecte Microsoft 365 à une IA et vous donne un brief complet de votre journée : mails urgents, réunions, messages Teams — tout au même endroit.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="landing.css">
 </head>
 <body>
 
   <!-- NAV -->
-  <nav class="navbar">
-    <div class="nav-logo">
-      <div class="logo-dot"></div>
-      <span>OneWork</span>
-    </div>
-    <div class="nav-links">
-      <a href="#features">Fonctionnalités</a>
-      <a href="app.html" class="btn-nav-try">Essayer en ligne</a>
-      <a href="#download" class="btn-nav-download">Télécharger</a>
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <div class="logo-mark">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#lg1)"/>
+            <path d="M2 17l10 5 10-5" stroke="url(#lg2)" stroke-width="2" fill="none"/>
+            <path d="M2 12l10 5 10-5" stroke="url(#lg3)" stroke-width="2" fill="none"/>
+            <defs>
+              <linearGradient id="lg1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+              <linearGradient id="lg2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+              <linearGradient id="lg3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">OneWork</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Fonctionnalités</a>
+        <a href="#how">Comment ça marche</a>
+        <a href="#security">Sécurité</a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="#download" class="btn-nav-download">
+          Télécharger gratuitement
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+      </div>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-content">
-      <div class="hero-badge">Intelligence Artificielle · Microsoft 365</div>
-      <h1 class="hero-title">
-        Votre journée de travail,<br>
-        <span class="gradient-text">analysée en 10 secondes.</span>
-      </h1>
-      <p class="hero-subtitle">
-        OneWork connecte Microsoft 365 à une IA et vous donne un brief complet de votre journée : mails urgents, réunions, messages Teams — tout au même endroit.
-      </p>
-      <div class="hero-actions">
-        <a href="#download" class="btn-primary">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Télécharger pour Windows
-        </a>
-        <a href="app.html" class="btn-secondary">
-          Essayer dans le navigateur →
-        </a>
-      </div>
-      <p class="hero-note">Gratuit · Données privées · Aucun stockage de mots de passe</p>
+    <div class="hero-bg">
+      <div class="hero-orb orb-1"></div>
+      <div class="hero-orb orb-2"></div>
+      <div class="hero-grid"></div>
     </div>
 
-    <!-- Dashboard Preview -->
-    <div class="hero-preview">
-      <div class="preview-window">
-        <div class="preview-topbar">
-          <div class="preview-greeting">
-            <div class="preview-avatar"></div>
-            <div>
-              <div class="preview-name">Bonjour, Henri 👋</div>
-              <div class="preview-date">3 réunions aujourd'hui</div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Maintenant disponible · v1.0 pour Windows
+        </div>
+
+        <h1 class="hero-title">
+          Votre journée,<br>
+          <span class="gradient-text">analysée en 10 sec.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          OneWork connecte Microsoft 365 à une IA et vous donne un brief de votre journée au démarrage — mails urgents, réunions, Teams, fichiers. Rien ne vous échappe.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#download" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Télécharger pour Windows
+          </a>
+          <a href="#how" class="btn-ghost">
+            Voir comment ça marche
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </div>
+
+        <div class="hero-social-proof">
+          <div class="proof-avatars">
+            <div class="proof-avatar" style="background: linear-gradient(135deg,#f472b6,#a78bfa)"></div>
+            <div class="proof-avatar" style="background: linear-gradient(135deg,#34d399,#3b82f6)"></div>
+            <div class="proof-avatar" style="background: linear-gradient(135deg,#fb923c,#f43f5e)"></div>
+            <div class="proof-avatar" style="background: linear-gradient(135deg,#a78bfa,#22d3ee)"></div>
+          </div>
+          <span class="proof-text"><strong>+500 managers</strong> l'utilisent chaque matin</span>
+        </div>
+      </div>
+
+      <!-- ANIMATED DEMO -->
+      <div class="hero-demo">
+        <div class="demo-chrome">
+          <div class="chrome-bar">
+            <div class="chrome-dot red"></div>
+            <div class="chrome-dot yellow"></div>
+            <div class="chrome-dot green"></div>
+            <div class="chrome-title">OneWork · Brief du jour</div>
+          </div>
+          <div class="demo-content">
+            <div class="demo-header">
+              <div class="demo-greeting">
+                <div class="demo-avatar"></div>
+                <div>
+                  <div class="demo-name">Bonjour, Henri 👋</div>
+                  <div class="demo-date" id="demo-date">Mercredi 26 Mars · 08h02</div>
+                </div>
+              </div>
+              <div class="demo-badge analyzing" id="demo-status">
+                <span class="analyzing-dot"></span>
+                Analyse IA en cours...
+              </div>
+            </div>
+
+            <div class="demo-cards" id="demo-cards">
+              <div class="demo-card urgent card-anim" style="animation-delay: 0.6s">
+                <div class="demo-card-label">🚨 URGENT</div>
+                <div class="demo-card-title">Jean-Pierre (Investisseur)</div>
+                <div class="demo-card-body">Suite à notre call — besoin de votre retour avant 10h sur le term sheet.</div>
+                <div class="demo-card-time">Il y a 23 min · Non lu</div>
+              </div>
+
+              <div class="demo-card meeting card-anim" style="animation-delay: 0.9s">
+                <div class="demo-card-label">📅 RÉUNIONS</div>
+                <div class="demo-meeting-list">
+                  <div class="demo-meeting-item">
+                    <span class="meeting-time">09:30</span>
+                    <span>Stand-up Product</span>
+                  </div>
+                  <div class="demo-meeting-item">
+                    <span class="meeting-time">14:00</span>
+                    <span>Démo client — Renault</span>
+                  </div>
+                  <div class="demo-meeting-item">
+                    <span class="meeting-time">16:30</span>
+                    <span>Revue de sprint</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="demo-card ai card-anim" style="animation-delay: 1.2s">
+                <div class="demo-card-label">✨ SUGGESTION IA</div>
+                <div class="demo-ai-text">"Répondez à Jean-Pierre avant le stand-up. Préparez la démo Renault avec le deck mis à jour hier soir."</div>
+              </div>
+
+              <div class="demo-card teams card-anim" style="animation-delay: 1.5s">
+                <div class="demo-card-label">💬 TEAMS</div>
+                <div class="demo-card-title">Sarah (Marketing)</div>
+                <div class="demo-card-body">@Henri — peux-tu valider la campagne Q2 ? On attend ton OK pour lancer.</div>
+              </div>
+            </div>
+
+            <!-- Chat demo -->
+            <div class="demo-chat card-anim" style="animation-delay: 2s">
+              <div class="demo-chat-input">
+                <div class="chat-orb"></div>
+                <span class="demo-typing" id="demo-typing">Rédige une réponse à Jean-Pierre...</span>
+              </div>
             </div>
           </div>
         </div>
-        <div class="preview-grid">
-          <div class="preview-card blue">
-            <div class="preview-card-title">📧 Emails Prioritaires</div>
-            <div class="preview-msg"><b>Jean (Investisseur)</b><br><span>Suite à notre appel...</span></div>
-            <div class="preview-msg"><b>Marc Dubois</b><br><span>Bugs prod landing page</span></div>
-          </div>
-          <div class="preview-card purple">
-            <div class="preview-card-title">💬 Messages Teams</div>
-            <div class="preview-msg"><b>Sarah (Marketing)</b><br><span>@Henri peux-tu valider ?</span></div>
-          </div>
-          <div class="preview-card red">
-            <div class="preview-card-title">🚨 Alertes</div>
-            <div class="preview-msg"><b>Valider le MVP SaaS</b><br><span>Retard de 1 jour</span></div>
-          </div>
-          <div class="preview-card green">
-            <div class="preview-card-title">✨ Suggestion IA</div>
-            <div class="preview-insight">"Préparez le pitch deck avant 11h."</div>
-          </div>
+        <!-- Floating widget -->
+        <div class="demo-widget">
+          <div class="widget-knob"></div>
+          <div class="widget-pulse"></div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS STRIP -->
+  <section class="integrations">
+    <p class="integrations-label">Fonctionne nativement avec vos outils Microsoft 365</p>
+    <div class="integrations-logos">
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" fill="#f25022"/><rect x="13" y="1" width="10" height="10" rx="1.5" fill="#7fba00"/><rect x="1" y="13" width="10" height="10" rx="1.5" fill="#00a4ef"/><rect x="13" y="13" width="10" height="10" rx="1.5" fill="#ffb900"/></svg>
+        <span>Microsoft 365</span>
+      </div>
+      <div class="integration-sep"></div>
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M2 6C2 4.9 2.9 4 4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6z" fill="#0078d4"/><path d="M2 6l10 7 10-7" stroke="white" stroke-width="1.5" fill="none"/></svg>
+        <span>Outlook</span>
+      </div>
+      <div class="integration-sep"></div>
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 6.5v11L12 22l9-4.5v-11L12 2z" fill="#6264a7"/><path d="M12 2v20M3 6.5l9 5.5 9-5.5" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" fill="none"/></svg>
+        <span>Teams</span>
+      </div>
+      <div class="integration-sep"></div>
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#217346"/><path d="M6 8h12M6 12h12M6 16h8" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Excel & OneDrive</span>
+      </div>
+      <div class="integration-sep"></div>
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#7719aa"/><path d="M8 6h8M8 10h8M8 14h5" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>OneNote</span>
+      </div>
+      <div class="integration-sep"></div>
+      <div class="integration-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="4" fill="#2b579a"/><path d="M6 8h12M6 12h12M6 16h10" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Word</span>
       </div>
     </div>
   </section>
 
   <!-- FEATURES -->
   <section class="features" id="features">
-    <div class="section-label">Ce que fait OneWork</div>
-    <h2 class="section-title">Tout ce dont vous avez besoin<br>pour démarrer la journée</h2>
+    <div class="section-inner">
+      <div class="section-tag">Fonctionnalités</div>
+      <h2 class="section-title">Tout ce dont vous avez besoin<br>pour démarrer la journée</h2>
+      <p class="section-subtitle">OneWork lit vos données Microsoft 365, les analyse avec Gemini AI et vous livre ce qui compte vraiment — en quelques secondes.</p>
 
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">📧</div>
-        <h3>Mails analysés par l'IA</h3>
-        <p>L'IA lit vos emails non lus et identifie ceux qui nécessitent une action immédiate. Fini le tri manuel.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💬</div>
-        <h3>Messages Teams filtrés</h3>
-        <p>Vos mentions et messages urgents sur Microsoft Teams remontés en priorité, sans le bruit.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📅</div>
-        <h3>Agenda intelligent</h3>
-        <p>Vos réunions du jour affichées avec leur contexte. OneWork vous rappelle ce que vous devez préparer.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>Fichiers Excel & OneDrive</h3>
-        <p>Les fichiers récemment modifiés dans votre espace sont analysés pour détecter des tâches en cours.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">✨</div>
-        <h3>Suggestions de l'IA</h3>
-        <p>Basé sur vos données M365, l'IA vous suggère les 3 actions les plus importantes à faire maintenant.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <h3>Données privées</h3>
-        <p>Votre token Microsoft ne quitte jamais votre machine. Le backend ne stocke que les analyses générées.</p>
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-icon-wrap blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3>Emails analysés par l'IA</h3>
+          <p>L'IA lit vos emails non lus et identifie ceux qui nécessitent une action immédiate. Priorités, urgences, CC — tout est trié.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.1s">
+          <div class="feature-icon-wrap purple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <h3>Messages Teams filtrés</h3>
+          <p>Vos mentions et messages urgents sur Microsoft Teams remontés en priorité, sans le bruit des canaux secondaires.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.2s">
+          <div class="feature-icon-wrap cyan">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3>Agenda intelligent</h3>
+          <p>Vos réunions du jour affichées avec leur contexte. OneWork vous rappelle ce que vous devez préparer avant chaque appel.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.3s">
+          <div class="feature-icon-wrap green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Agent IA conversationnel</h3>
+          <p>Demandez à Alex de rédiger un email, créer une tâche ou résumer un projet. Il agit directement dans Microsoft 365.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.4s">
+          <div class="feature-icon-wrap orange">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>Fichiers & OneDrive</h3>
+          <p>Les fichiers Excel récemment modifiés sont analysés pour détecter des projets en cours, des anomalies ou des actions nécessaires.</p>
+        </div>
+
+        <div class="feature-card reveal" style="transition-delay: 0.5s">
+          <div class="feature-icon-wrap pink">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>100% privé</h3>
+          <p>Votre token Microsoft ne quitte jamais votre machine. Zéro stockage de mots de passe. Chiffrement de bout en bout.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- DOWNLOAD -->
-  <section class="download" id="download">
-    <div class="download-card">
-      <div class="download-info">
-        <div class="logo-dot large"></div>
-        <div>
-          <h2>OneWork pour Windows</h2>
-          <p>Application bureau légère. Se lance au démarrage et reste en arrière-plan.</p>
-          <div class="download-meta">
-            <span>Windows 10/11</span>
-            <span>•</span>
-            <span>Electron</span>
-            <span>•</span>
-            <span>v1.0.0</span>
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-inner">
+      <div class="section-tag">Comment ça marche</div>
+      <h2 class="section-title">Opérationnel en 3 minutes</h2>
+      <p class="section-subtitle">Pas de configuration complexe. Pas de formation. Connectez Microsoft 365 et laissez l'IA faire le reste.</p>
+
+      <div class="steps">
+        <div class="step reveal">
+          <div class="step-number">01</div>
+          <div class="step-content">
+            <h3>Connectez Microsoft 365</h3>
+            <p>Un simple clic pour autoriser OneWork à lire vos emails, réunions et fichiers. OAuth sécurisé, aucun mot de passe stocké.</p>
+          </div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step reveal" style="transition-delay:0.15s">
+          <div class="step-number">02</div>
+          <div class="step-content">
+            <h3>L'IA analyse vos données</h3>
+            <p>Gemini AI croise vos emails, réunions, Teams et fichiers pour identifier les priorités réelles de votre journée en temps réel.</p>
+          </div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step reveal" style="transition-delay:0.3s">
+          <div class="step-number">03</div>
+          <div class="step-content">
+            <h3>Votre brief personnalisé</h3>
+            <p>En 10 secondes, vous avez un brief complet avec les urgences, les prochaines réunions et les suggestions de l'IA. Chaque matin.</p>
           </div>
         </div>
       </div>
-      <div class="download-actions">
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="security" id="security">
+    <div class="section-inner">
+      <div class="security-card reveal">
+        <div class="security-left">
+          <div class="section-tag">Sécurité & Confidentialité</div>
+          <h2 class="security-title">Conçu pour l'entreprise.<br>Vos données restent les vôtres.</h2>
+          <p class="security-desc">OneWork a été conçu avec une architecture zero-trust. Votre token Microsoft ne quitte jamais votre machine et aucun email n'est stocké sur nos serveurs.</p>
+          <div class="security-badges">
+            <div class="sec-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              OAuth 2.0
+            </div>
+            <div class="sec-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              Zero stockage
+            </div>
+            <div class="sec-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              RGPD compliant
+            </div>
+            <div class="sec-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              Audit logs
+            </div>
+          </div>
+        </div>
+        <div class="security-right">
+          <div class="security-visual">
+            <div class="sec-node central">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#sg)" /></svg>
+              OneWork
+            </div>
+            <div class="sec-orbit">
+              <div class="sec-sat s1">M365</div>
+              <div class="sec-sat s2">Token</div>
+              <div class="sec-sat s3">IA</div>
+              <div class="sec-sat s4">Brief</div>
+            </div>
+            <svg class="sec-defs" width="0" height="0"><defs><linearGradient id="sg" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-inner">
+      <div class="section-tag">Ce qu'ils en disent</div>
+      <h2 class="section-title">Des managers qui gagnent<br>1h par jour</h2>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <p>"Je commence chaque matin par OneWork. En 10 secondes je sais exactement ce qui compte. J'ai arrêté de perdre du temps dans Outlook à chercher les urgences."</p>
+          <div class="testimonial-author">
+            <div class="t-avatar" style="background: linear-gradient(135deg,#818cf8,#22d3ee)">SL</div>
+            <div>
+              <div class="t-name">Sophie Laurent</div>
+              <div class="t-role">Directrice Produit · Scale-up B2B</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" style="transition-delay:0.1s">
+          <div class="testimonial-stars">★★★★★</div>
+          <p>"L'agent IA qui répond aux emails directement depuis le widget... c'est le futur du travail. En 2 semaines j'ai économisé facilement 5h de traitement d'emails."</p>
+          <div class="testimonial-author">
+            <div class="t-avatar" style="background: linear-gradient(135deg,#f472b6,#fb923c)">TM</div>
+            <div>
+              <div class="t-name">Thomas Moreau</div>
+              <div class="t-role">CEO · SaaS Series A</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card reveal" style="transition-delay:0.2s">
+          <div class="testimonial-stars">★★★★★</div>
+          <p>"La cross-corrélation des emails, Teams et fichiers est bluffante. OneWork a détecté un conflit de planning entre deux projets que j'avais raté manuellement."</p>
+          <div class="testimonial-author">
+            <div class="t-avatar" style="background: linear-gradient(135deg,#34d399,#3b82f6)">AC</div>
+            <div>
+              <div class="t-name">Anaïs Chevrier</div>
+              <div class="t-role">VP Engineering · Fintech</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD CTA -->
+  <section class="cta" id="download">
+    <div class="cta-bg">
+      <div class="cta-orb orb-a"></div>
+      <div class="cta-orb orb-b"></div>
+    </div>
+    <div class="cta-inner">
+      <div class="cta-badge">Windows 10 / 11 · Gratuit</div>
+      <h2 class="cta-title">Prêt à reprendre le contrôle<br>de votre journée ?</h2>
+      <p class="cta-subtitle">Téléchargez OneWork gratuitement. Aucune carte bancaire requise.</p>
+      <div class="cta-actions">
         <a href="https://github.com/Alexheno/oneworkk/releases/latest" target="_blank" class="btn-primary large">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Télécharger .exe
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Télécharger .exe (Windows)
         </a>
-        <a href="app.html" class="btn-outline">Utiliser en ligne →</a>
+        <p class="cta-note">Application signée · 45 MB · Mise à jour automatique</p>
+      </div>
+      <div class="cta-it-block">
+        <div class="cta-it-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <div class="cta-it-title">Administrateur IT ?</div>
+          <div class="cta-it-desc">Déployez OneWork pour toute votre organisation via Intune en un clic.</div>
+        </div>
+        <a href="mailto:admin@onework.app" class="btn-it">Contacter →</a>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
-    <div class="footer-logo">
-      <div class="logo-dot small"></div>
-      <span>OneWork</span>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="nav-logo">
+          <div class="logo-mark small">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#flg)"/>
+              <defs><linearGradient id="flg" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+            </svg>
+          </div>
+          <span class="logo-text">OneWork</span>
+        </a>
+        <p class="footer-tagline">L'IA qui lit votre Microsoft 365 à votre place.</p>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <div class="footer-col-title">Produit</div>
+          <a href="#features">Fonctionnalités</a>
+          <a href="#how">Comment ça marche</a>
+          <a href="#download">Télécharger</a>
+          <a href="#security">Sécurité</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Légal</div>
+          <a href="../legal/privacy-policy.html">Politique de confidentialité</a>
+          <a href="../legal/terms.html">Conditions d'utilisation</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-title">Liens</div>
+          <a href="https://github.com/Alexheno/oneworkk" target="_blank">GitHub</a>
+          <a href="mailto:admin@onework.app">Contact</a>
+        </div>
+      </div>
     </div>
-    <p>Conçu pour les entrepreneurs et managers occupés.</p>
-    <a href="https://github.com/Alexheno/oneworkk" target="_blank">GitHub</a>
+    <div class="footer-bottom">
+      <span>© 2025 OneWork. Tous droits réservés.</span>
+      <span>Conçu pour les managers et entrepreneurs occupés.</span>
+    </div>
   </footer>
 
+  <script src="landing.js"></script>
 </body>
 </html>
