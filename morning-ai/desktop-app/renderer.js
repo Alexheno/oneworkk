@@ -74,23 +74,31 @@ const widgetContainer = document.getElementById('widget-container');
 const knob = document.querySelector('.knob');
 let hoverTimeout;
 
-widgetContainer.addEventListener('mouseenter', () => {
+function openWidget() {
   clearTimeout(hoverTimeout);
   if (window.electronAPI && !isDraggingWindow) window.electronAPI.setIgnoreMouseEvents(false);
-  if (!isDraggingWindow && !widgetContainer.classList.contains('widget-open')) {
+  if (!isDraggingWindow) {
     widgetContainer.classList.remove('widget-closed');
     widgetContainer.classList.add('widget-open');
   }
-});
+}
 
-widgetContainer.addEventListener('mouseleave', () => {
+function closeWidget() {
   if (isChatInputFocused) return;
+  clearTimeout(hoverTimeout);
   hoverTimeout = setTimeout(() => {
     if (window.electronAPI) window.electronAPI.setIgnoreMouseEvents(true, { forward: true });
     widgetContainer.classList.remove('widget-open');
     widgetContainer.classList.add('widget-closed');
-  }, 200);
-});
+  }, 300);
+}
+
+// Le .card est positionné en absolute hors des bounds du container,
+// donc on écoute séparément mouseenter/leave sur container ET sur la carte.
+widgetContainer.addEventListener('mouseenter', openWidget);
+widgetContainer.addEventListener('mouseleave', closeWidget);
+card.addEventListener('mouseenter', () => clearTimeout(hoverTimeout));
+card.addEventListener('mouseleave', closeWidget);
 
 // ─── Window Drag (knob) ──────────────────────────────────
 let isDraggingWindow = false;

@@ -20,6 +20,7 @@ const BACKEND_URL = 'https://oneworkk-production.up.railway.app';
 // ─── Windows ──────────────────────────────────────────────
 function createOverviewWindow() {
   if (overviewWindow) {
+    overviewWindow.show();
     overviewWindow.focus();
     return;
   }
@@ -79,6 +80,10 @@ function createWindow() {
   });
 
   ipcMain.on('open-overview', () => createOverviewWindow());
+
+  ipcMain.on('hide-overview', () => {
+    if (overviewWindow && !overviewWindow.isDestroyed()) overviewWindow.hide();
+  });
 
   const { login } = require('./auth');
   ipcMain.handle('connect-microsoft', async () => {

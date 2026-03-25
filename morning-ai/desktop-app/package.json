@@ -4,11 +4,16 @@
   "description": "Votre assistant de bureau intelligent connecté à Microsoft 365",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
+    "start": "node launch.js",
     "build": "electron-builder --win --x64",
     "build:signed": "electron-builder --win --x64 --publish never"
   },
-  "keywords": ["microsoft365", "productivity", "ai", "assistant"],
+  "keywords": [
+    "microsoft365",
+    "productivity",
+    "ai",
+    "assistant"
+  ],
   "author": {
     "name": "OneWork",
     "email": "contact@onework.app",
@@ -28,17 +33,24 @@
     "appId": "com.onework.app",
     "productName": "OneWork",
     "copyright": "Copyright © 2024 OneWork. Tous droits réservés.",
-
     "win": {
-      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
       "icon": "assets/icon.ico",
       "artifactName": "OneWork-Setup-${version}.exe",
       "publisherName": "OneWork",
       "requestedExecutionLevel": "asInvoker",
-      "signingHashAlgorithms": ["sha256"],
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
       "verifyUpdateCodeSignature": false
     },
-
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": false,
@@ -54,21 +66,25 @@
       "deleteAppDataOnUninstall": false,
       "include": "assets/installer.nsh"
     },
-
     "files": [
       "**/*",
       "!node_modules/electron/**",
       "!node_modules/.cache/**",
       "!dist/**"
     ],
-
     "extraResources": [
-      { "from": "assets/", "to": "assets/", "filter": ["**/*"] }
+      {
+        "from": "assets/",
+        "to": "assets/",
+        "filter": [
+          "**/*"
+        ]
+      }
     ]
   },
-
   "devDependencies": {
-    "electron": "^28.3.3",
+    "cross-env": "^10.1.0",
+    "electron": "^36.0.0",
     "electron-builder": "^25.1.8"
   },
   "dependencies": {

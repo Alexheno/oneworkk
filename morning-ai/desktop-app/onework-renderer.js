@@ -239,8 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const result = await resp.json();
       if (!result.success || !result.data) throw new Error(result.error || 'Réponse invalide');
 
-      showDashboard(result.data, account, result.rawCounts);
+      showDashboard(result.data, account, result.rawCounts, result.rawData);
       if (result.morningScript) showWelcomeBrief(result.morningScript, account);
+      // Masque la fenêtre overview après l'analyse — le widget prend le relais
+      setTimeout(() => window.overviewAPI?.hideOverview?.(), 1500);
     } catch (err) {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
@@ -249,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── Show dashboard ────────────────────────────────────
-  function showDashboard(ai, acc, rawCounts) {
+  function showDashboard(ai, acc, rawCounts, rawData) {
     // Transition
     $('onboarding-screen').style.opacity = '0';
     setTimeout(() => {
@@ -286,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mergeProjects(ai.projectOverview || []);
 
     // Widget
-    window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts });
+    window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts, rawData });
   }
 
   // ─── Fill emails ───────────────────────────────────────

@@ -1,19 +1,33 @@
+'use strict';
 require('dotenv').config();
 
-const AGENT_SYSTEM = `Tu es Alex, le Chief of Staff IA de OneWork. Tu es concis, direct, précis. Tu parles uniquement français.
+const { callLLM, parseJSON, MODELS } = require('./llm.service');
 
-CAPACITÉS :
-- Lire et analyser les données Microsoft 365 (emails, réunions, tâches, projets)
-- Rédiger des emails, réponses, messages
-- Exécuter des actions : envoyer email, créer tâche
+// ─── System Prompt Agent ──────────────────────────────────────────────────────
+// Alex est un agent conversationnel précis, rapide, qui agit comme un vrai
+// Chief of Staff. Il comprend l'intent, répond court, et exécute avec soin.
+const AGENT_SYSTEM = `Tu es Alex, le Chief of Staff IA de OneWork.
 
-RÈGLES ABSOLUES :
-1. Réponds UNIQUEMENT en JSON valide, rien d'autre, pas de markdown
-2. Maximum 2-3 phrases dans "response"
-3. Actions irréversibles (envoyer email) → needsConfirmation: true
-4. Utilise PRÉCISÉMENT les données M365 fournies (noms, sujets, heures réelles)
+PERSONNALITÉ : Direct, précis, professionnel. Jamais robotique. Toujours utile.
+LANGUE : Français uniquement.
+FORMAT : JSON strictement valide — aucun markdown, aucun texte avant/après.
 
-FORMAT JSON STRICT :
+═══ CAPACITÉS ═══
+LECTURE    : emails, réunions, tâches, messages Teams, fichiers, notes, agenda
+RÉDACTION  : emails, réponses, brouillons, résumés
+ACTIONS    : envoyer email, répondre email, créer tâche, marquer email lu
+ANALYSE    : résumer un projet, identifier urgences, croiser les données M365
+
+═══ RÈGLES ABSOLUES ═══
+1. JSON valide UNIQUEMENT — jamais de texte hors JSON
+2. "response" : max 3 phrases — direct et actionnable
+3. Actions irréversibles (envoyer, supprimer) → needsConfirmation: true OBLIGATOIRE
+4. Utilise les vraies données M365 fournies (noms exacts, sujets réels, heures réelles)
+5. Si l'information n'est pas dans le contexte M365 → dis-le clairement
+6. Ne jamais inventer d'emails, de réunions ou de tâches
+
+═══ FORMAT DE RÉPONSE ═══
+Cas standard :
 {
   "intent": "read|compose|action|analyze",
   "response": "Réponse naturelle courte",
@@ -22,122 +36,268 @@ FORMAT JSON STRICT :
   "action": null
 }
 
-Si action avec confirmation :
+Cas action avec confirmation :
 {
   "intent": "action",
-  "response": "Je vais faire X. Confirmer ?",
+  "response": "Je vais [action]. Voulez-vous confirmer ?",
   "needsConfirmation": true,
-  "confirmText": "Résumé action 1 ligne",
+  "confirmText": "Résumé en 1 ligne de ce qui sera fait",
   "action": {
-    "type": "sendEmail|createTask|replyEmail",
-    "params": { "to": "email@ex.com", "subject": "...", "body": "..." }
+    "type": "sendEmail|replyEmail|createTask|markEmailRead|forwardEmail",
+    "params": {
+      "to": "email@exemple.com",
+      "subject": "Sujet",
+      "body": "Corps du message",
+      "messageId": "ID si reply/markRead",
+      "title": "Titre si tâche",
+      "notes": "Notes si tâche"
+    }
   }
 }`;
 
-async function processAgentMessage(message, conversationHistory, m365Context) {
-    try {
-        const ctxStr = m365Context ? `
-CONTEXTE M365 ACTUEL :
-Emails directs récents : ${JSON.stringify((m365Context.directEmails || []).slice(0, 8))}
-Réunions aujourd'hui : ${JSON.stringify(m365Context.todayMeetings || [])}
-Tâches prioritaires : ${JSON.stringify((m365Context.topTasks || []).slice(0, 6))}
-Projets : ${JSON.stringify((m365Context.projectOverview || []).slice(0, 5))}
-Alertes urgentes : ${JSON.stringify(m365Context.urgentAlerts || [])}
-Données brutes (IDs pour actions) : ${JSON.stringify(m365Context.rawData || {})}
-` : '';
+// ─── Gestion de l'historique ──────────────────────────────────────────────────
+// Limiter l'historique pour rester dans la fenêtre de contexte
+const MAX_HISTORY_TURNS = 12;  // 6 échanges user/assistant
 
-        const messages = [
-            { role: 'system', content: AGENT_SYSTEM + '\n' + ctxStr },
-            ...(conversationHistory || []),
-            { role: 'user', content: message }
-        ];
-
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'google/gemini-2.5-flash-lite',
-                messages,
-                temperature: 0.3
-            })
-        });
-
-        if (!response.ok) {
-            const err = await response.text();
-            throw new Error(`OpenRouter ${response.status}: ${err}`);
-        }
-
-        const data = await response.json();
-        let content = data.choices[0].message.content
-            .replace(/```json/g, '').replace(/```/g, '').trim();
-
-        try {
-            return JSON.parse(content);
-        } catch {
-            return { intent: 'read', response: content, needsConfirmation: false, action: null };
-        }
-    } catch (error) {
-        console.error('Erreur agent:', error.message);
-        throw error;
-    }
+function trimHistory(history) {
+    if (!Array.isArray(history)) return [];
+    // Garde les N derniers messages (pairs user/assistant)
+    return history.slice(-MAX_HISTORY_TURNS);
 }
 
+// ─── Formatage du contexte M365 ───────────────────────────────────────────────
+function formatM365Context(m365Context) {
+    if (!m365Context) return '';
+
+    const lines = ['CONTEXTE M365 ACTUEL (données réelles) :'];
+
+    const emails = (m365Context.directEmails || []).slice(0, 10);
+    if (emails.length) {
+        lines.push(`\nEMAILS DIRECTS (${emails.length}) :`);
+        emails.forEach(e => lines.push(`  • [${e.isRead ? 'lu' : 'NON LU'}] ${e.sender} → "${e.subject}" : ${e.summary || ''}`));
+    }
+
+    const meetings = (m365Context.todayMeetings || []).slice(0, 8);
+    if (meetings.length) {
+        lines.push(`\nRÉUNIONS AUJOURD'HUI (${meetings.length}) :`);
+        meetings.forEach(m => lines.push(`  • ${m.time} — ${m.title}${m.context ? ` (${m.context})` : ''}`));
+    }
+
+    const tasks = (m365Context.topTasks || []).slice(0, 8);
+    if (tasks.length) {
+        lines.push(`\nTÂCHES PRIORITAIRES (${tasks.length}) :`);
+        tasks.forEach(t => lines.push(`  • [${t.priority}] ${t.title}${t.due ? ` — échéance: ${t.due}` : ''}`));
+    }
+
+    const projects = (m365Context.projectOverview || []).slice(0, 5);
+    if (projects.length) {
+        lines.push(`\nPROJETS ACTIFS (${projects.length}) :`);
+        projects.forEach(p => lines.push(`  • ${p.name} [${p.status}] — ${p.nextAction}`));
+    }
+
+    const alerts = (m365Context.urgentAlerts || []).slice(0, 5);
+    if (alerts.length) {
+        lines.push(`\nALERTES URGENTES (${alerts.length}) :`);
+        alerts.forEach(a => lines.push(`  ⚡ ${a.sender || a.type} : ${a.text}`));
+    }
+
+    // IDs pour les actions (email reply, markRead, etc.)
+    if (m365Context.rawData) {
+        const rawEmails = (m365Context.rawData.emails || []).slice(0, 10);
+        if (rawEmails.length) {
+            lines.push(`\nIDs EMAILS (pour actions) :`);
+            rawEmails.forEach(e => lines.push(`  • ${e.sender} "${e.subject}" → id: ${e.id}`));
+        }
+    }
+
+    return lines.join('\n');
+}
+
+// ─── Validation des paramètres d'action ───────────────────────────────────────
+function validateAction(action) {
+    if (!action || !action.type) return { valid: false, error: 'Action sans type' };
+    const { type, params = {} } = action;
+
+    const validTypes = ['sendEmail', 'replyEmail', 'createTask', 'markEmailRead', 'forwardEmail'];
+    if (!validTypes.includes(type)) return { valid: false, error: `Type d'action inconnu: ${type}` };
+
+    switch (type) {
+        case 'sendEmail':
+        case 'forwardEmail':
+            if (!params.to)      return { valid: false, error: 'Destinataire manquant (to)' };
+            if (!params.subject) return { valid: false, error: 'Sujet manquant (subject)' };
+            if (!params.body)    return { valid: false, error: 'Corps manquant (body)' };
+            break;
+        case 'replyEmail':
+            if (!params.messageId) return { valid: false, error: 'ID du message manquant (messageId)' };
+            if (!params.body)      return { valid: false, error: 'Corps de réponse manquant (body)' };
+            break;
+        case 'createTask':
+            if (!params.title) return { valid: false, error: 'Titre de tâche manquant (title)' };
+            break;
+        case 'markEmailRead':
+            if (!params.messageId) return { valid: false, error: 'ID du message manquant (messageId)' };
+            break;
+    }
+
+    return { valid: true };
+}
+
+// ─── processAgentMessage ──────────────────────────────────────────────────────
+/**
+ * Traite un message utilisateur et retourne la réponse structurée de l'agent.
+ *
+ * @param {string} message             - Message de l'utilisateur
+ * @param {Array}  conversationHistory - Historique [{role, content}]
+ * @param {Object} m365Context         - Contexte M365 (brief IA)
+ * @returns {Promise<Object>}          - { intent, response, needsConfirmation, confirmText, action }
+ */
+async function processAgentMessage(message, conversationHistory, m365Context) {
+    const ctxBlock    = formatM365Context(m365Context);
+    const systemFull  = ctxBlock ? `${AGENT_SYSTEM}\n\n${ctxBlock}` : AGENT_SYSTEM;
+    const trimmedHist = trimHistory(conversationHistory);
+
+    const messages = [
+        { role: 'system',    content: systemFull },
+        ...trimmedHist,
+        { role: 'user', content: message },
+    ];
+
+    let content;
+    try {
+        content = await callLLM(messages, { model: MODELS.AGENT, temperature: 0.25 });
+    } catch (err) {
+        console.error('[Agent] Erreur LLM:', err.message);
+        throw err;
+    }
+
+    let parsed;
+    try {
+        parsed = parseJSON(content);
+    } catch {
+        // Fallback gracieux : traite la réponse brute comme du texte
+        return {
+            intent:            'read',
+            response:          content.slice(0, 500),
+            needsConfirmation: false,
+            confirmText:       null,
+            action:            null,
+        };
+    }
+
+    // Valide l'action si présente
+    if (parsed.action) {
+        const validation = validateAction(parsed.action);
+        if (!validation.valid) {
+            console.warn('[Agent] Action invalide:', validation.error, parsed.action);
+            return {
+                intent:            'read',
+                response:          parsed.response || 'Je n\'ai pas pu préparer cette action correctement. Pouvez-vous préciser ?',
+                needsConfirmation: false,
+                confirmText:       null,
+                action:            null,
+            };
+        }
+    }
+
+    return {
+        intent:            parsed.intent            || 'read',
+        response:          parsed.response          || '',
+        needsConfirmation: parsed.needsConfirmation || false,
+        confirmText:       parsed.confirmText       || null,
+        action:            parsed.action            || null,
+    };
+}
+
+// ─── executeAgentAction ────────────────────────────────────────────────────────
+/**
+ * Exécute une action confirmée via Microsoft Graph.
+ *
+ * @param {Object} action       - { type, params }
+ * @param {string} accessToken
+ * @returns {Promise<Object>}
+ */
 async function executeAgentAction(action, accessToken) {
-    const { sendEmailMessage, replyToEmail, createTodoTask } = require('./graph.service');
+    const {
+        sendEmailMessage,
+        replyToEmail,
+        createTodoTask,
+        markEmailAsRead,
+    } = require('./graph.service');
+
     const { type, params } = action;
 
     switch (type) {
         case 'sendEmail':
+        case 'forwardEmail':
             return await sendEmailMessage(accessToken, params);
         case 'replyEmail':
             return await replyToEmail(accessToken, params.messageId, params.body);
         case 'createTask':
-            return await createTodoTask(accessToken, params);
+            return await createTodoTask(accessToken, { title: params.title, notes: params.notes });
+        case 'markEmailRead':
+            return await markEmailAsRead(accessToken, params.messageId);
         default:
-            throw new Error(`Action inconnue: ${type}`);
+            throw new Error(`Type d'action non supporté: ${type}`);
     }
 }
 
+// ─── generateMorningScript ────────────────────────────────────────────────────
+/**
+ * Génère un script vocal pour le brief matinal.
+ * Conçu pour être lu à voix haute — naturel, fluide, chaleureux.
+ *
+ * @param {Object} m365Data - { name, date, emails, meetings, tasks }
+ * @returns {Promise<string>} - Texte à lire à voix haute
+ */
 async function generateMorningScript(m365Data) {
-    try {
-        const prompt = `Tu es Alex, l'assistant IA de OneWork. Génère un brief matinal à lire à voix haute.
+    const { name = 'vous', date = '', emails = [], meetings = [], tasks = [] } = m365Data;
 
-STYLE : Chaleureux, naturel, comme un assistant personnel qui brief son patron chaque matin. Parle directement à la personne. Sois vivant, pas robotique. Maximum 130 mots.
+    // Sélectionne les données les plus pertinentes
+    const urgentEmails   = emails.filter(e => e.isUrgent).slice(0, 2);
+    const topEmails      = urgentEmails.length ? urgentEmails : emails.slice(0, 2);
+    const todayMeetings  = meetings.slice(0, 3);
+    const priorityTasks  = tasks.filter(t => t.priority === 'high' || t.priority === 'urgent').slice(0, 2);
+    const topTasks       = priorityTasks.length ? priorityTasks : tasks.slice(0, 2);
 
-STRUCTURE OBLIGATOIRE :
-1. Salutation avec prénom + jour
-2. Emails importants (max 2, cite expéditeur + sujet en 1 phrase)
-3. Réunions du jour (heure + titre)
-4. Tâches prioritaires (max 2)
-5. Une phrase d'encouragement finale
+    const dataContext = JSON.stringify({ name, date, emails: topEmails, meetings: todayMeetings, tasks: topTasks });
+
+    const prompt = `Tu es Alex, l'assistant vocal de OneWork. Génère un brief matinal à lire à voix haute par un TTS.
+
+CONTRAINTES STRICTES :
+• Maximum 120 mots (TTS limite)
+• Phrase par phrase — pas de listes, pas de tirets, pas de markdown
+• Ton chaleureux et naturel comme un vrai assistant personnel
+• Cite les vrais noms, heures et sujets fournis
+• Termine par une phrase d'encouragement courte
+
+STRUCTURE :
+1. Salutation avec prénom + jour (1 phrase)
+2. Emails importants (max 2 — cite expéditeur + sujet en 1 phrase chacun)
+3. Réunions du jour (cite heure + titre, max 2-3)
+4. Tâche prioritaire si présente (max 1 phrase)
+5. Phrase d'élan final
 
 DONNÉES :
-${JSON.stringify(m365Data, null, 2)}
+${dataContext}
 
-Réponds UNIQUEMENT avec le texte à lire à voix haute. Pas de JSON, pas de tirets, pas de balises. Du texte naturel fluide.`;
+Réponds UNIQUEMENT avec le texte à lire. Pas de JSON, pas de balises.`;
 
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'google/gemini-2.5-flash-lite',
-                messages: [{ role: 'user', content: prompt }],
-                temperature: 0.7
-            })
-        });
+    try {
+        const script = await callLLM(
+            [{ role: 'user', content: prompt }],
+            { model: MODELS.SCRIPT, temperature: 0.65 }
+        );
 
-        if (!response.ok) throw new Error(`OpenRouter ${response.status}`);
-        const data = await response.json();
-        return data.choices[0].message.content.trim();
-    } catch (error) {
-        console.error('Erreur generateMorningScript:', error.message);
-        throw error;
+        // Nettoyage basique : supprime tirets, astérisques, numéros de liste
+        return script
+            .replace(/^[-•*]\s*/gm, '')
+            .replace(/^\d+\.\s*/gm, '')
+            .replace(/\*\*/g, '')
+            .trim();
+    } catch (err) {
+        console.error('[Agent] Erreur generateMorningScript:', err.message);
+        throw err;
     }
 }
 
