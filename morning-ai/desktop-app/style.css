@@ -27,44 +27,45 @@ body, html {
   pointer-events: auto;
 }
 
-/* ─── Knob — très discret au repos ─── */
+/* ─── Knob — visible mais discret ─── */
 .knob {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(20, 20, 28, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
-  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 10;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.15);
 }
 
 .knob:active { cursor: grabbing; }
 
 .knob-inner {
-  width: 8px;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.55);
+  width: 9px;
+  height: 9px;
+  background: rgba(130, 140, 255, 0.85);
   border-radius: 50%;
-  transition: all 0.35s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(99,102,241,0.6);
 }
 
-/* Légèrement plus visible au survol */
+/* Survol knob fermé */
 .widget-closed .knob:hover {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(25, 25, 38, 0.96);
+  border-color: rgba(99,102,241,0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 12px rgba(99,102,241,0.3);
 }
 
 .widget-closed .knob:hover .knob-inner {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  background: #818cf8;
+  box-shadow: 0 0 12px rgba(99,102,241,0.8);
 }
 
 /* Knob se réduit quand la carte est ouverte */
@@ -75,19 +76,20 @@ body, html {
 
 /* ─── Card ─── */
 .card {
-  width: 305px;
-  max-height: 460px;
+  width: 318px;
+  max-height: 480px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: rgba(18, 18, 22, 0.97);
-  backdrop-filter: blur(32px) saturate(1.5);
-  -webkit-backdrop-filter: blur(32px) saturate(1.5);
-  border-radius: 18px;
+  background: rgba(10, 11, 16, 0.99);
+  backdrop-filter: blur(40px) saturate(1.8);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8);
+  border-radius: 20px;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.35),
-    0 0 0 0.5px rgba(255, 255, 255, 0.08) inset;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  padding: 16px 15px 13px;
+    0 32px 80px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 40px rgba(99,102,241,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 18px 16px 15px;
   opacity: 0;
   transform: translateY(12px) scale(0.97);
   pointer-events: none;
@@ -96,7 +98,7 @@ body, html {
   right: 0;
   transition: opacity 0.28s ease, transform 0.32s cubic-bezier(0.175, 0.885, 0.32, 1.15);
   -webkit-app-region: no-drag;
-  color: #e8e8ed;
+  color: #f2f2f7;
 }
 
 .card::-webkit-scrollbar { width: 3px; }
