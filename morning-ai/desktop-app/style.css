@@ -27,73 +27,73 @@ body, html {
   pointer-events: auto;
 }
 
-/* ─── Knob — Coconut logo ─── */
+/* ─── Knob — Coconut logo premium ─── */
 .knob {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(8,12,9,0.88);
-  backdrop-filter: blur(20px) saturate(1.5);
-  -webkit-backdrop-filter: blur(20px) saturate(1.5);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
-  transition: box-shadow 0.35s cubic-bezier(0.25,0.8,0.25,1),
-              background 0.25s ease;
   z-index: 10;
-  border: 1.5px solid rgba(255,255,255,0.18);
-  box-shadow:
-    0 6px 24px rgba(0,0,0,0.55),
-    0 0 0 1px rgba(109,191,120,0.12),
-    0 0 14px rgba(109,191,120,0.08);
   padding: 0;
   overflow: hidden;
+  /* Premium ring: warm sandy gold — comme les grandes marques */
+  border: 2px solid rgba(196,168,130,0.55);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.08) inset,
+    0 8px 28px rgba(0,0,0,0.60),
+    0 0 0 1px rgba(196,168,130,0.18),
+    0 0 18px rgba(196,168,130,0.12);
+  transition: border-color 0.3s ease, box-shadow 0.35s ease;
+  background: #0a0e0b;
 }
 
 .knob:active { cursor: grabbing; }
 
-/* Coconut SVG inside the knob */
+/* Coconut image inside the knob */
 .knob-coconut {
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  /* smooth 1/3 turn rotation */
-  transition: transform 0.65s cubic-bezier(0.34,1.56,0.64,1),
-              filter 0.3s ease;
-  filter: drop-shadow(0 0 3px rgba(109,191,120,0.25));
+  object-position: center 48%;
+  display: block;
+  transition: transform 0.68s cubic-bezier(0.34,1.56,0.64,1);
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  /* Crisp rendering at small sizes */
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-/* Knob hover (closed state) */
+/* Hover: ring s'illumine */
 .widget-closed .knob:hover {
-  background: rgba(12,18,13,0.95);
-  border-color: rgba(109,191,120,0.40);
+  border-color: rgba(196,168,130,0.85);
   box-shadow:
-    0 6px 28px rgba(0,0,0,0.60),
-    0 0 0 1px rgba(109,191,120,0.30),
-    0 0 20px rgba(109,191,120,0.15);
+    0 2px 0 rgba(255,255,255,0.10) inset,
+    0 10px 32px rgba(0,0,0,0.65),
+    0 0 0 1px rgba(196,168,130,0.35),
+    0 0 24px rgba(196,168,130,0.20);
 }
 
-/* Coconut rotates 120° (1/3 turn) when widget opens */
+/* Ouvert : ring vert + rotation 120° */
 .widget-open .knob {
-  background: rgba(8,12,9,0.92);
-  border-color: rgba(109,191,120,0.28);
+  border-color: rgba(109,191,120,0.70);
   box-shadow:
-    0 8px 32px rgba(0,0,0,0.65),
-    0 0 0 1.5px rgba(109,191,120,0.25),
-    0 0 24px rgba(109,191,120,0.12);
+    0 2px 0 rgba(255,255,255,0.08) inset,
+    0 10px 36px rgba(0,0,0,0.70),
+    0 0 0 1px rgba(109,191,120,0.25),
+    0 0 28px rgba(109,191,120,0.18);
 }
 
 .widget-open .knob-coconut {
   transform: rotate(120deg);
-  filter: drop-shadow(0 0 5px rgba(109,191,120,0.35));
 }
 
-/* Compatibility: hide old inner dot */
 .knob-inner { display: none; }
 
 /* ─── Card — Coconut Beach dark ─── */
