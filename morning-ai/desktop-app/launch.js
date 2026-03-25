@@ -20,9 +20,9 @@ const child = spawn(electronExe, [
     '--disable-gpu',
     '--disable-gpu-sandbox',
     '--no-sandbox',
-    '--in-process-gpu',
     '--disable-gpu-shader-disk-cache',
-    '--disable-gpu-process-crash-limit',
+    '--disable-webgl',
+    '--disable-webgl2',
 ], {
     stdio: 'inherit',
     env,
