@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mergeProjects(ai.projectOverview || []);
 
     // Widget
-    window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts, rawData });
+    window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts, rawData, userEmail: account?.username || '' });
   }
 
   // ─── Fill emails ───────────────────────────────────────

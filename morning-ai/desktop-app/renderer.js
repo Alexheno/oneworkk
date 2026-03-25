@@ -535,7 +535,7 @@ if (window.electronAPI && window.electronAPI.onWidgetData) {
 
     // Store token and context for chat
     if (payload.token) chatToken = payload.token;
-    chatContext = { ...ai, rawData: payload.rawData };
+    chatContext = { ...ai, rawData: payload.rawData, userEmail: payload.userEmail || '' };
 
     // Meetings
     if (ai.todayMeetings && Array.isArray(ai.todayMeetings)) {

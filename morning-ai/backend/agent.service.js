@@ -25,6 +25,7 @@ ANALYSE    : résumer un projet, identifier urgences, croiser les données M365
 4. Utilise les vraies données M365 fournies (noms exacts, sujets réels, heures réelles)
 5. Si l'information n'est pas dans le contexte M365 → dis-le clairement
 6. Ne jamais inventer d'emails, de réunions ou de tâches
+7. EMAILS : utilise TOUJOURS l'adresse exacte fournie dans le contexte. Si l'utilisateur dit "moi" ou "myself", utilise l'adresse USER_EMAIL du contexte. Ne jamais générer une adresse fictive comme "moi@..." ou "exemple@..."
 
 ═══ FORMAT DE RÉPONSE ═══
 Cas standard :
@@ -70,6 +71,11 @@ function formatM365Context(m365Context) {
     if (!m365Context) return '';
 
     const lines = ['CONTEXTE M365 ACTUEL (données réelles) :'];
+
+    if (m365Context.userEmail) {
+        lines.push(`\nUSER_EMAIL (adresse réelle de l'utilisateur) : ${m365Context.userEmail}`)
+        lines.push('→ Utilise cette adresse quand l\'utilisateur dit "moi", "myself", "mon adresse", etc.');
+    }
 
     const emails = (m365Context.directEmails || []).slice(0, 10);
     if (emails.length) {
@@ -121,12 +127,14 @@ function validateAction(action) {
     const validTypes = ['sendEmail', 'replyEmail', 'createTask', 'markEmailRead', 'forwardEmail'];
     if (!validTypes.includes(type)) return { valid: false, error: `Type d'action inconnu: ${type}` };
 
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     switch (type) {
         case 'sendEmail':
         case 'forwardEmail':
-            if (!params.to)      return { valid: false, error: 'Destinataire manquant (to)' };
-            if (!params.subject) return { valid: false, error: 'Sujet manquant (subject)' };
-            if (!params.body)    return { valid: false, error: 'Corps manquant (body)' };
+            if (!params.to)               return { valid: false, error: 'Destinataire manquant (to)' };
+            if (!EMAIL_RE.test(params.to)) return { valid: false, error: `Adresse email invalide : "${params.to}". Veuillez préciser l'adresse exacte.` };
+            if (!params.subject)          return { valid: false, error: 'Sujet manquant (subject)' };
+            if (!params.body)             return { valid: false, error: 'Corps manquant (body)' };
             break;
         case 'replyEmail':
             if (!params.messageId) return { valid: false, error: 'ID du message manquant (messageId)' };
