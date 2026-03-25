@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <!-- Main gradient — cyan → blue → purple → pink → orange -->
+    <linearGradient id="g-main" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%"   stop-color="#FF8C38"/>
+      <stop offset="22%"  stop-color="#FF2D78"/>
+      <stop offset="48%"  stop-color="#9B35FF"/>
+      <stop offset="74%"  stop-color="#1464FF"/>
+      <stop offset="100%" stop-color="#00CCFF"/>
+    </linearGradient>
+    <!-- Glow gradient (same, more transparent) -->
+    <linearGradient id="g-glow" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%"   stop-color="#FF8C38" stop-opacity="0.7"/>
+      <stop offset="50%"  stop-color="#9B35FF" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#00CCFF" stop-opacity="0.7"/>
+    </linearGradient>
+    <!-- Glow filter -->
+    <filter id="f-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5"  result="b2"/>
+      <feMerge>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Soft glow only -->
+    <filter id="f-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7"/>
+    </filter>
+    <!-- Crossing mask — upper-left arc goes OVER lower-right -->
+    <mask id="m-over">
+      <rect width="200" height="200" fill="white"/>
+      <!-- Hide a small segment of the back path at the crossing -->
+      <ellipse cx="100" cy="100" rx="18" ry="18" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- ── Outer ambient glow ── -->
+  <g filter="url(#f-soft)" opacity="0.55">
+    <path d="
+      M 100,28
+      C 60,28 28,58 28,100
+      C 28,142 60,172 100,172
+      C 140,172 172,142 172,100
+      C 172,66 152,40 124,32
+    " fill="none" stroke="url(#g-glow)" stroke-width="26" stroke-linecap="round"/>
+  </g>
+
+  <!-- ── Back path (goes behind at crossing) ── -->
+  <!-- This is the lower-right arc that gets "hidden" at the center crossing -->
+  <path d="
+    M 100,172
+    C 140,172 172,142 172,100
+    C 172,58 140,28 100,28
+    C 76,28 56,38 44,56
+  " fill="none" stroke="url(#g-main)" stroke-width="17" stroke-linecap="round"
+     mask="url(#m-over)"/>
+
+  <!-- ── Front path (goes OVER the crossing) ── -->
+  <!-- Upper-left arc — rendered on top -->
+  <path d="
+    M 100,28
+    C 60,28 28,58 28,100
+    C 28,142 60,172 100,172
+  " fill="none" stroke="url(#g-main)" stroke-width="17" stroke-linecap="round"
+     filter="url(#f-glow)"/>
+
+  <!-- ── Inner curl / tail that spirals inward ── -->
+  <path d="
+    M 44,56
+    C 38,68 36,84 40,97
+    C 44,110 56,118 70,116
+    C 84,114 93,102 90,88
+    C 87,75 74,69 62,74
+    C 52,79 49,90 55,99
+  " fill="none" stroke="url(#g-main)" stroke-width="17" stroke-linecap="round"/>
+
+  <!-- ── Tip dot to finish the curl ── -->
+  <circle cx="56" cy="100" r="7" fill="url(#g-main)" opacity="0.0"/>
+</svg>
