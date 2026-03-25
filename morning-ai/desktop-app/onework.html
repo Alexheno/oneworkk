@@ -58,36 +58,31 @@
 <!-- ══════════════════════ DASHBOARD ══════════════════════ -->
 <div id="dashboard-screen" class="screen">
 
-  <!-- ── Sidebar ── -->
+  <!-- ── Sidebar icon-only ── -->
   <aside class="sidebar">
-    <div class="sidebar-top">
-      <div class="sidebar-avatar" id="user-avatar"></div>
+    <div class="sidebar-logo">
+      <div class="sl-mark"></div>
     </div>
 
     <nav class="sidebar-nav">
-      <button class="snav-btn active" data-view="main" title="Vue d'ensemble">
+      <button class="snav-btn active" data-view="main" title="Accueil">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        <span>Accueil</span>
+        <span class="snav-tooltip">Accueil</span>
       </button>
       <button class="snav-btn" data-view="projects" id="btn-projects" title="Projets">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
-        <span>Projets</span>
         <span class="nav-badge" id="projects-badge" style="display:none"></span>
+        <span class="snav-tooltip">Projets</span>
       </button>
       <button class="snav-btn" data-view="plan" title="Plan du jour">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        <span>Plan du jour</span>
+        <span class="snav-tooltip">Plan du jour</span>
       </button>
     </nav>
 
     <div class="sidebar-bottom">
-      <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user" id="sidebar-user" title="Mon compte">
         <div class="su-avatar" id="su-avatar"></div>
-        <div class="su-info">
-          <span class="su-name" id="su-name">OneWork</span>
-          <span class="su-plan">Plus</span>
-        </div>
-        <svg class="su-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
       </div>
 
       <!-- Profile popup menu -->
@@ -141,14 +136,23 @@
     <div class="view active" id="view-main">
 
       <header class="topbar">
-        <div>
-          <h1 class="topbar-title" id="greeting-name">Bonjour 👋</h1>
-          <p class="topbar-date" id="greeting-date"></p>
+        <div class="topbar-left">
+          <div class="topbar-avatar" id="user-avatar"></div>
+          <div>
+            <h1 class="topbar-title" id="greeting-name">Bonjour 👋</h1>
+            <p class="topbar-date" id="greeting-date"></p>
+          </div>
         </div>
-        <button class="btn-refresh" id="btn-refresh" title="Réanalyser">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-          Réanalyser
-        </button>
+        <div class="topbar-right">
+          <div class="status-badge idle" id="status-badge">
+            <div class="sb-dot"></div>
+            <span id="status-label">Prêt</span>
+          </div>
+          <button class="btn-refresh" id="btn-refresh" title="Réanalyser">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Réanalyser
+          </button>
+        </div>
       </header>
 
       <!-- Phrase recap -->
@@ -211,6 +215,28 @@
         </div>
 
       </div>
+
+      <!-- ── App Chat Bar ── -->
+      <div class="app-chat-bar" id="app-chat-bar">
+        <div class="acb-response" id="acb-response" style="display:none">
+          <div class="acb-resp-orb">
+            <div class="acb-orb-ring"></div>
+            <div class="acb-orb-core"></div>
+          </div>
+          <p class="acb-resp-text" id="acb-resp-text"></p>
+          <button class="acb-resp-close" id="acb-resp-close">✕</button>
+        </div>
+        <div class="acb-input-row">
+          <div class="acb-orb-btn" id="acb-orb-icon">
+            <div class="acb-orb-inner"></div>
+          </div>
+          <input type="text" class="acb-input" id="acb-input" placeholder="Demandez à Alex... (ex: résume mes emails, crée une tâche)">
+          <button class="acb-send" id="acb-send">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+
     </div>
 
     <!-- ── View: Projets ── -->

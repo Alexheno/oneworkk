@@ -138,9 +138,18 @@ document.addEventListener('DOMContentLoaded', () => {
   $('btn-refresh').addEventListener('click', async () => {
     if (!token) return;
     $('btn-refresh').classList.add('spin');
+    setStatusBadge('analyzing', 'Analyse...');
     await runAnalysis();
     $('btn-refresh').classList.remove('spin');
   });
+
+  function setStatusBadge(state, label) {
+    const badge = $('status-badge');
+    const lbl = $('status-label');
+    if (!badge) return;
+    badge.className = `status-badge ${state}`;
+    if (lbl) lbl.textContent = label;
+  }
 
   // ─── Projects filters ──────────────────────────────────
   document.querySelectorAll('.pf-btn').forEach(btn => {
@@ -224,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const { currentTime, currentDay, timeOfDay } = getTimeContext();
     const habits = getHabits();
     saveHabit();
+    setStatusBadge('analyzing', 'Analyse...');
 
     try {
       const resp = await fetch('https://oneworkk-production.up.railway.app/api/analyze', {
@@ -240,10 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!result.success || !result.data) throw new Error(result.error || 'Réponse invalide');
 
       showDashboard(result.data, account, result.rawCounts, result.rawData);
+      setStatusBadge('done', 'Analyse OK');
+      setTimeout(() => setStatusBadge('idle', 'Prêt'), 4000);
       if (result.morningScript) showWelcomeBrief(result.morningScript, account);
     } catch (err) {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
+      setStatusBadge('idle', 'Erreur');
       showError('Erreur analyse : ' + err.message);
     }
   }
@@ -266,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
     $('user-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('su-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('pm-avatar').style.backgroundImage = `url('${avatarUrl}')`;
-    $('su-name').textContent = acc.name || 'OneWork';
     $('pm-name').textContent = acc.name || 'OneWork';
     $('pm-email').textContent = acc.username || '';
 
@@ -545,5 +557,107 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   $('wc-btn-start').addEventListener('click', closeWelcomeBrief);
+
+  // ─── App Chat Bar ───────────────────────────────────────
+  const CHAT_URL = 'https://oneworkk-production.up.railway.app/api/chat';
+  let chatContext = null;
+
+  // chatContext is populated when dashboard loads (via updateWidget payload reuse)
+
+  function sendAppChat(msg) {
+    if (!msg.trim()) return;
+    const input = $('acb-input');
+    const orb = $('acb-orb-icon');
+    const respBox = $('acb-response');
+    const respText = $('acb-resp-text');
+
+    input.value = '';
+    input.disabled = true;
+    if (orb) orb.classList.add('thinking');
+    if (respBox) respBox.style.display = 'none';
+
+    // Build context from current page state
+    const ctx = chatContext || {};
+    const { currentTime, currentDay, timeOfDay } = getTimeContext();
+
+    fetch(CHAT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: msg,
+        context: { ...ctx, currentTime, currentDay, timeOfDay, userEmail: account?.username || '' }
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      input.disabled = false;
+      if (orb) orb.classList.remove('thinking');
+
+      const reply = data.reply || data.response || data.message || JSON.stringify(data);
+
+      if (respBox && respText) {
+        respText.textContent = reply;
+        respBox.style.display = 'flex';
+      }
+
+      // Handle confirmation (action requiring confirm)
+      if (data.needsConfirmation && data.confirmAction) {
+        showChatConfirm(data.confirmAction, data.confirmLabel || 'Confirmer cette action ?');
+      }
+    })
+    .catch(err => {
+      input.disabled = false;
+      if (orb) orb.classList.remove('thinking');
+      if (respBox && respText) {
+        respText.textContent = 'Erreur : ' + err.message;
+        respBox.style.display = 'flex';
+      }
+    });
+  }
+
+  function showChatConfirm(action, label) {
+    // Remove existing confirm if any
+    const old = document.querySelector('.acb-confirm');
+    if (old) old.remove();
+
+    const bar = $('app-chat-bar');
+    if (!bar) return;
+
+    const confirm = document.createElement('div');
+    confirm.className = 'acb-confirm visible';
+    confirm.innerHTML = `
+      <span class="acb-confirm-text">${label}</span>
+      <div class="acb-confirm-btns">
+        <button class="acb-btn-cancel">Annuler</button>
+        <button class="acb-btn-ok">Confirmer</button>
+      </div>`;
+
+    bar.insertBefore(confirm, $('acb-input-row')?.parentElement || bar.firstChild);
+
+    confirm.querySelector('.acb-btn-cancel').addEventListener('click', () => confirm.remove());
+    confirm.querySelector('.acb-btn-ok').addEventListener('click', () => {
+      confirm.remove();
+      sendAppChat(`Confirme l'action: ${action}`);
+    });
+  }
+
+  // Send on button click or Enter
+  $('acb-send').addEventListener('click', () => sendAppChat($('acb-input').value));
+  $('acb-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendAppChat($('acb-input').value); }
+  });
+  $('acb-resp-close').addEventListener('click', () => {
+    const box = $('acb-response');
+    if (box) box.style.display = 'none';
+  });
+
+  // Store chat context when dashboard loads
+  const _origShowDash = showDashboard;
+  function patchedShowDashboard(ai, acc, rawCounts, rawData) {
+    chatContext = { ...ai, rawData, userEmail: acc?.username || '' };
+    _origShowDash(ai, acc, rawCounts, rawData);
+  }
+  // Override the reference used in runAnalysis
+  window._showDashboard = patchedShowDashboard;
 
 });  // end DOMContentLoaded
