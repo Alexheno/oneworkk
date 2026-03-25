@@ -4,9 +4,12 @@
  * This env var (if set globally on Windows) prevents Electron from running
  * in browser/app mode and causes all Electron APIs to be unavailable.
  */
-const { spawn }   = require('child_process');
-const path        = require('path');
-const electronExe = require('./node_modules/electron');
+const { spawn, execSync } = require('child_process');
+const path                = require('path');
+const electronExe         = require('./node_modules/electron');
+
+// Kill any existing Electron instance to prevent GPU cache conflicts
+try { execSync('taskkill /F /IM electron.exe /T', { stdio: 'ignore' }); } catch (_) {}
 
 // Build clean env without ELECTRON_RUN_AS_NODE
 const env = { ...process.env };
