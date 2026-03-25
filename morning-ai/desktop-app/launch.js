@@ -12,7 +12,12 @@ const electronExe = require('./node_modules/electron');
 const env = { ...process.env };
 delete env.ELECTRON_RUN_AS_NODE;
 
-const child = spawn(electronExe, ['.'], {
+const child = spawn(electronExe, [
+    '.',
+    '--disable-gpu',
+    '--disable-gpu-sandbox',
+    '--no-sandbox',
+], {
     stdio: 'inherit',
     env,
     cwd: __dirname,
