@@ -343,49 +343,497 @@ body {
 .proof-text { font-size: 0.82rem; color: var(--text-muted); }
 .proof-text strong { color: var(--text); }
 
-/* ─── HERO DEMO ─── */
+/* ─── HERO DEMO — Windows Laptop Frame ─── */
 .hero-demo {
-  margin-top: 64px;
+  margin-top: 72px;
   position: relative;
 }
 
-.demo-chrome {
-  background: #1A1A1A;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow:
-    0 50px 120px rgba(0,0,0,0.22),
-    0 0 0 1px rgba(255,255,255,0.04) inset,
-    0 0 80px rgba(155,53,255,0.06);
-  text-align: left;
+/* ── 3D perspective scene ── */
+.laptop-scene {
+  perspective: 1800px;
+  perspective-origin: 50% 15%;
 }
 
-.chrome-bar {
-  background: #242424;
+/* Full laptop — starts tilted, levels on scroll */
+.laptop {
+  position: relative;
+  transform-origin: 50% 100%;
+  transform: rotateX(12deg) rotateY(-1.5deg);
+  transition: transform 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+  filter:
+    drop-shadow(0 60px 80px rgba(0,0,0,0.45))
+    drop-shadow(0 0 120px rgba(107,142,245,0.10));
+}
+.laptop.leveled {
+  transform: rotateX(0deg) rotateY(0deg);
+}
+
+/* ── Lid ── */
+.laptop-lid {
+  background: linear-gradient(160deg, #2E2E2E 0%, #252525 45%, #202020 100%);
+  border-radius: 12px 12px 0 0;
+  padding: 11px 11px 7px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 2px solid #181818;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.laptop-bezel {
+  background: #111;
+  border-radius: 5px 5px 0 0;
+  padding: 8px 8px 5px;
+}
+
+/* Webcam dot */
+.laptop-cam {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #222;
+  border: 1.5px solid #2E2E2E;
+  margin: 0 auto 5px;
+  position: relative;
+}
+.laptop-cam::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: #1A2230;
+}
+
+/* Screen area */
+.laptop-screen {
+  background: #050810;
+  border-radius: 3px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9.8;
+}
+
+/* ── Windows Desktop ── */
+.win-desktop {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #080C14 0%, #0C0E1A 60%, #0F0A18 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* App window — fills above taskbar */
+.win-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 5px 5px 0;
+  background: #1C1C1E;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-bottom: none;
+  overflow: hidden;
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.05) inset,
+    0 4px 40px rgba(0,0,0,0.70);
+  min-height: 0;
+}
+
+/* Windows 11 title bar */
+.win-titlebar {
+  background: #1E1E1E;
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  padding: 10px 16px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.win-title-app {
   display: flex;
   align-items: center;
   gap: 7px;
 }
 
-.chrome-dot { width: 11px; height: 11px; border-radius: 50%; }
-.chrome-dot.red    { background: #ff5f57; }
-.chrome-dot.yellow { background: #febc2e; }
-.chrome-dot.green  { background: #28c840; }
-
-.chrome-title {
-  font-size: 0.71rem;
-  color: rgba(255,255,255,0.3);
-  margin-left: 8px;
-  font-weight: 500;
+.win-title-text {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.55);
 }
 
-/* ── Real app layout inside chrome ── */
+/* Win 11 control buttons — right side */
+.win-controls {
+  display: flex;
+  align-self: stretch;
+}
+
+.win-btn {
+  width: 46px;
+  height: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  color: rgba(255,255,255,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.win-minimize:hover, .win-maximize:hover { background: rgba(255,255,255,0.08); }
+.win-close:hover { background: #C42B1C; color: white; }
+
+/* demo-app fills window */
+.win-window .demo-app {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+
+/* ── Windows Taskbar ── */
+.win-taskbar {
+  height: 40px;
+  background: rgba(10,12,20,0.96);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+}
+
+.win-start-btn {
+  width: 36px; height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: none;
+  background: none;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.win-start-btn:hover { background: rgba(255,255,255,0.07); }
+
+.win-taskbar-apps {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.win-tb-item {
+  width: 40px; height: 36px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.win-tb-item:hover { background: rgba(255,255,255,0.07); }
+.win-tb-item.active { background: rgba(255,255,255,0.06); }
+.win-tb-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 16px; height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #6B8EF5, #9B35FF);
+}
+
+.win-tray {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.win-tray-icons {
+  display: flex;
+  gap: 5px;
+  color: rgba(255,255,255,0.4);
+}
+
+.win-tray-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.win-tray-time:hover { background: rgba(255,255,255,0.06); }
+
+.win-time {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.78);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+}
+.win-date {
+  font-size: 0.63rem;
+  color: rgba(255,255,255,0.42);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+/* ── Hinge ── */
+.laptop-hinge {
+  height: 5px;
+  background: linear-gradient(to bottom, #181818, #2C2C2C 60%, #282828);
+  border-left: 12px solid #202020;
+  border-right: 12px solid #202020;
+}
+
+/* ── Base / Keyboard ── */
+.laptop-base {
+  background: linear-gradient(to bottom, #282828 0%, #222 70%, #1E1E1E 100%);
+  border-radius: 0 0 12px 12px;
+  padding: 12px 14px 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-top: none;
+  box-shadow:
+    0 16px 50px rgba(0,0,0,0.55),
+    0 40px 100px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.laptop-keyboard {
+  height: 58px;
+  border-radius: 3px;
+  background-color: #1C1C1C;
+  background-image:
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px,
+      transparent 1px, transparent 30px),
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px,
+      transparent 1px, transparent 20px);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+}
+
+.laptop-touchpad-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+}
+
+.laptop-touchpad {
+  width: 100px; height: 22px;
+  background: #212121;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+/* ── Real app layout ── */
 .demo-app {
   display: flex;
-  height: 440px;
+  height: 100%;
+}
+
+/* ─── Demo cursor ─── */
+.demo-cursor {
+  position: absolute;
+  left: 0; top: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transition:
+    left var(--cdur, 700ms) cubic-bezier(0.34, 1.15, 0.64, 1),
+    top  var(--cdur, 700ms) cubic-bezier(0.34, 1.15, 0.64, 1),
+    opacity 0.35s,
+    transform 0.1s;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.55));
+  will-change: left, top;
+}
+.demo-cursor.clicking { transform: scale(0.82); }
+
+/* Taskbar icon highlight on click */
+.win-tb-item.demo-hl { background: rgba(255,255,255,0.16) !important; }
+.ww-send.demo-hl     { background: rgba(107,142,245,0.45) !important; }
+
+/* ─── Win widget popup ─── */
+.win-desktop { position: relative; }
+
+.win-widget-popup {
+  position: absolute;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  width: 272px;
+  background: rgba(22,22,26,0.97);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 16px;
+  box-shadow:
+    0 28px 70px rgba(0,0,0,0.88),
+    0 0 0 0.5px rgba(255,255,255,0.07) inset,
+    0 0 40px rgba(107,142,245,0.06);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity  0.3s cubic-bezier(0.25,0.46,0.45,0.94),
+    transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+  z-index: 50;
+}
+.win-widget-popup.open {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.ww-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 13px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.ww-header-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.77rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+}
+.ww-close {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255,255,255,0.07);
+  color: rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.1s;
+}
+.ww-close:hover { background: rgba(255,255,255,0.12); }
+
+.ww-brief {
+  padding: 10px 13px 9px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ww-greeting {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 2px;
+}
+.ww-meta {
+  font-size: 0.67rem;
+  color: rgba(255,255,255,0.32);
+  margin-bottom: 8px;
+}
+.ww-badges { display: flex; gap: 6px; }
+.ww-badge {
+  font-size: 0.63rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+.ww-badge.red  { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.28); color: rgba(239,68,68,0.9); }
+.ww-badge.blue { background: rgba(107,142,245,0.12); border: 1px solid rgba(107,142,245,0.28); color: rgba(107,142,245,0.9); }
+
+.ww-tasks {
+  padding: 8px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ww-task {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.45);
+  padding: 3px 0;
+}
+.ww-task.urgent { color: rgba(255,255,255,0.82); }
+.ww-dot {
+  width: 12px; height: 12px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  flex-shrink: 0;
+}
+.ww-task.urgent .ww-dot { border-color: rgba(239,68,68,0.5); }
+
+.ww-chat-area { padding: 9px 11px 11px; }
+.ww-chat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  padding: 6px 9px;
+}
+.ww-orb {
+  width: 17px; height: 17px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
+  flex-shrink: 0;
+  animation: orb-spin 3s linear infinite;
+}
+.ww-input-display {
+  flex: 1;
+  font-size: 0.71rem;
+  color: rgba(255,255,255,0.55);
+  min-height: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.ww-input-display.typing::after {
+  content: '|';
+  color: #6B8EF5;
+  animation: ww-blink 0.65s step-end infinite;
+}
+@keyframes ww-blink { 50% { opacity: 0; } }
+.ww-send {
+  width: 24px; height: 24px;
+  border-radius: 7px;
+  border: none;
+  background: rgba(107,142,245,0.18);
+  color: #6B8EF5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.1s;
+}
+
+.ww-response {
+  display: none;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.68);
+  line-height: 1.55;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(107,142,245,0.07);
+  border: 1px solid rgba(107,142,245,0.18);
+  border-radius: 9px;
+}
+.ww-response.visible { display: flex; }
+.ww-resp-orb {
+  width: 15px; height: 15px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
+  flex-shrink: 0;
+  margin-top: 2px;
+  animation: orb-spin 3s linear infinite;
 }
 
 /* Sidebar */

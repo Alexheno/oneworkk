@@ -78,82 +78,188 @@
         <span class="proof-text"><strong>+500 managers</strong> l'utilisent chaque matin</span>
       </div>
 
-      <!-- ANIMATED DEMO — centré sous le hero -->
-
+      <!-- DEMO — Windows laptop frame -->
       <div class="hero-demo">
-        <div class="demo-chrome">
-          <div class="chrome-bar">
-            <div class="chrome-dot red"></div>
-            <div class="chrome-dot yellow"></div>
-            <div class="chrome-dot green"></div>
-            <div class="chrome-title">OneWork · Brief du jour</div>
-          </div>
-          <div class="demo-content">
-            <div class="demo-header">
-              <div class="demo-greeting">
-                <div class="demo-avatar"></div>
-                <div>
-                  <div class="demo-name">Bonjour, Henri 👋</div>
-                  <div class="demo-date" id="demo-date">Mercredi 26 Mars · 08h02</div>
+        <div class="laptop-scene">
+          <div class="laptop" id="demo-laptop">
+
+            <!-- LID / SCREEN -->
+            <div class="laptop-lid">
+              <div class="laptop-bezel">
+                <div class="laptop-cam"></div>
+                <div class="laptop-screen">
+                  <div class="win-desktop" id="win-desktop">
+
+                    <!-- App window -->
+                    <div class="win-window">
+                      <div class="win-titlebar">
+                        <div class="win-title-app">
+                          <img src="morning-ai/desktop-app/logo.svg" width="14" height="14" alt="">
+                          <span class="win-title-text">OneWork</span>
+                        </div>
+                        <div class="win-controls">
+                          <button class="win-btn win-minimize"><svg width="11" height="1" viewBox="0 0 11 1" fill="none"><line x1="0" y1="0.5" x2="11" y2="0.5" stroke="currentColor" stroke-width="1.2"/></svg></button>
+                          <button class="win-btn win-maximize"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1.1"/></svg></button>
+                          <button class="win-btn win-close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.4"/><line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.4"/></svg></button>
+                        </div>
+                      </div>
+                      <!-- Real app layout -->
+                      <div class="demo-app">
+                        <div class="demo-sidebar">
+                          <div class="demo-sb-logo"><img src="morning-ai/desktop-app/logo.svg" width="28" height="28" alt=""></div>
+                          <div class="demo-sb-icons">
+                            <div class="demo-sb-icon active"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+                            <div class="demo-sb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                            <div class="demo-sb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                            <div class="demo-sb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+                            <div class="demo-sb-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                          </div>
+                          <div class="demo-sb-avatar">BR</div>
+                        </div>
+                        <div class="demo-main">
+                          <div class="demo-topbar">
+                            <div class="demo-topbar-left">
+                              <div class="demo-tb-avatar">BR</div>
+                              <div>
+                                <div class="demo-tb-name">Bonjour, Henri 👋</div>
+                                <div class="demo-tb-date">Mercredi 26 Mars · 08h14</div>
+                              </div>
+                            </div>
+                            <div class="demo-topbar-right">
+                              <div class="demo-status-pill">✓ Prêt</div>
+                              <div class="demo-reanalyze-btn">↻ Réanalyser</div>
+                            </div>
+                          </div>
+                          <div class="demo-ai-banner">
+                            <span class="demo-banner-star">✦</span>
+                            <span>3 urgences détectées · Réunion à 09h30 · Jean-Pierre attend votre réponse avant 10h</span>
+                          </div>
+                          <div class="demo-grid">
+                            <div class="demo-section-card">
+                              <div class="demo-sc-header"><span class="demo-sc-label">EMAILS</span><div class="demo-sc-tabs"><span class="demo-sc-tab active">Urgents</span><span class="demo-sc-tab">Tous</span></div></div>
+                              <div class="demo-email-list">
+                                <div class="demo-email-item urgent"><div class="demo-ei-sender">Jean-Pierre Duval</div><div class="demo-ei-preview">Term sheet — retour avant 10h00</div></div>
+                                <div class="demo-email-item"><div class="demo-ei-sender">Équipe Finance</div><div class="demo-ei-preview">Rapport Q1 en attente de validation</div></div>
+                                <div class="demo-email-item"><div class="demo-ei-sender">Sarah Martin</div><div class="demo-ei-preview">Campagne Q2 — validation requise</div></div>
+                              </div>
+                            </div>
+                            <div class="demo-section-card">
+                              <div class="demo-sc-header"><span class="demo-sc-label">TEAMS</span><span class="demo-sc-link">3 mentions</span></div>
+                              <div class="demo-email-list">
+                                <div class="demo-email-item urgent"><div class="demo-ei-sender">@Henri — Sarah (Marketing)</div><div class="demo-ei-preview">Peux-tu valider la campagne Q2 ?</div></div>
+                                <div class="demo-email-item"><div class="demo-ei-sender">Prod · Lucas</div><div class="demo-ei-preview">PR prête pour review — sprint 14</div></div>
+                              </div>
+                            </div>
+                            <div class="demo-section-card">
+                              <div class="demo-sc-header"><span class="demo-sc-label">RÉUNIONS</span><span class="demo-sc-link">3 aujourd'hui</span></div>
+                              <div class="demo-meeting-rows">
+                                <div class="demo-mr"><span class="demo-mr-time">09:30</span><span>Stand-up Product</span></div>
+                                <div class="demo-mr"><span class="demo-mr-time">14:00</span><span>Démo client — Renault</span></div>
+                                <div class="demo-mr"><span class="demo-mr-time">16:30</span><span>Revue de sprint</span></div>
+                              </div>
+                            </div>
+                            <div class="demo-section-card">
+                              <div class="demo-sc-header"><span class="demo-sc-label">TO DO</span><span class="demo-sc-link">5 tâches</span></div>
+                              <div class="demo-todo-list">
+                                <div class="demo-todo-item urgent"><div class="demo-todo-dot"></div><span>Répondre à Jean-Pierre (term sheet)</span></div>
+                                <div class="demo-todo-item urgent"><div class="demo-todo-dot"></div><span>Valider campagne Q2 (Sarah)</span></div>
+                                <div class="demo-todo-item"><div class="demo-todo-dot"></div><span>Préparer démo Renault 14h</span></div>
+                                <div class="demo-todo-item"><div class="demo-todo-dot"></div><span>Review rapport finance Q1</span></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="demo-chatbar">
+                            <div class="demo-chatbar-orb"></div>
+                            <span class="demo-chatbar-text">Demandez quelque chose à Alex...</span>
+                            <div class="demo-chatbar-send"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Windows taskbar -->
+                    <div class="win-taskbar">
+                      <button class="win-start-btn">
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="currentColor"><rect x="0" y="0" width="6.5" height="6.5" rx="0.5"/><rect x="8.5" y="0" width="6.5" height="6.5" rx="0.5"/><rect x="0" y="8.5" width="6.5" height="6.5" rx="0.5"/><rect x="8.5" y="8.5" width="6.5" height="6.5" rx="0.5"/></svg>
+                      </button>
+                      <div class="win-taskbar-apps">
+                        <div class="win-tb-item active"><img src="morning-ai/desktop-app/logo.svg" width="18" height="18" alt=""></div>
+                        <div class="win-tb-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <div class="win-tb-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+                        <div class="win-tb-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+                      </div>
+                      <div class="win-tray">
+                        <div class="win-tray-icons">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1" fill="currentColor"/></svg>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10v4"/><rect x="3" y="8" width="9" height="8" rx="1" fill="currentColor" fill-opacity="0.25"/></svg>
+                        </div>
+                        <div class="win-tray-time">
+                          <span class="win-time">08:14</span>
+                          <span class="win-date">26/03/2026</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Widget popup — appears above taskbar -->
+                    <div class="win-widget-popup" id="win-widget-popup">
+                      <div class="ww-header">
+                        <div class="ww-header-title">
+                          <img src="morning-ai/desktop-app/logo.svg" width="16" height="16" alt="">
+                          <span>Alex · OneWork</span>
+                        </div>
+                        <button class="ww-close" id="ww-close">
+                          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><line x1="0" y1="0" x2="9" y2="9" stroke="currentColor" stroke-width="1.3"/><line x1="9" y1="0" x2="0" y2="9" stroke="currentColor" stroke-width="1.3"/></svg>
+                        </button>
+                      </div>
+                      <div class="ww-brief">
+                        <div class="ww-greeting">Bonjour, Henri 👋</div>
+                        <div class="ww-meta">Mercredi 26 Mars · 08h14</div>
+                        <div class="ww-badges">
+                          <span class="ww-badge red">⚡ 3 urgences</span>
+                          <span class="ww-badge blue">📅 3 réunions</span>
+                        </div>
+                      </div>
+                      <div class="ww-tasks">
+                        <div class="ww-task urgent"><div class="ww-dot"></div><span>Répondre à Jean-Pierre (term sheet)</span></div>
+                        <div class="ww-task urgent"><div class="ww-dot"></div><span>Valider campagne Q2 (Sarah)</span></div>
+                        <div class="ww-task"><div class="ww-dot"></div><span>Préparer démo Renault 14h</span></div>
+                      </div>
+                      <div class="ww-chat-area">
+                        <div class="ww-chat-row">
+                          <div class="ww-orb"></div>
+                          <div class="ww-input-display" id="ww-input-display"></div>
+                          <button class="ww-send" id="ww-chat-send">
+                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2" fill="currentColor"/></svg>
+                          </button>
+                        </div>
+                        <div class="ww-response" id="ww-response"></div>
+                      </div>
+                    </div>
+
+                    <!-- Demo cursor -->
+                    <div class="demo-cursor" id="demo-cursor">
+                      <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+                        <path d="M2 1L2 15L5.5 11.5L8.5 18L10.5 17L7.5 10.5L12.5 10.5Z" fill="white" stroke="#222" stroke-width="0.8" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+
+                  </div>
                 </div>
               </div>
-              <div class="demo-badge analyzing" id="demo-status">
-                <span class="analyzing-dot"></span>
-                Analyse IA en cours...
+            </div>
+
+            <!-- HINGE -->
+            <div class="laptop-hinge"></div>
+
+            <!-- BASE / KEYBOARD -->
+            <div class="laptop-base">
+              <div class="laptop-keyboard"></div>
+              <div class="laptop-touchpad-area">
+                <div class="laptop-touchpad"></div>
               </div>
             </div>
 
-            <div class="demo-cards" id="demo-cards">
-              <div class="demo-card urgent card-anim" style="animation-delay: 0.6s">
-                <div class="demo-card-label">🚨 URGENT</div>
-                <div class="demo-card-title">Jean-Pierre (Investisseur)</div>
-                <div class="demo-card-body">Suite à notre call — besoin de votre retour avant 10h sur le term sheet.</div>
-                <div class="demo-card-time">Il y a 23 min · Non lu</div>
-              </div>
-
-              <div class="demo-card meeting card-anim" style="animation-delay: 0.9s">
-                <div class="demo-card-label">📅 RÉUNIONS</div>
-                <div class="demo-meeting-list">
-                  <div class="demo-meeting-item">
-                    <span class="meeting-time">09:30</span>
-                    <span>Stand-up Product</span>
-                  </div>
-                  <div class="demo-meeting-item">
-                    <span class="meeting-time">14:00</span>
-                    <span>Démo client — Renault</span>
-                  </div>
-                  <div class="demo-meeting-item">
-                    <span class="meeting-time">16:30</span>
-                    <span>Revue de sprint</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="demo-card ai card-anim" style="animation-delay: 1.2s">
-                <div class="demo-card-label">✨ SUGGESTION IA</div>
-                <div class="demo-ai-text">"Répondez à Jean-Pierre avant le stand-up. Préparez la démo Renault avec le deck mis à jour hier soir."</div>
-              </div>
-
-              <div class="demo-card teams card-anim" style="animation-delay: 1.5s">
-                <div class="demo-card-label">💬 TEAMS</div>
-                <div class="demo-card-title">Sarah (Marketing)</div>
-                <div class="demo-card-body">@Henri — peux-tu valider la campagne Q2 ? On attend ton OK pour lancer.</div>
-              </div>
-            </div>
-
-            <!-- Chat demo -->
-            <div class="demo-chat card-anim" style="animation-delay: 2s">
-              <div class="demo-chat-input">
-                <div class="chat-orb"></div>
-                <span class="demo-typing" id="demo-typing">Rédige une réponse à Jean-Pierre...</span>
-              </div>
-            </div>
           </div>
-        </div>
-        <!-- Floating widget -->
-        <div class="demo-widget">
-          <div class="widget-knob"></div>
-          <div class="widget-pulse"></div>
         </div>
       </div>
     </div>

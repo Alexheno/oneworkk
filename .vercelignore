@@ -1,0 +1,8 @@
+morning-ai/backend/node_modules
+morning-ai/desktop-app/node_modules
+morning-ai/desktop-app/dist
+morning-ai/desktop-app/.webpack
+morning-ai/backend
+morning-ai/desktop-app/assets
+.claude
+*.log
