@@ -2203,3 +2203,406 @@ body {
   gap: 4px;
   font-size: 0.68rem;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   DEMO PHASE 2 — Excel background
+   ═══════════════════════════════════════════════════════════ */
+
+/* Outlook bg opacity transition */
+#bg-outlook-window {
+  transition: opacity 0.75s ease;
+}
+#bg-outlook-window.fading { opacity: 0; pointer-events: none; }
+
+/* Excel background — hidden by default */
+.bg-excel-window {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  background: #0F1117;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.75s ease;
+}
+.bg-excel-window.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Excel ribbon tabs */
+.bg-xl-ribbon-tabs {
+  background: #1A1D26;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  gap: 0;
+  padding: 0 10px;
+  flex-shrink: 0;
+}
+.xl-tab {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.38);
+  padding: 5px 10px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.xl-tab-active {
+  color: rgba(255,255,255,0.82);
+  border-bottom-color: #1D6F42;
+}
+
+/* Formula bar */
+.bg-xl-formulabar {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  background: #161820;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 8px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.xl-cellref {
+  font-size: 0.63rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  min-width: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.xl-fb-div {
+  width: 1px;
+  height: 14px;
+  background: rgba(255,255,255,0.12);
+}
+.xl-formula {
+  font-size: 0.62rem;
+  color: rgba(107,142,245,0.9);
+  font-family: 'Consolas', 'SF Mono', monospace;
+}
+
+/* Sheet area */
+.bg-xl-sheet-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+.bg-xl-col-hdrs {
+  display: flex;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.xl-corner {
+  width: 28px;
+  height: 18px;
+  background: #1A1D26;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  flex-shrink: 0;
+}
+.xl-ch {
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.32);
+  background: #1A1D26;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  font-variant-numeric: tabular-nums;
+}
+.xl-ch-a { width: 120px; }
+.xl-ch-b,.xl-ch-c,.xl-ch-d { width: 44px; }
+.xl-ch-e { width: 54px; }
+.xl-ch-f,.xl-ch-g { width: 54px; }
+.xl-ch-h { width: 50px; }
+.xl-ch-sel { background: rgba(29,111,66,0.22); color: rgba(255,255,255,0.7); }
+
+/* Spreadsheet table */
+.bg-xl-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.6rem;
+  flex: 1;
+  min-height: 0;
+}
+.xl-row { height: 18px; }
+.xl-spacer { height: 8px; background: rgba(255,255,255,0.015); }
+.xl-rh {
+  width: 28px;
+  background: #1A1D26;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+  vertical-align: middle;
+  padding: 0 4px;
+}
+.xl-cell {
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 0 5px;
+  color: rgba(255,255,255,0.58);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+.xl-num { text-align: right; font-variant-numeric: tabular-nums; }
+.xl-bold { font-weight: 700; color: rgba(255,255,255,0.82); }
+.xl-italic { font-style: italic; color: rgba(255,255,255,0.42); }
+.xl-pos { color: #4CAF50; }
+.xl-neg { color: #ef5350; }
+.xl-alert { color: #FF6B35; font-weight: 700; }
+.xl-alert-cell { color: #FF6B35; font-weight: 600; }
+.xl-cell-sel { background: rgba(29,111,66,0.18); border-color: rgba(29,111,66,0.4); }
+.xl-total-sel { background: rgba(29,111,66,0.3); font-weight: 700; }
+.xl-ebitda-sel { background: rgba(239,83,80,0.2); border-color: rgba(239,83,80,0.5); }
+
+.xl-big-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  padding-left: 8px;
+}
+.xl-sub-title {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.3);
+  font-style: italic;
+  padding-left: 8px;
+}
+.xl-row-title { height: 22px; }
+.xl-hdr-row { height: 20px; }
+.xl-hdr {
+  background: #1E2235;
+  font-weight: 700;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.62);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.xl-hdr-sel { background: rgba(29,111,66,0.3); color: rgba(255,255,255,0.82); }
+.xl-section-hdr-row { height: 17px; }
+.xl-section-green {
+  background: rgba(29,111,66,0.22);
+  color: #4CAF50;
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  padding-left: 8px;
+}
+.xl-section-red {
+  background: rgba(239,83,80,0.15);
+  color: #ef9a9a;
+  font-weight: 700;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  padding-left: 8px;
+}
+.xl-total-row {
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.xl-alert-row { background: rgba(255,107,53,0.06); }
+.xl-ebitda-row { background: rgba(239,83,80,0.06); border-top: 1px solid rgba(239,83,80,0.2); }
+
+/* Sheet tabs at bottom */
+.bg-xl-sheet-tabs {
+  height: 24px;
+  background: #141620;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.xl-sheet {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.32);
+  padding: 3px 10px;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+}
+.xl-sheet.active {
+  background: #0F1117;
+  color: rgba(255,255,255,0.78);
+  border-color: rgba(255,255,255,0.08);
+  border-bottom-color: #0F1117;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TASKBAR ADDITIONS — Win11 style
+   ═══════════════════════════════════════════════════════════ */
+
+.win-taskbar-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.win-tb-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 6px;
+  padding: 0 9px;
+  height: 28px;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.1s;
+  min-width: 100px;
+}
+.win-tb-search:hover { background: rgba(255,255,255,0.09); }
+
+.win-notif-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.win-notif-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #0078d4;
+  font-size: 0.45rem;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   WIN-WINDOW — smooth expansion for Phase 2
+   ═══════════════════════════════════════════════════════════ */
+.win-window {
+  transition:
+    left   0.9s cubic-bezier(0.25,0.46,0.45,0.94),
+    right  0.9s cubic-bezier(0.25,0.46,0.45,0.94),
+    width  0.9s cubic-bezier(0.25,0.46,0.45,0.94),
+    top    0.9s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.win-window.expanded {
+  right: 4px;
+  width: 92%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DEMO GRID VIEW — Phase 2 dashboard cards
+   ═══════════════════════════════════════════════════════════ */
+.demo-grid-view {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 7px;
+  padding: 8px 10px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.demo-grid-view.visible {
+  display: grid;
+}
+.demo-grid-card {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 8px;
+  padding: 9px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  min-height: 0;
+}
+.dgc-hdr {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.72);
+  flex-shrink: 0;
+}
+.dgc-hdr svg { color: rgba(255,255,255,0.42); flex-shrink: 0; }
+.dgc-hdr span:first-of-type { flex: 1; }
+.dgc-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 99px;
+}
+.dgc-badge.red   { background: rgba(239,68,68,0.14); border: 1px solid rgba(239,68,68,0.3); color: rgba(239,68,68,0.9); }
+.dgc-badge.blue  { background: rgba(107,142,245,0.14); border: 1px solid rgba(107,142,245,0.3); color: rgba(107,142,245,0.9); }
+.dgc-badge.orange { background: rgba(251,146,60,0.14); border: 1px solid rgba(251,146,60,0.3); color: rgba(251,146,60,0.9); }
+.dgc-item {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.dgc-item:last-child { border-bottom: none; }
+.dgc-urgent { color: rgba(255,255,255,0.78); font-weight: 500; }
+.dgc-upcoming { color: rgba(107,142,245,0.85); font-weight: 500; }
+.dgc-muted { color: rgba(255,255,255,0.28); }
+
+/* ═══════════════════════════════════════════════════════════
+   WIDGET — checked task state
+   ═══════════════════════════════════════════════════════════ */
+.ww-task.checked {
+  opacity: 0.45;
+}
+.ww-task.checked span {
+  text-decoration: line-through;
+  color: rgba(255,255,255,0.35);
+}
+.ww-task.checked .ww-dot {
+  background: rgba(107,142,245,0.35);
+  border-color: #6B8EF5;
+  position: relative;
+}
+.ww-task.checked .ww-dot::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%) rotate(45deg);
+  width: 4px; height: 7px;
+  border-right: 1.5px solid #6B8EF5;
+  border-bottom: 1.5px solid #6B8EF5;
+  margin-top: -1px;
+}
+
+/* widget response area: override display:none to show when has content */
+.ww-response {
+  display: block;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.55;
+  padding: 0 0 7px;
+}
+.ww-response:empty { display: none; }
+
+/* fix ww-chat-row alignment */
+.ww-chat-row { cursor: text; }
+
+/* highlight demo elements */
+.ww-dot.demo-hl,
+.ww-send.demo-hl { background: rgba(107,142,245,0.4) !important; }
+.ww-task.demo-hl { background: rgba(255,255,255,0.06); border-radius: 6px; }

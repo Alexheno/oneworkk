@@ -14,20 +14,31 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-// ─── Demo animation sequence ──────────────────────────────────────────────────
+// ─── Two-phase demo sequence ──────────────────────────────────────────────────
 function startDemoSequence() {
-  const cursor    = document.getElementById('demo-cursor');
-  const desktop   = document.getElementById('win-desktop');
-  const todo1     = document.getElementById('demo-todo-1');
-  const todo2     = document.getElementById('demo-todo-2');
-  const todo3     = document.getElementById('demo-todo-3');
-  const chatInput = document.getElementById('demo-chatbar-input');
-  const chatSend  = document.getElementById('demo-chatbar-send');
-  const chatResp  = document.getElementById('demo-main-resp');
+  const cursor      = document.getElementById('demo-cursor');
+  const desktop     = document.getElementById('win-desktop');
+  const bgOutlook   = document.getElementById('bg-outlook-window');
+  const bgExcel     = document.getElementById('bg-excel-window');
+  const widgetEl    = document.getElementById('win-widget-popup');
+  const winWindow   = document.getElementById('win-onework');
+  const wwTask1     = document.getElementById('ww-task-1');
+  const wwTask2     = document.getElementById('ww-task-2');
+  const wwChatInput = document.getElementById('ww-chat-input');
+  const wwChatSend  = document.getElementById('ww-chat-send');
+  const wwResponse  = document.getElementById('ww-response');
+  const tbOnework   = document.getElementById('tb-onework');
+  const todoSection = document.getElementById('demo-todo-section');
+  const demoGrid    = document.getElementById('demo-grid-view');
+  const chatInput   = document.getElementById('demo-chatbar-input');
+  const chatSend    = document.getElementById('demo-chatbar-send');
+  const mainResp    = document.getElementById('demo-main-resp');
 
-  if (!cursor || !desktop || !todo1) return;
+  if (!cursor || !desktop || !bgOutlook) return;
 
   const delay = ms => new Promise(r => setTimeout(r, ms));
+  const WW_PH   = 'Demandez à Alex...';
+  const MAIN_PH = 'Demandez quelque chose à Alex...';
 
   // Get element center relative to win-desktop
   function pos(el) {
@@ -36,7 +47,6 @@ function startDemoSequence() {
     return { x: er.left + er.width / 2 - dr.left, y: er.top + er.height / 2 - dr.top };
   }
 
-  // Move cursor with given duration
   function moveTo(x, y, ms = 700) {
     cursor.style.setProperty('--cdur', ms + 'ms');
     cursor.style.left = x + 'px';
@@ -44,7 +54,6 @@ function startDemoSequence() {
     return delay(ms);
   }
 
-  // Click animation
   async function click(el) {
     cursor.classList.add('clicking');
     if (el) el.classList.add('demo-hl');
@@ -53,8 +62,6 @@ function startDemoSequence() {
     if (el) setTimeout(() => el.classList.remove('demo-hl'), 200);
   }
 
-  // Type text character by character into a span
-  const PLACEHOLDER = 'Demandez quelque chose à Alex...';
   async function typeIn(text, el) {
     el.style.color = 'rgba(255,255,255,0.72)';
     for (let i = 0; i <= text.length; i++) {
@@ -63,7 +70,6 @@ function startDemoSequence() {
     }
   }
 
-  // Stream text (AI response)
   async function stream(text, el) {
     for (let i = 0; i <= text.length; i++) {
       el.textContent = text.slice(0, i);
@@ -72,113 +78,202 @@ function startDemoSequence() {
   }
 
   async function run() {
-    // ── Reset ──────────────────────────────────────────────────────────────────
-    document.querySelectorAll('.demo-todo-item.checked').forEach(el => el.classList.remove('checked'));
-    if (chatInput) { chatInput.textContent = PLACEHOLDER; chatInput.style.color = ''; }
-    if (chatResp)  { chatResp.className = 'demo-main-resp'; chatResp.innerHTML = ''; }
+    // ══════════════════════════════════════════════════════════
+    // RESET
+    // ══════════════════════════════════════════════════════════
+    widgetEl.classList.remove('open');
+    if (wwTask1) { wwTask1.classList.remove('checked'); }
+    if (wwTask2) { wwTask2.classList.remove('checked'); }
+    if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
+    if (wwResponse)  { wwResponse.innerHTML = ''; }
+
+    bgOutlook.classList.remove('fading');
+    bgExcel.classList.remove('visible');
+    if (winWindow) winWindow.classList.remove('expanded');
+    if (demoGrid)    { demoGrid.classList.remove('visible'); }
+    if (todoSection) { todoSection.style.display = ''; }
+    if (mainResp)    { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
+    if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
+
     cursor.style.opacity = '0';
+    await delay(1200);
 
-    await delay(1400);
-
-    // ── 1. Cursor apparaît ────────────────────────────────────────────────────
+    // ══════════════════════════════════════════════════════════
+    // PHASE 1 — Outlook + Widget interaction
+    // ══════════════════════════════════════════════════════════
     const dr = desktop.getBoundingClientRect();
-    moveTo(dr.width * 0.38, dr.height * 0.22, 0);
-    cursor.style.opacity = '1';
 
+    // Cursor appears at center of screen
+    moveTo(dr.width * 0.50, dr.height * 0.45, 0);
+    cursor.style.opacity = '1';
     await delay(700);
 
-    // ── 2. Se déplace vers la première todo ───────────────────────────────────
-    if (todo1) {
-      const dot1 = todo1.querySelector('.demo-todo-dot');
+    // 1. Move to OneWork taskbar icon → click to open widget
+    if (tbOnework) {
+      const p = pos(tbOnework);
+      await moveTo(p.x, p.y, 950);
+      await delay(320);
+      await click(tbOnework);
+      await delay(180);
+      widgetEl.classList.add('open');
+      await delay(550);
+    }
+
+    // 2. Check task 1 in widget
+    if (wwTask1) {
+      const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
         const p = pos(dot1);
-        await moveTo(p.x, p.y, 950);
-        await delay(380);
+        await moveTo(p.x, p.y, 750);
+        await delay(320);
         await click(dot1);
-        await delay(120);
-        todo1.classList.add('checked');
-        await delay(650);
+        await delay(110);
+        wwTask1.classList.add('checked');
+        await delay(520);
       }
     }
 
-    // ── 3. Deuxième todo ──────────────────────────────────────────────────────
-    if (todo2) {
-      const dot2 = todo2.querySelector('.demo-todo-dot');
+    // 3. Check task 2 in widget
+    if (wwTask2) {
+      const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 700);
-        await delay(320);
+        await moveTo(p.x, p.y, 620);
+        await delay(280);
         await click(dot2);
-        await delay(120);
-        todo2.classList.add('checked');
-        await delay(550);
+        await delay(110);
+        wwTask2.classList.add('checked');
+        await delay(460);
       }
     }
 
-    // ── 4. Troisième todo ─────────────────────────────────────────────────────
-    if (todo3) {
-      const dot3 = todo3.querySelector('.demo-todo-dot');
-      if (dot3) {
-        const p = pos(dot3);
-        await moveTo(p.x, p.y, 650);
-        await delay(300);
-        await click(dot3);
-        await delay(120);
-        todo3.classList.add('checked');
-        await delay(500);
-      }
+    // 4. Move to widget chat input, type message
+    if (wwChatInput) {
+      const p = pos(wwChatInput);
+      await moveTo(p.x - 12, p.y, 720);
+      await delay(270);
+      await click(null);
+      await delay(180);
+      await typeIn('Résume ma journée', wwChatInput);
+      await delay(340);
     }
 
-    // ── 5. Se déplace vers le champ de saisie ────────────────────────────────
+    // 5. Click send
+    if (wwChatSend) {
+      const p = pos(wwChatSend);
+      await moveTo(p.x, p.y, 480);
+      await delay(310);
+      await click(wwChatSend);
+      await delay(200);
+    }
+
+    // 6. Show "Alex analyse..." then stream response
+    if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
+    if (wwResponse) {
+      wwResponse.innerHTML = '<em style="color:rgba(255,255,255,0.3);font-style:italic;font-size:0.67rem">Alex analyse...</em>';
+    }
+
+    // Cursor drifts away
+    await moveTo(dr.width * 0.42, dr.height * 0.48, 1000);
+    await delay(1600);
+
+    if (wwResponse) {
+      wwResponse.innerHTML = '<span id="ww-resp-txt"></span>';
+      const wwTxt = document.getElementById('ww-resp-txt');
+      if (wwTxt) {
+        await stream('3 urgences · Réunion 09h30 Finance · Term sheet JP à signer avant 10h00', wwTxt);
+      }
+    }
+    await delay(2800);
+
+    // ══════════════════════════════════════════════════════════
+    // TRANSITION — Widget closes → Excel appears → Window expands
+    // ══════════════════════════════════════════════════════════
+    widgetEl.classList.remove('open');
+    cursor.style.opacity = '0';
+    await delay(550);
+
+    // Switch background Outlook → Excel
+    bgOutlook.classList.add('fading');
+    await delay(300);
+    bgExcel.classList.add('visible');
+    await delay(500);
+
+    // Expand OneWork window + show grid
+    if (winWindow) winWindow.classList.add('expanded');
+    if (todoSection) todoSection.style.display = 'none';
+    if (demoGrid)    demoGrid.classList.add('visible');
+    await delay(1000); // let expansion animate
+
+    // ══════════════════════════════════════════════════════════
+    // PHASE 2 — Excel background + expanded OneWork dashboard
+    // ══════════════════════════════════════════════════════════
+    cursor.style.opacity = '1';
+    moveTo(dr.width * 0.48, dr.height * 0.28, 0);
+    await delay(500);
+
+    // Browse dashboard cards
+    const cardEmails = document.getElementById('demo-card-emails');
+    if (cardEmails) {
+      const p = pos(cardEmails);
+      await moveTo(p.x, p.y, 900);
+      await delay(500);
+    }
+    const cardTeams = document.getElementById('demo-card-teams');
+    if (cardTeams) {
+      const p = pos(cardTeams);
+      await moveTo(p.x, p.y, 700);
+      await delay(420);
+    }
+
+    // Move to main chatbar
     if (chatInput) {
       const p = pos(chatInput);
-      await moveTo(p.x - 20, p.y, 800);
-      await delay(300);
+      await moveTo(p.x - 20, p.y, 850);
+      await delay(280);
       await click(null);
-      await delay(200);
-
-      // ── 6. Frappe le message ────────────────────────────────────────────────
-      await typeIn('Rédige la réponse à Jean-Pierre sur le term sheet', chatInput);
-      await delay(380);
+      await delay(180);
+      await typeIn('Identifie les écarts budgétaires dans le fichier Excel', chatInput);
+      await delay(360);
     }
 
-    // ── 7. Se déplace vers le bouton envoyer ─────────────────────────────────
+    // Click send
     if (chatSend) {
       const p = pos(chatSend);
-      await moveTo(p.x, p.y, 500);
-      await delay(380);
+      await moveTo(p.x, p.y, 460);
+      await delay(310);
       await click(chatSend);
       await delay(220);
     }
 
-    // ── 8. Champ se vide, "Alex rédige..." ───────────────────────────────────
+    // Show thinking state
     if (chatInput) { chatInput.textContent = ''; chatInput.style.color = ''; }
-    if (chatResp) {
-      chatResp.className = 'demo-main-resp visible';
-      chatResp.innerHTML = '<div class="ww-resp-orb"></div><em style="color:rgba(255,255,255,0.32);font-style:italic">Alex rédige...</em>';
+    if (mainResp) {
+      mainResp.className = 'demo-main-resp visible';
+      mainResp.innerHTML = '<div class="ww-resp-orb"></div><em style="color:rgba(255,255,255,0.32);font-style:italic">Alex analyse le fichier Excel...</em>';
     }
 
-    // Curseur dérive
-    await moveTo(dr.width * 0.52, dr.height * 0.58, 1100);
-    await delay(1700);
+    // Cursor drifts
+    await moveTo(dr.width * 0.50, dr.height * 0.58, 1200);
+    await delay(2100);
 
-    // ── 9. Réponse IA streamée ────────────────────────────────────────────────
-    if (chatResp) {
-      chatResp.innerHTML = '<div class="ww-resp-orb"></div><span id="demo-resp-txt"></span>';
-      const txtEl = document.getElementById('demo-resp-txt');
-      if (txtEl) {
+    // Stream AI analysis
+    if (mainResp) {
+      mainResp.innerHTML = '<div class="ww-resp-orb"></div><span id="demo-resp-txt2"></span>';
+      const txt2 = document.getElementById('demo-resp-txt2');
+      if (txt2) {
         await stream(
-          'Bonjour Jean-Pierre, je valide les conditions du term sheet. Je vous recontacte avant 10h pour finaliser les détails.',
-          txtEl
+          'Q1 sous-performe de 6.8% · EBITDA à 3.2% vs 17.6% attendu · Anomalie : Marketing +34.1% hors plan (+90k€)',
+          txt2
         );
       }
     }
 
-    await delay(4200);
+    await delay(4500);
 
-    // ── Fin de cycle ─────────────────────────────────────────────────────────
+    // ── End of cycle ──────────────────────────────────────────
     cursor.style.opacity = '0';
-    await delay(4000);
+    await delay(3800);
     run();
   }
 
