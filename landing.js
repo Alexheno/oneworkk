@@ -17,15 +17,15 @@ document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 // ─── Demo animation sequence ──────────────────────────────────────────────────
 function startDemoSequence() {
   const cursor    = document.getElementById('demo-cursor');
-  const popup     = document.getElementById('win-widget-popup');
   const desktop   = document.getElementById('win-desktop');
-  const tbItem    = document.querySelector('.win-tb-item.active');
-  const inputDisp = document.getElementById('ww-input-display');
-  const sendBtn   = document.getElementById('ww-chat-send');
-  const respEl    = document.getElementById('ww-response');
-  const closeBtn  = document.getElementById('ww-close');
+  const todo1     = document.getElementById('demo-todo-1');
+  const todo2     = document.getElementById('demo-todo-2');
+  const todo3     = document.getElementById('demo-todo-3');
+  const chatInput = document.getElementById('demo-chatbar-input');
+  const chatSend  = document.getElementById('demo-chatbar-send');
+  const chatResp  = document.getElementById('demo-main-resp');
 
-  if (!cursor || !popup || !desktop || !tbItem) return;
+  if (!cursor || !desktop || !todo1) return;
 
   const delay = ms => new Promise(r => setTimeout(r, ms));
 
@@ -53,12 +53,13 @@ function startDemoSequence() {
     if (el) setTimeout(() => el.classList.remove('demo-hl'), 200);
   }
 
-  // Type text character by character
+  // Type text character by character into a span
+  const PLACEHOLDER = 'Demandez quelque chose à Alex...';
   async function typeIn(text, el) {
-    el.classList.add('typing');
+    el.style.color = 'rgba(255,255,255,0.72)';
     for (let i = 0; i <= text.length; i++) {
       el.textContent = text.slice(0, i);
-      await delay(42 + Math.random() * 28);
+      await delay(44 + Math.random() * 30);
     }
   }
 
@@ -66,103 +67,118 @@ function startDemoSequence() {
   async function stream(text, el) {
     for (let i = 0; i <= text.length; i++) {
       el.textContent = text.slice(0, i);
-      await delay(20 + Math.random() * 10);
+      await delay(18 + Math.random() * 12);
     }
   }
 
   async function run() {
     // ── Reset ──────────────────────────────────────────────────────────────────
-    popup.classList.remove('open');
-    respEl.className = 'ww-response';
-    respEl.innerHTML = '';
-    inputDisp.textContent = '';
-    inputDisp.classList.remove('typing');
+    document.querySelectorAll('.demo-todo-item.checked').forEach(el => el.classList.remove('checked'));
+    if (chatInput) { chatInput.textContent = PLACEHOLDER; chatInput.style.color = ''; }
+    if (chatResp)  { chatResp.className = 'demo-main-resp'; chatResp.innerHTML = ''; }
     cursor.style.opacity = '0';
 
-    await delay(1500);
+    await delay(1400);
 
-    // ── 1. Cursor apparaît en haut-droite de l'écran ──────────────────────────
+    // ── 1. Cursor apparaît ────────────────────────────────────────────────────
     const dr = desktop.getBoundingClientRect();
-    moveTo(dr.width * 0.62, dr.height * 0.3, 0);   // instant placement
+    moveTo(dr.width * 0.38, dr.height * 0.22, 0);
     cursor.style.opacity = '1';
 
     await delay(700);
 
-    // ── 2. Se déplace vers l'icône OneWork dans la taskbar ────────────────────
-    const wp = pos(tbItem);
-    await moveTo(wp.x, wp.y, 1000);
-    await delay(250);
-
-    // ── 3. Hover glow → click ─────────────────────────────────────────────────
-    tbItem.classList.add('demo-hl');
-    await delay(350);
-    await click(tbItem);
-    await delay(300);
-
-    // ── 4. Widget popup s'ouvre ───────────────────────────────────────────────
-    popup.classList.add('open');
-    await delay(1100);
-
-    // ── 5. Curseur se déplace vers le champ de saisie ─────────────────────────
-    const ir = inputDisp.getBoundingClientRect();
-    const deskR = desktop.getBoundingClientRect();
-    await moveTo(ir.left + 55 - deskR.left, ir.top + ir.height / 2 - deskR.top, 750);
-    await delay(350);
-
-    // ── 6. Click dans le champ ────────────────────────────────────────────────
-    await click(null);
-    await delay(200);
-
-    // ── 7. Frappe le message ──────────────────────────────────────────────────
-    await typeIn('Rédige une réponse à Jean-Pierre...', inputDisp);
-    await delay(450);
-
-    // ── 8. Se déplace vers le bouton envoyer ──────────────────────────────────
-    const sp = pos(sendBtn);
-    await moveTo(sp.x, sp.y, 520);
-    await delay(500);
-
-    // ── 9. Click envoyer ──────────────────────────────────────────────────────
-    await click(sendBtn);
-    await delay(250);
-
-    // ── 10. Champ se vide, réponse "Alex rédige..." ────────────────────────────
-    inputDisp.textContent = '';
-    inputDisp.classList.remove('typing');
-    respEl.className = 'ww-response visible';
-    respEl.innerHTML = '<div class="ww-resp-orb"></div><em style="color:rgba(255,255,255,0.3);font-style:italic">Alex rédige...</em>';
-
-    // Curseur dérive pendant l'attente
-    await moveTo(dr.width * 0.5, dr.height * 0.5, 900);
-    await delay(1800);
-
-    // ── 11. Réponse IA streamée ───────────────────────────────────────────────
-    respEl.innerHTML = '<div class="ww-resp-orb"></div><span id="ww-resp-txt"></span>';
-    const txtEl = document.getElementById('ww-resp-txt');
-    if (txtEl) {
-      await stream(
-        'Bonjour Jean-Pierre, je valide les conditions du term sheet. Je vous recontacte avant 10h pour finaliser les détails.',
-        txtEl
-      );
+    // ── 2. Se déplace vers la première todo ───────────────────────────────────
+    if (todo1) {
+      const dot1 = todo1.querySelector('.demo-todo-dot');
+      if (dot1) {
+        const p = pos(dot1);
+        await moveTo(p.x, p.y, 950);
+        await delay(380);
+        await click(dot1);
+        await delay(120);
+        todo1.classList.add('checked');
+        await delay(650);
+      }
     }
 
-    await delay(4000);
+    // ── 3. Deuxième todo ──────────────────────────────────────────────────────
+    if (todo2) {
+      const dot2 = todo2.querySelector('.demo-todo-dot');
+      if (dot2) {
+        const p = pos(dot2);
+        await moveTo(p.x, p.y, 700);
+        await delay(320);
+        await click(dot2);
+        await delay(120);
+        todo2.classList.add('checked');
+        await delay(550);
+      }
+    }
 
-    // ── 12. Curseur se déplace vers la croix de fermeture ────────────────────
-    const cp = pos(closeBtn);
-    await moveTo(cp.x, cp.y, 750);
-    await delay(700);
-    await click(closeBtn);
-    await delay(380);
+    // ── 4. Troisième todo ─────────────────────────────────────────────────────
+    if (todo3) {
+      const dot3 = todo3.querySelector('.demo-todo-dot');
+      if (dot3) {
+        const p = pos(dot3);
+        await moveTo(p.x, p.y, 650);
+        await delay(300);
+        await click(dot3);
+        await delay(120);
+        todo3.classList.add('checked');
+        await delay(500);
+      }
+    }
 
-    // ── 13. Popup se ferme ────────────────────────────────────────────────────
-    popup.classList.remove('open');
-    await delay(700);
+    // ── 5. Se déplace vers le champ de saisie ────────────────────────────────
+    if (chatInput) {
+      const p = pos(chatInput);
+      await moveTo(p.x - 20, p.y, 800);
+      await delay(300);
+      await click(null);
+      await delay(200);
+
+      // ── 6. Frappe le message ────────────────────────────────────────────────
+      await typeIn('Rédige la réponse à Jean-Pierre sur le term sheet', chatInput);
+      await delay(380);
+    }
+
+    // ── 7. Se déplace vers le bouton envoyer ─────────────────────────────────
+    if (chatSend) {
+      const p = pos(chatSend);
+      await moveTo(p.x, p.y, 500);
+      await delay(380);
+      await click(chatSend);
+      await delay(220);
+    }
+
+    // ── 8. Champ se vide, "Alex rédige..." ───────────────────────────────────
+    if (chatInput) { chatInput.textContent = ''; chatInput.style.color = ''; }
+    if (chatResp) {
+      chatResp.className = 'demo-main-resp visible';
+      chatResp.innerHTML = '<div class="ww-resp-orb"></div><em style="color:rgba(255,255,255,0.32);font-style:italic">Alex rédige...</em>';
+    }
+
+    // Curseur dérive
+    await moveTo(dr.width * 0.52, dr.height * 0.58, 1100);
+    await delay(1700);
+
+    // ── 9. Réponse IA streamée ────────────────────────────────────────────────
+    if (chatResp) {
+      chatResp.innerHTML = '<div class="ww-resp-orb"></div><span id="demo-resp-txt"></span>';
+      const txtEl = document.getElementById('demo-resp-txt');
+      if (txtEl) {
+        await stream(
+          'Bonjour Jean-Pierre, je valide les conditions du term sheet. Je vous recontacte avant 10h pour finaliser les détails.',
+          txtEl
+        );
+      }
+    }
+
+    await delay(4200);
+
+    // ── Fin de cycle ─────────────────────────────────────────────────────────
     cursor.style.opacity = '0';
-
-    await delay(5500);
-
-    // ── Boucle ────────────────────────────────────────────────────────────────
+    await delay(4000);
     run();
   }
 
