@@ -878,12 +878,18 @@ body {
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 6px;
-  padding: 0 10px;
+  padding: 0 10px 0 10px;
   height: 32px;
+}
+.tms-compose-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 .tms-compose-toolbar { display: none; }
 .tms-compose-text { flex: 1; min-width: 0; }
-.tms-compose-ph { font-size: 0.69rem; color: rgba(255,255,255,0.25); white-space: nowrap; line-height: 32px; }
+.tms-compose-ph { font-size: 0.69rem; color: rgba(255,255,255,0.25); white-space: nowrap; }
 .tms-compose-actions {
   display: flex;
   align-items: center;
@@ -1147,6 +1153,16 @@ body {
 /* Agent IA panel */
 .ww-agent-panel {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ww-agent-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.ww-agent-input-row {
+  flex-shrink: 0;
 }
 .ww-agent-hero {
   display: flex;
