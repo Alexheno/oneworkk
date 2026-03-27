@@ -3723,3 +3723,4 @@ body {
 #win-teams-popup .tms-compose-ph { color: #A19F9D; }
 #win-teams-popup .tms-compose-actions svg { stroke: #605E5C; }
 #win-teams-popup .tms-send-btn { background: #6264A7; color: #fff; }
+#win-teams-popup .tms-send-btn svg { stroke: #fff; }
