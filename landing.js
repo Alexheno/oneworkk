@@ -219,30 +219,58 @@ function startDemoSequence() {
 
     if (wwResponse) {
       wwResponse.className = 'ww-response visible';
+      // Inject shell — bars and legend start empty
       wwResponse.innerHTML = `<div class="ww-recap">
-  <div class="ww-gen-1 ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
-  <div class="ww-gen-1 ww-recap-bars">
-    <div class="ww-rb" style="height:15px;background:#0078d4;--d:1"></div>
-    <div class="ww-rb" style="height:35px;background:#FB923C;--d:2"></div>
-    <div class="ww-rb" style="height:18px;background:#0078d4;--d:3"></div>
-    <div class="ww-rb" style="height:29px;background:#FB923C;--d:4"></div>
-    <div class="ww-rb" style="height:10px;background:#6b7280;--d:5"></div>
-    <div class="ww-rb" style="height:21px;background:#22c55e;--d:6"></div>
-    <div class="ww-rb" style="height:38px;background:#FB923C;--d:7"></div>
-    <div class="ww-rb" style="height:26px;background:#a855f7;--d:8"></div>
-    <div class="ww-rb" style="height:23px;background:#a855f7;--d:9"></div>
-    <div class="ww-rb" style="height:13px;background:#0078d4;--d:10"></div>
-  </div>
-  <div class="ww-gen-2 ww-recap-leg">
-    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#FB923C"></span><span class="ww-rl-name">Réunions</span><span class="ww-rl-val">2h 15</span></div>
-    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#0078d4"></span><span class="ww-rl-name">Emails</span><span class="ww-rl-val">1h 40</span></div>
-    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#a855f7"></span><span class="ww-rl-name">Teams</span><span class="ww-rl-val">1h 05</span></div>
-    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#22c55e"></span><span class="ww-rl-name">Documents</span><span class="ww-rl-val">0h 45</span></div>
-  </div>
-  <p class="ww-gen-3 ww-recap-sum">Journée chargée — 2h15 en réunions, 3 urgences traitées. Score : 78 %, 4 tâches sur 5 complétées.</p>
+  <div class="ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
+  <div class="ww-recap-bars" id="ww-bars-container"></div>
+  <div class="ww-recap-leg" id="ww-leg-container"></div>
+  <p class="ww-recap-sum" id="ww-sum-txt" style="opacity:0;border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin:0"></p>
 </div>`;
+
+      // Stream bars left → right
+      const barsData = [
+        {h:15,bg:'#0078d4'},{h:35,bg:'#FB923C'},{h:18,bg:'#0078d4'},
+        {h:29,bg:'#FB923C'},{h:10,bg:'#6b7280'},{h:21,bg:'#22c55e'},
+        {h:38,bg:'#FB923C'},{h:26,bg:'#a855f7'},{h:23,bg:'#a855f7'},{h:13,bg:'#0078d4'}
+      ];
+      const barsEl = document.getElementById('ww-bars-container');
+      if (barsEl) {
+        for (const b of barsData) {
+          const d = document.createElement('div');
+          d.className = 'ww-rb';
+          d.style.cssText = `height:${b.h}px;background:${b.bg};--d:0`;
+          barsEl.appendChild(d);
+          await delay(72);
+        }
+      }
+
+      // Legend items appear one by one
+      const legData = [
+        {bg:'#FB923C',name:'Réunions',val:'2h 15'},
+        {bg:'#0078d4',name:'Emails',   val:'1h 40'},
+        {bg:'#a855f7',name:'Teams',    val:'1h 05'},
+        {bg:'#22c55e',name:'Documents',val:'0h 45'}
+      ];
+      const legEl = document.getElementById('ww-leg-container');
+      if (legEl) {
+        for (const l of legData) {
+          const div = document.createElement('div');
+          div.className = 'ww-rl-item';
+          div.style.cssText = 'animation:recap-in 0.25s ease both';
+          div.innerHTML = `<span class="ww-rl-dot" style="background:${l.bg}"></span><span class="ww-rl-name">${l.name}</span><span class="ww-rl-val">${l.val}</span>`;
+          legEl.appendChild(div);
+          await delay(160);
+        }
+      }
+
+      // Stream summary text char by char
+      const sumEl = document.getElementById('ww-sum-txt');
+      if (sumEl) {
+        sumEl.style.opacity = '1';
+        await stream('Journée chargée — 2h15 en réunions, 3 urgences traitées. Score : 78 %, 4 tâches sur 5 complétées.', sumEl);
+      }
     }
-    await delay(5200);
+    await delay(4000);
 
     // ══════════════════════════════════════════════════════════
     // TRANSITION — Widget closes → Excel appears → Window expands
