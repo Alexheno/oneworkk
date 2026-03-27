@@ -3234,7 +3234,7 @@ body {
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  padding: 5px 10px;
+  padding: 3px 10px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 .demo-email-row:last-child { border-bottom: none; }
@@ -3275,7 +3275,7 @@ body {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 7px 10px;
+  padding: 4px 10px;
   border-radius: 8px;
   transition: background 0.12s;
   cursor: pointer;
