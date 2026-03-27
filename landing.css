@@ -3270,29 +3270,47 @@ body {
 }
 .demo-email-urgent .demo-em-subj { color: rgba(255,255,255,0.68); font-weight: 500; }
 
-/* Teams rows */
-.demo-teams-row {
+/* Teams rows — chat list style */
+.demo-tms-item {
   display: flex;
-  flex-direction: column;
-  gap: 1px;
-  padding: 5px 10px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  align-items: center;
+  gap: 9px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  transition: background 0.12s;
+  cursor: pointer;
 }
-.demo-teams-row:last-child { border-bottom: none; }
-.demo-teams-ch {
+.demo-tms-item:hover { background: rgba(255,255,255,0.04); }
+.demo-tms-urgent { border-left: 2px solid rgba(98,100,167,0.7); padding-left: 8px; }
+.demo-tms-av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  font-size: 0.5rem; font-weight: 700; color: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.demo-tms-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.demo-tms-name {
   font-size: 0.65rem;
-  font-weight: 700;
-  color: rgba(130,132,230,0.9);
-}
-.demo-teams-urgent .demo-teams-ch { color: rgba(180,181,255,0.95); }
-.demo-teams-msg {
-  font-size: 0.63rem;
-  color: rgba(255,255,255,0.5);
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.demo-teams-urgent .demo-teams-msg { color: rgba(255,255,255,0.75); }
-.demo-teams-muted .demo-teams-ch,
-.demo-teams-muted .demo-teams-msg { color: rgba(255,255,255,0.22); }
+.demo-tms-urgent .demo-tms-name { color: rgba(255,255,255,0.95); }
+.demo-tms-msg {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.38);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-tms-urgent .demo-tms-msg { color: rgba(255,255,255,0.58); }
+.demo-tms-muted .demo-tms-name,
+.demo-tms-muted .demo-tms-msg { opacity: 0.35; }
+.demo-tms-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #6264A7;
+  flex-shrink: 0;
+}
 
 /* Meeting rows */
 .demo-meeting-row {
