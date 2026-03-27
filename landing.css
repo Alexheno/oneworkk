@@ -863,44 +863,35 @@ body {
 .tms-msg-react { font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 4px; background: rgba(255,255,255,0.06); display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
 .tms-msg-hl { background: rgba(98,100,167,0.08) !important; border-left: 2px solid rgba(98,100,167,0.6); padding-left: 10px; }
 
-/* Composer */
+/* Composer — single-line bar like real Teams */
 .tms-composer {
   border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 8px 14px 10px;
+  padding: 7px 12px 8px;
   flex-shrink: 0;
   background: #1F1E1E;
 }
 .tms-compose-inner {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.tms-compose-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px 4px;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-.tms-fmt-btn { font-size: 0.65rem; font-weight: 700; color: rgba(255,255,255,0.4); cursor: pointer; padding: 0 2px; }
-.tms-fmt-i { font-style: italic; }
-.tms-fmt-u { text-decoration: underline; }
-.tms-fmt-sep { color: rgba(255,255,255,0.15); font-size: 0.8rem; }
-.tms-compose-text {
-  padding: 8px 12px 6px;
-}
-.tms-compose-ph { font-size: 0.7rem; color: rgba(255,255,255,0.28); }
-.tms-compose-actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px 8px;
-  justify-content: flex-end;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 7px 10px;
+  height: 36px;
+}
+.tms-compose-toolbar { display: none; }
+.tms-compose-text { flex: 1; min-width: 0; }
+.tms-compose-ph { font-size: 0.69rem; color: rgba(255,255,255,0.25); white-space: nowrap; }
+.tms-compose-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }
 .tms-send-btn {
-  width: 28px; height: 28px;
-  border-radius: 7px;
+  width: 24px; height: 24px;
+  border-radius: 5px;
   border: none;
   background: #6264A7;
   color: white;
@@ -908,6 +899,7 @@ body {
   cursor: pointer;
 }
 .tms-send-btn:hover { background: #7577C0; }
+.tms-fmt-btn, .tms-fmt-i, .tms-fmt-u, .tms-fmt-sep { display: none; }
 
 /* ─── Widget — knob + carte (fidèle à la vraie app) ─── */
 .win-widget {
@@ -971,7 +963,6 @@ body {
   pointer-events: none;
   transition: opacity 0.13s ease-out, transform 0.15s cubic-bezier(0.175,0.885,0.32,1.15);
 }
-.win-widget:hover .ww-card,
 .win-widget.open .ww-card {
   opacity: 1;
   transform: translateY(0) scale(1);
