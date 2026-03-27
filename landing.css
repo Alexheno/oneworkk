@@ -867,6 +867,7 @@ body {
 .tms-composer {
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: 7px 12px 8px;
+  padding-right: 46px;
   flex-shrink: 0;
   background: #1F1E1E;
 }
@@ -911,7 +912,7 @@ body {
 
 /* Knob rond — toujours visible */
 .ww-knob {
-  width: 36px; height: 36px;
+  width: 32px; height: 32px;
   border-radius: 50%;
   background: rgba(8,8,20,0.93);
   border: 1.5px solid rgba(123,123,255,0.28);
@@ -950,7 +951,7 @@ body {
   position: absolute;
   bottom: 52px;
   right: 0;
-  width: 204px;
+  width: 188px;
   background: rgba(18,18,24,0.98);
   border: 1px solid rgba(255,255,255,0.11);
   border-radius: 18px;
@@ -1154,12 +1155,8 @@ body {
   padding: 16px 0 10px;
   gap: 7px;
 }
-.ww-agent-orb {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
-  animation: orb-spin 3s linear infinite;
-  box-shadow: 0 0 18px rgba(107,142,245,0.4);
+.ww-agent-logo {
+  filter: drop-shadow(0 0 8px rgba(107,142,245,0.5));
 }
 .ww-agent-label {
   font-size: 0.72rem;
@@ -1606,11 +1603,11 @@ body {
 .demo-email-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0px;
   overflow: hidden;
 }
 .demo-email-item {
-  padding: 6px 8px;
+  padding: 4px 8px;
   border-radius: 8px;
   background: rgba(255,255,255,0.03);
   border: 1px solid transparent;
@@ -3350,7 +3347,7 @@ body {
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 4px 10px;
+  padding: 3px 10px;
   border-radius: 8px;
   transition: background 0.12s;
   cursor: pointer;
