@@ -271,6 +271,25 @@ function startDemoSequence() {
   <div class="ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
   <div class="ww-recap-bars" id="ww-bars-container"></div>
   <div class="ww-recap-leg" id="ww-leg-container"></div>
+  <div class="ww-score-ring" id="ww-score-ring" style="opacity:0">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <defs>
+        <linearGradient id="sgr" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#6B8EF5"/>
+          <stop offset="100%" stop-color="#9B35FF"/>
+        </linearGradient>
+      </defs>
+      <circle cx="22" cy="22" r="17" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
+      <circle cx="22" cy="22" r="17" stroke="url(#sgr)" stroke-width="3" stroke-linecap="round"
+        stroke-dasharray="106.8" stroke-dashoffset="106.8" id="ww-score-arc"
+        style="transform:rotate(-90deg);transform-origin:22px 22px;transition:stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1)"/>
+      <text x="22" y="26" text-anchor="middle" fill="white" font-size="10" font-weight="700" font-family="system-ui,sans-serif">78%</text>
+    </svg>
+    <div class="ww-score-info">
+      <span class="ww-score-pct">Score de productivité</span>
+      <span class="ww-score-lbl">4 tâches sur 5 complétées</span>
+    </div>
+  </div>
   <p class="ww-recap-sum" id="ww-sum-txt" style="opacity:0;border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin:0"></p>
 </div>`;
 
@@ -310,11 +329,21 @@ function startDemoSequence() {
         }
       }
 
+      // Score ring appears + animates
+      const scoreRing = document.getElementById('ww-score-ring');
+      const scoreArc  = document.getElementById('ww-score-arc');
+      if (scoreRing) {
+        scoreRing.style.opacity = '1';
+        await delay(60);
+        if (scoreArc) scoreArc.style.strokeDashoffset = '23.5'; // 106.8 × (1 - 0.78)
+      }
+      await delay(1400);
+
       // Stream summary text char by char
       const sumEl = document.getElementById('ww-sum-txt');
       if (sumEl) {
         sumEl.style.opacity = '1';
-        await stream('Journée chargée — 2h15 en réunions, 3 urgences traitées. Score : 78 %, 4 tâches sur 5 complétées.', sumEl);
+        await stream('Journée chargée — 2h15 en réunions, 3 urgences traitées.', sumEl);
       }
     }
     await delay(4000);

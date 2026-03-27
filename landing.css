@@ -1416,6 +1416,30 @@ body {
   color: rgba(255,255,255,0.72);
   font-variant-numeric: tabular-nums;
 }
+.ww-score-ring {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  transition: opacity 0.45s ease;
+}
+.ww-score-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ww-score-pct {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.78);
+}
+.ww-score-lbl {
+  font-size: 0.52rem;
+  color: rgba(255,255,255,0.32);
+  letter-spacing: 0.02em;
+}
+
 .ww-recap-sum {
   font-size: 0.6rem;
   color: rgba(255,255,255,0.38);
