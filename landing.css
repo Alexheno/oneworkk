@@ -1310,11 +1310,8 @@ body {
 .ww-response {
   display: none;
   margin: 0 12px 10px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-  padding: 10px 12px;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.78);
+  color: rgba(255,255,255,0.72);
   line-height: 1.5;
 }
 .ww-response.visible { display: block; }
