@@ -133,7 +133,12 @@ function startDemoSequence() {
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
     if (wwResponse)  { wwResponse.innerHTML = ''; wwResponse.className = 'ww-response'; }
     const wwBubbleReset = document.querySelector('#ww-agent-panel .ww-agent-bubble');
-    if (wwBubbleReset) wwBubbleReset.style.opacity = '';
+    if (wwBubbleReset) {
+      wwBubbleReset.style.opacity = '';
+      wwBubbleReset.style.maxHeight = '';
+      wwBubbleReset.style.padding = '';
+      wwBubbleReset.style.margin = '';
+    }
 
     bgOutlook.classList.remove('fading');
     bgExcel.classList.remove('visible');
@@ -242,7 +247,12 @@ function startDemoSequence() {
     // 6. Show thinking dots, then inject screen-time visualization
     if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
     const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
-    if (wwBubble) wwBubble.style.opacity = '0';
+    if (wwBubble) {
+      wwBubble.style.opacity = '0';
+      wwBubble.style.maxHeight = '0';
+      wwBubble.style.padding = '0';
+      wwBubble.style.margin = '0';
+    }
     if (wwResponse) {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
