@@ -904,14 +904,14 @@ body {
 /* ─── Widget — knob + carte (fidèle à la vraie app) ─── */
 .win-widget {
   position: absolute;
-  bottom: 52px;
-  right: 12px;
+  bottom: 50px;
+  right: 5px;
   z-index: 50;
 }
 
 /* Knob rond — toujours visible */
 .ww-knob {
-  width: 40px; height: 40px;
+  width: 36px; height: 36px;
   border-radius: 50%;
   background: rgba(8,8,20,0.93);
   border: 1.5px solid rgba(123,123,255,0.28);
@@ -950,7 +950,7 @@ body {
   position: absolute;
   bottom: 52px;
   right: 0;
-  width: 224px;
+  width: 204px;
   background: rgba(18,18,24,0.98);
   border: 1px solid rgba(255,255,255,0.11);
   border-radius: 18px;
@@ -1285,8 +1285,10 @@ body {
   font-size: 0.71rem;
   color: rgba(255,255,255,0.55);
   min-height: 15px;
-  white-space: nowrap;
-  overflow: hidden;
+  white-space: normal;
+  overflow: visible;
+  text-align: left;
+  word-break: break-word;
 }
 .ww-input-display.typing::after {
   content: '|';

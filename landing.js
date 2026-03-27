@@ -242,7 +242,7 @@ function startDemoSequence() {
   <p class="ww-recap-sum">Journée chargée — 2h15 en réunions, 3 urgences traitées. Score de productivité : 78 %, 4 tâches sur 5 complétées.</p>
 </div>`;
     }
-    await delay(3200);
+    await delay(5200);
 
     // ══════════════════════════════════════════════════════════
     // TRANSITION — Widget closes → Excel appears → Window expands
