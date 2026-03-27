@@ -191,7 +191,7 @@ function startDemoSequence() {
       await delay(270);
       await click(null);
       await delay(180);
-      await typeIn('Fais-moi un recap de ma journée', wwChatInput);
+      await typeIn('Récap de ma journée', wwChatInput);
       await delay(340);
     }
 
@@ -220,26 +220,26 @@ function startDemoSequence() {
     if (wwResponse) {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = `<div class="ww-recap">
-  <div class="ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
-  <div class="ww-recap-bars">
-    <div class="ww-rb" style="height:20px;background:#0078d4;--d:1"></div>
-    <div class="ww-rb" style="height:46px;background:#FB923C;--d:2"></div>
-    <div class="ww-rb" style="height:24px;background:#0078d4;--d:3"></div>
-    <div class="ww-rb" style="height:38px;background:#FB923C;--d:4"></div>
-    <div class="ww-rb" style="height:14px;background:#6b7280;--d:5"></div>
-    <div class="ww-rb" style="height:28px;background:#22c55e;--d:6"></div>
-    <div class="ww-rb" style="height:50px;background:#FB923C;--d:7"></div>
-    <div class="ww-rb" style="height:34px;background:#a855f7;--d:8"></div>
-    <div class="ww-rb" style="height:30px;background:#a855f7;--d:9"></div>
-    <div class="ww-rb" style="height:18px;background:#0078d4;--d:10"></div>
+  <div class="ww-gen-1 ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
+  <div class="ww-gen-1 ww-recap-bars">
+    <div class="ww-rb" style="height:15px;background:#0078d4;--d:1"></div>
+    <div class="ww-rb" style="height:35px;background:#FB923C;--d:2"></div>
+    <div class="ww-rb" style="height:18px;background:#0078d4;--d:3"></div>
+    <div class="ww-rb" style="height:29px;background:#FB923C;--d:4"></div>
+    <div class="ww-rb" style="height:10px;background:#6b7280;--d:5"></div>
+    <div class="ww-rb" style="height:21px;background:#22c55e;--d:6"></div>
+    <div class="ww-rb" style="height:38px;background:#FB923C;--d:7"></div>
+    <div class="ww-rb" style="height:26px;background:#a855f7;--d:8"></div>
+    <div class="ww-rb" style="height:23px;background:#a855f7;--d:9"></div>
+    <div class="ww-rb" style="height:13px;background:#0078d4;--d:10"></div>
   </div>
-  <div class="ww-recap-leg">
+  <div class="ww-gen-2 ww-recap-leg">
     <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#FB923C"></span><span class="ww-rl-name">Réunions</span><span class="ww-rl-val">2h 15</span></div>
     <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#0078d4"></span><span class="ww-rl-name">Emails</span><span class="ww-rl-val">1h 40</span></div>
     <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#a855f7"></span><span class="ww-rl-name">Teams</span><span class="ww-rl-val">1h 05</span></div>
     <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#22c55e"></span><span class="ww-rl-name">Documents</span><span class="ww-rl-val">0h 45</span></div>
   </div>
-  <p class="ww-recap-sum">Journée chargée — 2h15 en réunions, 3 urgences traitées. Score de productivité : 78 %, 4 tâches sur 5 complétées.</p>
+  <p class="ww-gen-3 ww-recap-sum">Journée chargée — 2h15 en réunions, 3 urgences traitées. Score : 78 %, 4 tâches sur 5 complétées.</p>
 </div>`;
     }
     await delay(5200);
