@@ -27,6 +27,7 @@ function startDemoSequence() {
   const wwTask3     = document.getElementById('ww-task-3');
   const wwTask4     = document.getElementById('ww-task-4');
   const wwAgentPanel = document.getElementById('ww-agent-panel');
+  const wwBriefPanel = document.getElementById('ww-brief-panel');
   const wwModeAgent  = document.getElementById('ww-mode-agent');
   const wwModeBrief  = document.getElementById('ww-mode-brief');
   const wwChatInput = document.getElementById('ww-chat-input');
@@ -91,6 +92,7 @@ function startDemoSequence() {
     if (wwTask4) { wwTask4.classList.remove('checked'); }
     // Reset to Brief mode
     if (wwAgentPanel) { wwAgentPanel.style.display = 'none'; }
+    if (wwBriefPanel) { wwBriefPanel.style.display = ''; }
     if (wwModeAgent)  { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
@@ -177,8 +179,9 @@ function startDemoSequence() {
       await delay(100);
       wwModeBrief.classList.remove('ww-mode-active');
       wwModeAgent.classList.add('ww-mode-active');
+      if (wwBriefPanel) { wwBriefPanel.style.display = 'none'; }
       wwAgentPanel.style.display = 'block';
-      await delay(350);
+      await delay(380);
     }
     if (wwChatInput) {
       const p = pos(wwChatInput);
@@ -199,18 +202,18 @@ function startDemoSequence() {
       await delay(200);
     }
 
-    // 6. Show "Alex analyse..." then stream response
+    // 6. Show thinking dots, then stream response
     if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
     if (wwResponse) {
-      wwResponse.innerHTML = '<em style="color:rgba(255,255,255,0.3);font-style:italic;font-size:0.67rem">Alex analyse...</em>';
+      wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
 
     // Cursor drifts away
-    await moveTo(dr.width * 0.42, dr.height * 0.48, 1000);
-    await delay(1600);
+    await moveTo(dr.width * 0.42, dr.height * 0.48, 900);
+    await delay(1800);
 
     if (wwResponse) {
-      wwResponse.innerHTML = '<span id="ww-resp-txt"></span>';
+      wwResponse.innerHTML = '<div class="ww-resp-bubble"><span id="ww-resp-txt"></span></div>';
       const wwTxt = document.getElementById('ww-resp-txt');
       if (wwTxt) {
         await stream('3 urgences · Réunion 09h30 Finance · Term sheet JP à signer avant 10h00', wwTxt);
@@ -276,20 +279,20 @@ function startDemoSequence() {
       await delay(220);
     }
 
-    // Show thinking state
+    // Show thinking dots in main resp
     if (chatInput) { chatInput.textContent = ''; chatInput.style.color = ''; }
     if (mainResp) {
       mainResp.className = 'demo-main-resp visible';
-      mainResp.innerHTML = '<div class="ww-resp-orb"></div><em style="color:rgba(255,255,255,0.32);font-style:italic">Alex analyse le fichier Excel...</em>';
+      mainResp.innerHTML = '<div class="demo-thinking"><span></span><span></span><span></span></div>';
     }
 
     // Cursor drifts
     await moveTo(dr.width * 0.50, dr.height * 0.58, 1200);
-    await delay(2100);
+    await delay(2400);
 
     // Stream AI analysis
     if (mainResp) {
-      mainResp.innerHTML = '<div class="ww-resp-orb"></div><span id="demo-resp-txt2"></span>';
+      mainResp.innerHTML = '<span id="demo-resp-txt2"></span>';
       const txt2 = document.getElementById('demo-resp-txt2');
       if (txt2) {
         await stream(

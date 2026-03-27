@@ -878,6 +878,35 @@ body {
 }
 .ww-add-task:hover { color: rgba(255,255,255,0.45); }
 
+/* Thinking animation — ChatGPT style dots */
+.ww-thinking, .demo-thinking {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 6px 2px;
+}
+.demo-thinking span { width: 8px !important; height: 8px !important; }
+.ww-thinking span, .demo-thinking span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(107,142,245,0.75);
+  animation: thinking-pulse 1.4s cubic-bezier(0.455,0.03,0.515,0.955) infinite;
+}
+.ww-thinking span:nth-child(2), .demo-thinking span:nth-child(2) { animation-delay: 0.18s; }
+.ww-thinking span:nth-child(3), .demo-thinking span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes thinking-pulse {
+  0%, 60%, 100% { transform: translateY(0) scale(0.85); opacity: 0.3; }
+  30% { transform: translateY(-5px) scale(1.1); opacity: 1; background: rgba(155,53,255,0.9); }
+}
+
+/* Response bubble in widget */
+.ww-resp-bubble {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.5;
+  padding: 2px 0;
+}
+
 .ww-chat-area { padding: 9px 11px 11px; }
 .ww-chat-row {
   display: flex;
@@ -2045,18 +2074,20 @@ body {
 /* Chatbar response area */
 .demo-main-resp {
   display: none;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.68);
+  align-items: center;
+  gap: 10px;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.78);
   line-height: 1.55;
-  padding: 8px 10px;
-  background: rgba(107,142,245,0.07);
-  border: 1px solid rgba(107,142,245,0.18);
-  border-radius: 9px;
+  padding: 9px 12px;
+  background: linear-gradient(135deg, rgba(107,142,245,0.08), rgba(155,53,255,0.06));
+  border: 1px solid rgba(107,142,245,0.2);
+  border-radius: 10px;
   flex-shrink: 0;
+  animation: resp-fadein 0.3s ease;
 }
 .demo-main-resp.visible { display: flex; }
+@keyframes resp-fadein { from { opacity:0; transform: translateY(4px); } to { opacity:1; transform: none; } }
 
 /* ═══════════════════════════════════════════════════════════
    DEMO — Outlook background window
@@ -2800,32 +2831,47 @@ body {
 
 /* Card base */
 .demo-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   min-height: 0;
+  position: relative;
 }
-#demo-card-emails  { border-top: 2px solid rgba(239,68,68,0.55); }
-#demo-card-teams   { border-top: 2px solid rgba(98,100,167,0.7); }
-#demo-card-meetings{ border-top: 2px solid rgba(107,142,245,0.65); }
-#demo-card-todos   { border-top: 2px solid rgba(251,146,60,0.55); }
+#demo-card-emails::before   { content:''; position:absolute; top:0; left:0; right:0; height:28px; background:linear-gradient(to bottom, rgba(239,68,68,0.09), transparent); pointer-events:none; }
+#demo-card-teams::before    { content:''; position:absolute; top:0; left:0; right:0; height:28px; background:linear-gradient(to bottom, rgba(124,77,255,0.1), transparent); pointer-events:none; }
+#demo-card-meetings::before { content:''; position:absolute; top:0; left:0; right:0; height:28px; background:linear-gradient(to bottom, rgba(107,142,245,0.1), transparent); pointer-events:none; }
+#demo-card-todos::before    { content:''; position:absolute; top:0; left:0; right:0; height:28px; background:linear-gradient(to bottom, rgba(251,146,60,0.09), transparent); pointer-events:none; }
 
 .demo-card-head {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px 5px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 7px;
+  padding: 7px 10px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  flex-shrink: 0;
+  position: relative;
+}
+/* Colored icon dot before title */
+.demo-card-head::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
+#demo-card-emails  .demo-card-head::before { background: rgba(239,68,68,0.8); box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+#demo-card-teams   .demo-card-head::before { background: rgba(124,77,255,0.9); box-shadow: 0 0 6px rgba(124,77,255,0.5); }
+#demo-card-meetings .demo-card-head::before { background: rgba(107,142,245,0.9); box-shadow: 0 0 6px rgba(107,142,245,0.5); }
+#demo-card-todos   .demo-card-head::before { background: rgba(251,146,60,0.85); box-shadow: 0 0 6px rgba(251,146,60,0.4); }
+
 .demo-card-title {
   font-size: 0.68rem;
   font-weight: 700;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.8);
   flex: 1;
+  letter-spacing: 0.01em;
 }
 .demo-card-badge {
   font-size: 0.55rem;
