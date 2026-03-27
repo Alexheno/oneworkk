@@ -104,10 +104,10 @@ function startDemoSequence() {
     container.getBoundingClientRect();
     // Play: animate all to natural position
     [...container.children].forEach(el => {
-      el.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1)';
+      el.style.transition = 'transform 0.72s cubic-bezier(0.22, 1, 0.36, 1)';
       el.style.transform = '';
     });
-    await delay(450);
+    await delay(750);
     [...container.children].forEach(el => { el.style.transition = ''; });
   }
 
@@ -149,25 +149,32 @@ function startDemoSequence() {
     if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
 
     cursor.style.opacity = '0';
-    await delay(1200);
+    await delay(800);
 
     // ══════════════════════════════════════════════════════════
-    // PHASE 1 — Outlook + Widget interaction
+    // PHASE 1 — Excel background + Widget interaction
     // ══════════════════════════════════════════════════════════
     const dr = desktop.getBoundingClientRect();
 
-    // Cursor appears at center of screen
-    moveTo(dr.width * 0.50, dr.height * 0.45, 0);
+    // Start on Excel background immediately
+    bgOutlook.classList.add('fading');
+    bgExcel.classList.add('visible');
+    await delay(500);
+
+    // Cursor appears on the Excel area (right side)
+    moveTo(dr.width * 0.60, dr.height * 0.35, 0);
     cursor.style.opacity = '1';
     await delay(700);
 
-    // 1. Move cursor near widget → hover opens card (no click)
+    // 1. Move cursor to OneWork widget icon in taskbar → click to open
     if (wwKnob) {
       const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 6, 950);
-      await delay(300);
+      await moveTo(p.x, p.y - 4, 1400);
+      await delay(380);
+      await click(wwKnob);
+      await delay(280);
       widgetEl.classList.add('open');
-      await delay(600);
+      await delay(800);
     }
 
     // 2. Check task 1 → sinks to bottom
@@ -175,12 +182,12 @@ function startDemoSequence() {
       const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
         const p = pos(dot1);
-        await moveTo(p.x, p.y, 750);
-        await delay(320);
+        await moveTo(p.x, p.y, 1050);
+        await delay(480);
         await click(dot1);
-        await delay(80);
+        await delay(120);
         await checkAndSink(wwTask1);
-        await delay(300);
+        await delay(700);
       }
     }
 
@@ -189,12 +196,12 @@ function startDemoSequence() {
       const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 600);
-        await delay(260);
+        await moveTo(p.x, p.y, 950);
+        await delay(420);
         await click(dot2);
-        await delay(80);
+        await delay(120);
         await checkAndSink(wwTask2);
-        await delay(260);
+        await delay(750);
       }
     }
 
@@ -203,12 +210,12 @@ function startDemoSequence() {
       const dot3 = wwTask3.querySelector('.ww-dot');
       if (dot3) {
         const p = pos(dot3);
-        await moveTo(p.x, p.y, 560);
-        await delay(220);
+        await moveTo(p.x, p.y, 950);
+        await delay(420);
         await click(dot3);
-        await delay(80);
+        await delay(120);
         await checkAndSink(wwTask3);
-        await delay(240);
+        await delay(750);
       }
     }
 
@@ -324,10 +331,7 @@ function startDemoSequence() {
     cursor.style.opacity = '0';
     await delay(550);
 
-    // Switch background Outlook → Excel
-    bgOutlook.classList.add('fading');
-    await delay(300);
-    bgExcel.classList.add('visible');
+    // Excel already visible — smooth pause before dashboard opens
     await delay(500);
 
     // Show + expand OneWork window (already has bento grid inside)
