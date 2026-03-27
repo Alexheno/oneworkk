@@ -177,10 +177,10 @@ function startDemoSequence() {
       const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
         const p = pos(dot1);
-        await moveTo(p.x, p.y, 1050);
-        await delay(480);
+        await moveTo(p.x, p.y, 680);
+        await delay(260);
         await click(dot1);
-        await delay(120);
+        await delay(80);
         await checkAndSink(wwTask1);
         await delay(700);
       }
@@ -191,12 +191,12 @@ function startDemoSequence() {
       const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 950);
-        await delay(420);
+        await moveTo(p.x, p.y, 580);
+        await delay(220);
         await click(dot2);
-        await delay(120);
+        await delay(80);
         await checkAndSink(wwTask2);
-        await delay(750);
+        await delay(720);
       }
     }
 
@@ -205,12 +205,12 @@ function startDemoSequence() {
       const dot3 = wwTask3.querySelector('.ww-dot');
       if (dot3) {
         const p = pos(dot3);
-        await moveTo(p.x, p.y, 950);
-        await delay(420);
+        await moveTo(p.x, p.y, 580);
+        await delay(220);
         await click(dot3);
-        await delay(120);
+        await delay(80);
         await checkAndSink(wwTask3);
-        await delay(750);
+        await delay(720);
       }
     }
 
