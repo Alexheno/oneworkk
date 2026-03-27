@@ -41,7 +41,7 @@ function startDemoSequence() {
   if (!cursor || !desktop || !bgOutlook) return;
 
   const delay = ms => new Promise(r => setTimeout(r, ms));
-  const WW_PH   = 'Demandez à Alex...';
+  const WW_PH   = 'Demandez quelque chose...';
   const MAIN_PH = 'Demandez quelque chose à Alex...';
 
   // Get element center relative to win-desktop
@@ -91,8 +91,8 @@ function startDemoSequence() {
     if (wwTask3) { wwTask3.classList.remove('checked'); }
     if (wwTask4) { wwTask4.classList.remove('checked'); }
     // Reset to Brief mode
-    if (wwAgentPanel) { wwAgentPanel.style.display = 'none'; }
-    if (wwBriefPanel) { wwBriefPanel.style.display = ''; }
+    const wwCardReset = document.querySelector('#win-widget-popup .ww-card');
+    if (wwCardReset) wwCardReset.classList.remove('show-agent');
     if (wwModeAgent)  { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
@@ -181,8 +181,8 @@ function startDemoSequence() {
       await delay(100);
       wwModeBrief.classList.remove('ww-mode-active');
       wwModeAgent.classList.add('ww-mode-active');
-      if (wwBriefPanel) { wwBriefPanel.style.display = 'none'; }
-      wwAgentPanel.style.display = 'block';
+      const wwCard = document.querySelector('#win-widget-popup .ww-card');
+      if (wwCard) wwCard.classList.add('show-agent');
       await delay(380);
     }
     if (wwChatInput) {
