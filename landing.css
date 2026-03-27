@@ -483,13 +483,14 @@ body {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 40px;
-  background: rgba(8,10,20,0.97);
-  display: flex;
+  background: rgba(10,11,22,0.97);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 0 8px;
-  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 0 6px;
+  border-top: 1px solid rgba(255,255,255,0.06);
   z-index: 20;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(20px);
 }
 
 .win-start-btn {
@@ -538,7 +539,8 @@ body {
 .win-tray {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  justify-self: end;
 }
 
 .win-tray-icons {
@@ -785,31 +787,79 @@ body {
 
 /* Meetings block */
 .ww-meetings {
-  padding: 10px 13px 8px;
+  padding: 8px 13px 10px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
-.ww-meeting-row {
+.ww-meeting-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.ww-meeting-item:last-child { border-bottom: none; }
+.ww-mt {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(107,142,245,0.85);
+  min-width: 30px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.ww-mi-body { display: flex; flex-direction: column; gap: 1px; }
+.ww-mi-title {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.68);
+}
+.ww-mi-sub {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.28);
+}
+
+/* Agent IA panel */
+.ww-agent-panel {
+  padding: 10px 13px 12px;
+}
+.ww-agent-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 10px;
+}
+.ww-agent-orb {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
+  flex-shrink: 0;
+  animation: orb-spin 3s linear infinite;
+  box-shadow: 0 0 16px rgba(107,142,245,0.35);
+}
+.ww-agent-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+}
+.ww-agent-ready { color: rgba(76,175,80,0.9); }
+.ww-agent-bubble {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.45;
+  margin-bottom: 8px;
+}
+.ww-agent-input-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(107,142,245,0.06);
-  border: 1px solid rgba(107,142,245,0.14);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
   padding: 7px 9px;
 }
-.ww-meeting-icon {
-  width: 20px; height: 20px;
-  background: rgba(107,142,245,0.12);
-  border-radius: 5px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.ww-meeting-text {
-  flex: 1;
-  font-size: 0.68rem;
-  color: rgba(255,255,255,0.5);
-}
-.ww-chevron { flex-shrink: 0; }
 
 /* Tasks section label */
 .ww-tasks .ww-section-label { margin-bottom: 4px; }
@@ -2604,10 +2654,8 @@ body {
 .win-taskbar-center {
   display: flex;
   align-items: center;
-  gap: 4px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  justify-content: center;
+  gap: 3px;
 }
 
 /* App indicator dot */
@@ -2760,18 +2808,23 @@ body {
   overflow: hidden;
   min-height: 0;
 }
+#demo-card-emails  { border-top: 2px solid rgba(239,68,68,0.55); }
+#demo-card-teams   { border-top: 2px solid rgba(98,100,167,0.7); }
+#demo-card-meetings{ border-top: 2px solid rgba(107,142,245,0.65); }
+#demo-card-todos   { border-top: 2px solid rgba(251,146,60,0.55); }
+
 .demo-card-head {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 10px 5px;
+  padding: 6px 10px 5px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
   flex-shrink: 0;
 }
 .demo-card-title {
   font-size: 0.68rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.65);
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
   flex: 1;
 }
 .demo-card-badge {

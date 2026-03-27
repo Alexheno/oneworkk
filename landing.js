@@ -26,7 +26,9 @@ function startDemoSequence() {
   const wwTask2     = document.getElementById('ww-task-2');
   const wwTask3     = document.getElementById('ww-task-3');
   const wwTask4     = document.getElementById('ww-task-4');
-  const wwChatArea  = document.getElementById('ww-chat-area');
+  const wwAgentPanel = document.getElementById('ww-agent-panel');
+  const wwModeAgent  = document.getElementById('ww-mode-agent');
+  const wwModeBrief  = document.getElementById('ww-mode-brief');
   const wwChatInput = document.getElementById('ww-chat-input');
   const wwChatSend  = document.getElementById('ww-chat-send');
   const wwResponse  = document.getElementById('ww-response');
@@ -87,7 +89,10 @@ function startDemoSequence() {
     if (wwTask2) { wwTask2.classList.remove('checked'); }
     if (wwTask3) { wwTask3.classList.remove('checked'); }
     if (wwTask4) { wwTask4.classList.remove('checked'); }
-    if (wwChatArea)  { wwChatArea.style.display = 'none'; }
+    // Reset to Brief mode
+    if (wwAgentPanel) { wwAgentPanel.style.display = 'none'; }
+    if (wwModeAgent)  { wwModeAgent.classList.remove('ww-mode-active'); }
+    if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
     if (wwResponse)  { wwResponse.innerHTML = ''; }
 
@@ -163,8 +168,18 @@ function startDemoSequence() {
       }
     }
 
-    // 4. Show chat area + type message
-    if (wwChatArea) { wwChatArea.style.display = 'block'; await delay(120); }
+    // 4. Switch to Agent IA mode, then type
+    if (wwModeAgent && wwModeBrief && wwAgentPanel) {
+      const pAgent = pos(wwModeAgent);
+      await moveTo(pAgent.x, pAgent.y, 600);
+      await delay(220);
+      await click(wwModeAgent);
+      await delay(100);
+      wwModeBrief.classList.remove('ww-mode-active');
+      wwModeAgent.classList.add('ww-mode-active');
+      wwAgentPanel.style.display = 'block';
+      await delay(350);
+    }
     if (wwChatInput) {
       const p = pos(wwChatInput);
       await moveTo(p.x - 12, p.y, 680);
