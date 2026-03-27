@@ -81,15 +81,50 @@ function startDemoSequence() {
     }
   }
 
+  // FLIP: check task + animate sink to bottom
+  async function checkAndSink(taskEl) {
+    const container = taskEl.parentElement;
+    const siblings = [...container.children];
+    // First: snapshot positions
+    const rects = new Map(siblings.map(el => [el, el.getBoundingClientRect()]));
+    // Mark checked + move to last
+    taskEl.classList.add('checked');
+    container.appendChild(taskEl);
+    // Invert: push each element back to its old visual position
+    [...container.children].forEach(el => {
+      const old = rects.get(el);
+      if (!old) return;
+      const now = el.getBoundingClientRect();
+      const dy = old.top - now.top;
+      if (dy === 0) return;
+      el.style.transition = 'none';
+      el.style.transform = `translateY(${dy}px)`;
+    });
+    // Force reflow
+    container.getBoundingClientRect();
+    // Play: animate all to natural position
+    [...container.children].forEach(el => {
+      el.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1)';
+      el.style.transform = '';
+    });
+    await delay(450);
+    [...container.children].forEach(el => { el.style.transition = ''; });
+  }
+
   async function run() {
     // ══════════════════════════════════════════════════════════
     // RESET
     // ══════════════════════════════════════════════════════════
     widgetEl.classList.remove('open');
-    if (wwTask1) { wwTask1.classList.remove('checked'); }
-    if (wwTask2) { wwTask2.classList.remove('checked'); }
-    if (wwTask3) { wwTask3.classList.remove('checked'); }
-    if (wwTask4) { wwTask4.classList.remove('checked'); }
+    // Restore original task order + clear checked state
+    const tasksEl = document.querySelector('#win-widget-popup .ww-tasks');
+    [wwTask1, wwTask2, wwTask3, wwTask4].forEach(t => {
+      if (!t) return;
+      t.classList.remove('checked');
+      t.style.transform = '';
+      t.style.transition = '';
+      if (tasksEl) tasksEl.appendChild(t);
+    });
     // Reset to Brief mode
     const wwCardReset = document.querySelector('#win-widget-popup .ww-card');
     if (wwCardReset) wwCardReset.classList.remove('show-agent');
@@ -130,7 +165,7 @@ function startDemoSequence() {
       await delay(600);
     }
 
-    // 2. Check task 1 in widget
+    // 2. Check task 1 → sinks to bottom
     if (wwTask1) {
       const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
@@ -138,37 +173,37 @@ function startDemoSequence() {
         await moveTo(p.x, p.y, 750);
         await delay(320);
         await click(dot1);
-        await delay(110);
-        wwTask1.classList.add('checked');
-        await delay(520);
+        await delay(80);
+        await checkAndSink(wwTask1);
+        await delay(300);
       }
     }
 
-    // 3. Check task 2 in widget
+    // 3. Check task 2 → sinks to bottom
     if (wwTask2) {
       const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 620);
-        await delay(280);
+        await moveTo(p.x, p.y, 600);
+        await delay(260);
         await click(dot2);
-        await delay(110);
-        wwTask2.classList.add('checked');
-        await delay(420);
+        await delay(80);
+        await checkAndSink(wwTask2);
+        await delay(260);
       }
     }
 
-    // 3b. Check task 3
+    // 3b. Check task 3 → sinks to bottom
     if (wwTask3) {
       const dot3 = wwTask3.querySelector('.ww-dot');
       if (dot3) {
         const p = pos(dot3);
-        await moveTo(p.x, p.y, 580);
-        await delay(240);
+        await moveTo(p.x, p.y, 560);
+        await delay(220);
         await click(dot3);
-        await delay(110);
-        wwTask3.classList.add('checked');
-        await delay(360);
+        await delay(80);
+        await checkAndSink(wwTask3);
+        await delay(240);
       }
     }
 
