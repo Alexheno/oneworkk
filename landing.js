@@ -97,6 +97,8 @@ function startDemoSequence() {
     if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
     if (wwResponse)  { wwResponse.innerHTML = ''; wwResponse.className = 'ww-response'; }
+    const wwBubbleReset = document.querySelector('#ww-agent-panel .ww-agent-bubble');
+    if (wwBubbleReset) wwBubbleReset.style.opacity = '';
 
     bgOutlook.classList.remove('fading');
     bgExcel.classList.remove('visible');
@@ -189,7 +191,7 @@ function startDemoSequence() {
       await delay(270);
       await click(null);
       await delay(180);
-      await typeIn('Résume ma journée', wwChatInput);
+      await typeIn('Fais-moi un recap de ma journée', wwChatInput);
       await delay(340);
     }
 
@@ -202,8 +204,10 @@ function startDemoSequence() {
       await delay(200);
     }
 
-    // 6. Show thinking dots, then stream response
+    // 6. Show thinking dots, then inject screen-time visualization
     if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
+    const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
+    if (wwBubble) wwBubble.style.opacity = '0';
     if (wwResponse) {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
@@ -211,17 +215,34 @@ function startDemoSequence() {
 
     // Cursor drifts away
     await moveTo(dr.width * 0.42, dr.height * 0.48, 900);
-    await delay(1800);
+    await delay(1900);
 
     if (wwResponse) {
       wwResponse.className = 'ww-response visible';
-      wwResponse.innerHTML = '<span id="ww-resp-txt"></span>';
-      const wwTxt = document.getElementById('ww-resp-txt');
-      if (wwTxt) {
-        await stream('3 urgences · Réunion 09h30 Finance · Term sheet JP à signer avant 10h00', wwTxt);
-      }
+      wwResponse.innerHTML = `<div class="ww-recap">
+  <div class="ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
+  <div class="ww-recap-bars">
+    <div class="ww-rb" style="height:20px;background:#0078d4;--d:1"></div>
+    <div class="ww-rb" style="height:46px;background:#FB923C;--d:2"></div>
+    <div class="ww-rb" style="height:24px;background:#0078d4;--d:3"></div>
+    <div class="ww-rb" style="height:38px;background:#FB923C;--d:4"></div>
+    <div class="ww-rb" style="height:14px;background:#6b7280;--d:5"></div>
+    <div class="ww-rb" style="height:28px;background:#22c55e;--d:6"></div>
+    <div class="ww-rb" style="height:50px;background:#FB923C;--d:7"></div>
+    <div class="ww-rb" style="height:34px;background:#a855f7;--d:8"></div>
+    <div class="ww-rb" style="height:30px;background:#a855f7;--d:9"></div>
+    <div class="ww-rb" style="height:18px;background:#0078d4;--d:10"></div>
+  </div>
+  <div class="ww-recap-leg">
+    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#FB923C"></span><span class="ww-rl-name">Réunions</span><span class="ww-rl-val">2h 15</span></div>
+    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#0078d4"></span><span class="ww-rl-name">Emails</span><span class="ww-rl-val">1h 40</span></div>
+    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#a855f7"></span><span class="ww-rl-name">Teams</span><span class="ww-rl-val">1h 05</span></div>
+    <div class="ww-rl-item"><span class="ww-rl-dot" style="background:#22c55e"></span><span class="ww-rl-name">Documents</span><span class="ww-rl-val">0h 45</span></div>
+  </div>
+  <p class="ww-recap-sum">Journée chargée — 2h15 en réunions, 3 urgences traitées. Score de productivité : 78 %, 4 tâches sur 5 complétées.</p>
+</div>`;
     }
-    await delay(2800);
+    await delay(3200);
 
     // ══════════════════════════════════════════════════════════
     // TRANSITION — Widget closes → Excel appears → Window expands
