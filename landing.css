@@ -2214,15 +2214,15 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  font-size: 0.78rem;
+  gap: 10px;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-muted);
   background: var(--bg-2);
   border: 1px solid var(--border-2);
-  border-radius: 14px;
-  padding: 18px 22px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border-radius: 18px;
+  padding: 32px 42px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
 .sec-orbit {
