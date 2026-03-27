@@ -2065,6 +2065,7 @@ body {
   padding: 100px 0;
   background: var(--bg-2);
   border-top: 1px solid var(--border);
+  text-align: center;
   border-bottom: 1px solid var(--border);
 }
 
