@@ -24,6 +24,9 @@ function startDemoSequence() {
   const winWindow   = document.getElementById('win-onework');
   const wwTask1     = document.getElementById('ww-task-1');
   const wwTask2     = document.getElementById('ww-task-2');
+  const wwTask3     = document.getElementById('ww-task-3');
+  const wwTask4     = document.getElementById('ww-task-4');
+  const wwChatArea  = document.getElementById('ww-chat-area');
   const wwChatInput = document.getElementById('ww-chat-input');
   const wwChatSend  = document.getElementById('ww-chat-send');
   const wwResponse  = document.getElementById('ww-response');
@@ -82,6 +85,9 @@ function startDemoSequence() {
     widgetEl.classList.remove('open');
     if (wwTask1) { wwTask1.classList.remove('checked'); }
     if (wwTask2) { wwTask2.classList.remove('checked'); }
+    if (wwTask3) { wwTask3.classList.remove('checked'); }
+    if (wwTask4) { wwTask4.classList.remove('checked'); }
+    if (wwChatArea)  { wwChatArea.style.display = 'none'; }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
     if (wwResponse)  { wwResponse.innerHTML = ''; }
 
@@ -139,14 +145,29 @@ function startDemoSequence() {
         await click(dot2);
         await delay(110);
         wwTask2.classList.add('checked');
-        await delay(460);
+        await delay(420);
       }
     }
 
-    // 4. Move to widget chat input, type message
+    // 3b. Check task 3
+    if (wwTask3) {
+      const dot3 = wwTask3.querySelector('.ww-dot');
+      if (dot3) {
+        const p = pos(dot3);
+        await moveTo(p.x, p.y, 580);
+        await delay(240);
+        await click(dot3);
+        await delay(110);
+        wwTask3.classList.add('checked');
+        await delay(360);
+      }
+    }
+
+    // 4. Show chat area + type message
+    if (wwChatArea) { wwChatArea.style.display = 'block'; await delay(120); }
     if (wwChatInput) {
       const p = pos(wwChatInput);
-      await moveTo(p.x - 12, p.y, 720);
+      await moveTo(p.x - 12, p.y, 680);
       await delay(270);
       await click(null);
       await delay(180);

@@ -649,7 +649,7 @@ body {
   position: absolute;
   bottom: 52px;
   right: 0;
-  width: 240px;
+  width: 256px;
   background: rgba(22,22,28,0.99);
   border: 1px solid rgba(255,255,255,0.11);
   border-radius: 18px;
@@ -660,8 +660,8 @@ body {
   opacity: 0;
   transform: translateY(12px) scale(0.97);
   pointer-events: none;
-  transition: opacity 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
-              transform 0.34s cubic-bezier(0.175,0.885,0.32,1.15);
+  transition: opacity 0.16s cubic-bezier(0.25,0.46,0.45,0.94),
+              transform 0.18s cubic-bezier(0.175,0.885,0.32,1.15);
 }
 .win-widget.open .ww-card {
   opacity: 1;
@@ -733,11 +733,10 @@ body {
 .ww-badge.blue { background: rgba(107,142,245,0.12); border: 1px solid rgba(107,142,245,0.28); color: rgba(107,142,245,0.9); }
 
 .ww-tasks {
-  padding: 8px 13px;
+  padding: 8px 13px 6px;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .ww-task {
   display: flex;
@@ -755,6 +754,79 @@ body {
   flex-shrink: 0;
 }
 .ww-task.urgent .ww-dot { border-color: rgba(239,68,68,0.5); }
+
+/* Urgent badge inline */
+.ww-urgent-badge {
+  font-size: 0.52rem;
+  font-weight: 700;
+  color: rgba(239,68,68,0.9);
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ww-task.checked .ww-urgent-badge { display: none; }
+
+/* Section label */
+.ww-section-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin-bottom: 6px;
+}
+
+/* Meetings block */
+.ww-meetings {
+  padding: 10px 13px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ww-meeting-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(107,142,245,0.06);
+  border: 1px solid rgba(107,142,245,0.14);
+  border-radius: 8px;
+  padding: 7px 9px;
+}
+.ww-meeting-icon {
+  width: 20px; height: 20px;
+  background: rgba(107,142,245,0.12);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ww-meeting-text {
+  flex: 1;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.5);
+}
+.ww-chevron { flex-shrink: 0; }
+
+/* Tasks section label */
+.ww-tasks .ww-section-label { margin-bottom: 4px; }
+
+/* Add task footer */
+.ww-add-task {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px 10px;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.22);
+  cursor: pointer;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  transition: color 0.15s;
+}
+.ww-add-task:hover { color: rgba(255,255,255,0.45); }
 
 .ww-chat-area { padding: 9px 11px 11px; }
 .ww-chat-row {
@@ -2497,6 +2569,65 @@ body {
 /* ═══════════════════════════════════════════════════════════
    TASKBAR ADDITIONS — Win11 style
    ═══════════════════════════════════════════════════════════ */
+
+/* Weather widget — far left */
+.win-weather {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 36px;
+  transition: background 0.1s;
+}
+.win-weather:hover { background: rgba(255,255,255,0.06); }
+.win-weather-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.win-weather-temp {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.3;
+}
+.win-weather-desc {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.2;
+}
+
+/* Taskbar center group */
+.win-taskbar-center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* App indicator dot */
+.win-tb-has-dot {
+  position: relative;
+}
+.win-tb-dot {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.55);
+}
+.win-tb-item.active .win-tb-dot {
+  width: 14px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6B8EF5, #9B35FF);
+}
 
 .win-taskbar-left {
   display: flex;
