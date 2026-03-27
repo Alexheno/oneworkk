@@ -104,10 +104,10 @@ function startDemoSequence() {
     container.getBoundingClientRect();
     // Play: animate all to natural position
     [...container.children].forEach(el => {
-      el.style.transition = 'transform 0.72s cubic-bezier(0.22, 1, 0.36, 1)';
+      el.style.transition = 'transform 1.1s cubic-bezier(0.16, 1, 0.3, 1)';
       el.style.transform = '';
     });
-    await delay(750);
+    await delay(1150);
     [...container.children].forEach(el => { el.style.transition = ''; });
   }
 
