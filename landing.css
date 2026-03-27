@@ -1370,15 +1370,15 @@ body {
   to   { transform: scaleY(1); opacity: 1; }
 }
 .ww-recap-leg {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 10px;
-  padding: 6px 0 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 5px 0 2px;
   border-top: 1px solid rgba(255,255,255,0.07);
 }
-.ww-rl-item { display: flex; align-items: center; gap: 6px; }
+.ww-rl-item { display: flex; align-items: center; gap: 5px; }
 .ww-rl-dot {
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
   flex-shrink: 0;
 }
@@ -3270,7 +3270,6 @@ body {
 
 /* Card base — square format */
 .demo-card {
-  aspect-ratio: 1 / 1;
   background: rgba(255,255,255,0.032);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 12px 12px 4px 4px;
