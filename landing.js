@@ -101,6 +101,8 @@ function startDemoSequence() {
     bgOutlook.classList.remove('fading');
     bgExcel.classList.remove('visible');
     if (winWindow) winWindow.classList.remove('visible', 'expanded');
+    const teamsWinReset = document.getElementById('win-teams-popup');
+    if (teamsWinReset) teamsWinReset.classList.remove('visible');
     if (mainResp)  { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
     if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
 
@@ -241,72 +243,73 @@ function startDemoSequence() {
     // ══════════════════════════════════════════════════════════
     // PHASE 2 — Excel background + expanded OneWork dashboard
     // ══════════════════════════════════════════════════════════
+    const teamsWin = document.getElementById('win-teams-popup');
     cursor.style.opacity = '1';
     moveTo(dr.width * 0.48, dr.height * 0.28, 0);
     await delay(500);
 
-    // Browse dashboard cards
+    // Browse email card
     const cardEmails = document.getElementById('demo-card-emails');
     if (cardEmails) {
       const p = pos(cardEmails);
-      await moveTo(p.x, p.y, 900);
-      await delay(500);
+      await moveTo(p.x, p.y, 850);
+      await delay(550);
     }
-    const cardTeams = document.getElementById('demo-card-teams');
-    if (cardTeams) {
-      const p = pos(cardTeams);
+
+    // Browse meetings card
+    const cardMeetings = document.getElementById('demo-card-meetings');
+    if (cardMeetings) {
+      const p = pos(cardMeetings);
       await moveTo(p.x, p.y, 700);
       await delay(420);
     }
 
-    // Move to main chatbar
-    if (chatInput) {
-      const p = pos(chatInput);
-      await moveTo(p.x - 20, p.y, 850);
-      await delay(280);
-      await click(null);
+    // Move to Teams card, click the urgent message row
+    const tmsClickRow = document.getElementById('tms-click-row');
+    if (tmsClickRow) {
+      const p = pos(tmsClickRow);
+      await moveTo(p.x, p.y, 750);
+      await delay(380);
+      await click(tmsClickRow);
       await delay(180);
-      await typeIn('Identifie les écarts budgétaires dans le fichier Excel', chatInput);
-      await delay(360);
+      // Open Teams window
+      if (teamsWin) { teamsWin.classList.add('visible'); }
+      await delay(900);
     }
 
-    // Click send
-    if (chatSend) {
-      const p = pos(chatSend);
-      await moveTo(p.x, p.y, 460);
-      await delay(310);
-      await click(chatSend);
-      await delay(220);
+    // Cursor browses Teams conversation
+    cursor.style.opacity = '1';
+    const tmsUrgentMsg = document.getElementById('tms-urgent-msg');
+    if (tmsUrgentMsg) {
+      const p = pos(tmsUrgentMsg);
+      await moveTo(p.x, p.y - 10, 900);
+      await delay(1400);
     }
 
-    // Show thinking dots in main resp
-    if (chatInput) { chatInput.textContent = ''; chatInput.style.color = ''; }
-    if (mainResp) {
-      mainResp.className = 'demo-main-resp visible';
-      mainResp.innerHTML = '<div class="demo-thinking"><span></span><span></span><span></span></div>';
+    // Cursor moves to composer
+    const tmsPh = document.getElementById('tms-compose-ph');
+    if (tmsPh) {
+      const p = pos(tmsPh);
+      await moveTo(p.x - 20, p.y, 700);
+      await delay(500);
+      await click(null);
+      await delay(300);
     }
 
-    // Cursor drifts
-    await moveTo(dr.width * 0.50, dr.height * 0.58, 1200);
-    await delay(2400);
-
-    // Stream AI analysis
-    if (mainResp) {
-      mainResp.innerHTML = '<span id="demo-resp-txt2"></span>';
-      const txt2 = document.getElementById('demo-resp-txt2');
-      if (txt2) {
-        await stream(
-          'Q1 sous-performe de 6.8% · EBITDA à 3.2% vs 17.6% attendu · Anomalie : Marketing +34.1% hors plan (+90k€)',
-          txt2
-        );
-      }
+    // Hover over send button
+    const tmsSend = document.querySelector('.tms-send-btn');
+    if (tmsSend) {
+      const p = pos(tmsSend);
+      await moveTo(p.x, p.y, 600);
+      await delay(600);
     }
 
-    await delay(4500);
+    await delay(2000);
 
     // ── End of cycle ──────────────────────────────────────────
     cursor.style.opacity = '0';
-    await delay(3800);
+    if (teamsWin) { teamsWin.classList.remove('visible'); }
+    await delay(3200);
     run();
   }
 
