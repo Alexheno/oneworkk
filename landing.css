@@ -1168,8 +1168,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0 6px;
-  gap: 5px;
+  padding: 6px 0 3px;
+  gap: 3px;
 }
 .ww-agent-logo {
   filter: drop-shadow(0 0 8px rgba(107,142,245,0.5));
@@ -1181,13 +1181,13 @@ body {
 }
 .ww-agent-ready { color: rgba(255,255,255,0.38); font-weight: 400; }
 .ww-agent-bubble {
-  margin: 0 12px 8px;
+  margin: 0 12px 5px;
   background: rgba(255,255,255,0.06);
   border-radius: 10px;
-  padding: 7px 10px;
-  font-size: 0.68rem;
+  padding: 5px 10px;
+  font-size: 0.66rem;
   color: rgba(255,255,255,0.75);
-  line-height: 1.4;
+  line-height: 1.3;
   transition: opacity 0.25s ease;
 }
 .ww-agent-input-row {
@@ -1325,7 +1325,7 @@ body {
 
 .ww-response {
   display: none;
-  margin: 0 12px 10px;
+  margin: 0 10px 6px;
   font-size: 0.7rem;
   color: rgba(255,255,255,0.72);
   line-height: 1.5;
