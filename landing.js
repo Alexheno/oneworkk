@@ -166,7 +166,7 @@ function startDemoSequence() {
     // 1. Move cursor near widget → hover opens card (no click)
     if (wwKnob) {
       const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 6, 950);
+      await moveTo(p.x, p.y - 6, 660);
       await delay(300);
       widgetEl.classList.add('open');
       await delay(600);
@@ -177,8 +177,8 @@ function startDemoSequence() {
       const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
         const p = pos(dot1);
-        await moveTo(p.x, p.y, 680);
-        await delay(260);
+        await moveTo(p.x, p.y, 480);
+        await delay(200);
         await click(dot1);
         await delay(80);
         await checkAndSink(wwTask1);
@@ -191,8 +191,8 @@ function startDemoSequence() {
       const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 580);
-        await delay(220);
+        await moveTo(p.x, p.y, 400);
+        await delay(160);
         await click(dot2);
         await delay(80);
         await checkAndSink(wwTask2);
@@ -205,8 +205,8 @@ function startDemoSequence() {
       const dot3 = wwTask3.querySelector('.ww-dot');
       if (dot3) {
         const p = pos(dot3);
-        await moveTo(p.x, p.y, 580);
-        await delay(220);
+        await moveTo(p.x, p.y, 400);
+        await delay(160);
         await click(dot3);
         await delay(80);
         await checkAndSink(wwTask3);
@@ -217,7 +217,7 @@ function startDemoSequence() {
     // 4. Switch to Agent IA mode, then type
     if (wwModeAgent && wwModeBrief && wwAgentPanel) {
       const pAgent = pos(wwModeAgent);
-      await moveTo(pAgent.x, pAgent.y, 600);
+      await moveTo(pAgent.x, pAgent.y, 420);
       await delay(220);
       await click(wwModeAgent);
       await delay(100);
@@ -229,7 +229,7 @@ function startDemoSequence() {
     }
     if (wwChatInput) {
       const p = pos(wwChatInput);
-      await moveTo(p.x - 12, p.y, 680);
+      await moveTo(p.x - 12, p.y, 470);
       await delay(270);
       await click(null);
       await delay(180);
@@ -240,7 +240,7 @@ function startDemoSequence() {
     // 5. Click send
     if (wwChatSend) {
       const p = pos(wwChatSend);
-      await moveTo(p.x, p.y, 480);
+      await moveTo(p.x, p.y, 340);
       await delay(310);
       await click(wwChatSend);
       await delay(200);
@@ -261,7 +261,7 @@ function startDemoSequence() {
     }
 
     // Cursor drifts away
-    await moveTo(dr.width * 0.42, dr.height * 0.48, 900);
+    await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
     await delay(1900);
 
     if (wwResponse) {
@@ -367,7 +367,7 @@ function startDemoSequence() {
     const tbOneWork = document.getElementById('tb-onework');
     if (tbOneWork) {
       const p = pos(tbOneWork);
-      await moveTo(p.x, p.y, 1200);
+      await moveTo(p.x, p.y, 840);
       await delay(380);
       await click(tbOneWork);
       tbOneWork.classList.add('active'); // trait apparaît au clic
@@ -390,7 +390,7 @@ function startDemoSequence() {
     const cardEmails = document.getElementById('demo-card-emails');
     if (cardEmails) {
       const p = pos(cardEmails);
-      await moveTo(p.x, p.y, 850);
+      await moveTo(p.x, p.y, 590);
       await delay(550);
     }
 
@@ -398,7 +398,7 @@ function startDemoSequence() {
     const cardMeetings = document.getElementById('demo-card-meetings');
     if (cardMeetings) {
       const p = pos(cardMeetings);
-      await moveTo(p.x, p.y, 700);
+      await moveTo(p.x, p.y, 490);
       await delay(420);
     }
 
@@ -406,7 +406,7 @@ function startDemoSequence() {
     const tmsClickRow = document.getElementById('tms-click-row');
     if (tmsClickRow) {
       const p = pos(tmsClickRow);
-      await moveTo(p.x, p.y, 750);
+      await moveTo(p.x, p.y, 520);
       await delay(380);
       await click(tmsClickRow);
       await delay(180);
@@ -420,7 +420,7 @@ function startDemoSequence() {
     const tmsUrgentMsg = document.getElementById('tms-urgent-msg');
     if (tmsUrgentMsg) {
       const p = pos(tmsUrgentMsg);
-      await moveTo(p.x, p.y - 10, 900);
+      await moveTo(p.x, p.y - 10, 630);
       await delay(1400);
     }
 
@@ -428,7 +428,7 @@ function startDemoSequence() {
     const tmsPh = document.getElementById('tms-compose-ph');
     if (tmsPh) {
       const p = pos(tmsPh);
-      await moveTo(p.x - 20, p.y, 700);
+      await moveTo(p.x - 20, p.y, 490);
       await delay(500);
       await click(null);
       await delay(300);
@@ -438,7 +438,7 @@ function startDemoSequence() {
     const tmsSend = document.querySelector('.tms-send-btn');
     if (tmsSend) {
       const p = pos(tmsSend);
-      await moveTo(p.x, p.y, 600);
+      await moveTo(p.x, p.y, 420);
       await delay(600);
     }
 
