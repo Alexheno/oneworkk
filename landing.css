@@ -1318,26 +1318,22 @@ body {
 
 .ww-response {
   display: none;
-  align-items: flex-start;
-  gap: 8px;
+  margin: 0 12px 10px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 10px 12px;
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.68);
-  line-height: 1.55;
-  margin-top: 8px;
-  padding: 8px 10px;
-  background: rgba(107,142,245,0.07);
-  border: 1px solid rgba(107,142,245,0.18);
-  border-radius: 9px;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.5;
 }
-.ww-response.visible { display: flex; }
-.ww-resp-orb {
-  width: 15px; height: 15px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
-  flex-shrink: 0;
-  margin-top: 2px;
-  animation: orb-spin 3s linear infinite;
+.ww-response.visible { display: block; }
+.ww-thinking {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0;
 }
+.ww-resp-bubble { display: block; }
 
 /* Sidebar */
 .demo-sidebar {
@@ -3185,12 +3181,10 @@ body {
 .demo-bento {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-auto-rows: auto;
   gap: 6px;
   padding: 0 10px 8px;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
+  flex: 0 0 auto;
 }
 
 /* Card base */
@@ -3237,12 +3231,9 @@ body {
 .demo-badge-purple { background: rgba(98,100,167,0.18); border: 1px solid rgba(98,100,167,0.38); color: rgba(180,181,255,0.9); }
 .demo-badge-orange { background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.32); color: rgba(251,146,60,0.9); }
 .demo-card-body {
-  flex: 1;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   padding: 4px 0;
-  justify-content: space-evenly;
 }
 
 /* Email rows */

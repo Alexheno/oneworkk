@@ -96,7 +96,7 @@ function startDemoSequence() {
     if (wwModeAgent)  { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
-    if (wwResponse)  { wwResponse.innerHTML = ''; }
+    if (wwResponse)  { wwResponse.innerHTML = ''; wwResponse.className = 'ww-response'; }
 
     bgOutlook.classList.remove('fading');
     bgExcel.classList.remove('visible');
@@ -119,13 +119,11 @@ function startDemoSequence() {
     cursor.style.opacity = '1';
     await delay(700);
 
-    // 1. Move to the knob → click to open widget card
+    // 1. Move cursor near widget → hover opens card (no click)
     if (wwKnob) {
       const p = pos(wwKnob);
-      await moveTo(p.x, p.y, 950);
-      await delay(320);
-      await click(wwKnob);
-      await delay(180);
+      await moveTo(p.x, p.y - 6, 950);
+      await delay(300);
       widgetEl.classList.add('open');
       await delay(600);
     }
@@ -207,6 +205,7 @@ function startDemoSequence() {
     // 6. Show thinking dots, then stream response
     if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
     if (wwResponse) {
+      wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
 
@@ -215,7 +214,8 @@ function startDemoSequence() {
     await delay(1800);
 
     if (wwResponse) {
-      wwResponse.innerHTML = '<div class="ww-resp-bubble"><span id="ww-resp-txt"></span></div>';
+      wwResponse.className = 'ww-response visible';
+      wwResponse.innerHTML = '<span id="ww-resp-txt"></span>';
       const wwTxt = document.getElementById('ww-resp-txt');
       if (wwTxt) {
         await stream('3 urgences · Réunion 09h30 Finance · Term sheet JP à signer avant 10h00', wwTxt);
