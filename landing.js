@@ -27,7 +27,7 @@ function startDemoSequence() {
   const wwChatInput = document.getElementById('ww-chat-input');
   const wwChatSend  = document.getElementById('ww-chat-send');
   const wwResponse  = document.getElementById('ww-response');
-  const tbOnework   = document.getElementById('tb-onework');
+  const wwKnob      = document.getElementById('ww-knob');
   const chatInput   = document.getElementById('demo-chatbar-input');
   const chatSend    = document.getElementById('demo-chatbar-send');
   const mainResp    = document.getElementById('demo-main-resp');
@@ -104,15 +104,15 @@ function startDemoSequence() {
     cursor.style.opacity = '1';
     await delay(700);
 
-    // 1. Move to OneWork taskbar icon → click to open widget
-    if (tbOnework) {
-      const p = pos(tbOnework);
+    // 1. Move to the knob → click to open widget card
+    if (wwKnob) {
+      const p = pos(wwKnob);
       await moveTo(p.x, p.y, 950);
       await delay(320);
-      await click(tbOnework);
+      await click(wwKnob);
       await delay(180);
       widgetEl.classList.add('open');
-      await delay(550);
+      await delay(600);
     }
 
     // 2. Check task 1 in widget
