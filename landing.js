@@ -145,6 +145,8 @@ function startDemoSequence() {
     if (winWindow) winWindow.classList.remove('visible', 'expanded');
     const teamsWinReset = document.getElementById('win-teams-popup');
     if (teamsWinReset) teamsWinReset.classList.remove('visible');
+    const tbReset = document.getElementById('tb-onework');
+    if (tbReset) tbReset.classList.remove('active');
     if (mainResp)  { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
     if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
 
@@ -231,7 +233,7 @@ function startDemoSequence() {
       await delay(270);
       await click(null);
       await delay(180);
-      await typeIn('Récap de ma journée', wwChatInput);
+      await typeIn('Fais moi un récap de ma journée', wwChatInput);
       await delay(340);
     }
 
@@ -339,6 +341,7 @@ function startDemoSequence() {
       await moveTo(p.x, p.y, 1200);
       await delay(380);
       await click(tbOneWork);
+      tbOneWork.classList.add('active'); // trait apparaît au clic
       await delay(350);
     }
 
