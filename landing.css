@@ -3546,3 +3546,167 @@ body {
 .ww-dot.demo-hl,
 .ww-send.demo-hl { background: rgba(107,142,245,0.4) !important; }
 .ww-task.demo-hl { background: rgba(255,255,255,0.06); border-radius: 6px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE — Outlook · Excel · Teams  (Microsoft 365 inspired)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── OUTLOOK ─────────────────────────────────────────────────── */
+#bg-outlook-window { background: #F3F2F1; }
+#bg-outlook-window .bg-titlebar { background: #fff; border-bottom: 1px solid #EDEBE9; }
+#bg-outlook-window .bg-title-left { color: #201F1E; }
+#bg-outlook-window .win-btn { color: rgba(0,0,0,0.5); }
+#bg-outlook-window .win-minimize:hover,
+#bg-outlook-window .win-maximize:hover { background: rgba(0,0,0,0.06); }
+
+/* Nav */
+#bg-outlook-window .bg-ol-nav { background: #EEF2F8; border-right: 1px solid #D6D6D6; }
+#bg-outlook-window .bg-ol-account { border-bottom: 1px solid #D6D6D6; }
+#bg-outlook-window .bg-ol-av-name { color: #201F1E; }
+#bg-outlook-window .bg-ol-av-email { color: #605E5C; }
+#bg-outlook-window .bg-ol-folder { color: #323130; }
+#bg-outlook-window .bg-ol-folder:hover { background: rgba(0,0,0,0.04); }
+#bg-outlook-window .bg-ol-folder-active { background: #DEECF9; border-left: 2px solid #0078D4; color: #0063B1; }
+#bg-outlook-window .bg-ol-count { color: #605E5C; background: rgba(0,0,0,0.07); }
+#bg-outlook-window .bg-ol-sep { background: #D6D6D6; }
+
+/* Email list */
+#bg-outlook-window .bg-ol-list { background: #FAFAFA; border-right: 1px solid #EDEBE9; }
+#bg-outlook-window .bg-ol-list-header { color: #605E5C; border-bottom: 1px solid #EDEBE9; }
+#bg-outlook-window .bg-ol-filter { color: #0078D4; }
+#bg-outlook-window .bg-ol-email { border-bottom: 1px solid #F0EFEE; }
+#bg-outlook-window .bg-ol-unread { background: #fff; }
+#bg-outlook-window .bg-ol-selected { background: #D6EAF8 !important; border-left: 2px solid #0078D4; }
+#bg-outlook-window .bg-ol-em-name { color: #323130; }
+#bg-outlook-window .bg-ol-unread .bg-ol-em-name { color: #201F1E; font-weight: 700; }
+#bg-outlook-window .bg-ol-em-t { color: #605E5C; }
+#bg-outlook-window .bg-ol-em-subj { color: #605E5C; }
+#bg-outlook-window .bg-ol-unread .bg-ol-em-subj { color: #323130; font-weight: 600; }
+#bg-outlook-window .bg-ol-em-prev { color: #A19F9D; }
+
+/* Reading pane */
+#bg-outlook-window .bg-ol-reading { background: #fff; }
+#bg-outlook-window .bg-ol-read-toolbar { border-bottom: 1px solid #EDEBE9; }
+#bg-outlook-window .bg-ol-tb-btn { background: #F3F2F1; border: 1px solid #EDEBE9; color: #323130; }
+#bg-outlook-window .bg-ol-read-subj { color: #201F1E; }
+#bg-outlook-window .bg-ol-read-from-row { border-bottom: 1px solid #EDEBE9; }
+#bg-outlook-window .bg-ol-read-name { color: #201F1E; }
+#bg-outlook-window .bg-ol-read-addr { color: #605E5C; }
+#bg-outlook-window .bg-ol-read-to { color: #605E5C; }
+#bg-outlook-window .bg-ol-read-body { color: #323130; }
+#bg-outlook-window .bg-ol-read-body strong { color: #201F1E; }
+#bg-outlook-window .bg-ol-list-items { background: #EBF3FB; border-left: 2px solid #0078D4; }
+
+/* ── EXCEL ───────────────────────────────────────────────────── */
+#bg-excel-window { background: #fff; }
+#bg-excel-window .bg-titlebar { background: #fff; border-bottom: 1px solid #E1DFDD; }
+#bg-excel-window .bg-title-left { color: #201F1E; }
+#bg-excel-window .win-btn { color: rgba(0,0,0,0.5); }
+#bg-excel-window .win-minimize:hover,
+#bg-excel-window .win-maximize:hover { background: rgba(0,0,0,0.06); }
+
+/* Ribbon */
+#bg-excel-window .bg-xl-ribbon-tabs { background: #F3F2F1; border-bottom: 1px solid #E1DFDD; }
+#bg-excel-window .xl-tab { color: #605E5C; }
+#bg-excel-window .xl-tab-active { color: #201F1E; font-weight: 600; border-bottom-color: #217346; }
+
+/* Formula bar */
+#bg-excel-window .bg-xl-formulabar { background: #fff; border-bottom: 1px solid #E1DFDD; }
+#bg-excel-window .xl-cellref { color: #323130; }
+#bg-excel-window .xl-fb-div { background: #D4D4D4; }
+#bg-excel-window .xl-formula { color: #107C41; font-weight: 500; }
+
+/* Headers */
+#bg-excel-window .bg-xl-col-hdrs { border-bottom: 1px solid #D4D4D4; }
+#bg-excel-window .xl-corner { background: #F2F2F2; border-right: 1px solid #D4D4D4; }
+#bg-excel-window .xl-ch { background: #F2F2F2; color: #605E5C; border-right: 1px solid #D4D4D4; }
+#bg-excel-window .xl-ch-sel { background: #CAEAD8; color: #107C41; }
+#bg-excel-window .xl-rh { background: #F2F2F2; color: #605E5C; border-right: 1px solid #D4D4D4; }
+
+/* Cells */
+#bg-excel-window .xl-cell { border: 1px solid #E8E6E3; color: #201F1E; background: #fff; }
+#bg-excel-window .xl-num { color: #201F1E; }
+#bg-excel-window .xl-bold { color: #201F1E; font-weight: 700; }
+#bg-excel-window .xl-italic { color: #605E5C; }
+#bg-excel-window .xl-pos { color: #107C41; }
+#bg-excel-window .xl-neg { color: #D83B01; }
+#bg-excel-window .xl-alert { color: #D83B01; font-weight: 700; }
+#bg-excel-window .xl-alert-row .xl-cell { background: #FFF4CE; }
+#bg-excel-window .xl-alert-cell { background: #FEF0CD; color: #986F0B; }
+#bg-excel-window .xl-cell-sel { background: #C8DDF9; color: #0078D4; }
+#bg-excel-window .xl-total-sel { background: #CAEAD8; color: #107C41; font-weight: 700; }
+#bg-excel-window .xl-ebitda-sel { background: #EBF3FB; color: #0078D4; font-weight: 700; }
+
+/* Section rows */
+#bg-excel-window .xl-big-title { color: #107C41; }
+#bg-excel-window .xl-sub-title { color: #605E5C; }
+#bg-excel-window .xl-hdr { background: #F2F2F2; color: #323130; font-weight: 600; border: 1px solid #D4D4D4; }
+#bg-excel-window .xl-hdr-sel { background: #CAEAD8; color: #107C41; font-weight: 700; }
+#bg-excel-window .xl-section-green { background: #E8F4EC; color: #107C41; }
+#bg-excel-window .xl-section-red { background: #FDE7E9; color: #D83B01; }
+#bg-excel-window .xl-total-row .xl-cell { background: #F2F2F2; color: #201F1E; font-weight: 700; border-top: 1.5px solid #BFBFBF; }
+#bg-excel-window .xl-ebitda-row .xl-cell { background: #EBF3FB; font-weight: 700; color: #0078D4; }
+#bg-excel-window .xl-spacer td { background: #FAFAFA; }
+
+/* Sheet tabs */
+#bg-excel-window .bg-xl-sheet-tabs { background: #F2F2F2; border-top: 1px solid #D4D4D4; }
+#bg-excel-window .xl-sheet { color: #605E5C; }
+#bg-excel-window .xl-sheet.active { background: #fff; color: #201F1E; border-color: #D4D4D4; }
+
+/* ── TEAMS ───────────────────────────────────────────────────── */
+#win-teams-popup .win-titlebar { background: #fff; border-bottom: 1px solid #E8E8E8; }
+#win-teams-popup .win-title-text { color: #201F1E; }
+#win-teams-popup .win-btn { color: rgba(0,0,0,0.5); }
+#win-teams-popup .win-minimize:hover,
+#win-teams-popup .win-maximize:hover { background: rgba(0,0,0,0.06); }
+#win-teams-popup .tms-nav-btn { color: #605E5C; }
+#win-teams-popup .tms-search-pill { background: #F5F5F5; border: 1px solid #E0E0E0; color: #605E5C; }
+
+/* Layout & rail */
+#win-teams-popup .tms-layout { background: #F5F5F5; }
+#win-teams-popup .tms-rail { background: #EBEBEB; border-right: 1px solid #DCDCDC; }
+#win-teams-popup .tms-rail-icon { color: #605E5C; }
+#win-teams-popup .tms-rail-icon:hover { background: rgba(0,0,0,0.06); color: #201F1E; }
+#win-teams-popup .tms-rail-active { background: #fff; color: #6264A7; border-left: 3px solid #6264A7; }
+
+/* Sidebar */
+#win-teams-popup .tms-sidebar { background: #F5F5F5; border-right: 1px solid #DCDCDC; }
+#win-teams-popup .tms-sb-title { color: #201F1E; }
+#win-teams-popup .tms-sb-actions { color: #605E5C; }
+#win-teams-popup .tms-filter-btn { color: #605E5C; }
+#win-teams-popup .tms-filter-active { background: rgba(0,0,0,0.08); color: #201F1E; }
+#win-teams-popup .tms-sb-item:hover { background: rgba(0,0,0,0.04); }
+#win-teams-popup .tms-sb-active { background: #fff; }
+#win-teams-popup .tms-sb-name { color: #201F1E; }
+#win-teams-popup .tms-sb-time { color: #A19F9D; }
+#win-teams-popup .tms-sb-preview { color: #605E5C; }
+#win-teams-popup .tms-unread-dot { background: #6264A7; }
+
+/* Conversation */
+#win-teams-popup .tms-conv { background: #fff; }
+#win-teams-popup .tms-conv-hdr { background: #fff; border-bottom: 1px solid #E8E8E8; }
+#win-teams-popup .tms-conv-name { color: #201F1E; }
+#win-teams-popup .tms-conv-status { color: #605E5C; }
+#win-teams-popup .tms-online-dot { background: #6BB700; }
+#win-teams-popup .tms-hdr-btn { color: #605E5C; background: none; }
+#win-teams-popup .tms-hdr-btn:hover { background: rgba(0,0,0,0.06); }
+
+/* Messages */
+#win-teams-popup .tms-msgs { background: #fff; }
+#win-teams-popup .tms-date-sep { color: #A19F9D; }
+#win-teams-popup .tms-date-sep::before,
+#win-teams-popup .tms-date-sep::after { background: #E8E8E8; }
+#win-teams-popup .tms-msg:hover { background: #F5F5F5; }
+#win-teams-popup .tms-msg-name { color: #201F1E; }
+#win-teams-popup .tms-msg-time { color: #A19F9D; }
+#win-teams-popup .tms-msg-text { color: #323130; }
+#win-teams-popup .tms-msg-text strong { color: #201F1E; }
+#win-teams-popup .tms-msg-react { background: #F0F0F0; border: 1px solid #E0E0E0; color: #323130; }
+#win-teams-popup .tms-msg-hl { background: rgba(98,100,167,0.06) !important; border-left: 2px solid #6264A7; }
+
+/* Composer */
+#win-teams-popup .tms-composer { background: #fff; border-top: 1px solid #E8E8E8; }
+#win-teams-popup .tms-compose-inner { background: #F5F5F5; border: 1px solid #E0E0E0; }
+#win-teams-popup .tms-compose-ph { color: #A19F9D; }
+#win-teams-popup .tms-compose-actions svg { stroke: #605E5C; }
+#win-teams-popup .tms-send-btn { background: #6264A7; color: #fff; }
