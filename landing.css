@@ -1338,6 +1338,7 @@ body {
   flex-direction: column;
   gap: 8px;
   animation: recap-in 0.35s ease both;
+  text-align: left;
 }
 @keyframes recap-in {
   from { opacity: 0; transform: translateY(5px); }
@@ -1401,6 +1402,7 @@ body {
   padding-top: 4px;
   border-top: 1px solid rgba(255,255,255,0.06);
   margin: 0;
+  text-align: left;
 }
 /* Progressive section reveal */
 .ww-gen-1 { animation: recap-in 0.35s ease both; animation-delay: 0s; }
