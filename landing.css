@@ -858,7 +858,7 @@ body {
 }
 .tms-msg-name { font-size: 0.68rem; font-weight: 700; color: rgba(255,255,255,0.82); }
 .tms-msg-time { font-size: 0.57rem; color: rgba(255,255,255,0.3); }
-.tms-msg-text { font-size: 0.67rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+.tms-msg-text { font-size: 0.67rem; color: rgba(255,255,255,0.65); line-height: 1.5; text-align: left; }
 .tms-msg-text strong { color: rgba(255,255,255,0.88); }
 .tms-msg-react { font-size: 0.6rem; color: rgba(255,255,255,0.4); margin-top: 4px; background: rgba(255,255,255,0.06); display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); cursor: pointer; }
 .tms-msg-hl { background: rgba(98,100,167,0.08) !important; border-left: 2px solid rgba(98,100,167,0.6); padding-left: 10px; }
@@ -1168,8 +1168,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6px 0 3px;
-  gap: 3px;
+  padding: 8px 0 4px;
+  gap: 0;
 }
 .ww-agent-logo {
   filter: drop-shadow(0 0 8px rgba(107,142,245,0.5));
@@ -3273,7 +3273,7 @@ body {
   aspect-ratio: 1 / 1;
   background: rgba(255,255,255,0.032);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
+  border-radius: 12px 12px 4px 4px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
