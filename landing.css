@@ -433,14 +433,14 @@ body {
   transform: translateY(0) scale(1);
 }
 
-/* OneWork dashboard — left-aligned, compact square */
+/* OneWork dashboard — left-aligned, large */
 #win-onework {
   left: 8px;
   right: auto;
   top: 8px;
   bottom: auto;
-  width: 48%;
-  height: 78%;
+  width: 54%;
+  height: 84%;
 }
 
 /* Windows 11 title bar */

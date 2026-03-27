@@ -149,32 +149,25 @@ function startDemoSequence() {
     if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
 
     cursor.style.opacity = '0';
-    await delay(800);
+    await delay(1200);
 
     // ══════════════════════════════════════════════════════════
-    // PHASE 1 — Excel background + Widget interaction
+    // PHASE 1 — Outlook + Widget interaction
     // ══════════════════════════════════════════════════════════
     const dr = desktop.getBoundingClientRect();
 
-    // Start on Excel background immediately
-    bgOutlook.classList.add('fading');
-    bgExcel.classList.add('visible');
-    await delay(500);
-
-    // Cursor appears on the Excel area (right side)
-    moveTo(dr.width * 0.60, dr.height * 0.35, 0);
+    // Cursor appears at center of screen
+    moveTo(dr.width * 0.50, dr.height * 0.45, 0);
     cursor.style.opacity = '1';
     await delay(700);
 
-    // 1. Move cursor to OneWork widget icon in taskbar → click to open
+    // 1. Move cursor near widget → hover opens card (no click)
     if (wwKnob) {
       const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 4, 1400);
-      await delay(380);
-      await click(wwKnob);
-      await delay(280);
+      await moveTo(p.x, p.y - 6, 950);
+      await delay(300);
       widgetEl.classList.add('open');
-      await delay(800);
+      await delay(600);
     }
 
     // 2. Check task 1 → sinks to bottom
@@ -325,18 +318,33 @@ function startDemoSequence() {
     await delay(4000);
 
     // ══════════════════════════════════════════════════════════
-    // TRANSITION — Widget closes → Excel appears → Window expands
+    // TRANSITION — Widget closes → Excel fullscreen → clic logo → Dashboard
     // ══════════════════════════════════════════════════════════
     widgetEl.classList.remove('open');
     cursor.style.opacity = '0';
     await delay(550);
 
-    // Excel already visible — smooth pause before dashboard opens
-    await delay(500);
+    // Switch background Outlook → Excel (fullscreen, no dashboard yet)
+    bgOutlook.classList.add('fading');
+    await delay(300);
+    bgExcel.classList.add('visible');
+    await delay(800);
 
-    // Show + expand OneWork window (already has bento grid inside)
+    // Cursor reappears, se déplace vers l'icône OneWork dans la taskbar
+    moveTo(dr.width * 0.52, dr.height * 0.82, 0);
+    cursor.style.opacity = '1';
+    const tbOneWork = document.getElementById('tb-onework');
+    if (tbOneWork) {
+      const p = pos(tbOneWork);
+      await moveTo(p.x, p.y, 1200);
+      await delay(380);
+      await click(tbOneWork);
+      await delay(350);
+    }
+
+    // Dashboard opens
     if (winWindow) winWindow.classList.add('visible', 'expanded');
-    await delay(1000); // let transition animate
+    await delay(1000);
 
     // ══════════════════════════════════════════════════════════
     // PHASE 2 — Excel background + expanded OneWork dashboard
