@@ -287,7 +287,7 @@ function startDemoSequence() {
     </svg>
     <div class="ww-score-info">
       <span class="ww-score-pct">Score de productivité</span>
-      <span class="ww-score-lbl">4 tâches sur 5 complétées</span>
+      <span class="ww-score-lbl"></span>
     </div>
   </div>
   <p class="ww-recap-sum" id="ww-sum-txt" style="opacity:0;border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin:0"></p>
