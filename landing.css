@@ -541,9 +541,17 @@ body {
 .win-tray {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   justify-self: end;
 }
+.win-tray-chevron {
+  width: 22px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.55);
+}
+.win-tray-chevron:hover { background: rgba(255,255,255,0.07); }
 
 .win-tray-icons {
   display: flex;
@@ -3595,8 +3603,11 @@ body {
 #bg-outlook-window .bg-ol-read-name { color: #201F1E; }
 #bg-outlook-window .bg-ol-read-addr { color: #605E5C; }
 #bg-outlook-window .bg-ol-read-to { color: #605E5C; }
-#bg-outlook-window .bg-ol-read-body { color: #323130; }
+#bg-outlook-window .bg-ol-read-body { color: #323130; text-align: left; }
 #bg-outlook-window .bg-ol-read-body strong { color: #201F1E; }
+#bg-outlook-window .bg-ol-read-subj { text-align: left; }
+#bg-outlook-window .bg-ol-read-name { text-align: left; }
+#bg-outlook-window .bg-ol-list-items { text-align: left; }
 #bg-outlook-window .bg-ol-list-items { background: #EBF3FB; border-left: 2px solid #0078D4; }
 
 /* ── EXCEL ───────────────────────────────────────────────────── */
