@@ -3380,7 +3380,7 @@ body {
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.demo-tms-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.demo-tms-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; align-items: flex-start; }
 .demo-tms-name {
   font-size: 0.65rem;
   font-weight: 600;
@@ -3392,6 +3392,7 @@ body {
   font-size: 0.6rem;
   color: rgba(255,255,255,0.38);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-align: left;
 }
 .demo-tms-urgent .demo-tms-msg { color: rgba(255,255,255,0.58); }
 .demo-tms-muted .demo-tms-name,
