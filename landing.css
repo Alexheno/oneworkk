@@ -403,7 +403,7 @@ body {
   border-radius: 4px;
 }
 
-/* OneWork floating window */
+/* OneWork floating window — invisible by default, appears in Phase 2 */
 .win-window {
   position: absolute;
   right: 8px;
@@ -412,15 +412,23 @@ body {
   width: 44%;
   display: flex;
   flex-direction: column;
-  background: #1C1C1E;
+  background: #111216;
   border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.1);
   overflow: hidden;
   box-shadow:
     0 0 0 0.5px rgba(255,255,255,0.05) inset,
-    0 8px 50px rgba(0,0,0,0.85),
-    0 0 60px rgba(107,142,245,0.12);
+    0 8px 50px rgba(0,0,0,0.9),
+    0 0 80px rgba(107,142,245,0.15);
   z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.99);
+}
+.win-window.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
 }
 
 /* Windows 11 title bar */
@@ -2487,14 +2495,15 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   WIN-WINDOW — smooth expansion for Phase 2
+   WIN-WINDOW — transitions
    ═══════════════════════════════════════════════════════════ */
 .win-window {
   transition:
-    left   0.9s cubic-bezier(0.25,0.46,0.45,0.94),
-    right  0.9s cubic-bezier(0.25,0.46,0.45,0.94),
-    width  0.9s cubic-bezier(0.25,0.46,0.45,0.94),
-    top    0.9s cubic-bezier(0.25,0.46,0.45,0.94);
+    opacity   0.6s cubic-bezier(0.25,0.46,0.45,0.94),
+    transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94),
+    left      0.9s cubic-bezier(0.25,0.46,0.45,0.94),
+    right     0.9s cubic-bezier(0.25,0.46,0.45,0.94),
+    width     0.9s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .win-window.expanded {
   right: 4px;
@@ -2502,21 +2511,236 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   DEMO GRID VIEW — Phase 2 dashboard cards
+   DEMO APP — Real app card styles (bento 2×2)
    ═══════════════════════════════════════════════════════════ */
-.demo-grid-view {
-  display: none;
+
+/* Topbar right side */
+.demo-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.demo-status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+}
+.demo-status-dot.idle { background: #4CAF50; box-shadow: 0 0 6px rgba(76,175,80,0.5); }
+.demo-refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.55);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Recap card (matches .recap-card in real app) */
+.demo-recap-card {
+  margin: 0 10px 8px;
+  padding: 8px 12px;
+  background: rgba(107,142,245,0.07);
+  border: 1px solid rgba(107,142,245,0.18);
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+/* Bento grid */
+.demo-bento {
+  display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 7px;
-  padding: 8px 10px;
+  gap: 6px;
+  padding: 0 10px 8px;
   flex: 1;
   min-height: 0;
   overflow: hidden;
 }
-.demo-grid-view.visible {
-  display: grid;
+
+/* Card base */
+.demo-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
+.demo-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px 5px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+.demo-card-title {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  flex: 1;
+}
+.demo-card-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 99px;
+}
+.demo-badge-purple { background: rgba(98,100,167,0.2); border: 1px solid rgba(98,100,167,0.4); color: rgba(180,181,255,0.9); }
+.demo-badge-orange { background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.35); color: rgba(251,146,60,0.9); }
+.demo-email-tabs {
+  display: flex;
+  gap: 2px;
+}
+.demo-etab {
+  font-size: 0.57rem;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+}
+.demo-etab-active {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.72);
+}
+.demo-card-body {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+/* Email rows */
+.demo-email-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.demo-email-row:last-child { border-bottom: none; }
+.demo-email-urgent { background: rgba(239,68,68,0.04); }
+.demo-em-av {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  font-size: 0.46rem;
+  font-weight: 700;
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.demo-em-body { flex: 1; min-width: 0; }
+.demo-em-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1px;
+}
+.demo-em-name {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.72);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-email-urgent .demo-em-name { color: rgba(255,255,255,0.88); }
+.demo-em-t { font-size: 0.56rem; color: rgba(255,255,255,0.28); flex-shrink: 0; }
+.demo-em-subj {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-email-urgent .demo-em-subj { color: rgba(255,255,255,0.6); font-weight: 500; }
+
+/* Teams rows */
+.demo-teams-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.demo-teams-row:last-child { border-bottom: none; }
+.demo-teams-ch {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: rgba(98,100,167,0.9);
+}
+.demo-teams-urgent .demo-teams-ch { color: rgba(180,181,255,0.9); }
+.demo-teams-msg {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.42);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.demo-teams-urgent .demo-teams-msg { color: rgba(255,255,255,0.68); }
+.demo-teams-muted .demo-teams-ch,
+.demo-teams-muted .demo-teams-msg { color: rgba(255,255,255,0.22); }
+
+/* Meeting rows */
+.demo-meeting-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 5px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.demo-meeting-row:last-child { border-bottom: none; }
+.demo-meeting-next { background: rgba(107,142,245,0.05); }
+.demo-meeting-time {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: rgba(107,142,245,0.85);
+  flex-shrink: 0;
+  min-width: 32px;
+  margin-top: 1px;
+}
+.demo-meeting-title {
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.72);
+}
+.demo-meeting-sub {
+  font-size: 0.56rem;
+  color: rgba(255,255,255,0.28);
+  margin-top: 1px;
+}
+
+/* Task rows */
+.demo-task-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.demo-task-row:last-child { border-bottom: none; }
+.demo-task-urgent { color: rgba(255,255,255,0.78); }
+.demo-task-muted  { color: rgba(255,255,255,0.25); }
+.demo-task-dot {
+  width: 11px; height: 11px;
+  border-radius: 3px;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  flex-shrink: 0;
+}
+.demo-dot-urgent { border-color: rgba(239,68,68,0.55); }
+
+/* legacy — .demo-grid-view replaced by .demo-bento */
 .demo-grid-card {
   background: rgba(255,255,255,0.035);
   border: 1px solid rgba(255,255,255,0.09);

@@ -28,8 +28,6 @@ function startDemoSequence() {
   const wwChatSend  = document.getElementById('ww-chat-send');
   const wwResponse  = document.getElementById('ww-response');
   const tbOnework   = document.getElementById('tb-onework');
-  const todoSection = document.getElementById('demo-todo-section');
-  const demoGrid    = document.getElementById('demo-grid-view');
   const chatInput   = document.getElementById('demo-chatbar-input');
   const chatSend    = document.getElementById('demo-chatbar-send');
   const mainResp    = document.getElementById('demo-main-resp');
@@ -89,10 +87,8 @@ function startDemoSequence() {
 
     bgOutlook.classList.remove('fading');
     bgExcel.classList.remove('visible');
-    if (winWindow) winWindow.classList.remove('expanded');
-    if (demoGrid)    { demoGrid.classList.remove('visible'); }
-    if (todoSection) { todoSection.style.display = ''; }
-    if (mainResp)    { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
+    if (winWindow) winWindow.classList.remove('visible', 'expanded');
+    if (mainResp)  { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
     if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
 
     cursor.style.opacity = '0';
@@ -199,11 +195,9 @@ function startDemoSequence() {
     bgExcel.classList.add('visible');
     await delay(500);
 
-    // Expand OneWork window + show grid
-    if (winWindow) winWindow.classList.add('expanded');
-    if (todoSection) todoSection.style.display = 'none';
-    if (demoGrid)    demoGrid.classList.add('visible');
-    await delay(1000); // let expansion animate
+    // Show + expand OneWork window (already has bento grid inside)
+    if (winWindow) winWindow.classList.add('visible', 'expanded');
+    await delay(1000); // let transition animate
 
     // ══════════════════════════════════════════════════════════
     // PHASE 2 — Excel background + expanded OneWork dashboard
