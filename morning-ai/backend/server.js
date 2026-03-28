@@ -104,6 +104,44 @@ function logResponse(req, statusCode) {
     console.log(`[${req.id}] ← ${statusCode} (${ms}ms)`);
 }
 
+// ─── GET /download ────────────────────────────────────────────────────────────
+// Redirige vers le fichier .exe hébergé (configurable via env DOWNLOAD_URL)
+app.get('/download', (_req, res) => {
+    const url = process.env.DOWNLOAD_URL;
+    if (!url) {
+        return res.status(503).json({ error: 'Téléchargement temporairement indisponible.' });
+    }
+    res.redirect(302, url);
+});
+
+// ─── GET /update/latest.yml ──────────────────────────────────────────────────
+// Sert les métadonnées de mise à jour pour electron-updater.
+// Variables d'env requises : LATEST_VERSION, DOWNLOAD_URL, LATEST_SHA512, LATEST_SIZE
+app.get('/update/latest.yml', (_req, res) => {
+    const version  = process.env.LATEST_VERSION;
+    const url      = process.env.DOWNLOAD_URL;
+    const sha512   = process.env.LATEST_SHA512;
+    const size     = process.env.LATEST_SIZE;
+
+    if (!version || !url || !sha512 || !size) {
+        return res.status(503).send('# Update feed not configured');
+    }
+
+    const yaml = [
+        `version: ${version}`,
+        `files:`,
+        `  - url: ${url}`,
+        `    sha512: ${sha512}`,
+        `    size: ${size}`,
+        `path: ${url}`,
+        `sha512: ${sha512}`,
+        `releaseDate: '${new Date().toISOString()}'`,
+    ].join('\n');
+
+    res.setHeader('Content-Type', 'application/x-yaml');
+    res.send(yaml);
+});
+
 // ─── GET /api/status ──────────────────────────────────────────────────────────
 app.get('/api/status', (_req, res) => {
     res.json({
