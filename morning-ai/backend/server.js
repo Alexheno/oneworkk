@@ -104,42 +104,39 @@ function logResponse(req, statusCode) {
     console.log(`[${req.id}] ← ${statusCode} (${ms}ms)`);
 }
 
+// ─── R2 Public URL ───────────────────────────────────────────────────────────
+const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
+
 // ─── GET /download ────────────────────────────────────────────────────────────
-// Redirige vers le fichier .exe hébergé (configurable via env DOWNLOAD_URL)
-app.get('/download', (_req, res) => {
-    const url = process.env.DOWNLOAD_URL;
-    if (!url) {
-        return res.status(503).json({ error: 'Téléchargement temporairement indisponible.' });
+// Lit latest.yml depuis R2 et redirige vers l'URL de téléchargement courante.
+// Aucune variable d'env à mettre à jour lors des releases — R2 fait foi.
+app.get('/download', async (_req, res) => {
+    try {
+        const r = await fetch(`${R2_PUBLIC_URL}/latest.yml`);
+        if (!r.ok) return res.status(503).json({ error: 'Téléchargement temporairement indisponible.' });
+        const yaml = await r.text();
+        const match = yaml.match(/^path:\s*(.+)$/m);
+        if (!match) return res.status(503).json({ error: 'Téléchargement temporairement indisponible.' });
+        res.redirect(302, match[1].trim());
+    } catch (_e) {
+        res.status(503).json({ error: 'Téléchargement temporairement indisponible.' });
     }
-    res.redirect(302, url);
 });
 
 // ─── GET /update/latest.yml ──────────────────────────────────────────────────
-// Sert les métadonnées de mise à jour pour electron-updater.
-// Variables d'env requises : LATEST_VERSION, DOWNLOAD_URL, LATEST_SHA512, LATEST_SIZE
-app.get('/update/latest.yml', (_req, res) => {
-    const version  = process.env.LATEST_VERSION;
-    const url      = process.env.DOWNLOAD_URL;
-    const sha512   = process.env.LATEST_SHA512;
-    const size     = process.env.LATEST_SIZE;
-
-    if (!version || !url || !sha512 || !size) {
-        return res.status(503).send('# Update feed not configured');
+// Proxie le latest.yml stocké sur R2 vers electron-updater.
+// Mis à jour automatiquement à chaque release GitHub Actions.
+app.get('/update/latest.yml', async (_req, res) => {
+    try {
+        const r = await fetch(`${R2_PUBLIC_URL}/latest.yml`);
+        if (!r.ok) return res.status(503).send('# Update feed not configured');
+        const yaml = await r.text();
+        res.setHeader('Content-Type', 'application/x-yaml');
+        res.setHeader('Cache-Control', 'no-cache, no-store');
+        res.send(yaml);
+    } catch (_e) {
+        res.status(503).send('# Update feed temporarily unavailable');
     }
-
-    const yaml = [
-        `version: ${version}`,
-        `files:`,
-        `  - url: ${url}`,
-        `    sha512: ${sha512}`,
-        `    size: ${size}`,
-        `path: ${url}`,
-        `sha512: ${sha512}`,
-        `releaseDate: '${new Date().toISOString()}'`,
-    ].join('\n');
-
-    res.setHeader('Content-Type', 'application/x-yaml');
-    res.send(yaml);
 });
 
 // ─── GET /api/status ──────────────────────────────────────────────────────────

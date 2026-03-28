@@ -1,4 +1,4 @@
-name: Build & Release OneWork
+name: Build, Sign & Release OneWork
 
 on:
   push:
@@ -9,40 +9,112 @@ permissions:
   contents: write
 
 jobs:
-  build-windows:
+  build-sign-release:
     runs-on: windows-latest
 
     steps:
+      # ── 1. Checkout ──────────────────────────────────────────────────────────
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ── 2. Node ──────────────────────────────────────────────────────────────
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # ── 3. Install deps ──────────────────────────────────────────────────────
       - name: Install dependencies
         working-directory: morning-ai/desktop-app
         run: npm install
 
-      # ── Code Signing (actif si CSC_LINK est configuré dans GitHub Secrets) ──
-      # Pour activer :
-      #   1. Achète certificat EV Code Signing (DigiCert / Sectigo ~300€/an)
-      #   2. Exporte en .pfx → encode base64 → ajoute dans GitHub Secrets :
-      #      CSC_LINK          = contenu base64 du .pfx
-      #      CSC_KEY_PASSWORD  = mot de passe du .pfx
-      - name: Build & Sign .exe
+      # ── 4. Build .exe (unsigned — Azure Trusted Signing signs it after) ──────
+      - name: Build .exe
         working-directory: morning-ai/desktop-app
         run: npx electron-builder --win --x64 --publish never
         env:
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          WIN_CSC_LINK: ${{ secrets.CSC_LINK }}
-          WIN_CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          # Auto-désactive si les secrets sont vides
-          CSC_IDENTITY_AUTO_DISCOVERY: ${{ secrets.CSC_LINK != '' }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - name: Create GitHub Release and upload .exe
+      # ── 5. Sign .exe with Azure Trusted Signing ───────────────────────────────
+      # Azure Trusted Signing = certificat EV géré par Microsoft → bypass SmartScreen immédiat
+      # Aucun token USB requis. Docs : https://learn.microsoft.com/trusted-signing
+      - name: Sign .exe with Azure Trusted Signing
+        uses: azure/trusted-signing-action@v0.5.0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: https://eus.codesigning.azure.net/
+          trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE }}
+          files-folder: morning-ai/desktop-app/dist
+          files-folder-filter: exe
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      # ── 6. Générer latest.yml (sha512 + size du .exe signé) ──────────────────
+      - name: Generate latest.yml
+        shell: pwsh
+        run: |
+          $exe     = (Get-ChildItem "morning-ai/desktop-app/dist/*.exe")[0]
+          $version = "$env:GITHUB_REF_NAME" -replace '^v', ''
+          $size    = $exe.Length
+          $dlUrl   = "https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev/$($exe.Name)"
+
+          # SHA512 encodé en base64 (format attendu par electron-updater)
+          $sha512b64 = [Convert]::ToBase64String(
+              [Security.Cryptography.SHA512]::Create().ComputeHash(
+                  [IO.File]::ReadAllBytes($exe.FullName)
+              )
+          )
+
+          $yaml = @"
+          version: $version
+          files:
+            - url: $dlUrl
+              sha512: $sha512b64
+              size: $size
+          path: $dlUrl
+          sha512: $sha512b64
+          releaseDate: '$(Get-Date -Format 'yyyy-MM-ddTHH:mm:ss.fffZ')'
+          "@
+
+          # Dé-indenté proprement
+          $yaml = ($yaml -split "`n" | ForEach-Object { $_ -replace '^\s{10}', '' }) -join "`n"
+          $yaml | Out-File -FilePath "morning-ai/desktop-app/dist/latest.yml" -Encoding utf8 -NoNewline
+
+          # Passe les infos aux étapes suivantes
+          echo "EXE_PATH=$($exe.FullName)"         >> $env:GITHUB_ENV
+          echo "EXE_NAME=$($exe.Name)"              >> $env:GITHUB_ENV
+          echo "APP_VERSION=$version"               >> $env:GITHUB_ENV
+
+      # ── 7. Upload exe + latest.yml → Cloudflare R2 ───────────────────────────
+      - name: Upload to Cloudflare R2
+        shell: pwsh
+        env:
+          AWS_ACCESS_KEY_ID:     ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ACCOUNT_ID:         ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET:             ${{ secrets.R2_BUCKET_NAME }}
+        run: |
+          $endpoint = "https://$env:R2_ACCOUNT_ID.r2.cloudflarestorage.com"
+
+          # Upload .exe versionné
+          aws s3 cp $env:EXE_PATH `
+            "s3://$env:R2_BUCKET/$env:EXE_NAME" `
+            --endpoint-url $endpoint `
+            --no-progress
+
+          # Upload latest.yml (toujours écrasé — pointe vers le dernier .exe)
+          aws s3 cp "morning-ai/desktop-app/dist/latest.yml" `
+            "s3://$env:R2_BUCKET/latest.yml" `
+            --endpoint-url $endpoint `
+            --no-progress `
+            --cache-control "no-cache, no-store"
+
+      # ── 8. GitHub Release (avec l'exe signé) ─────────────────────────────────
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
@@ -59,13 +131,8 @@ jobs:
             3. Connecte-toi avec ton compte Microsoft 365
 
             ### Déploiement entreprise (IT Admin)
-            Si votre organisation restreint les apps tierces, autorisez OneWork en un clic :
+            Si votre organisation restreint les apps tierces, autorisez OneWork :
             https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-5459-4c73-a599-04f669c610ad
-
-            ### Liens
-            - Politique de confidentialité : https://onework.app/privacy
-            - Conditions d'utilisation : https://onework.app/terms
-            - Support : contact@onework.app
 
             ---
             🔒 Vos données Microsoft 365 sont analysées en temps réel. Rien n'est stocké de manière permanente.
