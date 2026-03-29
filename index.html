@@ -57,7 +57,8 @@
         <img src="morning-ai/desktop-app/logo.svg" alt="OneWork" width="80" height="80">
       </div>
 
-      <div style="display:inline-flex; align-items:center; gap:8px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:100px; padding:6px 14px; font-size:0.8rem; font-weight:600; color:#6366f1; margin-bottom:20px; letter-spacing:0.04em;">
+      <div
+        style="display:inline-flex; align-items:center; gap:8px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:100px; padding:6px 14px; font-size:0.8rem; font-weight:600; color:#6366f1; margin-bottom:20px; letter-spacing:0.04em;">
         <span style="width:7px; height:7px; background:#6366f1; border-radius:50%; display:inline-block;"></span>
         À VENIR · Bientôt disponible
       </div>
@@ -1244,7 +1245,7 @@
     <div class="section-inner">
       <div class="section-tag">Fonctionnalités</div>
       <h2 class="section-title">Tout ce dont vous avez besoin.</h2>
-      <p class="section-subtitle">Un widget discret. Une IA puissante. Toute votre journée organisée.</p>
+      <p class="section-subtitle">Des outils pensés pour transformer votre façon de travailler.</p>
 
       <div class="features-grid">
         <div class="feature-card reveal">
@@ -1589,28 +1590,41 @@
   </footer>
 
   <!-- WAITLIST MODAL -->
-  <div id="waitlist-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;">
-    <div id="waitlist-modal" style="background:#fff; border-radius:20px; padding:40px 36px; max-width:440px; width:90%; box-shadow:0 24px 60px rgba(0,0,0,0.15); position:relative; font-family:'Inter',sans-serif;">
-      <button id="waitlist-close" style="position:absolute; top:16px; right:16px; background:none; border:none; cursor:pointer; color:#9ca3af; font-size:20px; line-height:1;">✕</button>
+  <div id="waitlist-overlay"
+    style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;">
+    <div id="waitlist-modal"
+      style="background:#fff; border-radius:20px; padding:40px 36px; max-width:440px; width:90%; box-shadow:0 24px 60px rgba(0,0,0,0.15); position:relative; font-family:'Inter',sans-serif;">
+      <button id="waitlist-close"
+        style="position:absolute; top:16px; right:16px; background:none; border:none; cursor:pointer; color:#9ca3af; font-size:20px; line-height:1;">✕</button>
 
       <div id="waitlist-form-view">
-        <div style="width:44px; height:44px; background:linear-gradient(135deg,#818cf8,#22d3ee); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div
+          style="width:44px; height:44px; background:linear-gradient(135deg,#818cf8,#22d3ee); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
         </div>
         <h2 style="font-size:1.4rem; font-weight:700; color:#0f172a; margin:0 0 8px;">Rejoindre la liste d'attente</h2>
-        <p style="color:#64748b; font-size:0.95rem; margin:0 0 28px; line-height:1.5;">Soyez parmi les premiers à accéder à OneWork. Nous vous contacterons dès l'ouverture.</p>
-        <input id="waitlist-email" type="email" placeholder="votre@email.com" style="width:100%; box-sizing:border-box; padding:14px 16px; border:1.5px solid #e2e8f0; border-radius:12px; font-size:1rem; font-family:'Inter',sans-serif; color:#0f172a; outline:none; transition:border-color 0.2s; margin-bottom:12px;">
-        <button id="waitlist-submit" style="width:100%; padding:14px; background:linear-gradient(135deg,#818cf8,#22d3ee); border:none; border-radius:12px; color:#fff; font-size:1rem; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; transition:opacity 0.2s;">
+        <p style="color:#64748b; font-size:0.95rem; margin:0 0 28px; line-height:1.5;">Soyez parmi les premiers à
+          accéder à OneWork. Nous vous contacterons dès l'ouverture.</p>
+        <input id="waitlist-email" type="email" placeholder="votre@email.com"
+          style="width:100%; box-sizing:border-box; padding:14px 16px; border:1.5px solid #e2e8f0; border-radius:12px; font-size:1rem; font-family:'Inter',sans-serif; color:#0f172a; outline:none; transition:border-color 0.2s; margin-bottom:12px;">
+        <button id="waitlist-submit"
+          style="width:100%; padding:14px; background:linear-gradient(135deg,#818cf8,#22d3ee); border:none; border-radius:12px; color:#fff; font-size:1rem; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; transition:opacity 0.2s;">
           Rejoindre →
         </button>
-        <p id="waitlist-error" style="display:none; color:#ef4444; font-size:0.85rem; margin:8px 0 0; text-align:center;"></p>
-        <p style="color:#94a3b8; font-size:0.8rem; text-align:center; margin:12px 0 0;">Gratuit · Aucune carte requise · Désabonnement en 1 clic</p>
+        <p id="waitlist-error"
+          style="display:none; color:#ef4444; font-size:0.85rem; margin:8px 0 0; text-align:center;"></p>
+        <p style="color:#94a3b8; font-size:0.8rem; text-align:center; margin:12px 0 0;">Gratuit · Aucune carte requise ·
+          Désabonnement en 1 clic</p>
       </div>
 
       <div id="waitlist-success-view" style="display:none; text-align:center; padding:20px 0;">
         <div style="font-size:3rem; margin-bottom:16px;">✅</div>
         <h2 style="font-size:1.3rem; font-weight:700; color:#0f172a; margin:0 0 8px;">Vous êtes sur la liste !</h2>
-        <p style="color:#64748b; font-size:0.95rem; margin:0;" id="modal-position-text">Nous vous contacterons dès que l'app est disponible.</p>
+        <p style="color:#64748b; font-size:0.95rem; margin:0;" id="modal-position-text">Nous vous contacterons dès que
+          l'app est disponible.</p>
       </div>
     </div>
   </div>
@@ -1618,7 +1632,7 @@
   <script src="landing.js"></script>
   <script>
     const BACKEND = 'https://oneworkk-production.up.railway.app';
-    const overlay  = document.getElementById('waitlist-overlay');
+    const overlay = document.getElementById('waitlist-overlay');
     const emailInput = document.getElementById('waitlist-email');
 
     function openModal() {
@@ -1636,7 +1650,7 @@
     document.getElementById('waitlist-submit').addEventListener('click', submitWaitlist);
     emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitWaitlist(); });
     emailInput.addEventListener('focus', () => emailInput.style.borderColor = '#818cf8');
-    emailInput.addEventListener('blur',  () => emailInput.style.borderColor = '#e2e8f0');
+    emailInput.addEventListener('blur', () => emailInput.style.borderColor = '#e2e8f0');
 
     async function submitWaitlist() {
       const email = emailInput.value.trim();
@@ -1652,7 +1666,7 @@
       btn.disabled = true;
 
       try {
-        const res  = await fetch(BACKEND + '/waitlist', {
+        const res = await fetch(BACKEND + '/waitlist', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
