@@ -34,6 +34,7 @@ app.use(helmet({
 // CORS : restreint aux origines connues
 const ALLOWED_ORIGINS = [
     'https://onework.app',
+    'https://oneworkkfront.vercel.app',
     'https://oneworkk-production.up.railway.app',
     'http://localhost:3000',
     'http://localhost:5173',
