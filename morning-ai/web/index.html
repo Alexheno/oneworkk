@@ -69,10 +69,10 @@
         </p>
 
         <div class="hero-actions">
-          <a href="#download" class="btn-primary">
+          <button class="btn-primary btn-waitlist">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Télécharger pour Windows
-          </a>
+          </button>
           <a href="#how" class="btn-ghost">
             Voir comment ça marche
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
@@ -408,12 +408,17 @@
       <div class="cta-badge">Windows 10 / 11 · Gratuit</div>
       <h2 class="cta-title">Prêt à reprendre le contrôle<br>de votre journée ?</h2>
       <p class="cta-subtitle">Téléchargez OneWork gratuitement. Aucune carte bancaire requise.</p>
-      <div class="cta-actions">
-        <a href="https://oneworkk-production.up.railway.app/download" class="btn-primary large">
+      <div class="cta-actions" id="cta-actions">
+        <button class="btn-primary large btn-waitlist" id="cta-dl-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Télécharger .exe (Windows)
-        </a>
-        <p class="cta-note">Application signée · 45 MB · Mise à jour automatique</p>
+        </button>
+        <p class="cta-note">Gratuit · 45 MB · Mise à jour automatique</p>
+      </div>
+      <div id="cta-waitlist-confirm" style="display:none; text-align:center; padding: 24px 0;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">✅</div>
+        <p style="font-size:1.2rem; font-weight:600; color:#fff; margin-bottom:6px;">Vous êtes sur la liste !</p>
+        <p style="color:#94a3b8;" id="cta-position-text">Nous vous contacterons dès que l'app est disponible.</p>
       </div>
       <div class="cta-it-block">
         <div class="cta-it-icon">
@@ -459,7 +464,7 @@
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Liens</div>
-          <a href="https://oneworkk-production.up.railway.app/download">Télécharger</a>
+          <a href="#download" class="btn-waitlist">Rejoindre la liste d'attente</a>
           <a href="mailto:admin@onework.app">Contact</a>
         </div>
       </div>
@@ -471,5 +476,47 @@
   </footer>
 
   <script src="landing.js"></script>
+  <script>
+    const BACKEND = 'https://oneworkk-production.up.railway.app';
+
+    async function joinWaitlist(btn) {
+      if (btn.dataset.done) return;
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:.6">Inscription...</span>';
+
+      try {
+        const res  = await fetch(BACKEND + '/waitlist', { method: 'POST' });
+        const data = await res.json();
+
+        // Marque tous les boutons comme "done"
+        document.querySelectorAll('.btn-waitlist').forEach(b => { b.dataset.done = '1'; });
+
+        // Hero button → texte de confirmation inline
+        const heroBtns = document.querySelectorAll('.btn-waitlist:not(#cta-dl-btn)');
+        heroBtns.forEach(b => {
+          b.textContent = '✅ Vous êtes sur la liste !';
+          b.style.cursor = 'default';
+        });
+
+        // Section CTA → bloc de confirmation
+        const ctaBtn     = document.getElementById('cta-dl-btn');
+        const ctaConfirm = document.getElementById('cta-waitlist-confirm');
+        const posText    = document.getElementById('cta-position-text');
+
+        if (ctaBtn)     ctaBtn.style.display     = 'none';
+        if (ctaConfirm) ctaConfirm.style.display = 'block';
+        if (posText && data.position) {
+          posText.textContent = `Vous êtes le n°${data.position} sur la liste. Nous vous contacterons dès que l'app est disponible.`;
+        }
+      } catch (_) {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Télécharger .exe (Windows)';
+      }
+    }
+
+    document.querySelectorAll('.btn-waitlist').forEach(btn => {
+      btn.addEventListener('click', e => { e.preventDefault(); joinWaitlist(btn); });
+    });
+  </script>
 </body>
 </html>

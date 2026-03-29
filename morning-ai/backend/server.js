@@ -107,6 +107,32 @@ function logResponse(req, statusCode) {
 // ─── R2 Public URL ───────────────────────────────────────────────────────────
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
+// ─── POST /waitlist ───────────────────────────────────────────────────────────
+// Enregistre un clic "Télécharger" et retourne la position dans la file.
+app.post('/waitlist', async (_req, res) => {
+    try {
+        await supabase.from('waitlist').insert({});
+        const { count } = await supabase
+            .from('waitlist')
+            .select('*', { count: 'exact', head: true });
+        res.json({ success: true, position: count });
+    } catch (_e) {
+        res.json({ success: true, position: null });
+    }
+});
+
+// ─── GET /waitlist/count ──────────────────────────────────────────────────────
+// Stats admin : GET /waitlist/count?key=ADMIN_KEY
+app.get('/waitlist/count', async (req, res) => {
+    if (!process.env.ADMIN_KEY || req.query.key !== process.env.ADMIN_KEY) {
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+    const { count } = await supabase
+        .from('waitlist')
+        .select('*', { count: 'exact', head: true });
+    res.json({ total: count });
+});
+
 // ─── GET /download ────────────────────────────────────────────────────────────
 // Lit latest.yml depuis R2 et redirige vers l'URL de téléchargement courante.
 // Aucune variable d'env à mettre à jour lors des releases — R2 fait foi.
