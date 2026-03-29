@@ -42,8 +42,9 @@ const ALLOWED_ORIGINS = [
 ];
 app.use(cors({
     origin: (origin, callback) => {
-        // Electron et Railway n'envoient pas d'origin — on les accepte
-        if (!origin || ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        if (!origin) return callback(null, true);
+        if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+        if (/^https:\/\/.*alexhenos-projects\.vercel\.app$/.test(origin)) return callback(null, true);
         callback(new Error(`CORS: origine non autorisée: ${origin}`));
     },
     methods:     ['GET', 'POST'],
