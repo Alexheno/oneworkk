@@ -20,6 +20,7 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
     "isomorphic-fetch": "^3.0.0",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "resend": "^4.0.0"
   }
 }

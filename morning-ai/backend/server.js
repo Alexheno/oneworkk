@@ -10,6 +10,7 @@ const crypto  = require('crypto');
 const { analyzeWorkData }                             = require('./ai.service');
 const { supabase }                                    = require('./supabase');
 const { Pool }                                        = require('pg');
+const { sendWaitlistEmail }                           = require('./email.service');
 
 // ─── Neon DB (waitlist) ───────────────────────────────────────────────────────
 const neonPool = process.env.DATABASE_URL
@@ -27,10 +28,35 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc:     ["'self'"],
+            scriptSrc:      ["'self'"],
+            styleSrc:       ["'self'", "'unsafe-inline'"],
+            imgSrc:         ["'self'", 'data:', 'https:'],
+            connectSrc:     ["'self'"],
+            frameSrc:       ["'none'"],
+            objectSrc:      ["'none'"],
+            upgradeInsecureRequests: [],
+        },
+    },
+    crossOriginEmbedderPolicy:   false,
+    crossOriginResourcePolicy:   { policy: 'cross-origin' },
+    hsts:                        { maxAge: 31536000, includeSubDomains: true, preload: true },
+    referrerPolicy:              { policy: 'strict-origin-when-cross-origin' },
+    xContentTypeOptions:         true,
+    xFrameOptions:               { action: 'deny' },
+    permittedCrossDomainPolicies: { permittedPolicies: 'none' },
 }));
+
+// Cache-Control : pas de cache sur les routes API
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api') || req.path === '/waitlist') {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+    }
+    next();
+});
 
 // CORS : restreint aux origines connues
 const ALLOWED_ORIGINS = [
@@ -87,6 +113,15 @@ const chatLimiter = rateLimit({
     message:          { success: false, error: 'Trop de messages. Attendez une minute.' },
 });
 
+const waitlistLimiter = rateLimit({
+    windowMs:         60 * 60 * 1000,  // 1 heure
+    max:              5,                // 5 inscriptions max par IP par heure
+    standardHeaders:  true,
+    legacyHeaders:    false,
+    message:          { success: false, error: 'Trop de tentatives. Réessayez dans une heure.' },
+    skipSuccessfulRequests: false,
+});
+
 app.use(globalLimiter);
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
@@ -117,12 +152,27 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
-app.post('/waitlist', async (req, res) => {
+app.post('/waitlist', waitlistLimiter, async (req, res) => {
     try {
-        const email = req.body?.email || null;
+        const email = req.body?.email?.trim().toLowerCase() || null;
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(400).json({ success: false, error: 'Email invalide.' });
+        }
+
+        // Vérifie doublon
+        const { rows: existing } = await neonPool.query(
+            'SELECT id FROM waitlist WHERE email = $1', [email]
+        );
+        if (existing.length > 0) {
+            const { rows: countRows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
+            return res.json({ success: true, position: countRows[0].n, alreadyRegistered: true });
+        }
+
         await neonPool.query('INSERT INTO waitlist (email) VALUES ($1)', [email]);
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
-        res.json({ success: true, position: rows[0].n });
+        const position = rows[0].n;
+        res.json({ success: true, position });
+        if (email) sendWaitlistEmail(email, position);
     } catch (_e) {
         res.json({ success: true, position: null });
     }

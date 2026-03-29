@@ -80,13 +80,7 @@
         </div>
 
         <div class="hero-social-proof">
-          <div class="proof-avatars">
-            <div class="proof-avatar" style="background: linear-gradient(135deg,#f472b6,#a78bfa)"></div>
-            <div class="proof-avatar" style="background: linear-gradient(135deg,#34d399,#3b82f6)"></div>
-            <div class="proof-avatar" style="background: linear-gradient(135deg,#fb923c,#f43f5e)"></div>
-            <div class="proof-avatar" style="background: linear-gradient(135deg,#a78bfa,#22d3ee)"></div>
-          </div>
-          <span class="proof-text"><strong>+500 professionnels</strong> sur la liste d'attente</span>
+          <span class="proof-text">🔒 <strong>Accès anticipé · 100% gratuit</strong> · Sans engagement</span>
         </div>
       </div>
 
@@ -352,47 +346,29 @@
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+  <!-- EARLY ACCESS BENEFITS -->
   <section class="testimonials">
     <div class="section-inner">
-      <div class="section-tag">Ce qu'ils en disent</div>
-      <h2 class="section-title">Ceux qui l'ont essayé<br>ne reviennent pas en arrière.</h2>
+      <div class="section-tag">Accès anticipé</div>
+      <h2 class="section-title">Pourquoi rejoindre<br>la liste maintenant ?</h2>
 
       <div class="testimonials-grid">
         <div class="testimonial-card reveal">
-          <div class="testimonial-stars">★★★★★</div>
-          <p>"Le widget est invisible jusqu'au moment où j'en ai besoin. Je survole, je vois mes 3 priorités du jour générées par l'IA, je ferme. Ma To-Do liste se fait toute seule chaque matin."</p>
-          <div class="testimonial-author">
-            <div class="t-avatar" style="background: linear-gradient(135deg,#818cf8,#22d3ee)">SL</div>
-            <div>
-              <div class="t-name">Sophie Laurent</div>
-              <div class="t-role">Directrice Produit · Scale-up B2B</div>
-            </div>
-          </div>
+          <div style="font-size:2rem;margin-bottom:16px;">⚡</div>
+          <p style="font-weight:600;font-size:1rem;color:#f9fafb;margin-bottom:8px;">Accès en priorité</p>
+          <p>Vous serez parmi les tout premiers à recevoir OneWork dès la sortie — avant l'ouverture publique.</p>
         </div>
 
         <div class="testimonial-card reveal" style="transition-delay:0.1s">
-          <div class="testimonial-stars">★★★★★</div>
-          <p>"J'ai dit à l'agent : 'Réponds à ce mail en m'excusant du délai et demande un report de réunion.' Il l'a fait en 4 secondes depuis le widget, sans que j'ouvre Outlook. Bluffant."</p>
-          <div class="testimonial-author">
-            <div class="t-avatar" style="background: linear-gradient(135deg,#f472b6,#fb923c)">TM</div>
-            <div>
-              <div class="t-name">Thomas Moreau</div>
-              <div class="t-role">CEO · SaaS Series A</div>
-            </div>
-          </div>
+          <div style="font-size:2rem;margin-bottom:16px;">🎁</div>
+          <p style="font-weight:600;font-size:1rem;color:#f9fafb;margin-bottom:8px;">Tarif fondateur</p>
+          <p>Les membres de la liste d'attente bénéficieront d'un tarif préférentiel à vie, réservé aux early adopters.</p>
         </div>
 
         <div class="testimonial-card reveal" style="transition-delay:0.2s">
-          <div class="testimonial-stars">★★★★★</div>
-          <p>"Le score de productivité /100 m'a choqué la première semaine. Je pensais être efficace. OneWork m'a montré que je passais 40% de mon temps sur des tâches de faible valeur."</p>
-          <div class="testimonial-author">
-            <div class="t-avatar" style="background: linear-gradient(135deg,#34d399,#3b82f6)">AC</div>
-            <div>
-              <div class="t-name">Anaïs Chevrier</div>
-              <div class="t-role">VP Engineering · Fintech</div>
-            </div>
-          </div>
+          <div style="font-size:2rem;margin-bottom:16px;">🛠️</div>
+          <p style="font-weight:600;font-size:1rem;color:#f9fafb;margin-bottom:8px;">Influencez le produit</p>
+          <p>Vos retours façonneront directement les prochaines fonctionnalités. Vous construisez OneWork avec nous.</p>
         </div>
       </div>
     </div>
@@ -475,25 +451,88 @@
     </div>
   </footer>
 
+  <!-- Waitlist Modal -->
+  <div id="waitlist-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(3,7,18,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
+    <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:40px 36px;max-width:420px;width:90%;position:relative;">
+      <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#6b7280;font-size:20px;cursor:pointer;line-height:1;">✕</button>
+      <div style="font-size:1.5rem;margin-bottom:8px;">🚀</div>
+      <h3 style="font-size:1.25rem;font-weight:700;color:#f9fafb;margin-bottom:8px;">Rejoindre la liste d'attente</h3>
+      <p style="color:#6b7280;font-size:0.9rem;margin-bottom:24px;">Vous serez parmi les premiers à accéder à OneWork. Gratuit, sans engagement.</p>
+      <form id="waitlist-form" onsubmit="submitWaitlist(event)">
+        <!-- Honeypot anti-bot (invisible pour les humains) -->
+        <input type="text" name="website" id="hp-field" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;" aria-hidden="true">
+        <input
+          id="waitlist-email"
+          type="email"
+          placeholder="votre@email.com"
+          required
+          style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#f9fafb;font-size:0.95rem;font-family:inherit;outline:none;margin-bottom:12px;"
+        />
+        <button type="submit" id="modal-submit-btn" style="width:100%;padding:13px;background:linear-gradient(135deg,#6366f1,#22d3ee);border:none;border-radius:10px;color:#fff;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:inherit;">
+          Me mettre sur la liste →
+        </button>
+        <p id="modal-error" style="display:none;color:#f87171;font-size:0.82rem;margin-top:8px;text-align:center;"></p>
+      </form>
+      <p style="color:#374151;font-size:0.78rem;text-align:center;margin-top:14px;">🔒 Aucun spam. Désabonnement en 1 clic.</p>
+    </div>
+  </div>
+
   <script src="landing.js"></script>
   <script>
     const BACKEND = 'https://oneworkk-production.up.railway.app';
 
-    async function joinWaitlist(btn) {
-      if (btn.dataset.done) return;
+    let _modalOpenedAt = 0;
+
+    function openModal() {
+      const modal = document.getElementById('waitlist-modal');
+      modal.style.display = 'flex';
+      _modalOpenedAt = Date.now();
+      setTimeout(() => document.getElementById('waitlist-email').focus(), 50);
+    }
+
+    function closeModal() {
+      document.getElementById('waitlist-modal').style.display = 'none';
+      document.getElementById('modal-error').style.display = 'none';
+      document.getElementById('waitlist-email').value = '';
+    }
+
+    // Fermer si on clique en dehors
+    document.getElementById('waitlist-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+
+    async function submitWaitlist(e) {
+      e.preventDefault();
+      const email  = document.getElementById('waitlist-email').value.trim();
+      const hp     = document.getElementById('hp-field').value;
+      const btn    = document.getElementById('modal-submit-btn');
+      const errEl  = document.getElementById('modal-error');
+
+      // Bot détecté : honeypot rempli ou soumission < 2s
+      if (hp || (Date.now() - _modalOpenedAt) < 2000) {
+        closeModal();
+        return;
+      }
+
       btn.disabled = true;
-      btn.innerHTML = '<span style="opacity:.6">Inscription...</span>';
+      btn.textContent = 'Inscription...';
+      errEl.style.display = 'none';
 
       try {
-        const res  = await fetch(BACKEND + '/waitlist', { method: 'POST' });
+        const res  = await fetch(BACKEND + '/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
         const data = await res.json();
+
+        closeModal();
 
         // Marque tous les boutons comme "done"
         document.querySelectorAll('.btn-waitlist').forEach(b => { b.dataset.done = '1'; });
 
         // Hero button → texte de confirmation inline
-        const heroBtns = document.querySelectorAll('.btn-waitlist:not(#cta-dl-btn)');
-        heroBtns.forEach(b => {
+        document.querySelectorAll('.btn-waitlist:not(#cta-dl-btn)').forEach(b => {
           b.textContent = '✅ Vous êtes sur la liste !';
           b.style.cursor = 'default';
         });
@@ -509,13 +548,19 @@
           posText.textContent = `Vous êtes le n°${data.position} sur la liste. Nous vous contacterons dès que l'app est disponible.`;
         }
       } catch (_) {
+        errEl.textContent = 'Erreur réseau. Réessayez dans quelques secondes.';
+        errEl.style.display = 'block';
         btn.disabled = false;
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Télécharger .exe (Windows)';
+        btn.textContent = 'Me mettre sur la liste →';
       }
     }
 
     document.querySelectorAll('.btn-waitlist').forEach(btn => {
-      btn.addEventListener('click', e => { e.preventDefault(); joinWaitlist(btn); });
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        if (btn.dataset.done) return;
+        openModal();
+      });
     });
   </script>
 </body>
