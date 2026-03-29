@@ -474,3 +474,77 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   });
 });
+
+// ─── Waitlist modal ───────────────────────────────────────────────────────────
+const BACKEND = 'https://oneworkk-production.up.railway.app';
+const _overlay = document.getElementById('waitlist-overlay');
+const _emailInput = document.getElementById('waitlist-email');
+
+function openModal() {
+  if (_overlay) { _overlay.style.display = 'flex'; }
+  setTimeout(() => _emailInput && _emailInput.focus(), 100);
+}
+
+function closeModal() {
+  if (_overlay) { _overlay.style.display = 'none'; }
+}
+
+if (_overlay) {
+  const closeBtn = document.getElementById('waitlist-close');
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  _overlay.addEventListener('click', e => { if (e.target === _overlay) closeModal(); });
+
+  const submitBtn = document.getElementById('waitlist-submit');
+  if (submitBtn) submitBtn.addEventListener('click', submitWaitlist);
+  if (_emailInput) {
+    _emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitWaitlist(); });
+    _emailInput.addEventListener('focus', () => { _emailInput.style.borderColor = '#818cf8'; });
+    _emailInput.addEventListener('blur', () => { _emailInput.style.borderColor = '#e2e8f0'; });
+  }
+}
+
+async function submitWaitlist() {
+  const email = _emailInput.value.trim();
+  const errorEl = document.getElementById('waitlist-error');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errorEl.textContent = 'Veuillez entrer une adresse email valide.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  errorEl.style.display = 'none';
+  const btn = document.getElementById('waitlist-submit');
+  btn.textContent = 'Inscription...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(BACKEND + '/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    const data = await res.json();
+    document.getElementById('waitlist-form-view').style.display = 'none';
+    document.getElementById('waitlist-success-view').style.display = 'block';
+    if (data.position) {
+      document.getElementById('modal-position-text').textContent =
+        `Vous êtes le n°${data.position} sur la liste. On vous tient au courant !`;
+    }
+    document.querySelectorAll('.btn-waitlist').forEach(b => {
+      b.textContent = '✅ Vous êtes sur la liste !';
+      b.disabled = true;
+      b.style.cursor = 'default';
+    });
+    const ctaBtn = document.getElementById('cta-dl-btn');
+    const ctaConfirm = document.getElementById('cta-waitlist-confirm');
+    if (ctaBtn) ctaBtn.style.display = 'none';
+    if (ctaConfirm) ctaConfirm.style.display = 'block';
+  } catch (_) {
+    btn.textContent = 'Rejoindre →';
+    btn.disabled = false;
+    errorEl.textContent = 'Une erreur est survenue. Réessayez.';
+    errorEl.style.display = 'block';
+  }
+}
+
+document.querySelectorAll('.btn-waitlist').forEach(btn => {
+  btn.addEventListener('click', e => { e.preventDefault(); openModal(); });
+});

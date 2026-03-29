@@ -73,7 +73,7 @@
       </p>
 
       <div class="hero-actions">
-        <button class="btn-primary btn-waitlist" onclick="openModal()">
+        <button class="btn-primary btn-waitlist">
           Rejoindre la liste d'attente
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="9 18 15 12 9 6" />
@@ -1478,7 +1478,7 @@
       <h2 class="cta-title">Votre bureau de travail,<br>réinventé.</h2>
       <p class="cta-subtitle">Rejoignez la liste d'attente. Vous serez parmi les premiers à l'essayer.</p>
       <div class="cta-actions" id="cta-actions">
-        <button class="btn-primary large btn-waitlist" id="cta-dl-btn" onclick="openModal()">
+        <button class="btn-primary large btn-waitlist" id="cta-dl-btn">
           Rejoindre la liste d'attente
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="9 18 15 12 9 6" />
@@ -1579,7 +1579,7 @@
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Liens</div>
-          <a href="#" class="btn-waitlist" onclick="event.preventDefault(); openModal()">Rejoindre la liste d'attente</a>
+          <a href="#" class="btn-waitlist">Rejoindre la liste d'attente</a>
           <a href="mailto:admin@onework.app">Contact</a>
         </div>
       </div>
@@ -1630,79 +1630,6 @@
   </div>
 
   <script src="landing.js"></script>
-  <script>
-    const BACKEND = 'https://oneworkk-production.up.railway.app';
-    const overlay = document.getElementById('waitlist-overlay');
-    const emailInput = document.getElementById('waitlist-email');
-
-    function openModal() {
-      overlay.style.display = 'flex';
-      setTimeout(() => emailInput && emailInput.focus(), 100);
-    }
-
-    function closeModal() {
-      overlay.style.display = 'none';
-    }
-
-    document.getElementById('waitlist-close').addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-
-    document.getElementById('waitlist-submit').addEventListener('click', submitWaitlist);
-    emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitWaitlist(); });
-    emailInput.addEventListener('focus', () => emailInput.style.borderColor = '#818cf8');
-    emailInput.addEventListener('blur', () => emailInput.style.borderColor = '#e2e8f0');
-
-    async function submitWaitlist() {
-      const email = emailInput.value.trim();
-      const errorEl = document.getElementById('waitlist-error');
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errorEl.textContent = 'Veuillez entrer une adresse email valide.';
-        errorEl.style.display = 'block';
-        return;
-      }
-      errorEl.style.display = 'none';
-      const btn = document.getElementById('waitlist-submit');
-      btn.textContent = 'Inscription...';
-      btn.disabled = true;
-
-      try {
-        const res = await fetch(BACKEND + '/waitlist', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
-        });
-        const data = await res.json();
-
-        document.getElementById('waitlist-form-view').style.display = 'none';
-        document.getElementById('waitlist-success-view').style.display = 'block';
-        if (data.position) {
-          document.getElementById('modal-position-text').textContent =
-            `Vous êtes le n°${data.position} sur la liste. On vous tient au courant !`;
-        }
-
-        // Met à jour les boutons de la page
-        document.querySelectorAll('.btn-waitlist').forEach(b => {
-          b.textContent = '✅ Vous êtes sur la liste !';
-          b.disabled = true;
-          b.style.cursor = 'default';
-        });
-        const ctaBtn = document.getElementById('cta-dl-btn');
-        const ctaConfirm = document.getElementById('cta-waitlist-confirm');
-        if (ctaBtn) ctaBtn.style.display = 'none';
-        if (ctaConfirm) ctaConfirm.style.display = 'block';
-
-      } catch (_) {
-        btn.textContent = 'Rejoindre →';
-        btn.disabled = false;
-        errorEl.textContent = 'Une erreur est survenue. Réessayez.';
-        errorEl.style.display = 'block';
-      }
-    }
-
-    document.querySelectorAll('.btn-waitlist').forEach(btn => {
-      btn.addEventListener('click', e => { e.preventDefault(); openModal(); });
-    });
-  </script>
 </body>
 
 </html>
