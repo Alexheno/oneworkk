@@ -9,6 +9,12 @@ const crypto  = require('crypto');
 
 const { analyzeWorkData }                             = require('./ai.service');
 const { supabase }                                    = require('./supabase');
+const { Pool }                                        = require('pg');
+
+// ─── Neon DB (waitlist) ───────────────────────────────────────────────────────
+const neonPool = process.env.DATABASE_URL
+    ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
+    : null;
 const {
     getRecentEmails, getTodayMeetings, getWeekSchedule,
     getTeamsMessages, getRecentOfficeFiles, getToDoTasks, getOneNotePages,
@@ -108,29 +114,23 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
-// Enregistre un clic "Télécharger" et retourne la position dans la file.
 app.post('/waitlist', async (_req, res) => {
     try {
-        await supabase.from('waitlist').insert({});
-        const { count } = await supabase
-            .from('waitlist')
-            .select('*', { count: 'exact', head: true });
-        res.json({ success: true, position: count });
+        await neonPool.query('INSERT INTO waitlist DEFAULT VALUES');
+        const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
+        res.json({ success: true, position: rows[0].n });
     } catch (_e) {
         res.json({ success: true, position: null });
     }
 });
 
 // ─── GET /waitlist/count ──────────────────────────────────────────────────────
-// Stats admin : GET /waitlist/count?key=ADMIN_KEY
 app.get('/waitlist/count', async (req, res) => {
     if (!process.env.ADMIN_KEY || req.query.key !== process.env.ADMIN_KEY) {
         return res.status(403).json({ error: 'Forbidden' });
     }
-    const { count } = await supabase
-        .from('waitlist')
-        .select('*', { count: 'exact', head: true });
-    res.json({ total: count });
+    const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
+    res.json({ total: rows[0].n });
 });
 
 // ─── GET /download ────────────────────────────────────────────────────────────
