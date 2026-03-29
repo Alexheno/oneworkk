@@ -27,8 +27,9 @@ const PORT = process.env.PORT || 3000;
 
 // ─── Security Middleware ──────────────────────────────────────────────────────
 app.use(helmet({
-    contentSecurityPolicy: false,  // API — pas de HTML servi
+    contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false,
 }));
 
 // CORS : restreint aux origines connues
