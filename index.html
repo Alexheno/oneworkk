@@ -73,7 +73,7 @@
       </p>
 
       <div class="hero-actions">
-        <button class="btn-primary btn-waitlist">
+        <button class="btn-primary btn-waitlist" onclick="openModal()">
           Rejoindre la liste d'attente
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="9 18 15 12 9 6" />
@@ -1478,7 +1478,7 @@
       <h2 class="cta-title">Votre bureau de travail,<br>réinventé.</h2>
       <p class="cta-subtitle">Rejoignez la liste d'attente. Vous serez parmi les premiers à l'essayer.</p>
       <div class="cta-actions" id="cta-actions">
-        <button class="btn-primary large btn-waitlist" id="cta-dl-btn">
+        <button class="btn-primary large btn-waitlist" id="cta-dl-btn" onclick="openModal()">
           Rejoindre la liste d'attente
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <polyline points="9 18 15 12 9 6" />
@@ -1579,7 +1579,7 @@
         </div>
         <div class="footer-col">
           <div class="footer-col-title">Liens</div>
-          <a href="#download" class="btn-waitlist">Rejoindre la liste d'attente</a>
+          <a href="#" class="btn-waitlist" onclick="event.preventDefault(); openModal()">Rejoindre la liste d'attente</a>
           <a href="mailto:admin@onework.app">Contact</a>
         </div>
       </div>
