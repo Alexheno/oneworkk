@@ -114,9 +114,10 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
-app.post('/waitlist', async (_req, res) => {
+app.post('/waitlist', async (req, res) => {
     try {
-        await neonPool.query('INSERT INTO waitlist DEFAULT VALUES');
+        const email = req.body?.email || null;
+        await neonPool.query('INSERT INTO waitlist (email) VALUES ($1)', [email]);
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
         res.json({ success: true, position: rows[0].n });
     } catch (_e) {
@@ -129,8 +130,10 @@ app.get('/waitlist/count', async (req, res) => {
     if (!process.env.ADMIN_KEY || req.query.key !== process.env.ADMIN_KEY) {
         return res.status(403).json({ error: 'Forbidden' });
     }
-    const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
-    res.json({ total: rows[0].n });
+    const { rows } = await neonPool.query(
+        'SELECT COUNT(*)::int AS total, array_agg(email ORDER BY created_at DESC) FILTER (WHERE email IS NOT NULL) AS emails FROM waitlist'
+    );
+    res.json({ total: rows[0].total, emails: rows[0].emails || [] });
 });
 
 // ─── GET /download ────────────────────────────────────────────────────────────

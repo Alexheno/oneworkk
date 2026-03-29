@@ -1320,7 +1320,7 @@
     <div class="section-inner">
       <div class="section-tag">Comment ça marche</div>
       <h2 class="section-title">Configuration express</h2>
-      <p class="section-subtitle">Download. Connect and Enjoy.</p>
+      <p class="section-subtitle">Download, Connect and Enjoy.</p>
 
       <div class="steps">
         <div class="step reveal">
@@ -1493,12 +1493,18 @@
     <div class="section-inner">
       <div class="section-tag">Entreprise</div>
       <h2 class="section-title">Faites passer votre entreprise<br>au niveau supérieur.</h2>
-      <p class="section-subtitle">OneWork s'adapte à toutes les tailles d'équipes. Déployez en quelques minutes, gérez depuis un seul endroit.</p>
+      <p class="section-subtitle">OneWork s'adapte à toutes les tailles d'équipes. Déployez en quelques minutes, gérez
+        depuis un seul endroit.</p>
 
       <div class="features-grid">
         <div class="feature-card reveal">
           <div class="feature-icon-wrap blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87" />
+              <path d="M16 3.13a4 4 0 010 7.75" />
+            </svg>
           </div>
           <h3>Déploiement via Intune</h3>
           <p>Installez OneWork sur tous les postes de votre organisation en un clic, sans intervention manuelle.</p>
@@ -1506,25 +1512,35 @@
 
         <div class="feature-card reveal" style="transition-delay: 0.1s">
           <div class="feature-icon-wrap purple">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
           </div>
           <h3>Sécurité enterprise</h3>
-          <p>Architecture zero-trust, conformité RGPD, aucune donnée stockée. Validé pour les environnements sensibles.</p>
+          <p>Architecture zero-trust, conformité RGPD, aucune donnée stockée. Validé pour les environnements sensibles.
+          </p>
         </div>
 
         <div class="feature-card reveal" style="transition-delay: 0.2s">
           <div class="feature-icon-wrap cyan">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
           </div>
           <h3>Productivité mesurable</h3>
-          <p>Score de productivité individuel et collectif. Identifiez les inefficacités et améliorez les performances de vos équipes.</p>
+          <p>Score de productivité individuel et collectif. Identifiez les inefficacités et améliorez les performances
+            de vos équipes.</p>
         </div>
       </div>
 
       <div style="text-align:center; margin-top: 48px;">
-        <a href="mailto:admin@onework.app" class="btn-primary" style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+        <a href="mailto:admin@onework.app" class="btn-primary"
+          style="display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
           Contacter notre équipe
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
         </a>
       </div>
     </div>
@@ -1540,7 +1556,6 @@
           </div>
           <span class="logo-text">OneWork</span>
         </a>
-        <p class="footer-tagline">L'IA discrète qui transforme votre bureau Windows.</p>
       </div>
 
       <div class="footer-links">
@@ -1564,43 +1579,109 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 OneWork. Tous droits réservés.</span>
-      <span>Conçu pour ceux qui n'ont pas de temps à perdre.</span>
+      <span>© 2026 OneWork</span>
     </div>
   </footer>
+
+  <!-- WAITLIST MODAL -->
+  <div id="waitlist-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center;">
+    <div id="waitlist-modal" style="background:#fff; border-radius:20px; padding:40px 36px; max-width:440px; width:90%; box-shadow:0 24px 60px rgba(0,0,0,0.15); position:relative; font-family:'Inter',sans-serif;">
+      <button id="waitlist-close" style="position:absolute; top:16px; right:16px; background:none; border:none; cursor:pointer; color:#9ca3af; font-size:20px; line-height:1;">✕</button>
+
+      <div id="waitlist-form-view">
+        <div style="width:44px; height:44px; background:linear-gradient(135deg,#818cf8,#22d3ee); border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:20px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h2 style="font-size:1.4rem; font-weight:700; color:#0f172a; margin:0 0 8px;">Rejoindre la liste d'attente</h2>
+        <p style="color:#64748b; font-size:0.95rem; margin:0 0 28px; line-height:1.5;">Soyez parmi les premiers à accéder à OneWork. Nous vous contacterons dès l'ouverture.</p>
+        <input id="waitlist-email" type="email" placeholder="votre@email.com" style="width:100%; box-sizing:border-box; padding:14px 16px; border:1.5px solid #e2e8f0; border-radius:12px; font-size:1rem; font-family:'Inter',sans-serif; color:#0f172a; outline:none; transition:border-color 0.2s; margin-bottom:12px;">
+        <button id="waitlist-submit" style="width:100%; padding:14px; background:linear-gradient(135deg,#818cf8,#22d3ee); border:none; border-radius:12px; color:#fff; font-size:1rem; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer; transition:opacity 0.2s;">
+          Rejoindre →
+        </button>
+        <p id="waitlist-error" style="display:none; color:#ef4444; font-size:0.85rem; margin:8px 0 0; text-align:center;"></p>
+        <p style="color:#94a3b8; font-size:0.8rem; text-align:center; margin:12px 0 0;">Gratuit · Aucune carte requise · Désabonnement en 1 clic</p>
+      </div>
+
+      <div id="waitlist-success-view" style="display:none; text-align:center; padding:20px 0;">
+        <div style="font-size:3rem; margin-bottom:16px;">✅</div>
+        <h2 style="font-size:1.3rem; font-weight:700; color:#0f172a; margin:0 0 8px;">Vous êtes sur la liste !</h2>
+        <p style="color:#64748b; font-size:0.95rem; margin:0;" id="modal-position-text">Nous vous contacterons dès que l'app est disponible.</p>
+      </div>
+    </div>
+  </div>
 
   <script src="landing.js"></script>
   <script>
     const BACKEND = 'https://oneworkk-production.up.railway.app';
+    const overlay  = document.getElementById('waitlist-overlay');
+    const emailInput = document.getElementById('waitlist-email');
 
-    async function joinWaitlist(btn) {
-      if (btn.dataset.done) return;
+    function openModal() {
+      overlay.style.display = 'flex';
+      setTimeout(() => emailInput && emailInput.focus(), 100);
+    }
+
+    function closeModal() {
+      overlay.style.display = 'none';
+    }
+
+    document.getElementById('waitlist-close').addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+
+    document.getElementById('waitlist-submit').addEventListener('click', submitWaitlist);
+    emailInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitWaitlist(); });
+    emailInput.addEventListener('focus', () => emailInput.style.borderColor = '#818cf8');
+    emailInput.addEventListener('blur',  () => emailInput.style.borderColor = '#e2e8f0');
+
+    async function submitWaitlist() {
+      const email = emailInput.value.trim();
+      const errorEl = document.getElementById('waitlist-error');
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Veuillez entrer une adresse email valide.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      errorEl.style.display = 'none';
+      const btn = document.getElementById('waitlist-submit');
+      btn.textContent = 'Inscription...';
       btn.disabled = true;
-      btn.innerHTML = '<span style="opacity:.6">Inscription...</span>';
+
       try {
-        const res = await fetch(BACKEND + '/waitlist', { method: 'POST' });
+        const res  = await fetch(BACKEND + '/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
         const data = await res.json();
-        document.querySelectorAll('.btn-waitlist').forEach(b => { b.dataset.done = '1'; });
-        document.querySelectorAll('.btn-waitlist:not(#cta-dl-btn)').forEach(b => {
+
+        document.getElementById('waitlist-form-view').style.display = 'none';
+        document.getElementById('waitlist-success-view').style.display = 'block';
+        if (data.position) {
+          document.getElementById('modal-position-text').textContent =
+            `Vous êtes le n°${data.position} sur la liste. On vous tient au courant !`;
+        }
+
+        // Met à jour les boutons de la page
+        document.querySelectorAll('.btn-waitlist').forEach(b => {
           b.textContent = '✅ Vous êtes sur la liste !';
+          b.disabled = true;
           b.style.cursor = 'default';
         });
         const ctaBtn = document.getElementById('cta-dl-btn');
         const ctaConfirm = document.getElementById('cta-waitlist-confirm');
-        const posText = document.getElementById('cta-position-text');
         if (ctaBtn) ctaBtn.style.display = 'none';
         if (ctaConfirm) ctaConfirm.style.display = 'block';
-        if (posText && data.position) {
-          posText.textContent = `Vous êtes le n°${data.position} sur la liste. Nous vous contacterons dès que l'app est disponible.`;
-        }
+
       } catch (_) {
+        btn.textContent = 'Rejoindre →';
         btn.disabled = false;
-        btn.textContent = 'Rejoindre la liste d\'attente';
+        errorEl.textContent = 'Une erreur est survenue. Réessayez.';
+        errorEl.style.display = 'block';
       }
     }
 
     document.querySelectorAll('.btn-waitlist').forEach(btn => {
-      btn.addEventListener('click', e => { e.preventDefault(); joinWaitlist(btn); });
+      btn.addEventListener('click', e => { e.preventDefault(); openModal(); });
     });
   </script>
 </body>
