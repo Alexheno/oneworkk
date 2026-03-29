@@ -537,10 +537,11 @@ async function submitWaitlist() {
     const ctaConfirm = document.getElementById('cta-waitlist-confirm');
     if (ctaBtn) ctaBtn.style.display = 'none';
     if (ctaConfirm) ctaConfirm.style.display = 'block';
-  } catch (_) {
+  } catch (err) {
+    console.error('[waitlist] erreur:', err);
     btn.textContent = 'Rejoindre →';
     btn.disabled = false;
-    errorEl.textContent = 'Une erreur est survenue. Réessayez.';
+    errorEl.textContent = 'Erreur: ' + (err && err.message ? err.message : String(err));
     errorEl.style.display = 'block';
   }
 }
