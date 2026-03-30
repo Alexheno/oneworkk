@@ -9,180 +9,159 @@ function buildWaitlistEmail({ position }) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneWork — Inscription confirmée</title>
 </head>
-<body style="margin:0;padding:0;background:#030712;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<body style="margin:0;padding:0;background:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#030712;padding:48px 20px 64px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f8;padding:48px 20px 64px;">
     <tr>
       <td align="center">
-        <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;">
+        <table width="680" cellpadding="0" cellspacing="0" border="0" style="max-width:680px;width:100%;">
 
-          <!-- LOGO -->
+          <!-- LOGO NAV -->
           <tr>
-            <td align="center" style="padding-bottom:48px;">
+            <td align="center" style="padding-bottom:44px;">
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
-                  <td align="center">
-                    <!-- Ring logo -->
-                    <div style="width:56px;height:56px;border-radius:50%;background:conic-gradient(from 180deg,#8ECDF8,#6B8EF5,#9B35FF,#F472B6,#FB923C,#8ECDF8);display:inline-block;position:relative;">
-                      <div style="position:absolute;top:8px;left:8px;right:8px;bottom:8px;border-radius:50%;background:#030712;"></div>
+                  <td align="center" valign="middle" style="padding-right:10px;">
+                    <!-- Ring logo — matching the site -->
+                    <img src="https://build-two-cyan.vercel.app/morning-ai/desktop-app/logo.svg" width="28" height="28" alt="OneWork" style="display:block;border-radius:50%;">
+                  </td>
+                  <td style="font-size:17px;font-weight:700;color:#0f172a;letter-spacing:-0.4px;">OneWork</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- MAIN CARD -->
+          <tr>
+            <td style="background:#ffffff;border-radius:28px;overflow:hidden;box-shadow:0 2px 40px rgba(99,102,241,0.10),0 1px 4px rgba(0,0,0,0.06);">
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+
+                <!-- HERO avec fond dégradé comme le site -->
+                <tr>
+                  <td align="center" style="background:linear-gradient(160deg,#f8f6ff 0%,#eef2ff 40%,#fdf4ff 100%);padding:56px 56px 48px;border-radius:28px 28px 0 0;">
+
+                    <!-- Ring logo grand -->
+                    <img src="https://build-two-cyan.vercel.app/morning-ai/desktop-app/logo.svg" width="72" height="72" alt="" style="display:block;margin:0 auto 28px;border-radius:50%;">
+
+                    <!-- Badge -->
+                    <div style="display:inline-block;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:100px;padding:6px 16px;margin-bottom:24px;">
+                      <span style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:0.08em;text-transform:uppercase;">✦ Accès anticipé confirmé</span>
                     </div>
-                    <div style="margin-top:12px;font-size:17px;font-weight:700;color:#ffffff;letter-spacing:-0.3px;">OneWork</div>
+
+                    <!-- Titre inspiré du site -->
+                    <h1 style="margin:0 0 6px;font-size:44px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1.1;">
+                      Vous êtes
+                    </h1>
+                    <h1 style="margin:0 0 20px;font-size:44px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;background:linear-gradient(90deg,#6366f1,#a855f7,#ec4899,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#6366f1;">
+                      sur la liste.
+                    </h1>
+
+                    <p style="margin:0;font-size:16px;color:#64748b;line-height:1.7;max-width:440px;margin:0 auto;">
+                      OneWork analyse vos emails, réunions et Teams avec l'IA — et vous donne en quelques secondes vos priorités du jour.
+                    </p>
+
+                    ${position ? `
+                    <!-- Position -->
+                    <div style="margin-top:32px;display:inline-block;background:rgba(255,255,255,0.8);border:1px solid rgba(99,102,241,0.15);border-radius:16px;padding:16px 40px;backdrop-filter:blur(8px);">
+                      <div style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Votre position</div>
+                      <div style="font-size:48px;font-weight:900;letter-spacing:-2px;background:linear-gradient(90deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#6366f1;">#${position}</div>
+                    </div>` : ''}
+
                   </td>
                 </tr>
-              </table>
-            </td>
-          </tr>
 
-          <!-- HERO -->
-          <tr>
-            <td align="center" style="padding-bottom:12px;">
-              <div style="display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);border-radius:100px;padding:5px 14px;margin-bottom:28px;">
-                <span style="font-size:11px;font-weight:600;color:#818cf8;letter-spacing:0.1em;text-transform:uppercase;">Accès anticipé confirmé</span>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td align="center" style="padding-bottom:16px;">
-              <h1 style="margin:0;font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;color:#ffffff;">
-                Vous êtes<br>sur la liste.
-              </h1>
-            </td>
-          </tr>
-          <tr>
-            <td align="center" style="padding-bottom:40px;">
-              <p style="margin:0;font-size:17px;color:rgba(255,255,255,0.45);line-height:1.6;max-width:400px;">
-                Vous serez parmi les premiers à découvrir OneWork.<br>
-                Nous vous contacterons dès que l'accès est ouvert.
-              </p>
-            </td>
-          </tr>
-
-          <!-- POSITION CARD -->
-          ${position ? `
-          <tr>
-            <td align="center" style="padding-bottom:48px;">
-              <table cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;">
+                <!-- BODY BLANC -->
                 <tr>
-                  <td style="padding:32px 56px;text-align:center;">
-                    <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.35);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;">Votre position</div>
-                    <div style="font-size:56px;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,#818cf8,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#818cf8;">#${position}</div>
-                    <div style="margin-top:8px;font-size:13px;color:rgba(255,255,255,0.3);">sur la liste d'attente</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>` : ''}
+                  <td style="background:#ffffff;padding:48px 56px 52px;">
 
-          <!-- DIVIDER -->
-          <tr>
-            <td style="padding-bottom:40px;">
-              <div style="height:1px;background:rgba(255,255,255,0.06);"></div>
-            </td>
-          </tr>
+                    <p style="margin:0 0 28px;font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Ce qui vous attend</p>
 
-          <!-- CE QUI VOUS ATTEND -->
-          <tr>
-            <td style="padding-bottom:28px;">
-              <p style="margin:0;font-size:13px;font-weight:600;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Ce qui vous attend</p>
-            </td>
-          </tr>
-
-          <!-- FEATURE 1 -->
-          <tr>
-            <td style="padding-bottom:16px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;">
-                <tr>
-                  <td style="padding:20px 24px;">
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <!-- Feature 1 -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
                       <tr>
-                        <td width="40" valign="middle">
-                          <div style="width:36px;height:36px;border-radius:10px;background:rgba(129,140,248,0.12);text-align:center;line-height:36px;font-size:18px;">🧠</div>
-                        </td>
-                        <td style="padding-left:16px;vertical-align:middle;">
-                          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:3px;">Votre journée analysée en 10 secondes</div>
-                          <div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.5;">OneWork lit vos emails, réunions et Teams — to-do list générée automatiquement chaque matin.</div>
+                        <td style="padding:20px 24px;">
+                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                              <td width="44" valign="middle">
+                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#e0e7ff);text-align:center;line-height:40px;font-size:20px;">🧠</div>
+                              </td>
+                              <td style="padding-left:16px;">
+                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Votre journée analysée en 10 secondes</div>
+                                <div style="font-size:13px;color:#64748b;line-height:1.55;">OneWork lit vos emails, réunions et Teams — to-do list prioritisée générée chaque matin.</div>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
 
-          <!-- FEATURE 2 -->
-          <tr>
-            <td style="padding-bottom:16px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;">
-                <tr>
-                  <td style="padding:20px 24px;">
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <!-- Feature 2 -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
                       <tr>
-                        <td width="40" valign="middle">
-                          <div style="width:36px;height:36px;border-radius:10px;background:rgba(34,211,238,0.10);text-align:center;line-height:36px;font-size:18px;">⚡</div>
-                        </td>
-                        <td style="padding-left:16px;vertical-align:middle;">
-                          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:3px;">Un widget discret, toujours là</div>
-                          <div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.5;">Survolez pour ouvrir. Bougez la souris, il disparaît. Jamais gênant, toujours utile.</div>
+                        <td style="padding:20px 24px;">
+                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                              <td width="44" valign="middle">
+                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#fdf4ff,#f3e8ff);text-align:center;line-height:40px;font-size:20px;">⚡</div>
+                              </td>
+                              <td style="padding-left:16px;">
+                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Widget discret, toujours accessible</div>
+                                <div style="font-size:13px;color:#64748b;line-height:1.55;">Survolez pour ouvrir — To-Do, réunions, agent IA. Bougez la souris, il disparaît.</div>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     </table>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
 
-          <!-- FEATURE 3 -->
-          <tr>
-            <td style="padding-bottom:48px;">
-              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;">
-                <tr>
-                  <td style="padding:20px 24px;">
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <!-- Feature 3 -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:40px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
                       <tr>
-                        <td width="40" valign="middle">
-                          <div style="width:36px;height:36px;border-radius:10px;background:rgba(74,222,128,0.10);text-align:center;line-height:36px;font-size:18px;">🔒</div>
-                        </td>
-                        <td style="padding-left:16px;vertical-align:middle;">
-                          <div style="font-size:15px;font-weight:600;color:#f1f5f9;margin-bottom:3px;">Vos données restent chez vous</div>
-                          <div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.5;">Architecture zero-trust. Rien ne transite par nos serveurs. Contrôle total.</div>
+                        <td style="padding:20px 24px;">
+                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                              <td width="44" valign="middle">
+                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);text-align:center;line-height:40px;font-size:20px;">🔒</div>
+                              </td>
+                              <td style="padding-left:16px;">
+                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Vos données restent chez vous</div>
+                                <div style="font-size:13px;color:#64748b;line-height:1.55;">Architecture zero-trust. Rien ne transite par nos serveurs. Contrôle total.</div>
+                              </td>
+                            </tr>
+                          </table>
                         </td>
                       </tr>
                     </table>
+
+                    <!-- CTA -->
+                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                      <tr>
+                        <td align="center">
+                          <a href="https://build-two-cyan.vercel.app" style="display:inline-block;background:#0f172a;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:16px 48px;border-radius:980px;letter-spacing:-0.2px;">
+                            Voir OneWork →
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+
                   </td>
                 </tr>
+
               </table>
-            </td>
-          </tr>
-
-          <!-- CTA -->
-          <tr>
-            <td align="center" style="padding-bottom:48px;">
-              <a href="https://build-two-cyan.vercel.app" style="display:inline-block;background:linear-gradient(135deg,#6366f1 0%,#22d3ee 100%);color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:15px 40px;border-radius:980px;letter-spacing:-0.1px;">
-                Voir OneWork →
-              </a>
-            </td>
-          </tr>
-
-          <!-- DIVIDER -->
-          <tr>
-            <td style="padding-bottom:28px;">
-              <div style="height:1px;background:rgba(255,255,255,0.06);"></div>
             </td>
           </tr>
 
           <!-- FOOTER -->
           <tr>
-            <td align="center">
-              <p style="margin:0 0 6px;font-size:12px;color:rgba(255,255,255,0.2);">
+            <td align="center" style="padding-top:32px;">
+              <p style="margin:0 0 6px;font-size:12px;color:#94a3b8;">
                 © 2026 OneWork · Conçu pour ceux qui n'ont pas de temps à perdre.
               </p>
-              <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.2);">
+              <p style="margin:0;font-size:12px;color:#94a3b8;">
                 Vous recevez cet email car vous avez rejoint la liste d'attente.<br>
-                <a href="https://build-two-cyan.vercel.app" style="color:#818cf8;text-decoration:none;">Visiter le site</a>
+                <a href="https://build-two-cyan.vercel.app" style="color:#6366f1;text-decoration:none;">Visiter le site</a>
                 &nbsp;·&nbsp;
-                <a href="mailto:onework.365@hotmail.com" style="color:#818cf8;text-decoration:none;">Nous contacter</a>
+                <a href="mailto:onework.365@hotmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
               </p>
             </td>
           </tr>
