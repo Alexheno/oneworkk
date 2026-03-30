@@ -172,7 +172,7 @@ async function sendWaitlistEmail(email, position) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                sender:      { name: 'OneWork', email: 'henoumontalexandre@gmail.com' },
+                sender:      { name: 'OneWork', email: 'onework.365@hotmail.com' },
                 to:          [{ email }],
                 subject:     'Vous êtes sur la liste ✦ OneWork',
                 htmlContent: buildWaitlistEmail({ position }),
