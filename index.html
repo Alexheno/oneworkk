@@ -1250,10 +1250,18 @@
       <div class="features-grid">
         <div class="feature-card reveal">
           <div class="feature-icon-wrap blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="#818cf8"/>
-              <path d="M2 17l10 5 10-5" stroke="#818cf8" stroke-width="2" fill="none" stroke-linecap="round"/>
-              <path d="M2 12l10 5 10-5" stroke="#22d3ee" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <defs>
+                <linearGradient id="ring-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#60a5fa"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+                <filter id="ring-glow">
+                  <feGaussianBlur stdDeviation="1.2" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <circle cx="11" cy="11" r="8" stroke="url(#ring-blue)" stroke-width="3.5" fill="none" filter="url(#ring-glow)"/>
             </svg>
           </div>
           <h3>Widget</h3>
