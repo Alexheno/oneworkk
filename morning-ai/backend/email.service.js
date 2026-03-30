@@ -48,24 +48,13 @@ function buildWaitlistEmail({ position }) {
                       <span style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:0.08em;text-transform:uppercase;">✦ Accès anticipé confirmé</span>
                     </div>
 
-                    <!-- Titre inspiré du site -->
-                    <h1 style="margin:0 0 6px;font-size:44px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1.1;">
+                    <!-- Titre — même style que le site, mot par mot -->
+                    <h1 style="margin:0 0 4px;font-size:46px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1.1;">
                       Vous êtes
                     </h1>
-                    <h1 style="margin:0 0 20px;font-size:44px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;background:linear-gradient(90deg,#6366f1,#a855f7,#ec4899,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#6366f1;">
-                      sur la liste.
+                    <h1 style="margin:0 0 0;font-size:46px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;">
+                      <span style="color:#6366f1;">sur </span><span style="color:#a855f7;">la </span><span style="color:#f97316;">liste.</span>
                     </h1>
-
-                    <p style="margin:0;font-size:16px;color:#64748b;line-height:1.7;max-width:440px;margin:0 auto;">
-                      OneWork analyse vos emails, réunions et Teams avec l'IA — et vous donne en quelques secondes vos priorités du jour.
-                    </p>
-
-                    ${position ? `
-                    <!-- Position -->
-                    <div style="margin-top:32px;display:inline-block;background:rgba(255,255,255,0.8);border:1px solid rgba(99,102,241,0.15);border-radius:16px;padding:16px 40px;backdrop-filter:blur(8px);">
-                      <div style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">Votre position</div>
-                      <div style="font-size:48px;font-weight:900;letter-spacing:-2px;background:linear-gradient(90deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:#6366f1;">#${position}</div>
-                    </div>` : ''}
 
                   </td>
                 </tr>
@@ -154,11 +143,9 @@ function buildWaitlistEmail({ position }) {
           <!-- FOOTER -->
           <tr>
             <td align="center" style="padding-top:32px;">
-              <p style="margin:0 0 6px;font-size:12px;color:#94a3b8;">
-                © 2026 OneWork · Conçu pour ceux qui n'ont pas de temps à perdre.
-              </p>
               <p style="margin:0;font-size:12px;color:#94a3b8;">
-                Vous recevez cet email car vous avez rejoint la liste d'attente.<br>
+                © 2026 OneWork
+                &nbsp;·&nbsp;
                 <a href="https://build-two-cyan.vercel.app" style="color:#6366f1;text-decoration:none;">Visiter le site</a>
                 &nbsp;·&nbsp;
                 <a href="mailto:onework.365@hotmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
