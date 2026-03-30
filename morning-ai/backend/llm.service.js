@@ -55,8 +55,8 @@ async function callLLM(messages, options = {}) {
                     headers: {
                         'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
                         'Content-Type':  'application/json',
-                        'HTTP-Referer':  'https://onework.app',
-                        'X-Title':       'OneWork AI Assistant',
+                        'HTTP-Referer':  'https://onework365.app',
+                        'X-Title':       'OneWork365 AI Assistant',
                     },
                     body:   JSON.stringify(reqBody),
                     signal: controller.signal,

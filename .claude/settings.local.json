@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm start:*)",
+      "Bash(node -e \"console.log\\(require\\(''''./node_modules/electron''''\\)\\)\")",
+      "Bash(node_modules/electron/dist/electron.exe --version)",
+      "Bash(node_modules/electron/dist/electron.exe --app-version)",
+      "Bash(tasklist)",
+      "Bash(start launch.bat)"
+    ]
+  }
+}

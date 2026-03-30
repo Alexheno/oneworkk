@@ -3,24 +3,24 @@
   "manifestVersion": "1.16",
   "version": "1.0.0",
   "id": "a1b2c3d4-e5f6-7890-abcd-onework12345",
-  "packageName": "com.onework.app",
+  "packageName": "com.onework365.app",
 
   "developer": {
-    "name": "OneWork",
-    "websiteUrl": "https://onework.app",
-    "privacyUrl": "https://onework.app/privacy",
-    "termsOfUseUrl": "https://onework.app/terms",
+    "name": "OneWork365",
+    "websiteUrl": "https://onework365.app",
+    "privacyUrl": "https://onework365.app/privacy",
+    "termsOfUseUrl": "https://onework365.app/terms",
     "mpnId": ""
   },
 
   "name": {
-    "short": "OneWork",
-    "full": "OneWork — Assistant IA Microsoft 365"
+    "short": "OneWork365",
+    "full": "OneWork365 — Assistant IA Microsoft 365"
   },
 
   "description": {
     "short": "Votre chief of staff IA connecté à Microsoft 365",
-    "full": "OneWork analyse vos emails, réunions et tâches Microsoft 365 pour générer un brief intelligent chaque matin. L'agent conversationnel Alex répond à vos questions en langage naturel et exécute des actions directement (envoyer un email, créer une tâche, planifier). Disponible en tant qu'application de bureau Windows avec un widget discret toujours accessible."
+    "full": "OneWork365 analyse vos emails, réunions et tâches Microsoft 365 pour générer un brief intelligent chaque matin. L'agent conversationnel OneWork365 répond à vos questions en langage naturel et exécute des actions directement (envoyer un email, créer une tâche, planifier). Disponible en tant qu'application de bureau Windows avec un widget discret toujours accessible."
   },
 
   "icons": {
@@ -34,8 +34,8 @@
     {
       "entityId": "overview",
       "name": "Mon Brief",
-      "contentUrl": "https://onework.app/teams-tab",
-      "websiteUrl": "https://onework.app",
+      "contentUrl": "https://onework365.app/teams-tab",
+      "websiteUrl": "https://onework365.app",
       "scopes": ["personal"]
     }
   ],
@@ -48,13 +48,13 @@
   "devicePermissions": [],
 
   "validDomains": [
-    "onework.app",
+    "onework365.app",
     "oneworkk-production.up.railway.app"
   ],
 
   "webApplicationInfo": {
     "id": "6ba5635c-5459-4c73-a599-04f669c610ad",
-    "resource": "api://onework.app/6ba5635c-5459-4c73-a599-04f669c610ad"
+    "resource": "api://onework365.app/6ba5635c-5459-4c73-a599-04f669c610ad"
   },
 
   "authorization": {

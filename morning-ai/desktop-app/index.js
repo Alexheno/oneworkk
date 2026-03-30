@@ -17,7 +17,7 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let mainWindow;    // Le widget
-let overviewWindow; // L'interface principale OneWork
+let overviewWindow; // L'interface principale OneWork365
 let tray = null;
 
 // ─── Morning Brief State ──────────────────────────────────
@@ -38,7 +38,7 @@ function createOverviewWindow() {
   overviewWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    title: 'OneWork - Overview',
+    title: 'OneWork365 - Overview',
     frame: true,
     autoHideMenuBar: true,
     show: false,
@@ -51,7 +51,7 @@ function createOverviewWindow() {
   });
 
   overviewWindow.removeMenu();
-  overviewWindow.loadFile('onework.html');
+  overviewWindow.loadFile('onework365.html');
   overviewWindow.once('ready-to-show', () => overviewWindow.show());
   overviewWindow.on('closed', () => { overviewWindow = null; });
 }
@@ -138,6 +138,18 @@ function createWindow() {
   ipcMain.on('open-url', (_event, url) => shell.openExternal(url));
 }
 
+// ─── Screen-time tracker ──────────────────────────────────────────────────────
+const tracker = require('./screen-tracker');
+
+ipcMain.handle('get-screen-time', () => tracker.getScreenTimeData());
+
+// Push live updates to overview window every 60s
+setInterval(() => {
+  if (overviewWindow && !overviewWindow.isDestroyed()) {
+    overviewWindow.webContents.send('screen-time-update', tracker.getScreenTimeData());
+  }
+}, 60000);
+
 // ─── System Tray ──────────────────────────────────────────
 function createTray() {
   const iconPath = path.join(__dirname, 'assets', 'icon.ico');
@@ -150,7 +162,7 @@ function createTray() {
   }
 
   tray = new Tray(trayImage);
-  tray.setToolTip('OneWork');
+  tray.setToolTip('OneWork365');
   updateTrayMenu();
 
   tray.on('double-click', () => {
@@ -163,7 +175,7 @@ function updateTrayMenu() {
   if (!tray) return;
   const menu = Menu.buildFromTemplate([
     {
-      label: 'Ouvrir OneWork',
+      label: 'Ouvrir OneWork365',
       click: () => { createOverviewWindow(); if (overviewWindow) overviewWindow.focus(); }
     },
     {
@@ -176,7 +188,7 @@ function updateTrayMenu() {
       enabled: false
     },
     { type: 'separator' },
-    { label: 'Quitter OneWork', click: () => app.exit(0) }
+    { label: 'Quitter OneWork365', click: () => app.exit(0) }
   ]);
   tray.setContextMenu(menu);
 }
@@ -229,12 +241,69 @@ function startMorningBriefScheduler() {
   }, 60000);
 }
 
+// ─── Auto-updater ─────────────────────────────────────────
+const { autoUpdater } = require('electron-updater');
+
+autoUpdater.autoDownload = true;         // Télécharge silencieusement
+autoUpdater.autoInstallOnAppQuit = true; // Installe quand l'app se ferme
+
+autoUpdater.setFeedURL({
+  provider: 'generic',
+  url: `${BACKEND_URL}/update`,
+});
+
+autoUpdater.on('update-downloaded', () => {
+  // Notifie via la tray et le dashboard — sans interrompre l'utilisateur
+  updateTrayMenuWithUpdate();
+  if (overviewWindow && !overviewWindow.isDestroyed()) {
+    overviewWindow.webContents.send('update-ready');
+  }
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('update-ready');
+  }
+});
+
+autoUpdater.on('error', (err) => {
+  // Silencieux en prod — pas d'interruption si la mise à jour échoue
+  console.log('[UPDATE] Erreur:', err.message);
+});
+
+function updateTrayMenuWithUpdate() {
+  if (!tray) return;
+  const menu = Menu.buildFromTemplate([
+    {
+      label: '⬆ Mise à jour disponible — Redémarrer',
+      click: () => autoUpdater.quitAndInstall(false, true)
+    },
+    { type: 'separator' },
+    {
+      label: 'Ouvrir OneWork365',
+      click: () => { createOverviewWindow(); if (overviewWindow) overviewWindow.focus(); }
+    },
+    { type: 'separator' },
+    { label: 'Quitter', click: () => { tray.destroy(); app.exit(0); } }
+  ]);
+  tray.setContextMenu(menu);
+  tray.setToolTip('OneWork365 — Mise à jour disponible');
+}
+
+// IPC pour que le renderer puisse déclencher le redémarrage
+ipcMain.on('install-update', () => autoUpdater.quitAndInstall(false, true));
+
+function checkForUpdates() {
+  if (app.isPackaged) {  // Seulement en prod, pas en dev
+    setTimeout(() => autoUpdater.checkForUpdates().catch(() => {}), 10000); // 10s après le démarrage
+  }
+}
+
 // ─── App Init ─────────────────────────────────────────────
 app.whenReady().then(() => {
   createOverviewWindow();
   createWindow();
   createTray();
   startMorningBriefScheduler();
+  tracker.start();
+  checkForUpdates();
 });
 
 app.on('activate', () => {

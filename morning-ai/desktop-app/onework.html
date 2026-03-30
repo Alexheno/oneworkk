@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneWork</title>
-  <link rel="stylesheet" href="onework-style.css">
+  <title>OneWork365</title>
+  <link rel="stylesheet" href="onework365-style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -16,10 +16,10 @@
   <div class="ob-card">
     <div class="ob-logo">
       <div class="logo-pill"><img src="logo.svg" alt="" draggable="false" style="width:100%;height:100%;object-fit:cover;border-radius:50%"></div>
-      <span>OneWork</span>
+      <span>OneWork365</span>
     </div>
     <h2 class="ob-title">Votre journée,<br>analysée en 10 secondes.</h2>
-    <p class="ob-sub">Connectez Microsoft 365 — OneWork lit tout et organise votre travail à votre place.</p>
+    <p class="ob-sub">Connectez Microsoft 365 — OneWork365 lit tout et organise votre travail à votre place.</p>
     <p class="ob-perm-label">Autorisations demandées</p>
     <div class="ob-perms">
       <label class="perm-row"><span class="perm-left"><span class="perm-dot" style="background:#0078D4"></span>Outlook & Mail</span><input type="checkbox" checked><span class="tog"><span class="tog-thumb"></span></span></label>
@@ -47,7 +47,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       <div>
         <strong>Administrateur IT ?</strong>
-        <span>Autorisez OneWork pour toute votre organisation en un clic.</span>
+        <span>Autorisez OneWork365 pour toute votre organisation en un clic.</span>
       </div>
       <button id="btn-admin-consent">Autoriser →</button>
     </div>
@@ -62,7 +62,7 @@
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="sl-mark">
-        <img src="logo.svg" alt="OneWork" draggable="false">
+        <img src="logo.svg" alt="OneWork365" draggable="false">
       </div>
     </div>
 
@@ -80,6 +80,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
         <span class="snav-tooltip">Plan du jour</span>
       </button>
+      <button class="snav-btn" data-view="focus" title="Focus & Productivité">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span class="snav-tooltip">Focus</span>
+      </button>
     </nav>
 
     <div class="sidebar-bottom">
@@ -92,7 +96,7 @@
         <div class="pm-user">
           <div class="pm-avatar" id="pm-avatar"></div>
           <div>
-            <div class="pm-name" id="pm-name">OneWork</div>
+            <div class="pm-name" id="pm-name">OneWork365</div>
             <div class="pm-email" id="pm-email"></div>
           </div>
         </div>
@@ -163,6 +167,9 @@
         <p class="recap-text" id="recap-text">Connexion à Microsoft 365...</p>
       </div>
 
+      <!-- Main body: Bento -->
+      <div class="main-body">
+
       <!-- Bento 2×2 -->
       <div class="bento">
 
@@ -216,7 +223,8 @@
           </div>
         </div>
 
-      </div>
+      </div><!-- /bento -->
+      </div><!-- /main-body -->
 
       <!-- ── App Chat Bar ── -->
       <div class="app-chat-bar" id="app-chat-bar">
@@ -233,7 +241,7 @@
             <img src="logo.svg" alt="" draggable="false">
             <div class="acb-orb-inner"></div>
           </div>
-          <input type="text" class="acb-input" id="acb-input" placeholder="Demandez à Alex... (ex: résume mes emails, crée une tâche)">
+          <input type="text" class="acb-input" id="acb-input" placeholder="Demandez à OneWork365... (ex: résume mes emails, crée une tâche)">
           <button class="acb-send" id="acb-send">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
@@ -275,6 +283,93 @@
       </div>
     </div>
 
+    <!-- ── View: Focus & Productivité ── -->
+    <div class="view" id="view-focus">
+      <header class="topbar">
+        <div>
+          <h1 class="topbar-title">Focus &amp; Productivité</h1>
+          <p class="topbar-date" id="focus-date">Tracking actif aujourd'hui</p>
+        </div>
+      </header>
+
+      <!-- Hero: ring (left) + 4 stats (right) -->
+      <div class="focus-hero">
+        <div class="focus-score-card">
+          <div class="focus-ring-wrap">
+            <svg class="focus-ring-svg" viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="focusGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3B9EFF"/>
+                  <stop offset="100%" stop-color="#7C3AED"/>
+                </linearGradient>
+              </defs>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="var(--surface3)" stroke-width="9"/>
+              <circle id="focus-ring-arc" cx="60" cy="60" r="48" fill="none"
+                stroke="#3B9EFF" stroke-width="9" stroke-linecap="round"
+                stroke-dasharray="301.6" stroke-dashoffset="301.6"
+                transform="rotate(-90 60 60)"
+                style="transition:stroke-dashoffset 1.2s cubic-bezier(0.16,1,0.3,1)"/>
+            </svg>
+            <div class="focus-ring-inner">
+              <span class="focus-score-pct" id="focus-score-pct">—</span>
+              <span class="focus-score-lbl">score</span>
+            </div>
+          </div>
+          <div class="focus-score-meta">
+            <p class="focus-score-sub" id="focus-score-sub">Les données s'accumulent au fil de la journée</p>
+          </div>
+        </div>
+        <div class="focus-stats">
+          <div class="focus-stat">
+            <div class="fstat-icon" style="color:#3B9EFF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <div class="fstat-val" id="fstat-work-val">—</div>
+            <div class="fstat-lbl">Travail actif</div>
+          </div>
+          <div class="focus-stat">
+            <div class="fstat-icon" style="color:#6264A7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="fstat-val" id="fstat-meetings-val">—</div>
+            <div class="fstat-lbl">Réunions</div>
+          </div>
+          <div class="focus-stat">
+            <div class="fstat-icon" style="color:#0078D4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg></div>
+            <div class="fstat-val" id="fstat-comms-val">—</div>
+            <div class="fstat-lbl">Communication</div>
+          </div>
+          <div class="focus-stat">
+            <div class="fstat-icon" style="color:#FF6B2B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+            <div class="fstat-val" id="fstat-browser-val">—</div>
+            <div class="fstat-lbl">Navigateur</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bar chart -->
+      <div class="focus-chart-card">
+        <div class="focus-chart-head">
+          <span class="focus-chart-title">Screen time par heure</span>
+          <div class="focus-legend">
+            <span><span class="legend-dot" style="background:#0078D4"></span>Comms</span>
+            <span><span class="legend-dot" style="background:#6264A7"></span>Réunions</span>
+            <span><span class="legend-dot" style="background:#217346"></span>Docs</span>
+            <span><span class="legend-dot" style="background:#FF6B2B"></span>Surf</span>
+            <span><span class="legend-dot" style="background:#94a3b8"></span>Autre</span>
+          </div>
+        </div>
+        <div class="focus-chart" id="focus-chart">
+          <p class="focus-chart-empty">Les données s'accumulent au fil de la journée</p>
+        </div>
+      </div>
+
+      <!-- Apps ranking -->
+      <div class="focus-apps-card">
+        <div class="focus-apps-title">Applications utilisées</div>
+        <div class="focus-apps-grid" id="focus-apps-grid">
+          <p style="font-size:.78rem;color:var(--text2);font-style:italic;grid-column:1/-1">Aucune donnée pour l'instant</p>
+        </div>
+      </div>
+
+    </div>
+
   </main>
 </div>
 
@@ -302,6 +397,7 @@
       <textarea class="modal-textarea" id="modal-notes" placeholder="Notes libres..."></textarea>
     </div>
     <div class="modal-foot">
+      <button class="modal-btn-delete" id="modal-delete">Supprimer</button>
       <button class="modal-btn-cancel" id="modal-cancel">Annuler</button>
       <button class="modal-btn-save" id="modal-save">Enregistrer</button>
     </div>
@@ -346,6 +442,6 @@
   </div>
 </div>
 
-<script src="onework-renderer.js"></script>
+<script src="onework365-renderer.js"></script>
 </body>
 </html>

@@ -60,7 +60,7 @@ app.use((req, res, next) => {
 
 // CORS : restreint aux origines connues
 const ALLOWED_ORIGINS = [
-    'https://onework.app',
+    'https://onework365.app',
     'https://oneworkkfront.vercel.app',
     'https://oneworkk-production.up.railway.app',
     'http://localhost:3000',
@@ -225,7 +225,7 @@ app.get('/update/latest.yml', async (_req, res) => {
 app.get('/api/status', (_req, res) => {
     res.json({
         status:    'ok',
-        service:   'OneWork Backend',
+        service:   'OneWork365 Backend',
         version:   '2.0.0',
         timestamp: new Date().toISOString(),
     });
@@ -491,7 +491,7 @@ app.use((_req, res) => {
 
 // ─── Graceful Shutdown ────────────────────────────────────────────────────────
 const server = app.listen(PORT, () => {
-    console.log(`🚀 OneWork Backend v2 · port ${PORT}`);
+    console.log(`🚀 OneWork365 Backend v2 · port ${PORT}`);
     console.log(`   Rate limits: 120/min global · 10/5min analyze · 30/min chat`);
 });
 

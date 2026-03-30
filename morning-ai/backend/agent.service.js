@@ -4,9 +4,9 @@ require('dotenv').config();
 const { callLLM, parseJSON, MODELS } = require('./llm.service');
 
 // ─── System Prompt Agent ──────────────────────────────────────────────────────
-// Alex est un agent conversationnel précis, rapide, qui agit comme un vrai
+// OneWork365 est un agent conversationnel précis, rapide, qui agit comme un vrai
 // Chief of Staff. Il comprend l'intent, répond court, et exécute avec soin.
-const AGENT_SYSTEM = `Tu es Alex, le Chief of Staff IA de OneWork.
+const AGENT_SYSTEM = `Tu es OneWork365, le Chief of Staff IA intégré à l'application OneWork365.
 
 PERSONNALITÉ : Direct, précis, professionnel. Jamais robotique. Toujours utile.
 LANGUE : Français uniquement.
@@ -113,6 +113,34 @@ function formatM365Context(m365Context) {
         if (rawEmails.length) {
             lines.push(`\nIDs EMAILS (pour actions) :`);
             rawEmails.forEach(e => lines.push(`  • ${e.sender} "${e.subject}" → id: ${e.id}`));
+        }
+    }
+
+    // Screen-time local (tracker PowerShell)
+    const st = m365Context.screenTime;
+    if (st) {
+        lines.push(`\nSCREEN-TIME AUJOURD'HUI (données locales, tracking auto) :`);
+        lines.push(`  Score productivité : ${st.score ?? '?'}/100`);
+        if (st.totals) {
+            const sorted = Object.entries(st.totals)
+                .sort(([,a],[,b]) => b - a)
+                .slice(0, 8);
+            sorted.forEach(([app, mins]) => {
+                const h = Math.floor(mins / 60);
+                const m = mins % 60;
+                const dur = h > 0 ? `${h}h${m.toString().padStart(2,'0')}` : `${m}min`;
+                lines.push(`  • ${app} : ${dur}`);
+            });
+        }
+        if (st.apps && Object.keys(st.apps).length) {
+            const cats = {};
+            Object.values(st.apps).forEach(a => {
+                if (!cats[a.category]) cats[a.category] = 0;
+                cats[a.category] += a.minutes || 0;
+            });
+            const catStr = Object.entries(cats).sort(([,a],[,b]) => b-a)
+                .map(([c, m]) => `${c}: ${m}min`).join(', ');
+            lines.push(`  Catégories : ${catStr}`);
         }
     }
 
@@ -270,7 +298,7 @@ async function generateMorningScript(m365Data) {
 
     const dataContext = JSON.stringify({ name, date, emails: topEmails, meetings: todayMeetings, tasks: topTasks });
 
-    const prompt = `Tu es Alex, l'assistant vocal de OneWork. Génère un brief matinal à lire à voix haute par un TTS.
+    const prompt = `Tu es OneWork365, l'assistant vocal de l'application OneWork365. Génère un brief matinal à lire à voix haute par un TTS.
 
 CONTRAINTES STRICTES :
 • Maximum 120 mots (TTS limite)

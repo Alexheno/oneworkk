@@ -46,7 +46,7 @@ async function getRecentEmails(accessToken, userEmail) {
         const client = getClient(accessToken);
         const res = await withRetry(
             () => client.api('/me/messages')
-                .select('id,sender,subject,bodyPreview,isRead,receivedDateTime,importance,toRecipients,ccRecipients,conversationId')
+                .select('id,sender,subject,bodyPreview,isRead,receivedDateTime,importance,toRecipients,ccRecipients,conversationId,webLink')
                 .top(40)
                 .orderby('receivedDateTime DESC')
                 .get(),
@@ -74,6 +74,7 @@ async function getRecentEmails(accessToken, userEmail) {
                 importance:     msg.importance,
                 receivedAt:     msg.receivedDateTime,
                 isCc,
+                webLink:        msg.webLink || '',
             };
         });
     } catch (err) {
@@ -95,7 +96,7 @@ async function getTodayMeetings(accessToken) {
 
         const res = await withRetry(
             () => client.api(`/me/calendarview?startDateTime=${start}&endDateTime=${end}`)
-                .select('id,subject,start,end,isOnlineMeeting,organizer,bodyPreview,attendees,location')
+                .select('id,subject,start,end,isOnlineMeeting,onlineMeetingUrl,organizer,bodyPreview,attendees,location')
                 .orderby('start/dateTime')
                 .top(20)
                 .get(),
@@ -112,16 +113,17 @@ async function getTodayMeetings(accessToken) {
                 : (endDt.getTime() < nowMs ? 'done' : 'ongoing');
 
             return {
-                id:            e.id,
-                title:         e.subject || '(sans titre)',
-                start:         startDt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-                end:           endDt.toLocaleTimeString('fr-FR',   { hour: '2-digit', minute: '2-digit' }),
-                time:          startDt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-                isOnline:      e.isOnlineMeeting || false,
-                organizer:     e.organizer?.emailAddress?.name  || '',
-                description:   (e.bodyPreview || '').slice(0, 200),
-                attendeeCount: (e.attendees || []).length,
-                location:      e.location?.displayName || '',
+                id:               e.id,
+                title:            e.subject || '(sans titre)',
+                start:            startDt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                end:              endDt.toLocaleTimeString('fr-FR',   { hour: '2-digit', minute: '2-digit' }),
+                time:             startDt.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                isOnline:         e.isOnlineMeeting || false,
+                onlineMeetingUrl: e.onlineMeetingUrl || '',
+                organizer:        e.organizer?.emailAddress?.name  || '',
+                description:      (e.bodyPreview || '').slice(0, 200),
+                attendeeCount:    (e.attendees || []).length,
+                location:         e.location?.displayName || '',
                 status,
             };
         });
@@ -184,6 +186,7 @@ async function getTeamsMessages(accessToken) {
                 text:     (c.lastMessagePreview.body?.content || '').slice(0, 300),
                 chatType: c.chatType || 'oneOnOne',
                 chatId:   c.id,
+                webUrl:   `https://teams.microsoft.com/l/chat/${encodeURIComponent(c.id)}/0`,
             }));
     } catch (err) {
         console.warn('[Graph:Teams]', err.message);

@@ -54,7 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.snav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
   }
   document.querySelectorAll('.snav-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchView(btn.dataset.view));
+    btn.addEventListener('click', () => {
+      switchView(btn.dataset.view);
+      if (btn.dataset.view === 'focus') loadFocusView();
+    });
   });
 
   // ─── Profile menu ──────────────────────────────────────
@@ -70,6 +73,22 @@ document.addEventListener('DOMContentLoaded', () => {
     sidebarUser.classList.remove('open');
   });
   profileMenu.addEventListener('click', e => e.stopPropagation());
+
+  // ─── Deep links (emails + Teams) ───────────────────────
+  document.addEventListener('click', e => {
+    const row = e.target.closest('.msg-row[data-link]');
+    if (!row) return;
+    const url = row.dataset.link;
+    if (url) window.overviewAPI.openUrl(url);
+  });
+
+  // ─── Meeting join links ─────────────────────────────────
+  document.addEventListener('click', e => {
+    const row = e.target.closest('.meeting-row[data-join]');
+    if (!row) return;
+    const url = row.dataset.join;
+    if (url) window.overviewAPI.openUrl(url);
+  });
 
   // ─── Alarm time (morning brief) ────────────────────────
   const alarmInput = $('alarm-time-input');
@@ -88,21 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const CLIENT_ID = '6ba5635c-5459-4c73-a599-04f669c610ad';
   $('btn-privacy').addEventListener('click', (e) => {
     e.preventDefault();
-    openUrl('https://onework.app/privacy');
+    openUrl('https://onework365.app/privacy');
   });
   $('btn-terms').addEventListener('click', (e) => {
     e.preventDefault();
-    openUrl('https://onework.app/terms');
+    openUrl('https://onework365.app/terms');
   });
   $('btn-admin-consent').addEventListener('click', () => {
-    const consentUrl = `https://login.microsoftonline.com/organizations/adminconsent?client_id=${CLIENT_ID}&redirect_uri=https://onework.app/admin-consent-success`;
+    const consentUrl = `https://login.microsoftonline.com/organizations/adminconsent?client_id=${CLIENT_ID}&redirect_uri=https://onework365.app/admin-consent-success`;
     openUrl(consentUrl);
   });
 
-  $('btn-upgrade').addEventListener('click', () => openUrl('https://onework.app/pricing'));
+  $('btn-upgrade').addEventListener('click', () => openUrl('https://onework365.app/pricing'));
   $('btn-personalisation').addEventListener('click', () => showNotif('Personnalisation disponible dans la prochaine version.'));
   $('btn-settings').addEventListener('click', () => showNotif('Paramètres disponibles dans la prochaine version.'));
-  $('btn-help').addEventListener('click', () => openUrl('https://onework.app/help'));
+  $('btn-help').addEventListener('click', () => openUrl('https://onework365.app/help'));
   $('btn-logout').addEventListener('click', logout);
 
   // ─── Theme toggle ───────────────────────────────────────
@@ -174,6 +193,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal() { overlay.classList.remove('open'); editingProjectIdx = null; }
   $('modal-close').addEventListener('click', closeModal);
   $('modal-cancel').addEventListener('click', closeModal);
+  $('modal-delete').addEventListener('click', () => {
+    if (editingProjectIdx === null) return;
+    allProjects.splice(editingProjectIdx, 1);
+    saveProjects();
+    renderProjects();
+    closeModal();
+  });
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
   $('modal-save').addEventListener('click', () => {
     if (editingProjectIdx === null) return;
@@ -246,8 +272,18 @@ document.addEventListener('DOMContentLoaded', () => {
           currentTime, currentDay, timeOfDay, habits
         })
       });
-      const result = await resp.json();
-      if (!result.success || !result.data) throw new Error(result.error || 'Réponse invalide');
+
+      // Read raw text first to avoid silent parse failures
+      const rawText = await resp.text();
+      console.log(`[ANALYSE] status=${resp.status} body=${rawText.slice(0, 300)}`);
+
+      let result;
+      try { result = JSON.parse(rawText); }
+      catch { throw new Error(`Réponse non-JSON (${resp.status}) : ${rawText.slice(0, 120)}`); }
+
+      if (!resp.ok || !result.success || !result.data) {
+        throw new Error(result.error || `Erreur serveur (${resp.status})`);
+      }
 
       showDashboard(result.data, account, result.rawCounts, result.rawData);
       setStatusBadge('done', 'Analyse OK');
@@ -257,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('[ANALYSE]', err);
       setBtnState('idle');
       setStatusBadge('idle', 'Erreur');
-      showError('Erreur analyse : ' + err.message);
+      showError(err.message);
     }
   }
 
@@ -279,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('user-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('su-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('pm-avatar').style.backgroundImage = `url('${avatarUrl}')`;
-    $('pm-name').textContent = acc.name || 'OneWork';
+    $('pm-name').textContent = acc.name || 'OneWork365';
     $('pm-email').textContent = acc.username || '';
 
     // Recap
@@ -299,6 +335,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Widget
     window.overviewAPI?.updateWidget?.({ success: true, data: ai, token, rawCounts, rawData, userEmail: account?.username || '' });
+
+    // Pre-populate My Day if data already exists
+    maybePreloadMyDay();
   }
 
   // ─── Fill emails ───────────────────────────────────────
@@ -308,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $('email-direct').innerHTML = direct.length
       ? direct.slice(0, 6).map(m => `
-          <div class="msg-row fade-in">
+          <div class="msg-row fade-in" data-link="${esc(m.webLink || '')}">
             <div class="msg-sender">${esc(m.sender)}</div>
             <div class="msg-body">${esc(m.summary || m.subject)}</div>
           </div>`).join('')
@@ -316,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $('email-cc').innerHTML = cc.length
       ? cc.slice(0, 5).map(m => `
-          <div class="msg-row fade-in" style="border-left-color:var(--text2)">
+          <div class="msg-row fade-in" style="border-left-color:var(--text2)" data-link="${esc(m.webLink || '')}">
             <div class="msg-sender">${esc(m.sender)}</div>
             <div class="msg-body">${esc(m.summary || m.subject)}</div>
           </div>`).join('')
@@ -332,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $('teams-list').innerHTML = msgs.length
       ? msgs.slice(0, 5).map(m => `
-          <div class="msg-row teams fade-in">
+          <div class="msg-row teams fade-in" data-link="${esc(m.webUrl || '')}">
             <div class="msg-sender">${esc(m.sender)}</div>
             <div class="msg-body">${esc(m.text || m.summary)}</div>
           </div>`).join('')
@@ -343,15 +382,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function fillMeetings(ai) {
     const meetings = ai.todayMeetings || [];
     $('meetings-list').innerHTML = meetings.length
-      ? meetings.slice(0, 6).map(m => `
-          <div class="meeting-row fade-in">
+      ? meetings.slice(0, 6).map(m => {
+          const joinUrl = m.joinUrl || m.onlineMeetingUrl || '';
+          const canJoin = m.isOnline && joinUrl;
+          return `
+          <div class="meeting-row fade-in${canJoin ? ' has-join' : ''}"${canJoin ? ` data-join="${esc(joinUrl)}"` : ''}>
             <span class="meeting-time">${esc(m.time)}</span>
-            <div class="meeting-dot"></div>
+            <div class="meeting-dot ${m.status || ''}"></div>
             <div class="meeting-info">
               <div class="meeting-title">${esc(m.title)}</div>
               ${m.context ? `<div class="meeting-sub">${esc(m.context)}</div>` : ''}
             </div>
-          </div>`).join('')
+            ${canJoin ? `<button class="meeting-join-btn" onclick="event.stopPropagation();window.overviewAPI.openUrl('${esc(joinUrl)}')">Rejoindre</button>` : ''}
+          </div>`;
+        }).join('')
       : '<p style="font-size:.8rem;color:var(--text2);padding:6px 0">Aucune réunion aujourd\'hui.</p>';
   }
 
@@ -584,6 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        accessToken: token,
         message: msg,
         context: { ...ctx, currentTime, currentDay, timeOfDay, userEmail: account?.username || '' }
       })
@@ -603,6 +648,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // Handle confirmation (action requiring confirm)
       if (data.needsConfirmation && data.confirmAction) {
         showChatConfirm(data.confirmAction, data.confirmLabel || 'Confirmer cette action ?');
+      }
+
+      // Populate My Day on recap requests
+      if (/recap|r[eé]sum[eé]|journ[eé]e|bilan|qu.est.ce que j.ai/i.test(msg)) {
+        loadAndShowMyDay();
       }
     })
     .catch(err => {
@@ -649,6 +699,266 @@ document.addEventListener('DOMContentLoaded', () => {
   $('acb-resp-close').addEventListener('click', () => {
     const box = $('acb-response');
     if (box) box.style.display = 'none';
+  });
+
+  // ─── My Day panel ──────────────────────────────────────
+  const MDAY_CATS = [
+    { key: 'communication', label: 'Comms',    color: '#0078D4' },
+    { key: 'meetings',      label: 'Réunions', color: '#6264A7' },
+    { key: 'documents',     label: 'Docs',     color: '#217346' },
+    { key: 'browser',       label: 'Surf',     color: '#FF6B2B' },
+    { key: 'other',         label: 'Autre',    color: '#94a3b8' },
+  ];
+
+  function fmtMinShort(m) {
+    if (!m || m < 1) return null;
+    if (m < 60) return `${m}min`;
+    return `${Math.floor(m/60)}h${m%60 > 0 ? String(m%60).padStart(2,'0') : ''}`;
+  }
+
+  function renderMyDay(data) {
+    const { totals, score, apps } = data;
+    const empty = $('mday-empty');
+    const content = $('mday-data');
+    if (!apps || apps.length === 0) {
+      if (empty) empty.style.display = 'flex';
+      if (content) content.style.display = 'none';
+      return;
+    }
+    if (empty) empty.style.display = 'none';
+    if (content) content.style.display = 'block';
+
+    // Live dot
+    const dot = $('mday-live-dot');
+    if (dot) dot.style.display = '';
+
+    // Score ring (r=24, circ=150.8)
+    const pct = score !== null && score !== undefined ? score : 0;
+    const offset = 150.8 * (1 - pct / 100);
+    const col = pct >= 90 ? '#22C55E' : pct >= 75 ? '#3B9EFF' : pct >= 50 ? '#F59E0B' : '#EF4444';
+    const arc = $('mday-ring-arc');
+    const pctEl = $('mday-ring-pct');
+    if (arc) { arc.style.stroke = col; setTimeout(() => { arc.style.strokeDashoffset = offset; }, 80); }
+    if (pctEl) { pctEl.textContent = score !== null ? `${pct}%` : '—'; pctEl.style.color = col; }
+
+    // Active time
+    const workMins = (totals.communication||0) + (totals.documents||0) + (totals.meetings||0);
+    const totalMins = Object.values(totals).reduce((a,b) => a+b, 0);
+    const atEl = $('mday-active-time');
+    const subEl = $('mday-score-sub');
+    if (atEl) atEl.textContent = fmtMinShort(workMins) || '—';
+    if (subEl) subEl.textContent = totalMins > 0 ? `sur ${fmtMinShort(totalMins)} au total` : '';
+
+    // Category pills
+    const catsEl = $('mday-cats');
+    if (catsEl) {
+      catsEl.innerHTML = MDAY_CATS
+        .filter(c => totals[c.key] > 0)
+        .map(c => `<span class="mday-cat-pill" style="--cat-color:${c.color}">
+          <span class="mday-cat-dot" style="background:${c.color}"></span>
+          ${c.label} · ${fmtMinShort(totals[c.key])}
+        </span>`).join('');
+    }
+
+    // Apps list
+    const appsEl = $('mday-apps');
+    if (appsEl && apps.length > 0) {
+      const maxMins = apps[0].minutes;
+      appsEl.innerHTML = apps.slice(0, 12).map(a => `
+        <div class="mday-app-row">
+          <span class="mday-app-dot" style="background:${a.color}"></span>
+          <span class="mday-app-name">${a.name}</span>
+          <span class="mday-app-time">${fmtMinShort(a.minutes)}</span>
+          <div class="mday-app-bar-bg">
+            <div class="mday-app-bar" data-w="${Math.round((a.minutes/maxMins)*100)}"
+              style="width:0%;background:${a.color}"></div>
+          </div>
+        </div>`).join('');
+      // Animate bars
+      requestAnimationFrame(() => {
+        appsEl.querySelectorAll('.mday-app-bar').forEach((bar, i) => {
+          bar.style.transition = `width 0.5s cubic-bezier(0.16,1,0.3,1) ${i*35}ms`;
+          bar.style.width = bar.dataset.w + '%';
+        });
+      });
+    }
+  }
+
+  async function loadAndShowMyDay() {
+    try {
+      const data = await window.overviewAPI.getScreenTime();
+      renderMyDay(data);
+    } catch(e) { console.error('[MyDay]', e); }
+  }
+
+  // Auto-populate on dashboard if data exists
+  async function maybePreloadMyDay() {
+    try {
+      const data = await window.overviewAPI.getScreenTime();
+      if (data.apps && data.apps.length > 0) renderMyDay(data);
+    } catch {}
+  }
+
+  // Live refresh from main process
+  window.overviewAPI.onScreenTimeUpdate?.(data => renderMyDay(data));
+
+  // ─── Focus & Productivité view ─────────────────────────
+  const FOCUS_CATS = [
+    { key: 'communication', color: '#0078D4' },
+    { key: 'meetings',      color: '#6264A7' },
+    { key: 'documents',     color: '#217346' },
+    { key: 'browser',       color: '#FF6B2B' },
+    { key: 'other',         color: '#94a3b8' },
+  ];
+
+  function fmtMin(m) {
+    if (!m || m < 1) return '—';
+    if (m < 60) return `${m}min`;
+    return `${Math.floor(m / 60)}h${String(m % 60).padStart(2, '0')}`;
+  }
+
+  function renderFocusChart(hourly) {
+    const container = $('focus-chart');
+    const hasData = hourly.some(h => FOCUS_CATS.reduce((s, c) => s + (h[c.key] || 0), 0) > 0);
+
+    if (!hasData) {
+      container.innerHTML = '<p class="focus-chart-empty">Les données s\'accumulent au fil de la journée</p>';
+      return;
+    }
+
+    const maxTotal = Math.max(...hourly.map(h => FOCUS_CATS.reduce((s, c) => s + (h[c.key] || 0), 0)), 1);
+    const BAR_MAX  = 110; // px
+    const nowH     = new Date().getHours();
+
+    const cols = hourly.map(h => {
+      const total = FOCUS_CATS.reduce((s, c) => s + (h[c.key] || 0), 0);
+      const barH  = Math.max(total > 0 ? Math.round((total / maxTotal) * BAR_MAX) : 0, total > 0 ? 3 : 0);
+
+      const segs = total > 0
+        ? FOCUS_CATS.map(c => {
+            if (!h[c.key]) return '';
+            const sh = Math.max(Math.round((h[c.key] / total) * barH), 1);
+            return `<div class="fc-seg" style="height:${sh}px;background:${c.color}" title="${c.key}: ${h[c.key]}min"></div>`;
+          }).join('')
+        : '';
+
+      const isCurrent = h.hour === nowH;
+      return `
+        <div class="fc-col${isCurrent ? ' fc-col-now' : ''}">
+          <div class="fc-bar-area">
+            <div class="fc-bar" data-h="${barH}">${segs}</div>
+          </div>
+          <div class="fc-label">${h.hour}h</div>
+        </div>`;
+    }).join('');
+
+    container.innerHTML = `<div class="fc-bars">${cols}</div>`;
+
+    // Animate bars upward
+    const bars = container.querySelectorAll('.fc-bar');
+    bars.forEach(bar => { bar.style.height = '0'; });
+    requestAnimationFrame(() => {
+      bars.forEach((bar, i) => {
+        bar.style.transition = `height 0.55s cubic-bezier(0.16,1,0.3,1) ${i * 45}ms`;
+        bar.style.height = bar.dataset.h + 'px';
+      });
+    });
+  }
+
+  function renderFocusData(data) {
+    if (!data) return;
+    const { hourly, totals, score } = data;
+
+    // Score ring
+    const arc  = $('focus-ring-arc');
+    const pctEl = $('focus-score-pct');
+    const subEl = $('focus-score-sub');
+
+    // ring circumference for r=48: 2π×48 = 301.6
+    const CIRC = 301.6;
+    if (score !== null && score !== undefined) {
+      const offset = CIRC * (1 - score / 100);
+      const col = score >= 90 ? '#22C55E' : score >= 75 ? '#3B9EFF' : score >= 50 ? '#F59E0B' : '#EF4444';
+      if (arc) { arc.style.stroke = col; setTimeout(() => { arc.style.strokeDashoffset = offset; }, 50); }
+      if (pctEl) { pctEl.textContent = `${score}%`; pctEl.style.color = col; }
+      const totalMins = Object.values(totals).reduce((a, b) => a + b, 0);
+      const prodMins  = (totals.communication || 0) + (totals.documents || 0) + (totals.meetings || 0);
+      if (subEl) subEl.textContent = totalMins > 0
+        ? `${fmtMin(prodMins)} productif · ${fmtMin(totalMins)} total`
+        : 'Les données s\'accumulent au fil de la journée';
+    } else {
+      if (arc)  { arc.style.strokeDashoffset = CIRC; }
+      if (pctEl){ pctEl.textContent = '—'; pctEl.style.color = ''; }
+      if (subEl) subEl.textContent = 'Les données s\'accumulent au fil de la journée';
+    }
+
+    // Stats
+    const work = (totals.documents || 0) + (totals.meetings || 0) + (totals.communication || 0);
+    $('fstat-work-val').textContent     = fmtMin(work);
+    $('fstat-meetings-val').textContent = fmtMin(totals.meetings);
+    $('fstat-comms-val').textContent    = fmtMin(totals.communication);
+    $('fstat-browser-val').textContent  = fmtMin(totals.browser);
+
+    // Chart
+    renderFocusChart(hourly);
+
+    // Apps grid
+    const appsGrid = $('focus-apps-grid');
+    if (appsGrid && data.apps && data.apps.length > 0) {
+      const maxMins = data.apps[0].minutes;
+      appsGrid.innerHTML = data.apps.slice(0, 16).map(a => `
+        <div class="focus-app-row">
+          <span class="focus-app-dot" style="background:${a.color}"></span>
+          <span class="focus-app-name">${a.name}</span>
+          <span class="focus-app-time">${fmtMin(a.minutes)}</span>
+          <div class="focus-app-bar-bg">
+            <div class="focus-app-bar" data-w="${Math.round((a.minutes/maxMins)*100)}"
+              style="width:0%;background:${a.color}"></div>
+          </div>
+        </div>`).join('');
+      requestAnimationFrame(() => {
+        appsGrid.querySelectorAll('.focus-app-bar').forEach((bar, i) => {
+          bar.style.transition = `width 0.5s cubic-bezier(0.16,1,0.3,1) ${i * 30}ms`;
+          bar.style.width = bar.dataset.w + '%';
+        });
+      });
+    } else if (appsGrid) {
+      appsGrid.innerHTML = '<p style="font-size:.78rem;color:var(--text2);font-style:italic;grid-column:1/-1">Aucune donnée pour l\'instant</p>';
+    }
+  }
+
+  async function loadFocusView() {
+    try {
+      const data = await window.overviewAPI.getScreenTime();
+      renderFocusData(data);
+    } catch (e) {
+      console.error('[Focus]', e);
+    }
+  }
+
+  // Live updates every 60s from main process
+  window.overviewAPI.onScreenTimeUpdate?.(data => {
+    renderMyDay(data);
+    if (document.getElementById('view-focus')?.classList.contains('active')) {
+      renderFocusData(data);
+    }
+  });
+
+  // ─── Auto-update notification ──────────────────────────
+  window.overviewAPI?.onUpdateReady?.(() => {
+    const banner = document.createElement('div');
+    banner.id = 'update-banner';
+    banner.innerHTML = `
+      <span>⬆ Mise à jour disponible</span>
+      <button id="update-btn-install">Redémarrer maintenant</button>
+      <button id="update-btn-later">Plus tard</button>`;
+    document.body.appendChild(banner);
+    document.getElementById('update-btn-install').addEventListener('click', () => {
+      window.overviewAPI.installUpdate();
+    });
+    document.getElementById('update-btn-later').addEventListener('click', () => {
+      banner.remove();
+    });
   });
 
   // Store chat context when dashboard loads

@@ -356,12 +356,12 @@ function setOrbState(orbState) {
   aiOrb.classList.remove('thinking', 'speaking');
   if (orbState === 'thinking') {
     aiOrb.classList.add('thinking');
-    aiOrbLabel.textContent = 'Alex · Analyse...';
+    aiOrbLabel.textContent = 'OneWork365 · Analyse...';
   } else if (orbState === 'speaking') {
     aiOrb.classList.add('speaking');
-    aiOrbLabel.textContent = 'Alex · Répond';
+    aiOrbLabel.textContent = 'OneWork365 · Répond';
   } else {
-    aiOrbLabel.textContent = 'Alex · Prêt';
+    aiOrbLabel.textContent = 'OneWork365 · Prêt';
   }
 }
 
@@ -434,7 +434,7 @@ document.getElementById('confirm-ok-btn').addEventListener('click', async () => 
 async function handleSend() {
   const text = chatInput.value.trim();
   if (!text || !chatToken) {
-    if (!chatToken) addMessage('ai', 'Connectez-vous d\'abord via OneWork pour activer l\'agent.');
+    if (!chatToken) addMessage('ai', 'Connectez-vous d\'abord via OneWork365 pour activer l\'agent.');
     return;
   }
 
@@ -443,6 +443,14 @@ async function handleSend() {
   setOrbState('thinking');
   showThinking();
   sendBtn.disabled = true;
+
+  // Refresh screen-time right before sending so the agent has current data
+  try {
+    if (window.electronAPI.getScreenTime) {
+      const st = await window.electronAPI.getScreenTime();
+      if (st) chatContext = { ...chatContext, screenTime: st };
+    }
+  } catch (_) {}
 
   try {
     const resp = await fetch(`${BACKEND_URL}/api/chat`, {
@@ -503,7 +511,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       recognition.start();
       micBtn.classList.add('listening');
       setOrbState('thinking');
-      aiOrbLabel.textContent = 'Alex · Écoute...';
+      aiOrbLabel.textContent = 'OneWork365 · Écoute...';
     }
   });
 
@@ -536,6 +544,13 @@ if (window.electronAPI && window.electronAPI.onWidgetData) {
     // Store token and context for chat
     if (payload.token) chatToken = payload.token;
     chatContext = { ...ai, rawData: payload.rawData, userEmail: payload.userEmail || '' };
+
+    // Attach local screen-time data so the agent can answer questions about it
+    if (window.electronAPI.getScreenTime) {
+      window.electronAPI.getScreenTime().then(st => {
+        if (st) chatContext = { ...chatContext, screenTime: st };
+      }).catch(() => {});
+    }
 
     // Meetings
     if (ai.todayMeetings && Array.isArray(ai.todayMeetings)) {
@@ -589,7 +604,7 @@ async function openMorningBrief(script) {
   morningScript.textContent = script;
   morningOverlay.classList.add('visible');
   morningOrb.classList.add('speaking');
-  morningLabel.textContent = 'Alex · Génération voix...';
+  morningLabel.textContent = 'OneWork365 · Génération voix...';
 
   // TTS via OpenAI (backend)
   try {
@@ -602,15 +617,15 @@ async function openMorningBrief(script) {
     const blob = await resp.blob();
     const url = URL.createObjectURL(blob);
     morningUtterance = new Audio(url);
-    morningLabel.textContent = 'Alex · Lecture en cours...';
+    morningLabel.textContent = 'OneWork365 · Lecture en cours...';
     morningUtterance.onended = () => {
       morningOrb.classList.remove('speaking');
-      morningLabel.textContent = 'Alex · Terminé';
+      morningLabel.textContent = 'OneWork365 · Terminé';
     };
     morningUtterance.play();
   } catch {
     morningOrb.classList.remove('speaking');
-    morningLabel.textContent = 'Alex · Brief matinal';
+    morningLabel.textContent = 'OneWork365 · Brief matinal';
   }
 }
 
@@ -618,7 +633,7 @@ function closeMorningBrief() {
   if (morningUtterance) { morningUtterance.pause(); morningUtterance.src = ''; }
   morningOrb.classList.remove('speaking');
   morningOverlay.classList.remove('visible');
-  morningLabel.textContent = 'Alex · Brief matinal';
+  morningLabel.textContent = 'OneWork365 · Brief matinal';
 }
 
 morningClose.addEventListener('click', closeMorningBrief);

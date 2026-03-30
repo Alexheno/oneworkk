@@ -1,5 +1,5 @@
 /**
- * launch.js — Launcher OneWork development
+ * launch.js — Launcher OneWork365 development
  * Removes ELECTRON_RUN_AS_NODE from environment before spawning Electron.
  * This env var (if set globally on Windows) prevents Electron from running
  * in browser/app mode and causes all Electron APIs to be unavailable.

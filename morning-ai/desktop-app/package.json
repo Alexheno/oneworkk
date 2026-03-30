@@ -1,5 +1,5 @@
 {
-  "name": "onework",
+  "name": "onework365",
   "version": "1.0.0",
   "description": "Votre assistant de bureau intelligent connecté à Microsoft 365",
   "main": "index.js",
@@ -15,9 +15,9 @@
     "assistant"
   ],
   "author": {
-    "name": "OneWork",
-    "email": "contact@onework.app",
-    "url": "https://onework.app"
+    "name": "OneWork365",
+    "email": "contact@onework365.app",
+    "url": "https://onework365.app"
   },
   "license": "ISC",
   "repository": {
@@ -25,14 +25,13 @@
     "url": "https://github.com/Alexheno/oneworkk"
   },
   "publish": {
-    "provider": "github",
-    "owner": "Alexheno",
-    "repo": "oneworkk"
+    "provider": "generic",
+    "url": "https://oneworkk-production.up.railway.app/update"
   },
   "build": {
-    "appId": "com.onework.app",
-    "productName": "OneWork",
-    "copyright": "Copyright © 2024 OneWork. Tous droits réservés.",
+    "appId": "com.onework365.app",
+    "productName": "OneWork365",
+    "copyright": "Copyright © 2024 OneWork365. Tous droits réservés.",
     "win": {
       "target": [
         {
@@ -43,8 +42,8 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "OneWork-Setup-${version}.exe",
-      "publisherName": "OneWork",
+      "artifactName": "OneWork365-Setup-${version}.exe",
+      "publisherName": "OneWork365",
       "requestedExecutionLevel": "asInvoker",
       "signingHashAlgorithms": [
         "sha256"
@@ -55,8 +54,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": false,
       "perMachine": false,
-      "shortcutName": "OneWork",
-      "uninstallDisplayName": "OneWork - Assistant IA Microsoft 365",
+      "shortcutName": "OneWork365",
+      "uninstallDisplayName": "OneWork365 - Assistant IA Microsoft 365",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "installerIcon": "assets/icon.ico",
@@ -88,6 +87,7 @@
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
-    "@azure/msal-node": "^2.16.3"
+    "@azure/msal-node": "^2.16.3",
+    "electron-updater": "^6.8.3"
   }
 }
