@@ -1,8 +1,5 @@
 'use strict';
 
-const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // ─── Template HTML ────────────────────────────────────────────────────────────
 function buildWaitlistEmail({ position }) {
     const positionLine = position
@@ -160,23 +157,36 @@ function buildWaitlistEmail({ position }) {
 </html>`;
 }
 
-// ─── Send waitlist confirmation email ─────────────────────────────────────────
+// ─── Send waitlist confirmation email via Brevo ───────────────────────────────
 async function sendWaitlistEmail(email, position) {
-    if (!process.env.RESEND_API_KEY) {
-        console.warn('[Email] RESEND_API_KEY manquante — email non envoyé');
+    if (!process.env.BREVO_API_KEY) {
+        console.warn('[Email] BREVO_API_KEY manquante — email non envoyé');
         return;
     }
 
     try {
-        await resend.emails.send({
-            from:    'OneWork <onboarding@resend.dev>',
-            to:      email,
-            subject: 'Vous êtes sur la liste ✦ OneWork',
-            html:    buildWaitlistEmail({ position }),
+        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+            method:  'POST',
+            headers: {
+                'api-key':      process.env.BREVO_API_KEY,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                sender:      { name: 'OneWork', email: 'henoumontalexandre@gmail.com' },
+                to:          [{ email }],
+                subject:     'Vous êtes sur la liste ✦ OneWork',
+                htmlContent: buildWaitlistEmail({ position }),
+            }),
         });
+
+        if (!res.ok) {
+            const err = await res.text();
+            console.error('[Email] Brevo error:', res.status, err.slice(0, 200));
+            return;
+        }
         console.log(`[Email] Confirmation envoyée → ${email} (position #${position})`);
     } catch (err) {
-        console.error('[Email] Erreur Resend:', err.message);
+        console.error('[Email] Erreur Brevo:', err.message);
     }
 }
 
