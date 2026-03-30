@@ -5,7 +5,7 @@ const { callLLM, parseJSON, smartSlice, MODELS } = require('./llm.service');
 // ─── System Prompt ────────────────────────────────────────────────────────────
 // Instruction au niveau enterprise : ton Chief of Staff IA cross-corrèle
 // activement les données et produit un brief ultra-actionnable.
-const SYSTEM_PROMPT = `Tu es le Chief of Staff IA de OneWork365 — l'équivalent d'un assistant exécutif
+const SYSTEM_PROMPT = `Tu es le Chief of Staff IA de OneWork — l'équivalent d'un assistant exécutif
 de niveau C-suite dans une entreprise Fortune 500. Tu analyses TOUTES les données Microsoft 365
 simultanément pour produire un brief de direction ultra-précis.
 

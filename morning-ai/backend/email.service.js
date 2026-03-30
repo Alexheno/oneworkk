@@ -11,7 +11,7 @@ function buildWaitlistEmail({ position }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bienvenue sur OneWork365</title>
+  <title>Bienvenue sur OneWork</title>
 </head>
 <body style="margin:0;padding:0;background:#f5f5f7;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
 
@@ -28,7 +28,7 @@ function buildWaitlistEmail({ position }) {
                   <td style="background:linear-gradient(135deg,#818cf8,#22d3ee);border-radius:14px;width:44px;height:44px;text-align:center;vertical-align:middle;">
                     <span style="font-size:22px;line-height:44px;">✦</span>
                   </td>
-                  <td style="padding-left:10px;font-size:20px;font-weight:700;color:#1d1d1f;letter-spacing:-0.3px;">OneWork365</td>
+                  <td style="padding-left:10px;font-size:20px;font-weight:700;color:#1d1d1f;letter-spacing:-0.3px;">OneWork</td>
                 </tr>
               </table>
             </td>
@@ -53,7 +53,7 @@ function buildWaitlistEmail({ position }) {
                     </h1>
                     <p style="margin:0;font-size:17px;color:rgba(255,255,255,0.6);line-height:1.6;max-width:420px;margin:0 auto;">
                       ${positionLine}<br>
-                      Vous serez parmi les <em>premiers</em> à découvrir OneWork365.
+                      Vous serez parmi les <em>premiers</em> à découvrir OneWork.
                     </p>
 
                     <!-- Position pill -->
@@ -81,7 +81,7 @@ function buildWaitlistEmail({ position }) {
                         </td>
                         <td style="padding-left:14px;vertical-align:top;">
                           <div style="font-size:15px;font-weight:600;color:#1d1d1f;margin-bottom:2px;">Votre journée analysée en 10 secondes</div>
-                          <div style="font-size:13px;color:#6e6e73;line-height:1.5;">OneWork365 lit vos emails, réunions et Teams — et génère votre to-do list du jour automatiquement.</div>
+                          <div style="font-size:13px;color:#6e6e73;line-height:1.5;">OneWork lit vos emails, réunions et Teams — et génère votre to-do list du jour automatiquement.</div>
                         </td>
                       </tr>
                     </table>
@@ -119,9 +119,9 @@ function buildWaitlistEmail({ position }) {
                     <div style="text-align:center;">
                       <h3 style="margin:0 0 8px;font-size:17px;font-weight:700;color:#1d1d1f;">La suite ?</h3>
                       <p style="margin:0 0 24px;font-size:14px;color:#6e6e73;line-height:1.6;">
-                        Dès que OneWork365 est prêt, vous recevrez un email avec votre lien de téléchargement en priorité.<br>Gratuit. Sans engagement.
+                        Dès que OneWork est prêt, vous recevrez un email avec votre lien de téléchargement en priorité.<br>Gratuit. Sans engagement.
                       </p>
-                      <a href="https://onework365.app" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#22d3ee);color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:980px;letter-spacing:-0.1px;">
+                      <a href="https://onework.app" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#22d3ee);color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:14px 36px;border-radius:980px;letter-spacing:-0.1px;">
                         Voir la démo →
                       </a>
                     </div>
@@ -137,13 +137,13 @@ function buildWaitlistEmail({ position }) {
           <tr>
             <td style="padding-top:32px;text-align:center;">
               <p style="margin:0 0 8px;font-size:12px;color:#adadb8;">
-                © 2026 OneWork365 · Conçu pour ceux qui n'ont pas de temps à perdre.
+                © 2026 OneWork · Conçu pour ceux qui n'ont pas de temps à perdre.
               </p>
               <p style="margin:0;font-size:12px;color:#adadb8;">
-                Vous recevez cet email car vous avez rejoint la liste d'attente OneWork365.<br>
-                <a href="https://onework365.app" style="color:#818cf8;text-decoration:none;">Visiter le site</a>
+                Vous recevez cet email car vous avez rejoint la liste d'attente OneWork.<br>
+                <a href="https://onework.app" style="color:#818cf8;text-decoration:none;">Visiter le site</a>
                 &nbsp;·&nbsp;
-                <a href="mailto:contact@onework365.app" style="color:#818cf8;text-decoration:none;">Nous contacter</a>
+                <a href="mailto:contact@onework.app" style="color:#818cf8;text-decoration:none;">Nous contacter</a>
               </p>
             </td>
           </tr>
@@ -172,9 +172,9 @@ async function sendWaitlistEmail(email, position) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                sender:      { name: 'OneWork365', email: 'henoumontalexandre@gmail.com' },
+                sender:      { name: 'OneWork', email: 'henoumontalexandre@gmail.com' },
                 to:          [{ email }],
-                subject:     'Vous êtes sur la liste ✦ OneWork365',
+                subject:     'Vous êtes sur la liste ✦ OneWork',
                 htmlContent: buildWaitlistEmail({ position }),
             }),
         });

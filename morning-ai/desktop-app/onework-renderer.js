@@ -107,21 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const CLIENT_ID = '6ba5635c-5459-4c73-a599-04f669c610ad';
   $('btn-privacy').addEventListener('click', (e) => {
     e.preventDefault();
-    openUrl('https://onework365.app/privacy');
+    openUrl('https://onework.app/privacy');
   });
   $('btn-terms').addEventListener('click', (e) => {
     e.preventDefault();
-    openUrl('https://onework365.app/terms');
+    openUrl('https://onework.app/terms');
   });
   $('btn-admin-consent').addEventListener('click', () => {
-    const consentUrl = `https://login.microsoftonline.com/organizations/adminconsent?client_id=${CLIENT_ID}&redirect_uri=https://onework365.app/admin-consent-success`;
+    const consentUrl = `https://login.microsoftonline.com/organizations/adminconsent?client_id=${CLIENT_ID}&redirect_uri=https://onework.app/admin-consent-success`;
     openUrl(consentUrl);
   });
 
-  $('btn-upgrade').addEventListener('click', () => openUrl('https://onework365.app/pricing'));
+  $('btn-upgrade').addEventListener('click', () => openUrl('https://onework.app/pricing'));
   $('btn-personalisation').addEventListener('click', () => showNotif('Personnalisation disponible dans la prochaine version.'));
   $('btn-settings').addEventListener('click', () => showNotif('Paramètres disponibles dans la prochaine version.'));
-  $('btn-help').addEventListener('click', () => openUrl('https://onework365.app/help'));
+  $('btn-help').addEventListener('click', () => openUrl('https://onework.app/help'));
   $('btn-logout').addEventListener('click', logout);
 
   // ─── Theme toggle ───────────────────────────────────────
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $('user-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('su-avatar').style.backgroundImage = `url('${avatarUrl}')`;
     $('pm-avatar').style.backgroundImage = `url('${avatarUrl}')`;
-    $('pm-name').textContent = acc.name || 'OneWork365';
+    $('pm-name').textContent = acc.name || 'OneWork';
     $('pm-email').textContent = acc.username || '';
 
     // Recap

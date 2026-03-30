@@ -1,13 +1,13 @@
-# Guide Administrateur IT — OneWork365
+# Guide Administrateur IT — OneWork
 
-## Autoriser OneWork365 pour votre organisation Microsoft 365
+## Autoriser OneWork pour votre organisation Microsoft 365
 
 ### Option 1 — Autorisation en 1 clic (recommandé)
 
-En tant qu'administrateur Microsoft 365, cliquez sur ce lien pour autoriser OneWork365 pour tous vos utilisateurs :
+En tant qu'administrateur Microsoft 365, cliquez sur ce lien pour autoriser OneWork pour tous vos utilisateurs :
 
 ```
-https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-5459-4c73-a599-04f669c610ad&redirect_uri=https://onework365.app/admin-consent-success
+https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-5459-4c73-a599-04f669c610ad&redirect_uri=https://onework.app/admin-consent-success
 ```
 
 → Connectez-vous avec votre compte **Administrateur Global** ou **Administrateur d'application**
@@ -20,7 +20,7 @@ https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-
 
 1. Connectez-vous sur [portal.azure.com](https://portal.azure.com)
 2. **Azure Active Directory** → **Applications d'entreprise**
-3. Cliquez **+ Nouvelle application** → **Ajouter depuis la galerie** ou cherchez "OneWork365"
+3. Cliquez **+ Nouvelle application** → **Ajouter depuis la galerie** ou cherchez "OneWork"
 4. Si non trouvé : **Créer votre propre application** → entrez le Client ID :
    ```
    6ba5635c-5459-4c73-a599-04f669c610ad
@@ -29,7 +29,7 @@ https://login.microsoftonline.com/organizations/adminconsent?client_id=6ba5635c-
 
 ---
 
-### Permissions demandées par OneWork365
+### Permissions demandées par OneWork
 
 | Permission | Type | Usage |
 |---|---|---|
@@ -68,12 +68,12 @@ Utilisez le script `deploy-intune.ps1` inclus dans ce dossier :
 - 📍 Backend hébergé sur Railway (USA, SOC 2 Type II)
 - 🇪🇺 Base de données Supabase hébergée dans l'UE
 - ❌ Aucune revente de données
-- 📄 [Politique de confidentialité complète](https://onework365.app/privacy)
-- 📄 [Conditions d'utilisation](https://onework365.app/terms)
+- 📄 [Politique de confidentialité complète](https://onework.app/privacy)
+- 📄 [Conditions d'utilisation](https://onework.app/terms)
 
 ---
 
 ### Contact support entreprise
 
-📧 enterprise@onework365.app
-🌐 onework365.app/enterprise
+📧 enterprise@onework.app
+🌐 onework.app/enterprise

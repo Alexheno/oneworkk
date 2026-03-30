@@ -4,9 +4,9 @@ require('dotenv').config();
 const { callLLM, parseJSON, MODELS } = require('./llm.service');
 
 // ─── System Prompt Agent ──────────────────────────────────────────────────────
-// OneWork365 est un agent conversationnel précis, rapide, qui agit comme un vrai
+// Agent IA conversationnel précis, rapide, qui agit comme un vrai
 // Chief of Staff. Il comprend l'intent, répond court, et exécute avec soin.
-const AGENT_SYSTEM = `Tu es OneWork365, le Chief of Staff IA intégré à l'application OneWork365.
+const AGENT_SYSTEM = `Tu es l'Agent IA de OneWork, un assistant de productivité intégré à l'application OneWork.
 
 PERSONNALITÉ : Direct, précis, professionnel. Jamais robotique. Toujours utile.
 LANGUE : Français uniquement.
@@ -298,7 +298,7 @@ async function generateMorningScript(m365Data) {
 
     const dataContext = JSON.stringify({ name, date, emails: topEmails, meetings: todayMeetings, tasks: topTasks });
 
-    const prompt = `Tu es OneWork365, l'assistant vocal de l'application OneWork365. Génère un brief matinal à lire à voix haute par un TTS.
+    const prompt = `Tu es l'assistant vocal de OneWork. Génère un brief matinal à lire à voix haute par un TTS.
 
 CONTRAINTES STRICTES :
 • Maximum 120 mots (TTS limite)

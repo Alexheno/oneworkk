@@ -1,5 +1,5 @@
 {
-  "name": "onework365",
+  "name": "onework",
   "version": "1.0.0",
   "description": "Votre assistant de bureau intelligent connecté à Microsoft 365",
   "main": "index.js",
@@ -15,9 +15,9 @@
     "assistant"
   ],
   "author": {
-    "name": "OneWork365",
-    "email": "contact@onework365.app",
-    "url": "https://onework365.app"
+    "name": "OneWork",
+    "email": "contact@onework.app",
+    "url": "https://onework.app"
   },
   "license": "ISC",
   "repository": {
@@ -29,9 +29,9 @@
     "url": "https://oneworkk-production.up.railway.app/update"
   },
   "build": {
-    "appId": "com.onework365.app",
-    "productName": "OneWork365",
-    "copyright": "Copyright © 2024 OneWork365. Tous droits réservés.",
+    "appId": "com.onework.app",
+    "productName": "OneWork",
+    "copyright": "Copyright © 2024 OneWork. Tous droits réservés.",
     "win": {
       "target": [
         {
@@ -42,8 +42,8 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "OneWork365-Setup-${version}.exe",
-      "publisherName": "OneWork365",
+      "artifactName": "OneWork-Setup-${version}.exe",
+      "publisherName": "OneWork",
       "requestedExecutionLevel": "asInvoker",
       "signingHashAlgorithms": [
         "sha256"
@@ -54,8 +54,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": false,
       "perMachine": false,
-      "shortcutName": "OneWork365",
-      "uninstallDisplayName": "OneWork365 - Assistant IA Microsoft 365",
+      "shortcutName": "OneWork",
+      "uninstallDisplayName": "OneWork - Assistant IA Microsoft 365",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "installerIcon": "assets/icon.ico",

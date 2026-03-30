@@ -356,12 +356,12 @@ function setOrbState(orbState) {
   aiOrb.classList.remove('thinking', 'speaking');
   if (orbState === 'thinking') {
     aiOrb.classList.add('thinking');
-    aiOrbLabel.textContent = 'OneWork365 · Analyse...';
+    aiOrbLabel.textContent = 'Agent IA · Analyse...';
   } else if (orbState === 'speaking') {
     aiOrb.classList.add('speaking');
-    aiOrbLabel.textContent = 'OneWork365 · Répond';
+    aiOrbLabel.textContent = 'Agent IA · Répond';
   } else {
-    aiOrbLabel.textContent = 'OneWork365 · Prêt';
+    aiOrbLabel.textContent = 'Agent IA · Prêt';
   }
 }
 
@@ -434,7 +434,7 @@ document.getElementById('confirm-ok-btn').addEventListener('click', async () => 
 async function handleSend() {
   const text = chatInput.value.trim();
   if (!text || !chatToken) {
-    if (!chatToken) addMessage('ai', 'Connectez-vous d\'abord via OneWork365 pour activer l\'agent.');
+    if (!chatToken) addMessage('ai', 'Connectez-vous d\'abord via OneWork pour activer l\'agent.');
     return;
   }
 
@@ -511,7 +511,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       recognition.start();
       micBtn.classList.add('listening');
       setOrbState('thinking');
-      aiOrbLabel.textContent = 'OneWork365 · Écoute...';
+      aiOrbLabel.textContent = 'Agent IA · Écoute...';
     }
   });
 
@@ -604,7 +604,7 @@ async function openMorningBrief(script) {
   morningScript.textContent = script;
   morningOverlay.classList.add('visible');
   morningOrb.classList.add('speaking');
-  morningLabel.textContent = 'OneWork365 · Génération voix...';
+  morningLabel.textContent = 'Agent IA · Génération voix...';
 
   // TTS via OpenAI (backend)
   try {
@@ -617,15 +617,15 @@ async function openMorningBrief(script) {
     const blob = await resp.blob();
     const url = URL.createObjectURL(blob);
     morningUtterance = new Audio(url);
-    morningLabel.textContent = 'OneWork365 · Lecture en cours...';
+    morningLabel.textContent = 'Agent IA · Lecture en cours...';
     morningUtterance.onended = () => {
       morningOrb.classList.remove('speaking');
-      morningLabel.textContent = 'OneWork365 · Terminé';
+      morningLabel.textContent = 'Agent IA · Terminé';
     };
     morningUtterance.play();
   } catch {
     morningOrb.classList.remove('speaking');
-    morningLabel.textContent = 'OneWork365 · Brief matinal';
+    morningLabel.textContent = 'Agent IA · Brief matinal';
   }
 }
 
@@ -633,7 +633,7 @@ function closeMorningBrief() {
   if (morningUtterance) { morningUtterance.pause(); morningUtterance.src = ''; }
   morningOrb.classList.remove('speaking');
   morningOverlay.classList.remove('visible');
-  morningLabel.textContent = 'OneWork365 · Brief matinal';
+  morningLabel.textContent = 'Agent IA · Brief matinal';
 }
 
 morningClose.addEventListener('click', closeMorningBrief);

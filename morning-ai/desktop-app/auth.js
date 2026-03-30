@@ -33,7 +33,7 @@ async function login() {
             // Ouvre le navigateur par défaut de l'utilisateur pour le login MS
             await shell.openExternal(url);
         },
-        successTemplate: "Authentification réussie ! L'assistant OneWork365 est désormais connecté. Vous pouvez fermer cet onglet.",
+        successTemplate: "Authentification réussie ! L'assistant OneWork est désormais connecté. Vous pouvez fermer cet onglet.",
         errorTemplate: "Une erreur est survenue lors de l'authentification.",
     };
 

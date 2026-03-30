@@ -17,7 +17,7 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let mainWindow;    // Le widget
-let overviewWindow; // L'interface principale OneWork365
+let overviewWindow; // L'interface principale OneWork
 let tray = null;
 
 // ─── Morning Brief State ──────────────────────────────────
@@ -38,7 +38,7 @@ function createOverviewWindow() {
   overviewWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    title: 'OneWork365 - Overview',
+    title: 'OneWork - Overview',
     frame: true,
     autoHideMenuBar: true,
     show: false,
@@ -51,7 +51,7 @@ function createOverviewWindow() {
   });
 
   overviewWindow.removeMenu();
-  overviewWindow.loadFile('onework365.html');
+  overviewWindow.loadFile('onework.html');
   overviewWindow.once('ready-to-show', () => overviewWindow.show());
   overviewWindow.on('closed', () => { overviewWindow = null; });
 }
@@ -162,7 +162,7 @@ function createTray() {
   }
 
   tray = new Tray(trayImage);
-  tray.setToolTip('OneWork365');
+  tray.setToolTip('OneWork');
   updateTrayMenu();
 
   tray.on('double-click', () => {
@@ -175,7 +175,7 @@ function updateTrayMenu() {
   if (!tray) return;
   const menu = Menu.buildFromTemplate([
     {
-      label: 'Ouvrir OneWork365',
+      label: 'Ouvrir OneWork',
       click: () => { createOverviewWindow(); if (overviewWindow) overviewWindow.focus(); }
     },
     {
@@ -188,7 +188,7 @@ function updateTrayMenu() {
       enabled: false
     },
     { type: 'separator' },
-    { label: 'Quitter OneWork365', click: () => app.exit(0) }
+    { label: 'Quitter OneWork', click: () => app.exit(0) }
   ]);
   tray.setContextMenu(menu);
 }
@@ -277,14 +277,14 @@ function updateTrayMenuWithUpdate() {
     },
     { type: 'separator' },
     {
-      label: 'Ouvrir OneWork365',
+      label: 'Ouvrir OneWork',
       click: () => { createOverviewWindow(); if (overviewWindow) overviewWindow.focus(); }
     },
     { type: 'separator' },
     { label: 'Quitter', click: () => { tray.destroy(); app.exit(0); } }
   ]);
   tray.setContextMenu(menu);
-  tray.setToolTip('OneWork365 — Mise à jour disponible');
+  tray.setToolTip('OneWork — Mise à jour disponible');
 }
 
 // IPC pour que le renderer puisse déclencher le redémarrage
