@@ -51,7 +51,7 @@ function startDemoSequence() {
     return { x: er.left + er.width / 2 - dr.left, y: er.top + er.height / 2 - dr.top };
   }
 
-  function moveTo(x, y, ms = 920) {
+  function moveTo(x, y, ms = 1200) {
     cursor.style.setProperty('--cdur', ms + 'ms');
     cursor.style.left = x + 'px';
     cursor.style.top  = y + 'px';
@@ -166,7 +166,7 @@ function startDemoSequence() {
     // 1. Move cursor near widget → hover opens card (no click)
     if (wwKnob) {
       const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 6, 860);
+      await moveTo(p.x, p.y - 6, 1100);
       await delay(300);
       widgetEl.classList.add('open');
       await delay(600);
@@ -177,7 +177,7 @@ function startDemoSequence() {
       const dot1 = wwTask1.querySelector('.ww-dot');
       if (dot1) {
         const p = pos(dot1);
-        await moveTo(p.x, p.y, 620);
+        await moveTo(p.x, p.y, 800);
         await delay(200);
         await click(dot1);
         await delay(80);
@@ -191,7 +191,7 @@ function startDemoSequence() {
       const dot2 = wwTask2.querySelector('.ww-dot');
       if (dot2) {
         const p = pos(dot2);
-        await moveTo(p.x, p.y, 520);
+        await moveTo(p.x, p.y, 680);
         await delay(160);
         await click(dot2);
         await delay(80);
@@ -205,7 +205,7 @@ function startDemoSequence() {
       const dot3 = wwTask3.querySelector('.ww-dot');
       if (dot3) {
         const p = pos(dot3);
-        await moveTo(p.x, p.y, 520);
+        await moveTo(p.x, p.y, 680);
         await delay(160);
         await click(dot3);
         await delay(80);
@@ -217,7 +217,7 @@ function startDemoSequence() {
     // 4. Switch to Agent IA mode, then type
     if (wwModeAgent && wwModeBrief && wwAgentPanel) {
       const pAgent = pos(wwModeAgent);
-      await moveTo(pAgent.x, pAgent.y, 550);
+      await moveTo(pAgent.x, pAgent.y, 720);
       await delay(220);
       await click(wwModeAgent);
       await delay(100);
@@ -229,7 +229,7 @@ function startDemoSequence() {
     }
     if (wwChatInput) {
       const p = pos(wwChatInput);
-      await moveTo(p.x - 12, p.y, 610);
+      await moveTo(p.x - 12, p.y, 800);
       await delay(270);
       await click(null);
       await delay(180);
@@ -240,7 +240,7 @@ function startDemoSequence() {
     // 5. Click send
     if (wwChatSend) {
       const p = pos(wwChatSend);
-      await moveTo(p.x, p.y, 460);
+      await moveTo(p.x, p.y, 600);
       await delay(310);
       await click(wwChatSend);
       await delay(200);
