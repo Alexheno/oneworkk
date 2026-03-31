@@ -165,15 +165,19 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
         );
         if (existing.length > 0) {
             const { rows: countRows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
-            return res.json({ success: true, position: countRows[0].n, alreadyRegistered: true });
+            const pos = countRows[0].n;
+            console.log(`[Waitlist] Déjà inscrit: ${email} (position #${pos}) — email renvoyé`);
+            sendWaitlistEmail(email, pos);
+            return res.json({ success: true, position: pos, alreadyRegistered: true });
         }
 
         await neonPool.query('INSERT INTO waitlist (email) VALUES ($1)', [email]);
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
         const position = rows[0].n;
         res.json({ success: true, position });
-        if (email) sendWaitlistEmail(email, position);
-    } catch (_e) {
+        sendWaitlistEmail(email, position);
+    } catch (err) {
+        console.error('[Waitlist] Erreur:', err.message);
         res.json({ success: true, position: null });
     }
 });
