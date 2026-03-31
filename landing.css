@@ -1521,11 +1521,108 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #212121;
+  background: #111116;
   overflow: hidden;
   padding: 11px 13px;
-  gap: 9px;
+  gap: 8px;
   min-height: 0;
+}
+
+#demo-home-view {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* ── Projects panel ── */
+.demo-proj-ai-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 11px;
+  background: linear-gradient(135deg,rgba(99,102,241,0.10),rgba(168,85,247,0.06));
+  border: 1px solid rgba(99,102,241,0.22);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.demo-proj-ai-text {
+  font-size: 0.62rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+}
+.demo-projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+.demo-project-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.demo-project-row:hover {
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(255,255,255,0.12);
+}
+.demo-proj-accent {
+  width: 3px;
+  height: 28px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.demo-proj-content { flex: 1; min-width: 0; }
+.demo-proj-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.demo-proj-meta {
+  font-size: 0.57rem;
+  color: rgba(255,255,255,0.32);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.demo-proj-btns { display: flex; gap: 4px; flex-shrink: 0; }
+.demo-proj-btn {
+  padding: 3px 7px;
+  font-size: 0.53rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.demo-proj-btn-del {
+  color: rgba(255,80,80,0.55);
+  background: rgba(255,80,80,0.05);
+  border-color: rgba(255,80,80,0.12);
+}
+.demo-add-proj-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px;
+  border: 1px dashed rgba(99,102,241,0.28);
+  border-radius: 9px;
+  font-size: 0.6rem;
+  color: rgba(99,102,241,0.6);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 /* Top bar */
@@ -3320,9 +3417,9 @@ body {
 
 /* Card base — square format */
 .demo-card {
-  background: rgba(255,255,255,0.032);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px 12px 4px 4px;
+  background: rgba(255,255,255,0.038);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
   overflow: hidden;

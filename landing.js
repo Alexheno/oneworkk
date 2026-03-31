@@ -349,105 +349,95 @@ function startDemoSequence() {
     await delay(4000);
 
     // ══════════════════════════════════════════════════════════
-    // TRANSITION — Widget closes → Excel fullscreen → clic logo → Dashboard
+    // TRANSITION — Widget closes → Outlook visible → clic logo → Dashboard
     // ══════════════════════════════════════════════════════════
     widgetEl.classList.remove('open');
     cursor.style.opacity = '0';
-    await delay(550);
+    await delay(600);
 
-    // Switch background Outlook → Excel (fullscreen, no dashboard yet)
-    bgOutlook.classList.add('fading');
-    await delay(300);
-    bgExcel.classList.add('visible');
-    await delay(800);
+    // Outlook stays visible (data source context)
+    bgOutlook.classList.remove('fading');
+    if (bgExcel) bgExcel.classList.remove('visible');
+    await delay(700);
 
-    // Cursor reappears, se déplace vers l'icône OneWork dans la taskbar
+    // Cursor reappears at taskbar, clicks OneWork icon
     moveTo(dr.width * 0.52, dr.height * 0.82, 0);
     cursor.style.opacity = '1';
     const tbOneWork = document.getElementById('tb-onework');
     if (tbOneWork) {
       const p = pos(tbOneWork);
       await moveTo(p.x, p.y, 840);
-      await delay(380);
-      await click(tbOneWork);
-      tbOneWork.classList.add('active'); // trait apparaît au clic
       await delay(350);
-    }
-
-    // Dashboard opens
-    if (winWindow) winWindow.classList.add('visible', 'expanded');
-    await delay(1000);
-
-    // ══════════════════════════════════════════════════════════
-    // PHASE 2 — Excel background + expanded OneWork dashboard
-    // ══════════════════════════════════════════════════════════
-    const teamsWin = document.getElementById('win-teams-popup');
-    cursor.style.opacity = '1';
-    moveTo(dr.width * 0.48, dr.height * 0.28, 0);
-    await delay(500);
-
-    // Browse email card
-    const cardEmails = document.getElementById('demo-card-emails');
-    if (cardEmails) {
-      const p = pos(cardEmails);
-      await moveTo(p.x, p.y, 590);
-      await delay(550);
-    }
-
-    // Browse meetings card
-    const cardMeetings = document.getElementById('demo-card-meetings');
-    if (cardMeetings) {
-      const p = pos(cardMeetings);
-      await moveTo(p.x, p.y, 490);
-      await delay(420);
-    }
-
-    // Move to Teams card, click the urgent message row
-    const tmsClickRow = document.getElementById('tms-click-row');
-    if (tmsClickRow) {
-      const p = pos(tmsClickRow);
-      await moveTo(p.x, p.y, 520);
-      await delay(380);
-      await click(tmsClickRow);
-      await delay(180);
-      // Open Teams window
-      if (teamsWin) { teamsWin.classList.add('visible'); }
-      await delay(900);
-    }
-
-    // Cursor browses Teams conversation
-    cursor.style.opacity = '1';
-    const tmsUrgentMsg = document.getElementById('tms-urgent-msg');
-    if (tmsUrgentMsg) {
-      const p = pos(tmsUrgentMsg);
-      await moveTo(p.x, p.y - 10, 630);
-      await delay(1400);
-    }
-
-    // Cursor moves to composer
-    const tmsPh = document.getElementById('tms-compose-ph');
-    if (tmsPh) {
-      const p = pos(tmsPh);
-      await moveTo(p.x - 20, p.y, 490);
-      await delay(500);
-      await click(null);
+      await click(tbOneWork);
+      tbOneWork.classList.add('active');
       await delay(300);
     }
 
-    // Hover over send button
-    const tmsSend = document.querySelector('.tms-send-btn');
-    if (tmsSend) {
-      const p = pos(tmsSend);
-      await moveTo(p.x, p.y, 420);
+    // Dashboard opens over Outlook (showing M365 integration context)
+    if (winWindow) winWindow.classList.add('visible', 'expanded');
+    await delay(1100);
+
+    // ══════════════════════════════════════════════════════════
+    // PHASE 2 — Dashboard: hover cards, then navigate to Projects
+    // ══════════════════════════════════════════════════════════
+    cursor.style.opacity = '1';
+    moveTo(dr.width * 0.48, dr.height * 0.30, 0);
+    await delay(400);
+
+    // Hover email card
+    const cardEmails = document.getElementById('demo-card-emails');
+    if (cardEmails) {
+      await moveTo(pos(cardEmails).x, pos(cardEmails).y, 700);
       await delay(600);
     }
 
-    await delay(2000);
+    // Hover meetings card
+    const cardMeetings = document.getElementById('demo-card-meetings');
+    if (cardMeetings) {
+      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 600);
+      await delay(500);
+    }
 
-    // ── End of cycle ──────────────────────────────────────────
+    // Click Projects icon in sidebar
+    const projIcon = document.querySelector('.demo-sb-icon[title="Projets"]');
+    if (projIcon) {
+      await moveTo(pos(projIcon).x, pos(projIcon).y, 800);
+      await delay(280);
+      await click(projIcon);
+      // Highlight active sidebar icon
+      document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
+      projIcon.classList.add('active');
+      // Swap views
+      const homeView = document.getElementById('demo-home-view');
+      const projView = document.getElementById('demo-projects-view');
+      if (homeView) homeView.style.display = 'none';
+      if (projView) {
+        projView.style.display = 'flex';
+        await delay(30);
+        projView.style.opacity = '1';
+      }
+      await delay(600);
+    }
+
+    // Cursor drifts over project rows
+    const rows = document.querySelectorAll('.demo-project-row');
+    if (rows[0]) { await moveTo(pos(rows[0]).x, pos(rows[0]).y, 800); await delay(500); }
+    if (rows[1]) { await moveTo(pos(rows[1]).x, pos(rows[1]).y, 650); await delay(450); }
+    if (rows[2]) { await moveTo(pos(rows[2]).x, pos(rows[2]).y, 650); await delay(400); }
+
+    await delay(2200);
+
+    // ── End of cycle — reset ──────────────────────────────────
     cursor.style.opacity = '0';
-    if (teamsWin) { teamsWin.classList.remove('visible'); }
-    await delay(3200);
+    // Restore home view for next loop
+    const homeView2 = document.getElementById('demo-home-view');
+    const projView2 = document.getElementById('demo-projects-view');
+    if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
+    if (homeView2) homeView2.style.display = 'flex';
+    document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
+    if (winWindow) winWindow.classList.remove('visible', 'expanded');
+    if (tbOneWork) tbOneWork.classList.remove('active');
+    await delay(2800);
     run();
   }
 
