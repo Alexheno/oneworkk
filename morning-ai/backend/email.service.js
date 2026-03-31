@@ -61,64 +61,20 @@ function buildWaitlistEmail({ position }) {
 
                 <!-- BODY BLANC -->
                 <tr>
-                  <td style="background:#ffffff;padding:48px 56px 52px;">
+                  <td style="background:#ffffff;padding:48px 56px 56px;">
 
-                    <p style="margin:0 0 28px;font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;">Ce qui vous attend</p>
+                    <!-- Phrase premium -->
+                    <p style="margin:0 0 12px;font-size:17px;font-weight:600;color:#0f172a;line-height:1.6;text-align:center;">
+                      Vous serez parmi les premiers à découvrir<br>une nouvelle façon de travailler.
+                    </p>
+                    <p style="margin:0 0 44px;font-size:15px;color:#64748b;line-height:1.7;text-align:center;">
+                      On vous contacte dès que votre accès est prêt.
+                    </p>
 
-                    <!-- Feature 1 -->
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
+                    <!-- Divider -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:44px;">
                       <tr>
-                        <td style="padding:20px 24px;">
-                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                            <tr>
-                              <td width="44" valign="middle">
-                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#eef2ff,#e0e7ff);text-align:center;line-height:40px;font-size:20px;">🧠</div>
-                              </td>
-                              <td style="padding-left:16px;">
-                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Votre journée analysée en 10 secondes</div>
-                                <div style="font-size:13px;color:#64748b;line-height:1.55;">OneWork lit vos emails, réunions et Teams — to-do list prioritisée générée chaque matin.</div>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Feature 2 -->
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:16px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
-                      <tr>
-                        <td style="padding:20px 24px;">
-                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                            <tr>
-                              <td width="44" valign="middle">
-                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#fdf4ff,#f3e8ff);text-align:center;line-height:40px;font-size:20px;">⚡</div>
-                              </td>
-                              <td style="padding-left:16px;">
-                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Widget discret, toujours accessible</div>
-                                <div style="font-size:13px;color:#64748b;line-height:1.55;">Survolez pour ouvrir — To-Do, réunions, agent IA. Bougez la souris, il disparaît.</div>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Feature 3 -->
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:40px;background:#f8faff;border:1px solid #e8edff;border-radius:16px;">
-                      <tr>
-                        <td style="padding:20px 24px;">
-                          <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                            <tr>
-                              <td width="44" valign="middle">
-                                <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);text-align:center;line-height:40px;font-size:20px;">🔒</div>
-                              </td>
-                              <td style="padding-left:16px;">
-                                <div style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px;">Vos données restent chez vous</div>
-                                <div style="font-size:13px;color:#64748b;line-height:1.55;">Architecture zero-trust. Rien ne transite par nos serveurs. Contrôle total.</div>
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
+                        <td style="border-top:1px solid #f1f5f9;font-size:0;line-height:0;">&nbsp;</td>
                       </tr>
                     </table>
 
@@ -126,8 +82,8 @@ function buildWaitlistEmail({ position }) {
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                       <tr>
                         <td align="center">
-                          <a href="https://build-two-cyan.vercel.app" style="display:inline-block;background:#0f172a;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;padding:16px 48px;border-radius:980px;letter-spacing:-0.2px;">
-                            Voir OneWork →
+                          <a href="https://build-two-cyan.vercel.app" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#a855f7);color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:18px 56px;border-radius:980px;letter-spacing:-0.1px;box-shadow:0 8px 32px rgba(99,102,241,0.35);">
+                            OneWork
                           </a>
                         </td>
                       </tr>
