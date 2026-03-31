@@ -22,8 +22,8 @@ function buildWaitlistEmail({ position }) {
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center" valign="middle" style="padding-right:10px;">
-                    <!-- Ring logo — matching the site -->
-                    <img src="https://build-two-cyan.vercel.app/morning-ai/desktop-app/logo.svg" width="28" height="28" alt="OneWork" style="display:block;border-radius:50%;">
+                    <!-- Ring logo CSS (SVG unsupported in email clients) -->
+                    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8ECDF8 0%,#6B8EF5 22%,#9B35FF 45%,#F472B6 70%,#FB923C 100%);padding:5px;box-sizing:border-box;display:inline-block;"><div style="width:18px;height:18px;border-radius:50%;background:#f4f1ff;"></div></div>
                   </td>
                   <td style="font-size:17px;font-weight:700;color:#0f172a;letter-spacing:-0.4px;">OneWork</td>
                 </tr>
@@ -40,8 +40,8 @@ function buildWaitlistEmail({ position }) {
                 <tr>
                   <td align="center" style="background:linear-gradient(160deg,#f8f6ff 0%,#eef2ff 40%,#fdf4ff 100%);padding:56px 56px 48px;border-radius:28px 28px 0 0;">
 
-                    <!-- Ring logo grand -->
-                    <img src="https://build-two-cyan.vercel.app/morning-ai/desktop-app/logo.svg" width="72" height="72" alt="" style="display:block;margin:0 auto 28px;border-radius:50%;">
+                    <!-- Ring logo grand CSS -->
+                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#8ECDF8 0%,#6B8EF5 22%,#9B35FF 45%,#F472B6 70%,#FB923C 100%);padding:13px;box-sizing:border-box;margin:0 auto 28px;"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(160deg,#f8f6ff,#eef2ff);"></div></div>
 
                     <!-- Badge -->
                     <div style="display:inline-block;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:100px;padding:6px 16px;margin-bottom:24px;">
@@ -53,7 +53,7 @@ function buildWaitlistEmail({ position }) {
                       Vous êtes
                     </h1>
                     <h1 style="margin:0 0 0;font-size:46px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;">
-                      <span style="color:#6366f1;">sur </span><span style="color:#a855f7;">la </span><span style="color:#f97316;">liste.</span>
+                      <span style="color:#6366f1;">s</span><span style="color:#7B55F4;">u</span><span style="color:#9244F6;">r</span> <span style="color:#A855F7;">l</span><span style="color:#BF4FD8;">a</span> <span style="color:#D44BB8;">l</span><span style="color:#E44D96;">i</span><span style="color:#EF5E6A;">s</span><span style="color:#F56D42;">t</span><span style="color:#F97316;">e.</span>
                     </h1>
 
                   </td>
