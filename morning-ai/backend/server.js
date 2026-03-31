@@ -115,7 +115,7 @@ const chatLimiter = rateLimit({
 
 const waitlistLimiter = rateLimit({
     windowMs:         60 * 60 * 1000,  // 1 heure
-    max:              5,                // 5 inscriptions max par IP par heure
+    max:              20,               // 20 tentatives max par IP par heure
     standardHeaders:  true,
     legacyHeaders:    false,
     message:          { success: false, error: 'Trop de tentatives. Réessayez dans une heure.' },

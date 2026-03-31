@@ -9,9 +9,9 @@ function buildWaitlistEmail({ position }) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneWork — Inscription confirmée</title>
 </head>
-<body style="margin:0;padding:0;background:#f0f0f8;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
+<body style="margin:0;padding:0;background:#ffffff;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;">
 
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f0f0f8;padding:48px 20px 64px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;padding:48px 20px 64px;">
     <tr>
       <td align="center">
         <table width="680" cellpadding="0" cellspacing="0" border="0" style="max-width:680px;width:100%;">
