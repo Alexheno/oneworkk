@@ -1682,8 +1682,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: linear-gradient(135deg, rgba(255,185,0,0.07), rgba(255,140,0,0.04));
-  border: 1px solid rgba(255,185,0,0.18);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
   border-radius: 9px;
   padding: 7px 9px;
   margin: 2px 0 1px;
@@ -1693,7 +1693,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: rgba(255,185,0,0.80);
+  color: rgba(255,255,255,0.30);
 }
 .ww-st-demain-row {
   display: flex;
@@ -1706,9 +1706,12 @@ body {
 .ww-st-demain-check {
   width: 12px; height: 12px;
   border-radius: 3px;
-  border: 1.5px solid rgba(255,185,0,0.60);
+  border: 1.5px solid rgba(255,255,255,0.22);
   flex-shrink: 0;
-  box-shadow: 0 0 6px rgba(255,185,0,0.15);
+}
+.ww-st-demain-check-red {
+  border-color: rgba(239,68,68,0.60);
+  box-shadow: 0 0 5px rgba(239,68,68,0.18);
 }
 .ww-st-summary {
   font-size: 0.66rem;

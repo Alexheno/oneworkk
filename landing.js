@@ -583,18 +583,20 @@ function startDemoSequence() {
       scrollToBottom();
 
       // Helpers : type un texte dans un span stylistique, line break instantané
-      const typeInto = async (text, cls) => {
+      const typeInto = async (text, cls, fast = false) => {
         const span = document.createElement('span');
         if (cls) span.className = cls;
         streamWrap.appendChild(span);
         for (let i = 0; i < text.length; i++) {
           span.textContent = text.slice(0, i + 1);
           const c = text[i];
-          let ms = 48 + Math.random() * 36;
-          if (c === '.') ms += 230;
-          if (c === ',') ms += 100;
-          if (c === ':') ms += 70;
-          if (c === '—') ms += 140;
+          let ms = fast ? (16 + Math.random() * 12) : (48 + Math.random() * 36);
+          if (!fast) {
+            if (c === '.') ms += 230;
+            if (c === ',') ms += 100;
+            if (c === ':') ms += 70;
+            if (c === '—') ms += 140;
+          }
           scrollToBottom();
           await delay(ms);
         }
@@ -605,10 +607,11 @@ function startDemoSequence() {
       };
 
       // Helper : insert a "Pour demain" block then stream the task text into it
-      const addDemain = async (id, taskText) => {
+      const addDemain = async (id, taskText, redCheck = false) => {
+        const checkCls = redCheck ? 'ww-st-demain-check ww-st-demain-check-red' : 'ww-st-demain-check';
         const block = document.createElement('div');
         block.className = 'ww-st-demain-block';
-        block.innerHTML = `<div class="ww-st-demain-label">Pour demain</div><div class="ww-st-demain-row"><div class="ww-st-demain-check"></div><span id="${id}"></span></div>`;
+        block.innerHTML = `<div class="ww-st-demain-label">Pour demain</div><div class="ww-st-demain-row"><div class="${checkCls}"></div><span id="${id}"></span></div>`;
         streamWrap.appendChild(block);
         scrollToBottom();
         await delay(150);
@@ -622,7 +625,7 @@ function startDemoSequence() {
 
       await typeInto('Stand-up Équipe · 09:00', 'ww-st-title ww-st-green');
       br();
-      await typeInto('"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l\'API de paiement..."', 'ww-st-quote');
+      await typeInto('"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l\'API de paiement..."', 'ww-st-quote', true);
       br();
       await typeInto('Voir le script →', 'ww-st-voir');
       br();
@@ -632,17 +635,17 @@ function startDemoSequence() {
 
       await typeInto('1:1 Jean-Pierre · 11:30', 'ww-st-title ww-st-orange');
       br();
-      await typeInto('"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."', 'ww-st-quote');
+      await typeInto('"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."', 'ww-st-quote', true);
       br();
       await typeInto('Voir le script →', 'ww-st-voir');
       br();
-      await addDemain('demain-2', 'Envoyer réponse à Jean-Pierre avant 10h');
+      await addDemain('demain-2', 'Envoyer réponse à Jean-Pierre avant 10h', true);
       br();
       await delay(500);
 
       await typeInto('Revue Produit · 14:00', 'ww-st-title ww-st-purple');
       br();
-      await typeInto('"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."', 'ww-st-quote');
+      await typeInto('"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."', 'ww-st-quote', true);
       br();
       await typeInto('Voir le script →', 'ww-st-voir');
       br();
