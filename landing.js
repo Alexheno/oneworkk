@@ -15,34 +15,47 @@ const revealObs = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
 // ─── Two-phase demo sequence ──────────────────────────────────────────────────
+let _demoVisible = false;
+let _demoResume = null;
+
+function setDemoVisible(v) {
+  _demoVisible = v;
+  if (v && _demoResume) { const r = _demoResume; _demoResume = null; r(); }
+}
+
 function startDemoSequence() {
-  const cursor      = document.getElementById('demo-cursor');
-  const desktop     = document.getElementById('win-desktop');
-  const bgOutlook   = document.getElementById('bg-outlook-window');
-  const bgExcel     = document.getElementById('bg-excel-window');
-  const widgetEl    = document.getElementById('win-widget-popup');
-  const winWindow   = document.getElementById('win-onework');
-  const wwTask1     = document.getElementById('ww-task-1');
-  const wwTask2     = document.getElementById('ww-task-2');
-  const wwTask3     = document.getElementById('ww-task-3');
-  const wwTask4     = document.getElementById('ww-task-4');
+  const cursor = document.getElementById('demo-cursor');
+  const desktop = document.getElementById('win-desktop');
+  const bgOutlook = document.getElementById('bg-outlook-window');
+  const bgExcel = document.getElementById('bg-excel-window');
+  const widgetEl = document.getElementById('win-widget-popup');
+  const winWindow = document.getElementById('win-onework');
+  const wwTask1 = document.getElementById('ww-task-1');
+  const wwTask2 = document.getElementById('ww-task-2');
+  const wwTask3 = document.getElementById('ww-task-3');
+  const wwTask4 = document.getElementById('ww-task-4');
   const wwAgentPanel = document.getElementById('ww-agent-panel');
   const wwBriefPanel = document.getElementById('ww-brief-panel');
-  const wwModeAgent  = document.getElementById('ww-mode-agent');
-  const wwModeBrief  = document.getElementById('ww-mode-brief');
+  const wwModeAgent = document.getElementById('ww-mode-agent');
+  const wwModeBrief = document.getElementById('ww-mode-brief');
   const wwChatInput = document.getElementById('ww-chat-input');
-  const wwChatSend  = document.getElementById('ww-chat-send');
-  const wwResponse  = document.getElementById('ww-response');
-  const wwKnob      = document.getElementById('ww-knob');
-  const chatInput   = document.getElementById('demo-chatbar-input');
-  const chatSend    = document.getElementById('demo-chatbar-send');
-  const mainResp    = document.getElementById('demo-main-resp');
+  const wwChatSend = document.getElementById('ww-chat-send');
+  const wwResponse = document.getElementById('ww-response');
+  const wwKnob = document.getElementById('ww-knob');
+  const chatInput = document.getElementById('demo-chatbar-input');
+  const chatSend = document.getElementById('demo-chatbar-send');
+  const mainResp = document.getElementById('demo-main-resp');
 
   if (!cursor || !desktop || !bgOutlook) return;
 
-  const delay = ms => new Promise(r => setTimeout(r, ms));
-  const WW_PH   = 'Demandez quelque chose...';
-  const MAIN_PH = 'Demandez quelque chose à Alex...';
+  // Pause automatically when user scrolls away, resume when they return
+  const _rawDelay = ms => new Promise(r => setTimeout(r, ms));
+  const delay = ms => _rawDelay(ms).then(() => {
+    if (_demoVisible) return;
+    return new Promise(r => { _demoResume = r; });
+  });
+  const WW_PH = 'Demander à l\'Agent IA...';
+  const MAIN_PH = 'Demander quelque chose à l\'Agent IA';
 
   // Get element center relative to win-desktop
   function pos(el) {
@@ -54,7 +67,7 @@ function startDemoSequence() {
   function moveTo(x, y, ms = 1200) {
     cursor.style.setProperty('--cdur', ms + 'ms');
     cursor.style.left = x + 'px';
-    cursor.style.top  = y + 'px';
+    cursor.style.top = y + 'px';
     return delay(ms);
   }
 
@@ -127,11 +140,13 @@ function startDemoSequence() {
     });
     // Reset to Brief mode
     const wwCardReset = document.querySelector('#win-widget-popup .ww-card');
-    if (wwCardReset) wwCardReset.classList.remove('show-agent');
-    if (wwModeAgent)  { wwModeAgent.classList.remove('ww-mode-active'); }
-    if (wwModeBrief)  { wwModeBrief.classList.add('ww-mode-active'); }
+    if (wwCardReset) { wwCardReset.classList.remove('show-agent'); wwCardReset.style.height = ''; }
+    if (wwModeAgent) { wwModeAgent.classList.remove('ww-mode-active'); }
+    if (wwModeBrief) { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
-    if (wwResponse)  { wwResponse.innerHTML = ''; wwResponse.className = 'ww-response'; }
+    if (wwResponse) { wwResponse.innerHTML = ''; wwResponse.className = 'ww-response'; }
+    const wwTitleReset = document.querySelector('.ww-agent-title');
+    if (wwTitleReset) { wwTitleReset.style.display = ''; }
     const wwBubbleReset = document.querySelector('#ww-agent-panel .ww-agent-bubble');
     if (wwBubbleReset) {
       wwBubbleReset.style.opacity = '';
@@ -140,269 +155,74 @@ function startDemoSequence() {
       wwBubbleReset.style.margin = '';
     }
 
-    bgOutlook.classList.remove('fading');
-    bgExcel.classList.remove('visible');
-    if (winWindow) winWindow.classList.remove('visible', 'expanded');
+    // Excel visible at start, Outlook hidden
+    bgOutlook.classList.add('fading');
+    if (bgExcel) bgExcel.classList.add('visible');
+    // Dashboard stays visible — no taskbar click phase
+    if (winWindow) winWindow.classList.add('visible', 'expanded');
     const teamsWinReset = document.getElementById('win-teams-popup');
     if (teamsWinReset) teamsWinReset.classList.remove('visible');
-    const tbReset = document.getElementById('tb-onework');
-    if (tbReset) tbReset.classList.remove('active');
-    if (mainResp)  { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
-    if (chatInput)   { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
+    const tbOneWork = document.getElementById('tb-onework');
+    if (tbOneWork) tbOneWork.classList.remove('active');
+    // Remove injected reply bubble
+    const replyMsgReset = document.getElementById('tms-reply-msg');
+    if (replyMsgReset) replyMsgReset.remove();
+    // Restore composer placeholder
+    const tmsComposePh2 = document.getElementById('tms-compose-ph');
+    if (tmsComposePh2) { tmsComposePh2.textContent = 'Répondre à Sarah Martin...'; tmsComposePh2.style.color = ''; }
+    if (mainResp) { mainResp.className = 'demo-main-resp'; mainResp.innerHTML = ''; }
+    if (chatInput) { chatInput.textContent = MAIN_PH; chatInput.style.color = ''; }
+    // Restore home view
+    const homeViewR = document.getElementById('demo-home-view');
+    const projViewR = document.getElementById('demo-projects-view');
+    if (projViewR) { projViewR.style.opacity = '0'; projViewR.style.display = 'none'; }
+    if (homeViewR) homeViewR.style.display = 'flex';
+    document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
 
+    if (tbOneWork) tbOneWork.classList.add('active');
     cursor.style.opacity = '0';
-    await delay(1200);
+    await delay(700);
 
     // ══════════════════════════════════════════════════════════
-    // PHASE 1 — Outlook + Widget interaction
+    // PHASE 1 — Dashboard → Projects
     // ══════════════════════════════════════════════════════════
     const dr = desktop.getBoundingClientRect();
 
-    // Cursor appears at center of screen
-    moveTo(dr.width * 0.50, dr.height * 0.45, 0);
+    // Cursor appears in dashboard content area
+    moveTo(dr.width * 0.48, dr.height * 0.32, 0);
     cursor.style.opacity = '1';
-    await delay(700);
+    await delay(500);
 
-    // 1. Move cursor near widget → hover opens card (no click)
-    if (wwKnob) {
-      const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 6, 1100);
-      await delay(300);
-      widgetEl.classList.add('open');
-      await delay(600);
-    }
-
-    // 2. Check task 1 → sinks to bottom
-    if (wwTask1) {
-      const dot1 = wwTask1.querySelector('.ww-dot');
-      if (dot1) {
-        const p = pos(dot1);
-        await moveTo(p.x, p.y, 800);
-        await delay(200);
-        await click(dot1);
-        await delay(80);
-        await checkAndSink(wwTask1);
-        await delay(700);
-      }
-    }
-
-    // 3. Check task 2 → sinks to bottom
-    if (wwTask2) {
-      const dot2 = wwTask2.querySelector('.ww-dot');
-      if (dot2) {
-        const p = pos(dot2);
-        await moveTo(p.x, p.y, 680);
-        await delay(160);
-        await click(dot2);
-        await delay(80);
-        await checkAndSink(wwTask2);
-        await delay(720);
-      }
-    }
-
-    // 3b. Check task 3 → sinks to bottom
-    if (wwTask3) {
-      const dot3 = wwTask3.querySelector('.ww-dot');
-      if (dot3) {
-        const p = pos(dot3);
-        await moveTo(p.x, p.y, 680);
-        await delay(160);
-        await click(dot3);
-        await delay(80);
-        await checkAndSink(wwTask3);
-        await delay(720);
-      }
-    }
-
-    // 4. Switch to Agent IA mode, then type
-    if (wwModeAgent && wwModeBrief && wwAgentPanel) {
-      const pAgent = pos(wwModeAgent);
-      await moveTo(pAgent.x, pAgent.y, 720);
-      await delay(220);
-      await click(wwModeAgent);
-      await delay(100);
-      wwModeBrief.classList.remove('ww-mode-active');
-      wwModeAgent.classList.add('ww-mode-active');
-      const wwCard = document.querySelector('#win-widget-popup .ww-card');
-      if (wwCard) wwCard.classList.add('show-agent');
-      await delay(380);
-    }
-    if (wwChatInput) {
-      const p = pos(wwChatInput);
-      await moveTo(p.x - 12, p.y, 800);
-      await delay(270);
-      await click(null);
-      await delay(180);
-      await typeIn('Fais moi un récap de ma journée', wwChatInput);
-      await delay(340);
-    }
-
-    // 5. Click send
-    if (wwChatSend) {
-      const p = pos(wwChatSend);
-      await moveTo(p.x, p.y, 600);
-      await delay(310);
-      await click(wwChatSend);
-      await delay(200);
-    }
-
-    // 6. Show thinking dots, then inject screen-time visualization
-    if (wwChatInput) { wwChatInput.textContent = ''; wwChatInput.style.color = ''; }
-    const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
-    if (wwBubble) {
-      wwBubble.style.opacity = '0';
-      wwBubble.style.maxHeight = '0';
-      wwBubble.style.padding = '0';
-      wwBubble.style.margin = '0';
-    }
-    if (wwResponse) {
-      wwResponse.className = 'ww-response visible';
-      wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
-    }
-
-    // Cursor drifts away
-    await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
-    await delay(1900);
-
-    if (wwResponse) {
-      wwResponse.className = 'ww-response visible';
-      // Inject shell — bars and legend start empty
-      wwResponse.innerHTML = `<div class="ww-recap">
-  <div class="ww-recap-lbl"><span>8h</span><span>11h</span><span>14h</span><span>17h</span></div>
-  <div class="ww-recap-bars" id="ww-bars-container"></div>
-  <div class="ww-recap-leg" id="ww-leg-container"></div>
-  <div class="ww-score-ring" id="ww-score-ring" style="opacity:0">
-    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-      <defs>
-        <linearGradient id="sgr" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#6B8EF5"/>
-          <stop offset="100%" stop-color="#9B35FF"/>
-        </linearGradient>
-      </defs>
-      <circle cx="22" cy="22" r="17" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
-      <circle cx="22" cy="22" r="17" stroke="url(#sgr)" stroke-width="3" stroke-linecap="round"
-        stroke-dasharray="106.8" stroke-dashoffset="106.8" id="ww-score-arc"
-        style="transform:rotate(-90deg);transform-origin:22px 22px;transition:stroke-dashoffset 1.3s cubic-bezier(0.16,1,0.3,1)"/>
-      <text x="22" y="26" text-anchor="middle" fill="white" font-size="10" font-weight="700" font-family="system-ui,sans-serif">78%</text>
-    </svg>
-    <div class="ww-score-info">
-      <span class="ww-score-pct">Score de productivité</span>
-      <span class="ww-score-lbl"></span>
-    </div>
-  </div>
-  <p class="ww-recap-sum" id="ww-sum-txt" style="opacity:0;border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin:0"></p>
-</div>`;
-
-      // Stream bars left → right
-      const barsData = [
-        {h:15,bg:'#0078d4'},{h:35,bg:'#FB923C'},{h:18,bg:'#0078d4'},
-        {h:29,bg:'#FB923C'},{h:10,bg:'#6b7280'},{h:21,bg:'#22c55e'},
-        {h:38,bg:'#FB923C'},{h:26,bg:'#a855f7'},{h:23,bg:'#a855f7'},{h:13,bg:'#0078d4'}
-      ];
-      const barsEl = document.getElementById('ww-bars-container');
-      if (barsEl) {
-        for (const b of barsData) {
-          const d = document.createElement('div');
-          d.className = 'ww-rb';
-          d.style.cssText = `height:${b.h}px;background:${b.bg};--d:0`;
-          barsEl.appendChild(d);
-          await delay(72);
-        }
-      }
-
-      // Legend items appear one by one
-      const legData = [
-        {bg:'#FB923C',name:'Réunions',val:'2h 15'},
-        {bg:'#0078d4',name:'Emails',   val:'1h 40'},
-        {bg:'#a855f7',name:'Teams',    val:'1h 05'},
-        {bg:'#22c55e',name:'Documents',val:'0h 45'}
-      ];
-      const legEl = document.getElementById('ww-leg-container');
-      if (legEl) {
-        for (const l of legData) {
-          const div = document.createElement('div');
-          div.className = 'ww-rl-item';
-          div.style.cssText = 'animation:recap-in 0.25s ease both';
-          div.innerHTML = `<span class="ww-rl-dot" style="background:${l.bg}"></span><span class="ww-rl-name">${l.name}</span><span class="ww-rl-val">${l.val}</span>`;
-          legEl.appendChild(div);
-          await delay(160);
-        }
-      }
-
-      // Score ring appears + animates
-      const scoreRing = document.getElementById('ww-score-ring');
-      const scoreArc  = document.getElementById('ww-score-arc');
-      if (scoreRing) {
-        scoreRing.style.opacity = '1';
-        await delay(60);
-        if (scoreArc) scoreArc.style.strokeDashoffset = '23.5'; // 106.8 × (1 - 0.78)
-      }
-      await delay(1400);
-
-      // Stream summary text char by char
-      const sumEl = document.getElementById('ww-sum-txt');
-      if (sumEl) {
-        sumEl.style.opacity = '1';
-        await stream('Journée chargée — 2h15 en réunions, 3 urgences traitées.', sumEl);
-      }
-    }
-    await delay(4000);
-
-    // ══════════════════════════════════════════════════════════
-    // TRANSITION — Widget closes → Outlook visible → clic logo → Dashboard
-    // ══════════════════════════════════════════════════════════
-    widgetEl.classList.remove('open');
-    cursor.style.opacity = '0';
-    await delay(600);
-
-    // Outlook stays visible (data source context)
-    bgOutlook.classList.remove('fading');
-    if (bgExcel) bgExcel.classList.remove('visible');
-    await delay(700);
-
-    // Cursor reappears at taskbar, clicks OneWork icon
-    moveTo(dr.width * 0.52, dr.height * 0.82, 0);
-    cursor.style.opacity = '1';
-    const tbOneWork = document.getElementById('tb-onework');
-    if (tbOneWork) {
-      const p = pos(tbOneWork);
-      await moveTo(p.x, p.y, 840);
-      await delay(350);
-      await click(tbOneWork);
-      tbOneWork.classList.add('active');
-      await delay(300);
-    }
-
-    // Dashboard opens over Outlook (showing M365 integration context)
-    if (winWindow) winWindow.classList.add('visible', 'expanded');
-    await delay(1100);
-
-    // ══════════════════════════════════════════════════════════
-    // PHASE 2 — Dashboard: hover cards, then navigate to Projects
-    // ══════════════════════════════════════════════════════════
-    cursor.style.opacity = '1';
-    moveTo(dr.width * 0.48, dr.height * 0.30, 0);
-    await delay(400);
-
-    // Hover email card
+    // Hover email card — linger
     const cardEmails = document.getElementById('demo-card-emails');
     if (cardEmails) {
-      await moveTo(pos(cardEmails).x, pos(cardEmails).y, 700);
-      await delay(600);
+      await moveTo(pos(cardEmails).x, pos(cardEmails).y, 780);
+      await delay(1100);
     }
 
-    // Hover meetings card
+    // Hover meetings card — linger
     const cardMeetings = document.getElementById('demo-card-meetings');
     if (cardMeetings) {
-      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 600);
-      await delay(500);
+      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 720);
+      await delay(1000);
     }
+
+    // Hover todo / third card — linger
+    const cardTodo = document.getElementById('demo-card-todo');
+    if (cardTodo) {
+      await moveTo(pos(cardTodo).x, pos(cardTodo).y, 700);
+      await delay(900);
+    }
+
+    // Drift back to center, breathe
+    await moveTo(dr.width * 0.50, dr.height * 0.40, 800);
+    await delay(800);
 
     // Click Projects icon in sidebar
     const projIcon = document.querySelector('.demo-sb-icon[title="Projets"]');
     if (projIcon) {
-      await moveTo(pos(projIcon).x, pos(projIcon).y, 800);
-      await delay(280);
+      await moveTo(pos(projIcon).x, pos(projIcon).y, 880);
+      await delay(300);
       await click(projIcon);
       // Highlight active sidebar icon
       document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
@@ -416,44 +236,412 @@ function startDemoSequence() {
         await delay(30);
         projView.style.opacity = '1';
       }
-      await delay(600);
+      await delay(700);
     }
 
-    // Cursor drifts over project rows
+    // Cursor drifts over project rows — linger on each
     const rows = document.querySelectorAll('.demo-project-row');
-    if (rows[0]) { await moveTo(pos(rows[0]).x, pos(rows[0]).y, 800); await delay(500); }
-    if (rows[1]) { await moveTo(pos(rows[1]).x, pos(rows[1]).y, 650); await delay(450); }
-    if (rows[2]) { await moveTo(pos(rows[2]).x, pos(rows[2]).y, 650); await delay(400); }
+    if (rows[0]) { await moveTo(pos(rows[0]).x, pos(rows[0]).y, 840); await delay(900); }
+    if (rows[1]) { await moveTo(pos(rows[1]).x, pos(rows[1]).y, 700); await delay(800); }
+    if (rows[2]) { await moveTo(pos(rows[2]).x, pos(rows[2]).y, 680); await delay(700); }
+    if (rows[3]) { await moveTo(pos(rows[3]).x, pos(rows[3]).y, 680); await delay(600); }
 
-    await delay(2200);
+    // Stay on projects page
+    await delay(2800);
 
-    // ── End of cycle — reset ──────────────────────────────────
-    cursor.style.opacity = '0';
-    // Restore home view for next loop
-    const homeView2 = document.getElementById('demo-home-view');
+    // ── Return to home view ───────────────────────────────────
     const projView2 = document.getElementById('demo-projects-view');
+    const homeView2 = document.getElementById('demo-home-view');
+    const homeIcon = document.querySelector('.demo-sb-icon[title="Accueil"]') || document.querySelector('.demo-sb-icon');
+    if (homeIcon) {
+      await moveTo(pos(homeIcon).x, pos(homeIcon).y, 800);
+      await delay(250);
+      await click(homeIcon);
+    }
     if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
     if (homeView2) homeView2.style.display = 'flex';
     document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
+    await delay(700);
+
+    // ── Click Sarah Martin Teams row → Teams window opens ─────
+    const tmsRow = document.getElementById('tms-click-row');
+    const teamsWin = document.getElementById('win-teams-popup');
+    if (tmsRow) {
+      await moveTo(pos(tmsRow).x, pos(tmsRow).y, 820);
+      await delay(280);
+      await click(tmsRow);
+      if (teamsWin) teamsWin.classList.add('visible');
+      await delay(900);
+    }
+
+    // ── Type reply in Teams composer ──────────────────────────
+    const tmsComposePh = document.getElementById('tms-compose-ph');
+    const tmsSendBtn = document.querySelector('.tms-send-btn');
+    if (tmsComposePh) {
+      await moveTo(pos(tmsComposePh).x, pos(tmsComposePh).y, 760);
+      await delay(260);
+      await click(null);
+      await delay(180);
+      // Type into the span
+      const tmsText = 'Ok je regarde ça tout de suite !';
+      tmsComposePh.style.color = '#201F1E';
+      for (let i = 0; i <= tmsText.length; i++) {
+        tmsComposePh.textContent = tmsText.slice(0, i);
+        await delay(42 + Math.random() * 28);
+      }
+      await delay(340);
+    }
+    if (tmsSendBtn) {
+      await moveTo(pos(tmsSendBtn).x, pos(tmsSendBtn).y, 560);
+      await delay(260);
+      await click(tmsSendBtn);
+      await delay(120);
+
+      // Clear composer
+      if (tmsComposePh) {
+        tmsComposePh.textContent = '';
+        tmsComposePh.style.color = '';
+      }
+
+      // Inject Henri's reply — same format as all Teams messages
+      const msgsArea = document.getElementById('tms-msgs-area');
+      if (msgsArea) {
+        const bubble = document.createElement('div');
+        bubble.className = 'tms-msg tms-msg-appear';
+        bubble.id = 'tms-reply-msg';
+        bubble.innerHTML = `
+          <div class="tms-msg-av" style="background:linear-gradient(135deg,#6264A7,#4B4D8F)">HB</div>
+          <div class="tms-msg-content">
+            <div class="tms-msg-meta"><span class="tms-msg-name">Henri B.</span><span class="tms-msg-time">09h05</span></div>
+            <div class="tms-msg-text">Ok je regarde ça tout de suite !</div>
+          </div>`;
+        msgsArea.appendChild(bubble);
+        msgsArea.scrollTop = msgsArea.scrollHeight;
+        await delay(900);
+      }
+    }
+
+    // ── Cursor drifts away, then everything fades together ────
+    await moveTo(dr.width * 0.50, dr.height * 0.45, 700);
+    await delay(300);
+    cursor.style.opacity = '0';
+    await delay(200);
+
+    // ── Black overlay fade-in ────────────────────────────────
+    const blackOverlay = document.getElementById('demo-black-overlay');
+    if (blackOverlay) {
+      blackOverlay.classList.add('fade-in');
+      blackOverlay.classList.remove('fade-out');
+    }
+    await delay(180);
+
+    // Switch scene behind the black screen
+    if (teamsWin) teamsWin.classList.remove('visible');
     if (winWindow) winWindow.classList.remove('visible', 'expanded');
     if (tbOneWork) tbOneWork.classList.remove('active');
-    await delay(2800);
+    bgOutlook.classList.remove('fading');
+    if (bgExcel) bgExcel.classList.remove('visible');
+
+    await delay(200);
+
+    // ── Black overlay fade-out → reveal Outlook ───────────────
+    if (blackOverlay) {
+      blackOverlay.classList.remove('fade-in');
+      blackOverlay.classList.add('fade-out');
+    }
+    await delay(520);
+
+    // ══════════════════════════════════════════════════════════
+    // PHASE 2 — Widget interaction → Agent IA recap
+    // ══════════════════════════════════════════════════════════
+
+    // Cursor appears directly near widget knob — no email click
+    cursor.style.opacity = '1';
+    moveTo(dr.width * 0.38, dr.height * 0.52, 0);
+    await delay(300);
+
+    // Move near widget knob → hover opens card
+    if (wwKnob) {
+      const p = pos(wwKnob);
+      await moveTo(p.x, p.y - 6, 1100);
+      await delay(300);
+      widgetEl.classList.add('open');
+      await delay(600);
+    }
+
+    // Check task 1 → sinks to bottom
+    if (wwTask1) {
+      const dot1 = wwTask1.querySelector('.ww-dot');
+      if (dot1) {
+        const p = pos(dot1);
+        await moveTo(p.x, p.y, 800);
+        await delay(200);
+        await click(dot1);
+        await delay(80);
+        await checkAndSink(wwTask1);
+        await delay(700);
+      }
+    }
+
+    // Check task 2 → sinks to bottom
+    if (wwTask2) {
+      const dot2 = wwTask2.querySelector('.ww-dot');
+      if (dot2) {
+        const p = pos(dot2);
+        await moveTo(p.x, p.y, 680);
+        await delay(160);
+        await click(dot2);
+        await delay(80);
+        await checkAndSink(wwTask2);
+        await delay(720);
+      }
+    }
+
+    // Check task 3 → sinks to bottom
+    if (wwTask3) {
+      const dot3 = wwTask3.querySelector('.ww-dot');
+      if (dot3) {
+        const p = pos(dot3);
+        await moveTo(p.x, p.y, 680);
+        await delay(160);
+        await click(dot3);
+        await delay(80);
+        await checkAndSink(wwTask3);
+        await delay(720);
+      }
+    }
+
+    // Switch to Agent IA mode, then type
+    if (wwModeAgent && wwModeBrief && wwAgentPanel) {
+      const pAgent = pos(wwModeAgent);
+      await moveTo(pAgent.x, pAgent.y, 720);
+      await delay(220);
+      await click(wwModeAgent);
+      await delay(100);
+      wwModeBrief.classList.remove('ww-mode-active');
+      wwModeAgent.classList.add('ww-mode-active');
+      const wwCard = document.querySelector('#win-widget-popup .ww-card');
+      if (wwCard) {
+        // Measure agent panel height by temporarily exposing it
+        const agentEl = document.getElementById('ww-agent-panel');
+        let agentH = 160;
+        if (agentEl) {
+          agentEl.style.cssText = 'max-height:none!important;overflow:visible!important;position:absolute!important;visibility:hidden!important;pointer-events:none!important';
+          agentH = agentEl.scrollHeight || agentEl.offsetHeight || 160;
+          agentEl.style.cssText = '';
+        }
+        const modeBarEl = wwCard.querySelector('.ww-mode-bar');
+        const modeBarH = modeBarEl ? modeBarEl.offsetHeight : 36;
+        const toH = modeBarH + agentH;
+        // Freeze current height then animate
+        wwCard.style.height = wwCard.offsetHeight + 'px';
+        wwCard.classList.add('show-agent');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          wwCard.style.height = toH + 'px';
+        }));
+        // After transition completes, let card grow freely with streamed response
+        setTimeout(() => { wwCard.style.height = ''; }, 680);
+      }
+      await delay(380);
+    }
+    if (wwChatInput) {
+      const p = pos(wwChatInput);
+      await moveTo(p.x - 12, p.y, 800);
+      await delay(270);
+      await click(null);
+      await delay(180);
+      await typeIn('Fais moi un récap de ma journée', wwChatInput);
+      await delay(340);
+    }
+
+    // Click send
+    if (wwChatSend) {
+      const p = pos(wwChatSend);
+      await moveTo(p.x, p.y, 600);
+      await delay(310);
+      await click(wwChatSend);
+      await delay(200);
+    }
+
+    // Show thinking dots, then inject screen-time visualization
+    if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
+    const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
+    if (wwBubble) {
+      wwBubble.style.opacity = '0';
+      wwBubble.style.maxHeight = '0';
+      wwBubble.style.padding = '0';
+      wwBubble.style.margin = '0';
+    }
+    const wwAgentTitle = document.querySelector('.ww-agent-title');
+    if (wwAgentTitle) { wwAgentTitle.style.display = 'none'; }
+    if (wwResponse) {
+      wwResponse.className = 'ww-response visible';
+      wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
+    }
+
+    // Cursor drifts away while AI thinks
+    await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
+    await delay(1900);
+
+    if (wwResponse) {
+      wwResponse.className = 'ww-response visible';
+      const recap = document.createElement('div');
+      recap.className = 'ww-recap';
+      wwResponse.innerHTML = '';
+      wwResponse.appendChild(recap);
+
+      const agentContent = document.querySelector('.ww-agent-content');
+      const scrollToBottom = () => {
+        if (agentContent) agentContent.scrollTop = agentContent.scrollHeight;
+      };
+
+      const addBlock = (html) => {
+        const el = document.createElement('div');
+        el.className = 'ww-section';
+        el.innerHTML = html;
+        recap.appendChild(el);
+        scrollToBottom();
+      };
+
+      // 1 — Label + barres (Ven au centre, Sam/Dim vides)
+      addBlock(`
+        <div class="ww-total-lbl" style="margin-bottom:6px">Temps d'écran · Aujourd'hui</div>
+        <div class="ww-recap-lbl"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span style="color:rgba(255,255,255,0.55);font-weight:600">Ven</span><span>Sam</span><span>Dim</span></div>
+        <div class="ww-recap-bars">
+          <div class="ww-rb" style="height:45%;background:linear-gradient(180deg,#60C8FF,#3B9EFF);--d:0"></div>
+          <div class="ww-rb" style="height:62%;background:linear-gradient(180deg,#4ADDB8,#22B899);--d:1"></div>
+          <div class="ww-rb" style="height:55%;background:linear-gradient(180deg,#A78BFA,#7C5FD4);--d:2"></div>
+          <div class="ww-rb" style="height:78%;background:linear-gradient(180deg,#FB923C,#F05D1A);--d:3"></div>
+          <div class="ww-rb today" style="height:100%;background:linear-gradient(180deg,#F472B6,#9B35FF);--d:4"></div>
+          <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:5"></div>
+          <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:6"></div>
+        </div>`);
+
+      // 2 — Légende apps
+      await delay(900);
+      addBlock(`
+        <div class="ww-divider"></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name">Teams</span><span class="ww-rl-val">2h 48</span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name">Outlook</span><span class="ww-rl-val">1h 12</span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name">Chrome</span><span class="ww-rl-val">0h 54</span></div>`);
+
+      // 3 — Score ring
+      await delay(800);
+      addBlock(`
+        <div class="ww-divider"></div>
+        <div class="ww-score-ring">
+          <svg width="32" height="32" viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="13" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
+            <circle cx="16" cy="16" r="13" fill="none" stroke="url(#sg2)" stroke-width="3"
+              stroke-dasharray="81.7" stroke-dashoffset="20" stroke-linecap="round" transform="rotate(-90 16 16)"/>
+            <defs><linearGradient id="sg2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6B8EF5"/><stop offset="100%" stop-color="#9B35FF"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="ww-score-info">
+            <div class="ww-score-pct">Score : 75 %</div>
+            <div class="ww-score-lbl">PRODUCTIVITÉ DU JOUR</div>
+          </div>
+        </div>`);
+
+      // 4 — Récap réunions
+      await delay(900);
+      addBlock(`<div class="ww-divider"></div><div class="ww-recap-meetings-lbl">Réunions du jour</div>`);
+
+      await delay(500);
+      addBlock(`
+        <div class="ww-recap-meeting">
+          <div class="ww-recap-mtitle">
+            <span class="ww-recap-micon" style="background:rgba(96,200,255,0.15);color:#60C8FF">◆</span>
+            Stand-up Équipe · 09:00
+          </div>
+          <div class="ww-recap-mscript">"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l'API de paiement..."</div>
+          <a class="ww-recap-voir-plus">Voir plus →</a>
+          <div class="ww-recap-demain">
+            <div class="ww-recap-demain-lbl">Pour demain</div>
+            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Valider les tickets bloquants avec Marie</div>
+          </div>
+        </div>`);
+
+      await delay(700);
+      addBlock(`
+        <div class="ww-recap-meeting">
+          <div class="ww-recap-mtitle">
+            <span class="ww-recap-micon" style="background:rgba(167,139,250,0.15);color:#A78BFA">◆</span>
+            1:1 Jean-Pierre · 11:30
+          </div>
+          <div class="ww-recap-mscript">"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."</div>
+          <a class="ww-recap-voir-plus">Voir plus →</a>
+          <div class="ww-recap-demain">
+            <div class="ww-recap-demain-lbl">Pour demain</div>
+            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Envoyer réponse à Jean-Pierre avant 10h</div>
+          </div>
+        </div>`);
+
+      await delay(700);
+      addBlock(`
+        <div class="ww-recap-meeting">
+          <div class="ww-recap-mtitle">
+            <span class="ww-recap-micon" style="background:rgba(244,114,182,0.15);color:#F472B6">◆</span>
+            Revue Produit · 14:00
+          </div>
+          <div class="ww-recap-mscript">"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."</div>
+          <a class="ww-recap-voir-plus">Voir plus →</a>
+          <div class="ww-recap-demain">
+            <div class="ww-recap-demain-lbl">Pour demain</div>
+            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Préparer les slides pour la démo client</div>
+          </div>
+        </div>`);
+
+      // 5 — Texte IA streamé — phrase finale
+      await delay(800);
+      const sumWrap = document.createElement('div');
+      sumWrap.className = 'ww-section';
+      sumWrap.innerHTML = '<p class="ww-recap-sum"><span id="ww-sum-text"></span></p>';
+      recap.appendChild(sumWrap);
+      scrollToBottom();
+
+      await delay(80);
+      const sumEl = document.getElementById('ww-sum-text');
+      const sumText = 'Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.';
+      if (sumEl) {
+        for (let i = 0; i < sumText.length; i++) {
+          sumEl.textContent = sumText.slice(0, i + 1);
+          const c = sumText[i];
+          let ms = 38 + Math.random() * 28;
+          if (c === ',') ms += 80;
+          if (c === '.') ms += 180;
+          scrollToBottom();
+          await delay(ms);
+        }
+      }
+    }
+
+    // ── End of cycle — wait then loop ────────────────────────
+    await delay(4000);
+    cursor.style.opacity = '0';
+    await delay(1800);
     run();
   }
 
   run();
 }
 
-// ─── Laptop tilt → flat + start demo ─────────────────────────────────────────
+// ─── Laptop tilt → flat + demo pause/resume on visibility ────────────────────
 const laptop = document.getElementById('demo-laptop');
 if (laptop) {
+  let demoStarted = false;
   const lo = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
+    const visible = entries[0].isIntersecting;
+    setDemoVisible(visible);
+    if (visible) {
       laptop.classList.add('leveled');
-      setTimeout(startDemoSequence, 2200);
-      lo.disconnect();
+      if (!demoStarted) {
+        demoStarted = true;
+        setTimeout(startDemoSequence, 300);
+      }
     }
-  }, { threshold: 0.22 });
+  }, { threshold: 0.15 });
   lo.observe(laptop);
 }
 
