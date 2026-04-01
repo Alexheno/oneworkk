@@ -1672,10 +1672,43 @@ body {
   color: rgba(255,255,255,0.36);
   font-style: italic;
 }
-.ww-st-todo {
-  font-size: 0.63rem;
-  color: rgba(107,142,245,0.88);
-  font-weight: 500;
+.ww-st-voir {
+  font-size: 0.55rem;
+  font-weight: 600;
+  color: rgba(107,142,245,0.78);
+  cursor: pointer;
+}
+.ww-st-demain-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: linear-gradient(135deg, rgba(255,185,0,0.07), rgba(255,140,0,0.04));
+  border: 1px solid rgba(255,185,0,0.18);
+  border-radius: 9px;
+  padding: 7px 9px;
+  margin: 2px 0 1px;
+}
+.ww-st-demain-label {
+  font-size: 0.46rem;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,185,0,0.80);
+}
+.ww-st-demain-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.60rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.4;
+}
+.ww-st-demain-check {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  border: 1.5px solid rgba(255,185,0,0.60);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(255,185,0,0.15);
 }
 .ww-st-summary {
   font-size: 0.66rem;

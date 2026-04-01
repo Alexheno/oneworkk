@@ -604,6 +604,17 @@ function startDemoSequence() {
         scrollToBottom();
       };
 
+      // Helper : insert a "Pour demain" block then stream the task text into it
+      const addDemain = async (id, taskText) => {
+        const block = document.createElement('div');
+        block.className = 'ww-st-demain-block';
+        block.innerHTML = `<div class="ww-st-demain-label">Pour demain</div><div class="ww-st-demain-row"><div class="ww-st-demain-check"></div><span id="${id}"></span></div>`;
+        streamWrap.appendChild(block);
+        scrollToBottom();
+        await delay(150);
+        await typeEl(document.getElementById(id), taskText);
+      };
+
       await delay(200);
       await typeInto('Réunions du jour', 'ww-st-label');
       br(2);
@@ -613,24 +624,30 @@ function startDemoSequence() {
       br();
       await typeInto('"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l\'API de paiement..."', 'ww-st-quote');
       br();
-      await typeInto('Pour demain — Valider les tickets bloquants avec Marie', 'ww-st-todo');
-      br(2);
+      await typeInto('Voir le script →', 'ww-st-voir');
+      br();
+      await addDemain('demain-1', 'Valider les tickets bloquants avec Marie');
+      br();
       await delay(500);
 
       await typeInto('1:1 Jean-Pierre · 11:30', 'ww-st-title ww-st-orange');
       br();
       await typeInto('"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."', 'ww-st-quote');
       br();
-      await typeInto('Pour demain — Envoyer réponse à Jean-Pierre avant 10h', 'ww-st-todo');
-      br(2);
+      await typeInto('Voir le script →', 'ww-st-voir');
+      br();
+      await addDemain('demain-2', 'Envoyer réponse à Jean-Pierre avant 10h');
+      br();
       await delay(500);
 
       await typeInto('Revue Produit · 14:00', 'ww-st-title ww-st-purple');
       br();
       await typeInto('"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."', 'ww-st-quote');
       br();
-      await typeInto('Pour demain — Préparer les slides pour la démo client', 'ww-st-todo');
-      br(2);
+      await typeInto('Voir le script →', 'ww-st-voir');
+      br();
+      await addDemain('demain-3', 'Préparer les slides pour la démo client');
+      br();
       await delay(700);
 
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
