@@ -544,86 +544,67 @@ function startDemoSequence() {
           </div>
         </div>`);
 
-      // 4 — Récap réunions
+      // 4 — Tout le texte streamé comme une vraie réponse IA
       await delay(1400);
-      addBlock(`<div class="ww-divider"></div><div class="ww-recap-meetings-lbl">Réunions du jour</div>`);
 
-      await delay(800);
-      addBlock(`
-        <div class="ww-recap-meeting" style="--mc:#30D158;--mc-bg:rgba(48,209,88,0.12)">
-          <div class="ww-recap-maccent"></div>
-          <div class="ww-recap-mbody">
-            <div class="ww-recap-mhead">
-              <span class="ww-recap-mname">Stand-up Équipe</span>
-              <span class="ww-recap-mtime">09:00</span>
-            </div>
-            <div class="ww-recap-mscript">"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l'API de paiement..."</div>
-            <a class="ww-recap-voir-plus">Voir le script →</a>
-            <div class="ww-recap-demain">
-              <div class="ww-recap-demain-lbl">Pour demain</div>
-              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Valider les tickets bloquants avec Marie</div>
-            </div>
-          </div>
-        </div>`);
-
-      await delay(1100);
-      addBlock(`
-        <div class="ww-recap-meeting" style="--mc:#FF9F0A;--mc-bg:rgba(255,159,10,0.12)">
-          <div class="ww-recap-maccent"></div>
-          <div class="ww-recap-mbody">
-            <div class="ww-recap-mhead">
-              <span class="ww-recap-mname">1:1 Jean-Pierre</span>
-              <span class="ww-recap-mtime">11:30</span>
-            </div>
-            <div class="ww-recap-mscript">"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."</div>
-            <a class="ww-recap-voir-plus">Voir le script →</a>
-            <div class="ww-recap-demain">
-              <div class="ww-recap-demain-lbl">Pour demain</div>
-              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Envoyer réponse à Jean-Pierre avant 10h</div>
-            </div>
-          </div>
-        </div>`);
-
-      await delay(1100);
-      addBlock(`
-        <div class="ww-recap-meeting" style="--mc:#BF5AF2;--mc-bg:rgba(191,90,242,0.12)">
-          <div class="ww-recap-maccent"></div>
-          <div class="ww-recap-mbody">
-            <div class="ww-recap-mhead">
-              <span class="ww-recap-mname">Revue Produit</span>
-              <span class="ww-recap-mtime">14:00</span>
-            </div>
-            <div class="ww-recap-mscript">"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."</div>
-            <a class="ww-recap-voir-plus">Voir le script →</a>
-            <div class="ww-recap-demain">
-              <div class="ww-recap-demain-lbl">Pour demain</div>
-              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Préparer les slides pour la démo client</div>
-            </div>
-          </div>
-        </div>`);
-
-      // 5 — Texte IA streamé — phrase finale
-      await delay(1200);
-      const sumWrap = document.createElement('div');
-      sumWrap.className = 'ww-section';
-      sumWrap.innerHTML = '<p class="ww-recap-sum"><span id="ww-sum-text"></span></p>';
-      recap.appendChild(sumWrap);
+      // Conteneur texte unique
+      const streamWrap = document.createElement('div');
+      streamWrap.className = 'ww-section ww-stream-block';
+      recap.appendChild(streamWrap);
       scrollToBottom();
 
-      await delay(120);
-      const sumEl = document.getElementById('ww-sum-text');
-      const sumText = 'Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.';
-      if (sumEl) {
-        for (let i = 0; i < sumText.length; i++) {
-          sumEl.textContent = sumText.slice(0, i + 1);
-          const c = sumText[i];
-          let ms = 55 + Math.random() * 40;
-          if (c === ',') ms += 120;
-          if (c === '.') ms += 260;
+      // Helpers : type un texte dans un span stylistique, line break instantané
+      const typeInto = async (text, cls) => {
+        const span = document.createElement('span');
+        if (cls) span.className = cls;
+        streamWrap.appendChild(span);
+        for (let i = 0; i < text.length; i++) {
+          span.textContent = text.slice(0, i + 1);
+          const c = text[i];
+          let ms = 48 + Math.random() * 36;
+          if (c === '.') ms += 230;
+          if (c === ',') ms += 100;
+          if (c === ':') ms += 70;
+          if (c === '—') ms += 140;
           scrollToBottom();
           await delay(ms);
         }
-      }
+      };
+      const br = (n = 1) => {
+        streamWrap.insertAdjacentHTML('beforeend', '<br>'.repeat(n));
+        scrollToBottom();
+      };
+
+      await delay(200);
+      await typeInto('Réunions du jour', 'ww-st-label');
+      br(2);
+      await delay(350);
+
+      await typeInto('Stand-up Équipe · 09:00', 'ww-st-title ww-st-green');
+      br();
+      await typeInto('"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l\'API de paiement..."', 'ww-st-quote');
+      br();
+      await typeInto('Pour demain — Valider les tickets bloquants avec Marie', 'ww-st-todo');
+      br(2);
+      await delay(500);
+
+      await typeInto('1:1 Jean-Pierre · 11:30', 'ww-st-title ww-st-orange');
+      br();
+      await typeInto('"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."', 'ww-st-quote');
+      br();
+      await typeInto('Pour demain — Envoyer réponse à Jean-Pierre avant 10h', 'ww-st-todo');
+      br(2);
+      await delay(500);
+
+      await typeInto('Revue Produit · 14:00', 'ww-st-title ww-st-purple');
+      br();
+      await typeInto('"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."', 'ww-st-quote');
+      br();
+      await typeInto('Pour demain — Préparer les slides pour la démo client', 'ww-st-todo');
+      br(2);
+      await delay(700);
+
+      await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
     }
 
     // ── End of cycle — wait then loop ────────────────────────
