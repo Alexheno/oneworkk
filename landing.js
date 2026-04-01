@@ -590,12 +590,12 @@ function startDemoSequence() {
         for (let i = 0; i < text.length; i++) {
           span.textContent = text.slice(0, i + 1);
           const c = text[i];
-          let ms = fast ? (16 + Math.random() * 12) : (48 + Math.random() * 36);
+          let ms = fast ? (14 + Math.random() * 10) : (34 + Math.random() * 26);
           if (!fast) {
-            if (c === '.') ms += 230;
-            if (c === ',') ms += 100;
-            if (c === ':') ms += 70;
-            if (c === '—') ms += 140;
+            if (c === '.') ms += 200;
+            if (c === ',') ms += 80;
+            if (c === ':') ms += 55;
+            if (c === '—') ms += 110;
           }
           scrollToBottom();
           await delay(ms);
@@ -648,8 +648,6 @@ function startDemoSequence() {
       await typeInto('"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."', 'ww-st-quote', true);
       br();
       await typeInto('Voir le script →', 'ww-st-voir');
-      br();
-      await addDemain('demain-3', 'Préparer les slides pour la démo client');
       br();
       await delay(700);
 
