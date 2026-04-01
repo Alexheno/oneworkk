@@ -518,7 +518,7 @@ function startDemoSequence() {
         </div>`);
 
       // 2 — Légende apps
-      await delay(900);
+      await delay(1400);
       addBlock(`
         <div class="ww-divider"></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name">Teams</span><span class="ww-rl-val">2h 48</span></div>
@@ -526,7 +526,7 @@ function startDemoSequence() {
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name">Chrome</span><span class="ww-rl-val">0h 54</span></div>`);
 
       // 3 — Score ring
-      await delay(800);
+      await delay(1300);
       addBlock(`
         <div class="ww-divider"></div>
         <div class="ww-score-ring">
@@ -545,72 +545,81 @@ function startDemoSequence() {
         </div>`);
 
       // 4 — Récap réunions
-      await delay(900);
+      await delay(1400);
       addBlock(`<div class="ww-divider"></div><div class="ww-recap-meetings-lbl">Réunions du jour</div>`);
 
-      await delay(500);
+      await delay(800);
       addBlock(`
-        <div class="ww-recap-meeting">
-          <div class="ww-recap-mtitle">
-            <span class="ww-recap-micon" style="background:rgba(96,200,255,0.15);color:#60C8FF">◆</span>
-            Stand-up Équipe · 09:00
-          </div>
-          <div class="ww-recap-mscript">"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l'API de paiement..."</div>
-          <a class="ww-recap-voir-plus">Voir plus →</a>
-          <div class="ww-recap-demain">
-            <div class="ww-recap-demain-lbl">Pour demain</div>
-            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Valider les tickets bloquants avec Marie</div>
+        <div class="ww-recap-meeting" style="--mc:#30D158;--mc-bg:rgba(48,209,88,0.12)">
+          <div class="ww-recap-maccent"></div>
+          <div class="ww-recap-mbody">
+            <div class="ww-recap-mhead">
+              <span class="ww-recap-mname">Stand-up Équipe</span>
+              <span class="ww-recap-mtime">09:00</span>
+            </div>
+            <div class="ww-recap-mscript">"Bonne dynamique cette semaine, le sprint avance bien. Marie a remonté un blocage sur l'API de paiement..."</div>
+            <a class="ww-recap-voir-plus">Voir le script →</a>
+            <div class="ww-recap-demain">
+              <div class="ww-recap-demain-lbl">Pour demain</div>
+              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Valider les tickets bloquants avec Marie</div>
+            </div>
           </div>
         </div>`);
 
-      await delay(700);
+      await delay(1100);
       addBlock(`
-        <div class="ww-recap-meeting">
-          <div class="ww-recap-mtitle">
-            <span class="ww-recap-micon" style="background:rgba(167,139,250,0.15);color:#A78BFA">◆</span>
-            1:1 Jean-Pierre · 11:30
-          </div>
-          <div class="ww-recap-mscript">"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."</div>
-          <a class="ww-recap-voir-plus">Voir plus →</a>
-          <div class="ww-recap-demain">
-            <div class="ww-recap-demain-lbl">Pour demain</div>
-            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Envoyer réponse à Jean-Pierre avant 10h</div>
+        <div class="ww-recap-meeting" style="--mc:#FF9F0A;--mc-bg:rgba(255,159,10,0.12)">
+          <div class="ww-recap-maccent"></div>
+          <div class="ww-recap-mbody">
+            <div class="ww-recap-mhead">
+              <span class="ww-recap-mname">1:1 Jean-Pierre</span>
+              <span class="ww-recap-mtime">11:30</span>
+            </div>
+            <div class="ww-recap-mscript">"Jean-Pierre attend ton retour sur le budget Q2. Il propose de revoir les priorités côté infra..."</div>
+            <a class="ww-recap-voir-plus">Voir le script →</a>
+            <div class="ww-recap-demain">
+              <div class="ww-recap-demain-lbl">Pour demain</div>
+              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Envoyer réponse à Jean-Pierre avant 10h</div>
+            </div>
           </div>
         </div>`);
 
-      await delay(700);
+      await delay(1100);
       addBlock(`
-        <div class="ww-recap-meeting">
-          <div class="ww-recap-mtitle">
-            <span class="ww-recap-micon" style="background:rgba(244,114,182,0.15);color:#F472B6">◆</span>
-            Revue Produit · 14:00
-          </div>
-          <div class="ww-recap-mscript">"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."</div>
-          <a class="ww-recap-voir-plus">Voir plus →</a>
-          <div class="ww-recap-demain">
-            <div class="ww-recap-demain-lbl">Pour demain</div>
-            <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Préparer les slides pour la démo client</div>
+        <div class="ww-recap-meeting" style="--mc:#BF5AF2;--mc-bg:rgba(191,90,242,0.12)">
+          <div class="ww-recap-maccent"></div>
+          <div class="ww-recap-mbody">
+            <div class="ww-recap-mhead">
+              <span class="ww-recap-mname">Revue Produit</span>
+              <span class="ww-recap-mtime">14:00</span>
+            </div>
+            <div class="ww-recap-mscript">"3 nouvelles features validées pour la roadmap Q2. Démo client confirmée pour vendredi..."</div>
+            <a class="ww-recap-voir-plus">Voir le script →</a>
+            <div class="ww-recap-demain">
+              <div class="ww-recap-demain-lbl">Pour demain</div>
+              <div class="ww-recap-todo-item"><div class="ww-recap-todo-check"></div>Préparer les slides pour la démo client</div>
+            </div>
           </div>
         </div>`);
 
       // 5 — Texte IA streamé — phrase finale
-      await delay(800);
+      await delay(1200);
       const sumWrap = document.createElement('div');
       sumWrap.className = 'ww-section';
       sumWrap.innerHTML = '<p class="ww-recap-sum"><span id="ww-sum-text"></span></p>';
       recap.appendChild(sumWrap);
       scrollToBottom();
 
-      await delay(80);
+      await delay(120);
       const sumEl = document.getElementById('ww-sum-text');
       const sumText = 'Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.';
       if (sumEl) {
         for (let i = 0; i < sumText.length; i++) {
           sumEl.textContent = sumText.slice(0, i + 1);
           const c = sumText[i];
-          let ms = 38 + Math.random() * 28;
-          if (c === ',') ms += 80;
-          if (c === '.') ms += 180;
+          let ms = 55 + Math.random() * 40;
+          if (c === ',') ms += 120;
+          if (c === '.') ms += 260;
           scrollToBottom();
           await delay(ms);
         }

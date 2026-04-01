@@ -1645,81 +1645,98 @@ body {
   padding-top: 4px;
 }
 
-/* Meeting recap cards */
+/* Meeting recap cards — Apple style */
 .ww-recap-meetings-lbl {
-  font-size: 0.50rem;
+  font-size: 0.48rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.22);
-  margin-bottom: 6px;
-  margin-top: 2px;
+  color: rgba(255,255,255,0.20);
+  margin: 4px 0 8px;
 }
 .ww-recap-meeting {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 8px 10px;
-  margin-bottom: 6px;
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 7px;
 }
-.ww-recap-mtitle {
+.ww-recap-maccent {
+  width: 3px;
+  background: var(--mc, #6B8EF5);
+  flex-shrink: 0;
+}
+.ww-recap-mbody {
+  flex: 1;
+  padding: 9px 10px 9px 9px;
+}
+.ww-recap-mhead {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.61rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.88);
+  justify-content: space-between;
   margin-bottom: 5px;
+}
+.ww-recap-mname {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.92);
   letter-spacing: -0.01em;
 }
-.ww-recap-micon {
-  width: 16px; height: 16px;
-  border-radius: 4px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.38rem;
+.ww-recap-mtime {
+  font-size: 0.50rem;
+  font-weight: 600;
+  color: var(--mc, #6B8EF5);
+  background: var(--mc-bg, rgba(107,142,245,0.12));
+  border-radius: 5px;
+  padding: 2px 7px;
+  font-variant-numeric: tabular-nums;
   flex-shrink: 0;
 }
 .ww-recap-mscript {
-  font-size: 0.56rem;
-  color: rgba(255,255,255,0.36);
-  line-height: 1.5;
-  margin-bottom: 5px;
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.34);
+  line-height: 1.55;
+  margin-bottom: 6px;
   font-style: italic;
 }
 .ww-recap-voir-plus {
-  font-size: 0.54rem;
+  font-size: 0.52rem;
   font-weight: 600;
-  color: rgba(107,142,245,0.85);
+  color: rgba(107,142,245,0.80);
   cursor: pointer;
-  text-decoration: none;
   display: inline-block;
+  letter-spacing: 0.01em;
 }
 .ww-recap-demain {
-  margin-top: 7px;
-  padding-top: 7px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: rgba(107,142,245,0.07);
+  border-radius: 8px;
+  border: 1px solid rgba(107,142,245,0.13);
 }
 .ww-recap-demain-lbl {
-  font-size: 0.48rem;
+  font-size: 0.46rem;
   font-weight: 700;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(107,142,245,0.65);
+  color: rgba(107,142,245,0.75);
   margin-bottom: 4px;
 }
 .ww-recap-todo-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
-  font-size: 0.56rem;
-  color: rgba(255,255,255,0.60);
+  font-size: 0.55rem;
+  color: rgba(255,255,255,0.68);
   line-height: 1.4;
 }
 .ww-recap-todo-check {
   width: 11px; height: 11px;
   border-radius: 3px;
-  border: 1.5px solid rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(107,142,245,0.45);
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
 /* keep old class names harmless */
