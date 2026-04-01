@@ -990,7 +990,7 @@ body {
 .win-widget {
   position: absolute;
   bottom: 50px;
-  right: 28px;
+  right: 14px;
   z-index: 50;
 }
 
@@ -1035,7 +1035,7 @@ body {
   position: absolute;
   bottom: 36px;
   right: 0;
-  width: 220px;
+  width: 232px;
   background: rgba(18,18,24,0.98);
   border: 1px solid rgba(255,255,255,0.11);
   border-radius: 18px;
