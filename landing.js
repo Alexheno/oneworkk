@@ -517,17 +517,41 @@ function startDemoSequence() {
           <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:6"></div>
         </div>`);
 
-      // 2 — Légende apps
-      await delay(1400);
-      addBlock(`
-        <div class="ww-divider"></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name">Teams</span><span class="ww-rl-val">2h 48</span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name">Outlook</span><span class="ww-rl-val">1h 12</span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name">Chrome</span><span class="ww-rl-val">0h 54</span></div>`);
+      // helper pour streamer un élément existant
+      const typeEl = async (el, text) => {
+        for (let i = 0; i < text.length; i++) {
+          el.textContent = text.slice(0, i + 1);
+          scrollToBottom();
+          await delay(50 + Math.random() * 34);
+        }
+      };
 
-      // 3 — Score ring
+      // 2 — Légende apps (textes streamés)
+      await delay(1400);
+      const legendWrap = document.createElement('div');
+      legendWrap.className = 'ww-section';
+      legendWrap.innerHTML = `
+        <div class="ww-divider"></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name" id="rl-n1"></span><span class="ww-rl-val" id="rl-v1"></span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>`;
+      recap.appendChild(legendWrap);
+      scrollToBottom();
+      await delay(200);
+      await typeEl(document.getElementById('rl-n1'), 'Teams');
+      await typeEl(document.getElementById('rl-v1'), '2h 48');
+      await delay(100);
+      await typeEl(document.getElementById('rl-n2'), 'Outlook');
+      await typeEl(document.getElementById('rl-v2'), '1h 12');
+      await delay(100);
+      await typeEl(document.getElementById('rl-n3'), 'Chrome');
+      await typeEl(document.getElementById('rl-v3'), '0h 54');
+
+      // 3 — Score ring (textes streamés)
       await delay(1300);
-      addBlock(`
+      const scoreWrap = document.createElement('div');
+      scoreWrap.className = 'ww-section';
+      scoreWrap.innerHTML = `
         <div class="ww-divider"></div>
         <div class="ww-score-ring">
           <svg width="32" height="32" viewBox="0 0 32 32">
@@ -539,10 +563,15 @@ function startDemoSequence() {
             </linearGradient></defs>
           </svg>
           <div class="ww-score-info">
-            <div class="ww-score-pct">Score : 75 %</div>
-            <div class="ww-score-lbl">PRODUCTIVITÉ DU JOUR</div>
+            <div class="ww-score-pct" id="score-pct-el"></div>
+            <div class="ww-score-lbl" id="score-lbl-el"></div>
           </div>
-        </div>`);
+        </div>`;
+      recap.appendChild(scoreWrap);
+      scrollToBottom();
+      await delay(200);
+      await typeEl(document.getElementById('score-pct-el'), 'Score : 75 %');
+      await typeEl(document.getElementById('score-lbl-el'), 'PRODUCTIVITÉ DU JOUR');
 
       // 4 — Tout le texte streamé comme une vraie réponse IA
       await delay(1400);
