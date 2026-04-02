@@ -341,111 +341,252 @@ function startDemoSequence() {
     // Stay on projects page
     await delay(2800);
 
-    // ── After projects: click Agent IA directly ──────────────
-    const agentIcon = document.getElementById('demo-sb-agent');
-    const projViewEnd = document.getElementById('demo-projects-view');
-    const agentView = document.getElementById('demo-agent-view');
-    if (agentIcon) {
-      await moveTo(pos(agentIcon).x, pos(agentIcon).y, 820);
+    // ── Return to home view ───────────────────────────────────
+    const projView2 = document.getElementById('demo-projects-view');
+    const homeView2 = document.getElementById('demo-home-view');
+    const homeIcon = document.querySelector('.demo-sb-icon[title="Accueil"]') || document.querySelector('.demo-sb-icon');
+    if (homeIcon) {
+      await moveTo(pos(homeIcon).x, pos(homeIcon).y, 800);
+      await delay(250);
+      await click(homeIcon);
+    }
+    if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
+    if (homeView2) homeView2.style.display = 'flex';
+    document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
+    await delay(700);
+
+    // ── Click Sarah Martin Teams row → Teams window opens ─────
+    const tmsRow = document.getElementById('tms-click-row');
+    const teamsWin = document.getElementById('win-teams-popup');
+    if (tmsRow) {
+      await moveTo(pos(tmsRow).x, pos(tmsRow).y, 820);
       await delay(280);
-      await click(agentIcon);
-      document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
-      agentIcon.classList.add('active');
-      if (projViewEnd) { projViewEnd.style.opacity = '0'; projViewEnd.style.display = 'none'; }
-      if (agentView) {
-        agentView.style.display = 'flex';
-        await delay(30);
-        agentView.style.opacity = '1';
-      }
-      await delay(800);
+      await click(tmsRow);
+      if (teamsWin) teamsWin.classList.add('visible');
+      await delay(900);
     }
 
-    // ── Type question in Agent IA ──────────────────────────────
-    const agentInput = document.getElementById('demo-agent-input');
-    const agentSendBtn = document.getElementById('demo-agent-send');
-    const agentChat = document.getElementById('demo-agent-chat');
-    if (agentInput) {
-      await moveTo(pos(agentInput).x, pos(agentInput).y, 700);
-      await delay(200);
+    // ── Type reply in Teams composer ──────────────────────────
+    const tmsComposePh = document.getElementById('tms-compose-ph');
+    const tmsSendBtn = document.querySelector('.tms-send-btn');
+    if (tmsComposePh) {
+      await moveTo(pos(tmsComposePh).x, pos(tmsComposePh).y, 760);
+      await delay(260);
       await click(null);
-      await delay(150);
-      agentInput.classList.add('typing');
-      agentInput.textContent = '';
-      const q = 'Fais-moi un récap de ma journée';
-      for (let i = 0; i < q.length; i++) {
-        agentInput.textContent = q.slice(0, i + 1);
-        await delay(52 + Math.random() * 32);
+      await delay(180);
+      const tmsText = 'Ok je regarde ça tout de suite !';
+      tmsComposePh.style.color = '#201F1E';
+      for (let i = 0; i <= tmsText.length; i++) {
+        tmsComposePh.textContent = tmsText.slice(0, i);
+        await delay(42 + Math.random() * 28);
       }
-      agentInput.classList.remove('typing');
+      await delay(340);
+    }
+    if (tmsSendBtn) {
+      await moveTo(pos(tmsSendBtn).x, pos(tmsSendBtn).y, 560);
+      await delay(260);
+      await click(tmsSendBtn);
+      await delay(120);
+      if (tmsComposePh) { tmsComposePh.textContent = ''; tmsComposePh.style.color = ''; }
+      const msgsArea = document.getElementById('tms-msgs-area');
+      if (msgsArea) {
+        const bubble = document.createElement('div');
+        bubble.className = 'tms-msg tms-msg-appear';
+        bubble.id = 'tms-reply-msg';
+        bubble.innerHTML = `
+          <div class="tms-msg-av" style="background:linear-gradient(135deg,#6264A7,#4B4D8F)">HB</div>
+          <div class="tms-msg-content">
+            <div class="tms-msg-meta"><span class="tms-msg-name">Henri B.</span><span class="tms-msg-time">09h05</span></div>
+            <div class="tms-msg-text">Ok je regarde ça tout de suite !</div>
+          </div>`;
+        msgsArea.appendChild(bubble);
+        msgsArea.scrollTop = msgsArea.scrollHeight;
+        await delay(900);
+      }
+    }
+
+    // ── Cursor drifts away, then everything fades together ────
+    await moveTo(DW * 0.50, DH * 0.45, 700);
+    await delay(300);
+    cursor.style.opacity = '0';
+    await delay(200);
+
+    // ── Black overlay fade-in ──────────────────────────────────
+    const blackOverlay = document.getElementById('demo-black-overlay');
+    if (blackOverlay) {
+      blackOverlay.classList.add('fade-in');
+      blackOverlay.classList.remove('fade-out');
+    }
+    await delay(180);
+
+    // Switch scene behind the black screen
+    if (teamsWin) teamsWin.classList.remove('visible');
+    if (winWindow) winWindow.classList.remove('visible', 'expanded');
+    if (tbOneWork) tbOneWork.classList.remove('active');
+    bgOutlook.classList.remove('fading');
+    if (bgExcel) bgExcel.classList.remove('visible');
+    await delay(200);
+
+    // ── Black overlay fade-out → reveal Outlook ───────────────
+    if (blackOverlay) {
+      blackOverlay.classList.remove('fade-in');
+      blackOverlay.classList.add('fade-out');
+    }
+    await delay(520);
+
+    // ══════════════════════════════════════════════════════════
+    // PHASE 2 — Widget interaction → Agent IA recap
+    // ══════════════════════════════════════════════════════════
+
+    cursor.style.opacity = '1';
+    moveTo(DW * 0.38, DH * 0.52, 0);
+    await delay(300);
+
+    // Move near widget knob → hover opens card
+    if (wwKnob) {
+      const p = pos(wwKnob);
+      await moveTo(p.x, p.y - 6, 1100);
+      await delay(300);
+      widgetEl.classList.add('open');
+      await delay(600);
+    }
+
+    // Check task 1 → sinks to bottom
+    if (wwTask1) {
+      const dot1 = wwTask1.querySelector('.ww-dot');
+      if (dot1) {
+        const p = pos(dot1);
+        await moveTo(p.x, p.y, 800);
+        await delay(200);
+        await click(dot1);
+        await delay(80);
+        await checkAndSink(wwTask1);
+        await delay(700);
+      }
+    }
+
+    // Check task 2 → sinks to bottom
+    if (wwTask2) {
+      const dot2 = wwTask2.querySelector('.ww-dot');
+      if (dot2) {
+        const p = pos(dot2);
+        await moveTo(p.x, p.y, 680);
+        await delay(160);
+        await click(dot2);
+        await delay(80);
+        await checkAndSink(wwTask2);
+        await delay(720);
+      }
+    }
+
+    // Check task 3 → sinks to bottom
+    if (wwTask3) {
+      const dot3 = wwTask3.querySelector('.ww-dot');
+      if (dot3) {
+        const p = pos(dot3);
+        await moveTo(p.x, p.y, 680);
+        await delay(160);
+        await click(dot3);
+        await delay(80);
+        await checkAndSink(wwTask3);
+        await delay(720);
+      }
+    }
+
+    // Switch to Agent IA mode
+    if (wwModeAgent && wwModeBrief && wwAgentPanel) {
+      const pAgent = pos(wwModeAgent);
+      await moveTo(pAgent.x, pAgent.y, 720);
+      await delay(220);
+      await click(wwModeAgent);
+      await delay(100);
+      wwModeBrief.classList.remove('ww-mode-active');
+      wwModeAgent.classList.add('ww-mode-active');
+      const wwCard = document.querySelector('#win-widget-popup .ww-card');
+      if (wwCard) {
+        const agentEl = document.getElementById('ww-agent-panel');
+        let agentH = 160;
+        if (agentEl) {
+          agentEl.style.cssText = 'max-height:none!important;overflow:visible!important;position:absolute!important;visibility:hidden!important;pointer-events:none!important';
+          agentH = agentEl.scrollHeight || agentEl.offsetHeight || 160;
+          agentEl.style.cssText = '';
+        }
+        const modeBarEl = wwCard.querySelector('.ww-mode-bar');
+        const modeBarH = modeBarEl ? modeBarEl.offsetHeight : 36;
+        const toH = modeBarH + agentH;
+        wwCard.style.height = wwCard.offsetHeight + 'px';
+        wwCard.classList.add('show-agent');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          wwCard.style.height = toH + 'px';
+        }));
+        setTimeout(() => { wwCard.style.height = ''; }, 680);
+      }
+      await delay(380);
+    }
+    if (wwChatInput) {
+      const p = pos(wwChatInput);
+      await moveTo(p.x - 12, p.y, 800);
+      await delay(270);
+      await click(null);
+      await delay(180);
+      await typeIn('Fais moi un récap de ma journée', wwChatInput);
+      await delay(340);
+    }
+
+    // Click send
+    if (wwChatSend) {
+      const p = pos(wwChatSend);
+      await moveTo(p.x, p.y, 600);
+      await delay(310);
+      await click(wwChatSend);
       await delay(200);
     }
 
-    // ── Send question ──────────────────────────────────────────
-    if (agentSendBtn) {
-      await moveTo(pos(agentSendBtn).x, pos(agentSendBtn).y, 380);
-      await delay(160);
-      await click(agentSendBtn);
+    // Show thinking dots, then inject screen-time visualization
+    if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
+    const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
+    if (wwBubble) {
+      wwBubble.style.opacity = '0';
+      wwBubble.style.maxHeight = '0';
+      wwBubble.style.padding = '0';
+      wwBubble.style.margin = '0';
+    }
+    const wwAgentTitle = document.querySelector('.ww-agent-title');
+    if (wwAgentTitle) { wwAgentTitle.style.display = 'none'; }
+    if (wwResponse) {
+      wwResponse.className = 'ww-response visible';
+      wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
 
-    // Add user message bubble
-    if (agentChat) {
-      const userMsg = document.createElement('div');
-      userMsg.className = 'demo-agent-msg demo-agent-msg-user';
-      userMsg.innerHTML = '<div class="demo-agent-bubble-user">Fais-moi un récap de ma journée</div>';
-      agentChat.appendChild(userMsg);
-      if (agentInput) agentInput.textContent = 'Demander à l\'Agent IA...';
-      agentChat.scrollTop = agentChat.scrollHeight;
-    }
+    // Cursor drifts away while AI thinks
+    await moveTo(DW * 0.42, DH * 0.48, 620);
+    await delay(1900);
 
-    // ── Thinking dots ──────────────────────────────────────────
-    await delay(500);
-    let thinkEl = null;
-    if (agentChat) {
-      const thinkWrap = document.createElement('div');
-      thinkWrap.className = 'demo-agent-msg demo-agent-msg-ai';
-      thinkWrap.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt=""><div class="demo-agent-bubble-ai"><div class="demo-thinking"><span></span><span></span><span></span></div></div>';
-      agentChat.appendChild(thinkWrap);
-      thinkEl = thinkWrap;
-      agentChat.scrollTop = agentChat.scrollHeight;
-    }
-    await delay(1800);
+    if (wwResponse) {
+      wwResponse.className = 'ww-response visible';
+      const recap = document.createElement('div');
+      recap.className = 'ww-recap';
+      wwResponse.innerHTML = '';
+      wwResponse.appendChild(recap);
 
-    // ── Stream AI response in the chat ────────────────────────
-    if (thinkEl && agentChat) {
-      agentChat.removeChild(thinkEl);
-    }
-
-    // Create AI response message
-    let aiMsgBubble = null;
-    if (agentChat) {
-      const aiMsgWrap = document.createElement('div');
-      aiMsgWrap.className = 'demo-agent-msg demo-agent-msg-ai';
-      aiMsgWrap.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt=""><div class="demo-agent-bubble-ai" id="demo-ai-response-bubble"></div>';
-      agentChat.appendChild(aiMsgWrap);
-      aiMsgBubble = document.getElementById('demo-ai-response-bubble');
-      agentChat.scrollTop = agentChat.scrollHeight;
-    }
-
-    if (aiMsgBubble) {
-      // Move cursor away while AI generates
-      await moveTo(DW * 0.42, DH * 0.48, 620);
-      await delay(400);
-
-      const scrollChat = () => { if (agentChat) agentChat.scrollTop = agentChat.scrollHeight; };
+      const agentContent = document.querySelector('.ww-agent-content');
+      const scrollToBottom = () => {
+        if (agentContent) agentContent.scrollTop = agentContent.scrollHeight;
+      };
 
       const addBlock = (html) => {
         const el = document.createElement('div');
         el.className = 'ww-section';
         el.innerHTML = html;
-        aiMsgBubble.appendChild(el);
-        scrollChat();
+        recap.appendChild(el);
+        scrollToBottom();
       };
 
       // helper: stream text into existing element
       const typeEl = async (el, text) => {
         for (let i = 0; i < text.length; i++) {
           el.textContent = text.slice(0, i + 1);
-          scrollChat();
+          scrollToBottom();
           await delay(50 + Math.random() * 34);
         }
       };
@@ -473,8 +614,8 @@ function startDemoSequence() {
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name" id="rl-n1"></span><span class="ww-rl-val" id="rl-v1"></span></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>`;
-      aiMsgBubble.appendChild(legendWrap);
-      scrollChat();
+      recap.appendChild(legendWrap);
+      scrollToBottom();
       await delay(200);
       await typeEl(document.getElementById('rl-n1'), 'Teams');
       await typeEl(document.getElementById('rl-v1'), '2h 48');
@@ -505,8 +646,8 @@ function startDemoSequence() {
             <div class="ww-score-lbl" id="score-lbl-el"></div>
           </div>
         </div>`;
-      aiMsgBubble.appendChild(scoreWrap);
-      scrollChat();
+      recap.appendChild(scoreWrap);
+      scrollToBottom();
       await delay(200);
       await typeEl(document.getElementById('score-pct-el'), 'Score : 75 %');
       await typeEl(document.getElementById('score-lbl-el'), 'PRODUCTIVITÉ DU JOUR');
@@ -515,8 +656,8 @@ function startDemoSequence() {
       await delay(1400);
       const streamWrap = document.createElement('div');
       streamWrap.className = 'ww-section ww-stream-block';
-      aiMsgBubble.appendChild(streamWrap);
-      scrollChat();
+      recap.appendChild(streamWrap);
+      scrollToBottom();
 
       const typeInto = async (text, cls, fast = false) => {
         const span = document.createElement('span');
@@ -532,13 +673,13 @@ function startDemoSequence() {
             if (c === ':') ms += 55;
             if (c === '—') ms += 110;
           }
-          scrollChat();
+          scrollToBottom();
           await delay(ms);
         }
       };
       const br = (n = 1) => {
         streamWrap.insertAdjacentHTML('beforeend', '<br>'.repeat(n));
-        scrollChat();
+        scrollToBottom();
       };
       const addDemain = async (id, taskText, redCheck = false) => {
         const checkCls = redCheck ? 'ww-st-demain-check ww-st-demain-check-red' : 'ww-st-demain-check';
@@ -546,7 +687,7 @@ function startDemoSequence() {
         block.className = 'ww-st-demain-block';
         block.innerHTML = `<div class="ww-st-demain-label">Pour demain</div><div class="ww-st-demain-row"><div class="${checkCls}"></div><span id="${id}"></span></div>`;
         streamWrap.appendChild(block);
-        scrollChat();
+        scrollToBottom();
         await delay(150);
         await typeEl(document.getElementById(id), taskText);
       };
@@ -585,10 +726,81 @@ function startDemoSequence() {
       await delay(700);
 
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
+
+      // ── Double-click response → open dashboard Agent IA ────
+      await delay(1200);
+      cursor.style.opacity = '1';
+      // Move cursor to the ww-response area
+      const respPos = pos(wwResponse);
+      await moveTo(respPos.x, respPos.y - 10, 900);
+      await delay(300);
+      // Double-click (two rapid clicks)
+      cursor.classList.add('clicking');
+      await delay(80);
+      cursor.classList.remove('clicking');
+      await delay(100);
+      cursor.classList.add('clicking');
+      await delay(80);
+      cursor.classList.remove('clicking');
+      await delay(400);
+
+      // Show the OneWork dashboard
+      if (winWindow) winWindow.classList.add('visible', 'expanded');
+      if (tbOneWork) tbOneWork.classList.add('active');
+
+      // Switch to Agent IA page in dashboard
+      const agentViewDB = document.getElementById('demo-agent-view');
+      const homeViewDB  = document.getElementById('demo-home-view');
+      const projViewDB  = document.getElementById('demo-projects-view');
+      if (homeViewDB)  { homeViewDB.style.display = 'none'; }
+      if (projViewDB)  { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
+      document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
+      const agentIconDB = document.getElementById('demo-sb-agent');
+      if (agentIconDB) agentIconDB.classList.add('active');
+      if (agentViewDB) {
+        agentViewDB.style.display = 'flex';
+        await delay(30);
+        agentViewDB.style.opacity = '1';
+      }
+
+      // Populate Agent IA chat with the same question + response
+      const agentChatDB = document.getElementById('demo-agent-chat');
+      if (agentChatDB) {
+        // Clear existing messages except the first greeting
+        while (agentChatDB.children.length > 1) agentChatDB.removeChild(agentChatDB.lastChild);
+
+        // User question bubble
+        const uBubble = document.createElement('div');
+        uBubble.className = 'demo-agent-msg demo-agent-msg-user';
+        uBubble.innerHTML = '<div class="demo-agent-bubble-user">Fais moi un récap de ma journée</div>';
+        agentChatDB.appendChild(uBubble);
+
+        // AI response bubble — copy the recap content
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'demo-agent-msg demo-agent-msg-ai';
+        const aiBubbleInner = document.createElement('div');
+        aiBubbleInner.className = 'demo-agent-bubble-ai';
+        // Clone the recap content into the dashboard bubble
+        const recapClone = recap.cloneNode(true);
+        // Clear streaming IDs to avoid duplicates
+        recapClone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+        aiBubbleInner.appendChild(recapClone);
+        aiBubble.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt="">';
+        aiBubble.appendChild(aiBubbleInner);
+        agentChatDB.appendChild(aiBubble);
+        agentChatDB.scrollTop = agentChatDB.scrollHeight;
+      }
+
+      // Cursor drifts to the chat area — user reads the response
+      if (agentChatDB) {
+        const chatPos = pos(agentChatDB);
+        await moveTo(chatPos.x, chatPos.y, 1000);
+      }
+      await delay(3500);
     }
 
     // ── End of cycle — wait then loop ────────────────────────
-    await delay(4000);
+    await delay(1500);
     cursor.style.opacity = '0';
     await delay(1800);
     run();
