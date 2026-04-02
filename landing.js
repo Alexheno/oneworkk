@@ -57,18 +57,53 @@ function startDemoSequence() {
   const WW_PH = 'Demander à l\'Agent IA...';
   const MAIN_PH = 'Demander quelque chose à l\'Agent IA';
 
-  // Get element center relative to win-desktop
+  // Get element center in desktop CSS coordinates (accounts for zoom)
   function pos(el) {
     const dr = desktop.getBoundingClientRect();
     const er = el.getBoundingClientRect();
-    return { x: er.left + er.width / 2 - dr.left, y: er.top + er.height / 2 - dr.top };
+    const zoom = parseFloat(desktop.style.zoom) || 1;
+    return {
+      x: (er.left + er.width  / 2 - dr.left) / zoom,
+      y: (er.top  + er.height / 2 - dr.top)  / zoom
+    };
   }
 
+  // Natural bezier-curve movement via requestAnimationFrame
   function moveTo(x, y, ms = 1200) {
-    cursor.style.setProperty('--cdur', ms + 'ms');
-    cursor.style.left = x + 'px';
-    cursor.style.top = y + 'px';
-    return delay(ms);
+    if (ms === 0) {
+      cursor.style.left = x + 'px';
+      cursor.style.top  = y + 'px';
+      return delay(0);
+    }
+    const startX = parseFloat(cursor.style.left) || x;
+    const startY = parseFloat(cursor.style.top)  || y;
+    const dx = x - startX, dy = y - startY;
+    const dist = Math.hypot(dx, dy) || 1;
+    // Slight random perpendicular arc — human cursors never move in straight lines
+    const arc  = (Math.random() - 0.5) * Math.min(dist * 0.20, 28);
+    const cx   = (startX + x) / 2 + (-dy / dist) * arc;
+    const cy   = (startY + y) / 2 + ( dx / dist) * arc;
+    // Ease-in-out-cubic
+    const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+
+    cursor.style.transition = 'none';
+    return new Promise(resolve => {
+      const t0 = performance.now();
+      function frame(now) {
+        const raw = Math.min((now - t0) / ms, 1);
+        const e   = ease(raw);
+        cursor.style.left = ((1-e)*(1-e)*startX + 2*(1-e)*e*cx + e*e*x) + 'px';
+        cursor.style.top  = ((1-e)*(1-e)*startY + 2*(1-e)*e*cy + e*e*y) + 'px';
+        if (raw < 1) { requestAnimationFrame(frame); }
+        else {
+          cursor.style.left = x + 'px';
+          cursor.style.top  = y + 'px';
+          cursor.style.transition = '';
+          resolve();
+        }
+      }
+      requestAnimationFrame(frame);
+    });
   }
 
   async function click(el) {
@@ -201,10 +236,11 @@ function startDemoSequence() {
     // ══════════════════════════════════════════════════════════
     // PHASE 1 — Dashboard → Projects
     // ══════════════════════════════════════════════════════════
-    const dr = desktop.getBoundingClientRect();
+    const DW   = 1200; // CSS design width (fixed, zoom-independent)
+    const DH   = 582;  // CSS design height
 
     // Cursor appears in dashboard content area
-    moveTo(dr.width * 0.48, dr.height * 0.32, 0);
+    moveTo(DW * 0.48, DH * 0.32, 0);
     cursor.style.opacity = '1';
     await delay(500);
 
@@ -271,7 +307,7 @@ function startDemoSequence() {
     }
 
     // Drift back to center, breathe
-    await moveTo(dr.width * 0.50, dr.height * 0.40, 800);
+    await moveTo(DW * 0.50, DH * 0.40, 800);
     await delay(800);
 
     // Click Projects icon in sidebar
@@ -392,7 +428,7 @@ function startDemoSequence() {
 
     if (aiMsgBubble) {
       // Move cursor away while AI generates
-      await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
+      await moveTo(DW * 0.42, DH * 0.48, 620);
       await delay(400);
 
       const scrollChat = () => { if (agentChat) agentChat.scrollTop = agentChat.scrollHeight; };
