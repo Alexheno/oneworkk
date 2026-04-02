@@ -271,32 +271,42 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // Hover agenda card — scroll from bottom to top to reveal earlier events, then back
+    // Hover agenda card — cursor drifts naturally while list scrolls
     const agendaBody = document.getElementById('demo-agenda-body');
     if (cardMeetings && agendaBody) {
-      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y + 16, 600);
-      await delay(350);
+      // Position cursor near top of the agenda card body
+      const cp = pos(cardMeetings);
+      await moveTo(cp.x, cp.y - 10, 600);
+      await delay(280);
 
-      // Start at the bottom
+      // Initialise scrolled to bottom (hidden events below visible area)
       agendaBody.scrollTop = agendaBody.scrollHeight;
 
-      const scrollAgenda = (target, dur) => new Promise(res => {
-        const start = performance.now();
-        const from  = agendaBody.scrollTop;
-        const ease  = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      // Scroll UP while cursor drifts gently upward — mimics natural trackpad
+      const scrollAndDrift = (scrollTarget, cursorDY, dur) => new Promise(res => {
+        const start     = performance.now();
+        const fromScroll = agendaBody.scrollTop;
+        const fromCX    = parseFloat(cursor.style.left);
+        const fromCY    = parseFloat(cursor.style.top);
+        const ease      = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+        cursor.style.transition = 'none';
         function step(now) {
           const p = Math.min((now - start) / dur, 1);
-          agendaBody.scrollTop = from + (target - from) * ease(p);
-          if (p < 1) requestAnimationFrame(step); else res();
+          const e = ease(p);
+          agendaBody.scrollTop       = fromScroll + (scrollTarget - fromScroll) * e;
+          cursor.style.left          = fromCX + 'px';
+          cursor.style.top           = (fromCY + cursorDY * e) + 'px';
+          if (p < 1) requestAnimationFrame(step);
+          else { cursor.style.transition = ''; res(); }
         }
         requestAnimationFrame(step);
       });
 
-      // Scroll up to top
-      await scrollAgenda(0, 1100);
-      await delay(600);
-      // Scroll back down
-      await scrollAgenda(agendaBody.scrollHeight, 900);
+      // Scroll up (cursor drifts up ~18px)
+      await scrollAndDrift(0, -18, 1300);
+      await delay(700);
+      // Scroll back down (cursor drifts down ~18px)
+      await scrollAndDrift(agendaBody.scrollHeight, 18, 1100);
       await delay(300);
     }
 
