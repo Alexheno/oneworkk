@@ -4137,12 +4137,11 @@ body {
   margin-top: 4px;
 }
 
-/* Scrollable card body — tall enough to hide extra items */
+/* Scrollable card body — clips content for reveal-on-scroll effect */
 .demo-card-body-scroll {
   overflow-y: auto;
   scrollbar-width: none;
-  flex: 1;
-  min-height: 0;
+  max-height: 148px;
 }
 .demo-card-body-scroll::-webkit-scrollbar { display: none; }
 
@@ -4262,8 +4261,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 14px;
-  font-size: 0.75rem;
+  padding: 11px 14px;
+  font-size: 0.82rem;
   font-weight: 400;
   color: rgba(255,255,255,0.52);
   border-bottom: 1px solid rgba(255,255,255,0.045);

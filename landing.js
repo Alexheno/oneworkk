@@ -192,6 +192,8 @@ function startDemoSequence() {
     // Reset scroll positions
     const homeViewScroll = document.getElementById('demo-home-view');
     if (homeViewScroll) homeViewScroll.scrollTop = 0;
+    const agendaReset = document.getElementById('demo-agenda-body');
+    if (agendaReset) agendaReset.scrollTop = agendaReset.scrollHeight;
     if (wwModeAgent) { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief) { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
@@ -259,30 +261,32 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // Hover bottom section — scroll the whole home view down to reveal hidden items
-    const homeScrollEl = document.getElementById('demo-home-view');
-    if (cardMeetings && homeScrollEl) {
-      // Cursor rests near the center of the bottom half
-      const midX = DW * 0.50;
-      const midY = DH * 0.68;
-      await moveTo(midX, midY, 700);
-      await delay(400);
+    // Hover agenda card — scroll from bottom to top to reveal earlier events, then back
+    const agendaBody = document.getElementById('demo-agenda-body');
+    if (cardMeetings && agendaBody) {
+      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y + 16, 600);
+      await delay(350);
 
-      const scrollHome = (target, dur) => new Promise(res => {
+      // Start at the bottom
+      agendaBody.scrollTop = agendaBody.scrollHeight;
+
+      const scrollAgenda = (target, dur) => new Promise(res => {
         const start = performance.now();
-        const from  = homeScrollEl.scrollTop;
+        const from  = agendaBody.scrollTop;
         const ease  = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
         function step(now) {
           const p = Math.min((now - start) / dur, 1);
-          homeScrollEl.scrollTop = from + (target - from) * ease(p);
+          agendaBody.scrollTop = from + (target - from) * ease(p);
           if (p < 1) requestAnimationFrame(step); else res();
         }
         requestAnimationFrame(step);
       });
 
-      await scrollHome(160, 1500);
-      await delay(1100);
-      await scrollHome(0, 1000);
+      // Scroll up to top
+      await scrollAgenda(0, 1100);
+      await delay(600);
+      // Scroll back down
+      await scrollAgenda(agendaBody.scrollHeight, 900);
       await delay(300);
     }
 
