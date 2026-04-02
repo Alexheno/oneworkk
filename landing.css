@@ -425,6 +425,7 @@ body {
   z-index: 999;
   cursor: default;
   user-select: none;
+  touch-action: none;
 }
 
 /* OneWork floating window — invisible by default, appears in Phase 2 */

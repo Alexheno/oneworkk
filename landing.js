@@ -48,6 +48,16 @@ function startDemoSequence() {
 
   if (!cursor || !desktop || !bgOutlook) return;
 
+  // Block all real-user interaction with the demo — wheel, touch, pointer
+  const blocker = desktop.querySelector('.demo-interaction-blocker');
+  if (blocker) {
+    const absorb = e => { e.preventDefault(); e.stopPropagation(); };
+    blocker.addEventListener('wheel',      absorb, { passive: false, capture: true });
+    blocker.addEventListener('touchstart', absorb, { passive: false, capture: true });
+    blocker.addEventListener('touchmove',  absorb, { passive: false, capture: true });
+    blocker.addEventListener('touchend',   absorb, { passive: false, capture: true });
+  }
+
   // Pause automatically when user scrolls away, resume when they return
   const _rawDelay = ms => new Promise(r => setTimeout(r, ms));
   const delay = ms => _rawDelay(ms).then(() => {
