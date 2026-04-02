@@ -190,10 +190,8 @@ function startDemoSequence() {
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
     // Reset scroll positions
-    const agendaBodyReset = document.getElementById('demo-agenda-body');
-    if (agendaBodyReset) agendaBodyReset.scrollTop = 0;
-    const todoBodyReset = document.getElementById('demo-todo-body');
-    if (todoBodyReset) todoBodyReset.scrollTop = 0;
+    const homeViewScroll = document.getElementById('demo-home-view');
+    if (homeViewScroll) homeViewScroll.scrollTop = 0;
     if (wwModeAgent) { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief) { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
@@ -261,36 +259,30 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // Hover bottom section — scroll Agenda + To-Do simultaneously
-    const agendaBody = document.getElementById('demo-agenda-body');
-    const todoBody   = document.getElementById('demo-todo-body');
-    const cardTodo   = document.getElementById('demo-card-todos');
-    if (cardMeetings && agendaBody) {
-      // Cursor rests between the two bottom cards
-      const midX = (pos(cardMeetings).x + (cardTodo ? pos(cardTodo).x : pos(cardMeetings).x)) / 2;
-      const midY = pos(cardMeetings).y + 14;
+    // Hover bottom section — scroll the whole home view down to reveal hidden items
+    const homeScrollEl = document.getElementById('demo-home-view');
+    if (cardMeetings && homeScrollEl) {
+      // Cursor rests near the center of the bottom half
+      const midX = DW * 0.50;
+      const midY = DH * 0.68;
       await moveTo(midX, midY, 700);
       await delay(400);
 
-      // Scroll both lists simultaneously
-      const scrollBoth = (target, dur) => new Promise(res => {
-        const start  = performance.now();
-        const fromA  = agendaBody ? agendaBody.scrollTop : 0;
-        const fromT  = todoBody   ? todoBody.scrollTop   : 0;
-        const ease   = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      const scrollHome = (target, dur) => new Promise(res => {
+        const start = performance.now();
+        const from  = homeScrollEl.scrollTop;
+        const ease  = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
         function step(now) {
           const p = Math.min((now - start) / dur, 1);
-          const e = ease(p);
-          if (agendaBody) agendaBody.scrollTop = fromA + (target - fromA) * e;
-          if (todoBody)   todoBody.scrollTop   = fromT + (target - fromT) * e;
+          homeScrollEl.scrollTop = from + (target - from) * ease(p);
           if (p < 1) requestAnimationFrame(step); else res();
         }
         requestAnimationFrame(step);
       });
 
-      await scrollBoth(130, 1400);
-      await delay(900);
-      await scrollBoth(0, 900);
+      await scrollHome(160, 1500);
+      await delay(1100);
+      await scrollHome(0, 1000);
       await delay(300);
     }
 
