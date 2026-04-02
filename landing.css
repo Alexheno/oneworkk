@@ -414,7 +414,8 @@ body {
 .win-desktop {
   position: relative;
   background: #08091A;
-  aspect-ratio: 20 / 9.7;
+  width: 1060px;
+  height: 514px;
   overflow: hidden;
   border-radius: 10px;
 }

@@ -682,6 +682,19 @@ if (laptop) {
   lo.observe(laptop);
 }
 
+// ─── Scale demo to always fit hero-demo width ────────────────────────────────
+(function () {
+  const hero    = document.querySelector('.hero-demo');
+  const desktop = document.querySelector('.win-desktop');
+  if (!hero || !desktop) return;
+  function fit() {
+    const scale = hero.offsetWidth / 1060;
+    desktop.style.zoom = String(scale);
+  }
+  window.addEventListener('resize', fit);
+  fit();
+})();
+
 // ─── Smooth anchor scroll ─────────────────────────────────────────────────────
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
