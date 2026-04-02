@@ -181,9 +181,12 @@ function startDemoSequence() {
     if (agentViewReset) { agentViewReset.style.opacity = '0'; agentViewReset.style.display = 'none'; }
     const agentChatReset = document.getElementById('demo-agent-chat');
     if (agentChatReset) {
-      // Remove all messages except the first one
+      agentChatReset.style.display = '';
       while (agentChatReset.children.length > 1) agentChatReset.removeChild(agentChatReset.lastChild);
     }
+    // Remove expanded response block from previous cycle
+    const prevExpReset = document.getElementById('demo-agent-expanded');
+    if (prevExpReset) prevExpReset.remove();
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
     // Reset scroll positions
@@ -727,22 +730,24 @@ function startDemoSequence() {
 
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
 
-      // ── Double-click response → open dashboard Agent IA ────
-      await delay(1200);
+      // ── Double-click on visible response text → open dashboard ──
+      await delay(1000);
       cursor.style.opacity = '1';
-      // Move cursor to the ww-response area
-      const respPos = pos(wwResponse);
-      await moveTo(respPos.x, respPos.y - 10, 900);
-      await delay(300);
-      // Double-click (two rapid clicks)
+      // Target the visible part of the agent content panel (currently scrolled to show text)
+      const agentContentEl = document.querySelector('.ww-agent-content');
+      const clickTarget = agentContentEl || wwResponse;
+      const respPos = pos(clickTarget);
+      await moveTo(respPos.x, respPos.y, 900);
+      await delay(260);
+      // Double-click
       cursor.classList.add('clicking');
       await delay(80);
       cursor.classList.remove('clicking');
-      await delay(100);
+      await delay(110);
       cursor.classList.add('clicking');
       await delay(80);
       cursor.classList.remove('clicking');
-      await delay(400);
+      await delay(500);
 
       // Show the OneWork dashboard
       if (winWindow) winWindow.classList.add('visible', 'expanded');
@@ -752,51 +757,55 @@ function startDemoSequence() {
       const agentViewDB = document.getElementById('demo-agent-view');
       const homeViewDB  = document.getElementById('demo-home-view');
       const projViewDB  = document.getElementById('demo-projects-view');
+      const agentChatDB = document.getElementById('demo-agent-chat');
       if (homeViewDB)  { homeViewDB.style.display = 'none'; }
       if (projViewDB)  { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
       document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
       const agentIconDB = document.getElementById('demo-sb-agent');
       if (agentIconDB) agentIconDB.classList.add('active');
+
+      // Replace chat area with full-width expanded response
+      if (agentChatDB) {
+        // Hide the normal chat — replace it with an expanded content block
+        agentChatDB.style.display = 'none';
+
+        // Remove any previous expanded view
+        const prevExp = document.getElementById('demo-agent-expanded');
+        if (prevExp) prevExp.remove();
+
+        const expandedWrap = document.createElement('div');
+        expandedWrap.id = 'demo-agent-expanded';
+        expandedWrap.className = 'demo-agent-expanded';
+
+        // Clone the recap with all its streamed content
+        const recapClone = recap.cloneNode(true);
+        recapClone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+        expandedWrap.appendChild(recapClone);
+
+        // Insert between header and bar (before the bar element)
+        const agentBar = document.querySelector('.demo-agent-bar');
+        if (agentBar && agentViewDB) {
+          agentViewDB.insertBefore(expandedWrap, agentBar);
+        } else if (agentViewDB) {
+          agentViewDB.appendChild(expandedWrap);
+        }
+        // Start scrolled to top so bar chart shows first
+        expandedWrap.scrollTop = 0;
+      }
+
       if (agentViewDB) {
         agentViewDB.style.display = 'flex';
         await delay(30);
         agentViewDB.style.opacity = '1';
       }
 
-      // Populate Agent IA chat with the same question + response
-      const agentChatDB = document.getElementById('demo-agent-chat');
-      if (agentChatDB) {
-        // Clear existing messages except the first greeting
-        while (agentChatDB.children.length > 1) agentChatDB.removeChild(agentChatDB.lastChild);
-
-        // User question bubble
-        const uBubble = document.createElement('div');
-        uBubble.className = 'demo-agent-msg demo-agent-msg-user';
-        uBubble.innerHTML = '<div class="demo-agent-bubble-user">Fais moi un récap de ma journée</div>';
-        agentChatDB.appendChild(uBubble);
-
-        // AI response bubble — copy the recap content
-        const aiBubble = document.createElement('div');
-        aiBubble.className = 'demo-agent-msg demo-agent-msg-ai';
-        const aiBubbleInner = document.createElement('div');
-        aiBubbleInner.className = 'demo-agent-bubble-ai';
-        // Clone the recap content into the dashboard bubble
-        const recapClone = recap.cloneNode(true);
-        // Clear streaming IDs to avoid duplicates
-        recapClone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
-        aiBubbleInner.appendChild(recapClone);
-        aiBubble.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt="">';
-        aiBubble.appendChild(aiBubbleInner);
-        agentChatDB.appendChild(aiBubble);
-        agentChatDB.scrollTop = agentChatDB.scrollHeight;
+      // Cursor reads over the response
+      const expEl = document.getElementById('demo-agent-expanded');
+      if (expEl) {
+        const expPos = pos(expEl);
+        await moveTo(expPos.x, expPos.y - 20, 1000);
       }
-
-      // Cursor drifts to the chat area — user reads the response
-      if (agentChatDB) {
-        const chatPos = pos(agentChatDB);
-        await moveTo(chatPos.x, chatPos.y, 1000);
-      }
-      await delay(3500);
+      await delay(3800);
     }
 
     // ── End of cycle — wait then loop ────────────────────────
