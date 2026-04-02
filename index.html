@@ -569,6 +569,7 @@
                             <div class="demo-em-body">
                               <div class="demo-em-top"><span class="demo-em-name">Jean-Pierre Duval</span><span class="demo-em-t">08:02</span></div>
                               <div class="demo-em-subj">Term sheet — retour avant 10h</div>
+                              <div class="demo-em-preview">Bonjour Henri, merci de confirmer avant la réunion...</div>
                             </div>
                             <div class="demo-em-unread-dot"></div>
                           </div>
@@ -577,6 +578,7 @@
                             <div class="demo-em-body">
                               <div class="demo-em-top"><span class="demo-em-name">Équipe Finance</span><span class="demo-em-t">07:48</span></div>
                               <div class="demo-em-subj">Rapport Q1 en attente</div>
+                              <div class="demo-em-preview">Voici le récapitulatif des chiffres du trimestre...</div>
                             </div>
                           </div>
                           <div class="demo-email-row">
@@ -584,6 +586,7 @@
                             <div class="demo-em-body">
                               <div class="demo-em-top"><span class="demo-em-name">Sarah Martin</span><span class="demo-em-t">07:31</span></div>
                               <div class="demo-em-subj">Campagne Q2 — validation</div>
+                              <div class="demo-em-preview">Les visuels sont prêts, j'attends ton feu vert...</div>
                             </div>
                           </div>
                         </div>
@@ -599,23 +602,36 @@
                           <div class="demo-tms-item demo-tms-urgent" id="tms-click-row">
                             <div class="demo-tms-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
                             <div class="demo-tms-body">
-                              <div class="demo-em-top"><span class="demo-tms-name">Sarah Martin</span><span class="demo-em-t">09h04</span></div>
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Sarah Martin</span>
+                                <span class="demo-tms-time">09h04</span>
+                              </div>
                               <span class="demo-tms-msg">Valider les visuels Q2 maintenant</span>
+                              <span class="demo-tms-channel">· Équipe Design</span>
                             </div>
-                            <div class="demo-tms-unread"></div>
+                            <div class="demo-tms-unread">3</div>
                           </div>
                           <div class="demo-tms-item">
                             <div class="demo-tms-av" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
                             <div class="demo-tms-body">
-                              <div class="demo-em-top"><span class="demo-tms-name">Jean-Pierre</span><span class="demo-em-t">08h45</span></div>
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Jean-Pierre</span>
+                                <span class="demo-tms-time">08h45</span>
+                              </div>
                               <span class="demo-tms-msg">Budget Q1 partagé</span>
+                              <span class="demo-tms-channel">· Finance</span>
                             </div>
+                            <div class="demo-tms-unread">1</div>
                           </div>
                           <div class="demo-tms-item demo-tms-muted">
                             <div class="demo-tms-av" style="background:linear-gradient(135deg,#6B8EF5,#9B35FF)">MC</div>
                             <div class="demo-tms-body">
-                              <div class="demo-em-top"><span class="demo-tms-name">Marie C.</span><span class="demo-em-t">Hier</span></div>
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Marie C.</span>
+                                <span class="demo-tms-time">Hier</span>
+                              </div>
                               <span class="demo-tms-msg">On se call demain ?</span>
+                              <span class="demo-tms-channel">· Général</span>
                             </div>
                           </div>
                         </div>
@@ -629,7 +645,6 @@
                           <button class="demo-cal-nav-btn">›</button>
                         </div>
                         <div class="demo-card-body demo-card-body-scroll" id="demo-agenda-body">
-                          <!-- Events -->
                           <div class="demo-cal-events">
                             <div class="demo-cal-event demo-cal-ev-blue demo-cal-ev-next">
                               <div class="demo-cal-ev-time">09h30</div>
@@ -650,6 +665,14 @@
                             <div class="demo-cal-event demo-cal-ev-orange">
                               <div class="demo-cal-ev-time">16h00</div>
                               <div class="demo-cal-ev-name">Démo Renault</div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-blue">
+                              <div class="demo-cal-ev-time">17h00</div>
+                              <div class="demo-cal-ev-name">Weekly Produit</div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-purple">
+                              <div class="demo-cal-ev-time">18h30</div>
+                              <div class="demo-cal-ev-name">Bilan de journée</div>
                             </div>
                           </div>
                         </div>
@@ -681,6 +704,18 @@
                           <div class="demo-task-row demo-task-muted">
                             <div class="demo-task-dot"></div>
                             <span>Review rapport Q1</span>
+                          </div>
+                          <div class="demo-task-row demo-task-muted">
+                            <div class="demo-task-dot"></div>
+                            <span>Envoyer brief Renault</span>
+                          </div>
+                          <div class="demo-task-row demo-task-muted">
+                            <div class="demo-task-dot"></div>
+                            <span>Mettre à jour le board Notion</span>
+                          </div>
+                          <div class="demo-task-row demo-task-muted">
+                            <div class="demo-task-dot"></div>
+                            <span>Appel client 18h</span>
                           </div>
                         </div>
                       </div>
@@ -1196,6 +1231,9 @@
                   </div><!-- /ww-panels -->
                 </div><!-- /ww-card -->
               </div><!-- /win-widget -->
+
+              <!-- Interaction blocker — absorbs all real mouse events so the demo behaves like a video -->
+              <div class="demo-interaction-blocker"></div>
 
               <!-- Demo cursor -->
               <div class="demo-cursor" id="demo-cursor">
