@@ -697,7 +697,10 @@ function startDemoSequence() {
 
       await delay(200);
       await typeInto('Réunions du jour', 'ww-st-label');
-      br(2);
+      br();
+      streamWrap.insertAdjacentHTML('beforeend', '<div class="ww-st-sep"></div>');
+      scrollToBottom();
+      br();
       await delay(350);
 
       await typeInto('Stand-up Équipe · 09:00', 'ww-st-title ww-st-green');
@@ -811,23 +814,27 @@ function startDemoSequence() {
       // ── Hover first 3 bars — show floating day tooltip ───────
       const expEl = document.getElementById('demo-agent-expanded');
 
-      // Create tooltip element (time only — plain white)
+      // Tooltip lives on document.body (position:fixed) — never clipped by win-desktop overflow
       let tooltip = document.getElementById('demo-bar-tooltip');
       if (!tooltip) {
         tooltip = document.createElement('div');
         tooltip.id = 'demo-bar-tooltip';
-        tooltip.innerHTML = '<div class="demo-bar-tooltip-inner"><div class="demo-bar-tooltip-time" id="dbt-time"></div></div><div class="demo-bar-tooltip-arrow"></div>';
-        desktop.appendChild(tooltip);
+        tooltip.innerHTML = '<div class="demo-bar-tooltip-inner"><div class="demo-bar-tooltip-time" id="dbt-time"></div></div>';
+        document.body.appendChild(tooltip);
       }
       const dbtTime = document.getElementById('dbt-time');
 
-      const showTooltip = (x, y, time) => {
+      const showTooltip = (barEl, time) => {
         dbtTime.textContent = time;
-        // Position tooltip centred above cursor
-        const tw = tooltip.offsetWidth || 54;
-        tooltip.style.left = (x - tw / 2) + 'px';
-        tooltip.style.top  = (y - 48) + 'px';
         tooltip.classList.add('visible');
+        // Use viewport coords from the bar element directly
+        const br = barEl.getBoundingClientRect();
+        const tx = br.left + br.width  / 2;
+        const ty = br.top  + br.height / 2;
+        const tw = tooltip.offsetWidth  || 62;
+        const th = tooltip.offsetHeight || 32;
+        tooltip.style.left = (tx - tw / 2) + 'px';
+        tooltip.style.top  = (ty - th - 10) + 'px';
       };
       const hideTooltip = () => tooltip.classList.remove('visible');
 
@@ -837,16 +844,14 @@ function startDemoSequence() {
         const bars = expEl.querySelectorAll('.ww-rb');
         for (let i = 0; i < 3 && i < bars.length; i++) {
           const bar = bars[i];
-          // Re-measure every iteration so rects are always fresh
           const dr2  = desktop.getBoundingClientRect();
           const br2  = bar.getBoundingClientRect();
           const zoom = parseFloat(desktop.style.zoom) || 1;
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
-          // Center of the bar vertically (not the top) for reliable landing
-          const by   = (br2.top  + br2.height / 2  - dr2.top)  / zoom;
+          const by   = (br2.top  + br2.height / 2 - dr2.top)  / zoom;
           await moveTo(bx, by, i === 0 ? 950 : 680);
-          // Tooltip appears the instant the cursor lands
-          showTooltip(bx, by, barTimes[i]);
+          // Tooltip appears the instant the cursor lands — use bar element for fixed coords
+          showTooltip(bar, barTimes[i]);
           await delay(2400);
           hideTooltip();
           await delay(180);
