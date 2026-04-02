@@ -141,6 +141,21 @@ function startDemoSequence() {
     // Reset to Brief mode
     const wwCardReset = document.querySelector('#win-widget-popup .ww-card');
     if (wwCardReset) { wwCardReset.classList.remove('show-agent'); wwCardReset.style.height = ''; }
+    // Reset Agent IA view
+    const agentViewReset = document.getElementById('demo-agent-view');
+    if (agentViewReset) { agentViewReset.style.opacity = '0'; agentViewReset.style.display = 'none'; }
+    const agentChatReset = document.getElementById('demo-agent-chat');
+    if (agentChatReset) {
+      // Remove all messages except the first one
+      while (agentChatReset.children.length > 1) agentChatReset.removeChild(agentChatReset.lastChild);
+    }
+    const agentInputReset = document.getElementById('demo-agent-input');
+    if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
+    // Reset scroll positions
+    const agendaBodyReset = document.getElementById('demo-agenda-body');
+    if (agendaBodyReset) agendaBodyReset.scrollTop = 0;
+    const todoBodyReset = document.getElementById('demo-todo-body');
+    if (todoBodyReset) todoBodyReset.scrollTop = 0;
     if (wwModeAgent) { wwModeAgent.classList.remove('ww-mode-active'); }
     if (wwModeBrief) { wwModeBrief.classList.add('ww-mode-active'); }
     if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
@@ -207,11 +222,52 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // Hover todo / third card — linger
+    // Hover agenda card — scroll to reveal more events
+    const agendaBody = document.getElementById('demo-agenda-body');
+    if (cardMeetings && agendaBody) {
+      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y + 20, 600);
+      await delay(400);
+      // Smooth scroll down
+      const scrollDown = (target, dur) => new Promise(res => {
+        const start = performance.now();
+        const from = agendaBody.scrollTop;
+        const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+        function step(now) {
+          const p = Math.min((now - start) / dur, 1);
+          agendaBody.scrollTop = from + (target - from) * ease(p);
+          if (p < 1) requestAnimationFrame(step); else res();
+        }
+        requestAnimationFrame(step);
+      });
+      await scrollDown(90, 1100);
+      await delay(700);
+      await scrollDown(0, 600);
+      await delay(300);
+    }
+
+    // Hover todo / third card — linger + scroll
     const cardTodo = document.getElementById('demo-card-todo');
+    const todoBody = document.getElementById('demo-todo-body');
     if (cardTodo) {
       await moveTo(pos(cardTodo).x, pos(cardTodo).y, 700);
-      await delay(900);
+      await delay(500);
+      if (todoBody) {
+        const scrollDown2 = (target, dur) => new Promise(res => {
+          const start = performance.now();
+          const from = todoBody.scrollTop;
+          const ease = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+          function step(now) {
+            const p = Math.min((now - start) / dur, 1);
+            todoBody.scrollTop = from + (target - from) * ease(p);
+            if (p < 1) requestAnimationFrame(step); else res();
+          }
+          requestAnimationFrame(step);
+        });
+        await scrollDown2(60, 900);
+        await delay(600);
+        await scrollDown2(0, 500);
+        await delay(300);
+      }
     }
 
     // Drift back to center, breathe
@@ -249,261 +305,116 @@ function startDemoSequence() {
     // Stay on projects page
     await delay(2800);
 
-    // ── Return to home view ───────────────────────────────────
-    const projView2 = document.getElementById('demo-projects-view');
-    const homeView2 = document.getElementById('demo-home-view');
-    const homeIcon = document.querySelector('.demo-sb-icon[title="Accueil"]') || document.querySelector('.demo-sb-icon');
-    if (homeIcon) {
-      await moveTo(pos(homeIcon).x, pos(homeIcon).y, 800);
-      await delay(250);
-      await click(homeIcon);
-    }
-    if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
-    if (homeView2) homeView2.style.display = 'flex';
-    document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
-    await delay(700);
-
-    // ── Click Sarah Martin Teams row → Teams window opens ─────
-    const tmsRow = document.getElementById('tms-click-row');
-    const teamsWin = document.getElementById('win-teams-popup');
-    if (tmsRow) {
-      await moveTo(pos(tmsRow).x, pos(tmsRow).y, 820);
+    // ── After projects: click Agent IA directly ──────────────
+    const agentIcon = document.getElementById('demo-sb-agent');
+    const projViewEnd = document.getElementById('demo-projects-view');
+    const agentView = document.getElementById('demo-agent-view');
+    if (agentIcon) {
+      await moveTo(pos(agentIcon).x, pos(agentIcon).y, 820);
       await delay(280);
-      await click(tmsRow);
-      if (teamsWin) teamsWin.classList.add('visible');
-      await delay(900);
+      await click(agentIcon);
+      document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
+      agentIcon.classList.add('active');
+      if (projViewEnd) { projViewEnd.style.opacity = '0'; projViewEnd.style.display = 'none'; }
+      if (agentView) {
+        agentView.style.display = 'flex';
+        await delay(30);
+        agentView.style.opacity = '1';
+      }
+      await delay(800);
     }
 
-    // ── Type reply in Teams composer ──────────────────────────
-    const tmsComposePh = document.getElementById('tms-compose-ph');
-    const tmsSendBtn = document.querySelector('.tms-send-btn');
-    if (tmsComposePh) {
-      await moveTo(pos(tmsComposePh).x, pos(tmsComposePh).y, 760);
-      await delay(260);
+    // ── Type question in Agent IA ──────────────────────────────
+    const agentInput = document.getElementById('demo-agent-input');
+    const agentSendBtn = document.getElementById('demo-agent-send');
+    const agentChat = document.getElementById('demo-agent-chat');
+    if (agentInput) {
+      await moveTo(pos(agentInput).x, pos(agentInput).y, 700);
+      await delay(200);
       await click(null);
-      await delay(180);
-      // Type into the span
-      const tmsText = 'Ok je regarde ça tout de suite !';
-      tmsComposePh.style.color = '#201F1E';
-      for (let i = 0; i <= tmsText.length; i++) {
-        tmsComposePh.textContent = tmsText.slice(0, i);
-        await delay(42 + Math.random() * 28);
+      await delay(150);
+      agentInput.classList.add('typing');
+      agentInput.textContent = '';
+      const q = 'Fais-moi un récap de ma journée';
+      for (let i = 0; i < q.length; i++) {
+        agentInput.textContent = q.slice(0, i + 1);
+        await delay(52 + Math.random() * 32);
       }
-      await delay(340);
-    }
-    if (tmsSendBtn) {
-      await moveTo(pos(tmsSendBtn).x, pos(tmsSendBtn).y, 560);
-      await delay(260);
-      await click(tmsSendBtn);
-      await delay(120);
-
-      // Clear composer
-      if (tmsComposePh) {
-        tmsComposePh.textContent = '';
-        tmsComposePh.style.color = '';
-      }
-
-      // Inject Henri's reply — same format as all Teams messages
-      const msgsArea = document.getElementById('tms-msgs-area');
-      if (msgsArea) {
-        const bubble = document.createElement('div');
-        bubble.className = 'tms-msg tms-msg-appear';
-        bubble.id = 'tms-reply-msg';
-        bubble.innerHTML = `
-          <div class="tms-msg-av" style="background:linear-gradient(135deg,#6264A7,#4B4D8F)">HB</div>
-          <div class="tms-msg-content">
-            <div class="tms-msg-meta"><span class="tms-msg-name">Henri B.</span><span class="tms-msg-time">09h05</span></div>
-            <div class="tms-msg-text">Ok je regarde ça tout de suite !</div>
-          </div>`;
-        msgsArea.appendChild(bubble);
-        msgsArea.scrollTop = msgsArea.scrollHeight;
-        await delay(900);
-      }
-    }
-
-    // ── Cursor drifts away, then everything fades together ────
-    await moveTo(dr.width * 0.50, dr.height * 0.45, 700);
-    await delay(300);
-    cursor.style.opacity = '0';
-    await delay(200);
-
-    // ── Black overlay fade-in ────────────────────────────────
-    const blackOverlay = document.getElementById('demo-black-overlay');
-    if (blackOverlay) {
-      blackOverlay.classList.add('fade-in');
-      blackOverlay.classList.remove('fade-out');
-    }
-    await delay(180);
-
-    // Switch scene behind the black screen
-    if (teamsWin) teamsWin.classList.remove('visible');
-    if (winWindow) winWindow.classList.remove('visible', 'expanded');
-    if (tbOneWork) tbOneWork.classList.remove('active');
-    bgOutlook.classList.remove('fading');
-    if (bgExcel) bgExcel.classList.remove('visible');
-
-    await delay(200);
-
-    // ── Black overlay fade-out → reveal Outlook ───────────────
-    if (blackOverlay) {
-      blackOverlay.classList.remove('fade-in');
-      blackOverlay.classList.add('fade-out');
-    }
-    await delay(520);
-
-    // ══════════════════════════════════════════════════════════
-    // PHASE 2 — Widget interaction → Agent IA recap
-    // ══════════════════════════════════════════════════════════
-
-    // Cursor appears directly near widget knob — no email click
-    cursor.style.opacity = '1';
-    moveTo(dr.width * 0.38, dr.height * 0.52, 0);
-    await delay(300);
-
-    // Move near widget knob → hover opens card
-    if (wwKnob) {
-      const p = pos(wwKnob);
-      await moveTo(p.x, p.y - 6, 1100);
-      await delay(300);
-      widgetEl.classList.add('open');
-      await delay(600);
-    }
-
-    // Check task 1 → sinks to bottom
-    if (wwTask1) {
-      const dot1 = wwTask1.querySelector('.ww-dot');
-      if (dot1) {
-        const p = pos(dot1);
-        await moveTo(p.x, p.y, 800);
-        await delay(200);
-        await click(dot1);
-        await delay(80);
-        await checkAndSink(wwTask1);
-        await delay(700);
-      }
-    }
-
-    // Check task 2 → sinks to bottom
-    if (wwTask2) {
-      const dot2 = wwTask2.querySelector('.ww-dot');
-      if (dot2) {
-        const p = pos(dot2);
-        await moveTo(p.x, p.y, 680);
-        await delay(160);
-        await click(dot2);
-        await delay(80);
-        await checkAndSink(wwTask2);
-        await delay(720);
-      }
-    }
-
-    // Check task 3 → sinks to bottom
-    if (wwTask3) {
-      const dot3 = wwTask3.querySelector('.ww-dot');
-      if (dot3) {
-        const p = pos(dot3);
-        await moveTo(p.x, p.y, 680);
-        await delay(160);
-        await click(dot3);
-        await delay(80);
-        await checkAndSink(wwTask3);
-        await delay(720);
-      }
-    }
-
-    // Switch to Agent IA mode, then type
-    if (wwModeAgent && wwModeBrief && wwAgentPanel) {
-      const pAgent = pos(wwModeAgent);
-      await moveTo(pAgent.x, pAgent.y, 720);
-      await delay(220);
-      await click(wwModeAgent);
-      await delay(100);
-      wwModeBrief.classList.remove('ww-mode-active');
-      wwModeAgent.classList.add('ww-mode-active');
-      const wwCard = document.querySelector('#win-widget-popup .ww-card');
-      if (wwCard) {
-        // Measure agent panel height by temporarily exposing it
-        const agentEl = document.getElementById('ww-agent-panel');
-        let agentH = 160;
-        if (agentEl) {
-          agentEl.style.cssText = 'max-height:none!important;overflow:visible!important;position:absolute!important;visibility:hidden!important;pointer-events:none!important';
-          agentH = agentEl.scrollHeight || agentEl.offsetHeight || 160;
-          agentEl.style.cssText = '';
-        }
-        const modeBarEl = wwCard.querySelector('.ww-mode-bar');
-        const modeBarH = modeBarEl ? modeBarEl.offsetHeight : 36;
-        const toH = modeBarH + agentH;
-        // Freeze current height then animate
-        wwCard.style.height = wwCard.offsetHeight + 'px';
-        wwCard.classList.add('show-agent');
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          wwCard.style.height = toH + 'px';
-        }));
-        // After transition completes, let card grow freely with streamed response
-        setTimeout(() => { wwCard.style.height = ''; }, 680);
-      }
-      await delay(380);
-    }
-    if (wwChatInput) {
-      const p = pos(wwChatInput);
-      await moveTo(p.x - 12, p.y, 800);
-      await delay(270);
-      await click(null);
-      await delay(180);
-      await typeIn('Fais moi un récap de ma journée', wwChatInput);
-      await delay(340);
-    }
-
-    // Click send
-    if (wwChatSend) {
-      const p = pos(wwChatSend);
-      await moveTo(p.x, p.y, 600);
-      await delay(310);
-      await click(wwChatSend);
+      agentInput.classList.remove('typing');
       await delay(200);
     }
 
-    // Show thinking dots, then inject screen-time visualization
-    if (wwChatInput) { wwChatInput.textContent = WW_PH; wwChatInput.style.color = ''; }
-    const wwBubble = document.querySelector('#ww-agent-panel .ww-agent-bubble');
-    if (wwBubble) {
-      wwBubble.style.opacity = '0';
-      wwBubble.style.maxHeight = '0';
-      wwBubble.style.padding = '0';
-      wwBubble.style.margin = '0';
-    }
-    const wwAgentTitle = document.querySelector('.ww-agent-title');
-    if (wwAgentTitle) { wwAgentTitle.style.display = 'none'; }
-    if (wwResponse) {
-      wwResponse.className = 'ww-response visible';
-      wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
+    // ── Send question ──────────────────────────────────────────
+    if (agentSendBtn) {
+      await moveTo(pos(agentSendBtn).x, pos(agentSendBtn).y, 380);
+      await delay(160);
+      await click(agentSendBtn);
     }
 
-    // Cursor drifts away while AI thinks
-    await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
-    await delay(1900);
+    // Add user message bubble
+    if (agentChat) {
+      const userMsg = document.createElement('div');
+      userMsg.className = 'demo-agent-msg demo-agent-msg-user';
+      userMsg.innerHTML = '<div class="demo-agent-bubble-user">Fais-moi un récap de ma journée</div>';
+      agentChat.appendChild(userMsg);
+      if (agentInput) agentInput.textContent = 'Demander à l\'Agent IA...';
+      agentChat.scrollTop = agentChat.scrollHeight;
+    }
 
-    if (wwResponse) {
-      wwResponse.className = 'ww-response visible';
-      const recap = document.createElement('div');
-      recap.className = 'ww-recap';
-      wwResponse.innerHTML = '';
-      wwResponse.appendChild(recap);
+    // ── Thinking dots ──────────────────────────────────────────
+    await delay(500);
+    let thinkEl = null;
+    if (agentChat) {
+      const thinkWrap = document.createElement('div');
+      thinkWrap.className = 'demo-agent-msg demo-agent-msg-ai';
+      thinkWrap.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt=""><div class="demo-agent-bubble-ai"><div class="demo-thinking"><span></span><span></span><span></span></div></div>';
+      agentChat.appendChild(thinkWrap);
+      thinkEl = thinkWrap;
+      agentChat.scrollTop = agentChat.scrollHeight;
+    }
+    await delay(1800);
 
-      const agentContent = document.querySelector('.ww-agent-content');
-      const scrollToBottom = () => {
-        if (agentContent) agentContent.scrollTop = agentContent.scrollHeight;
-      };
+    // ── Stream AI response in the chat ────────────────────────
+    if (thinkEl && agentChat) {
+      agentChat.removeChild(thinkEl);
+    }
+
+    // Create AI response message
+    let aiMsgBubble = null;
+    if (agentChat) {
+      const aiMsgWrap = document.createElement('div');
+      aiMsgWrap.className = 'demo-agent-msg demo-agent-msg-ai';
+      aiMsgWrap.innerHTML = '<img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar" alt=""><div class="demo-agent-bubble-ai" id="demo-ai-response-bubble"></div>';
+      agentChat.appendChild(aiMsgWrap);
+      aiMsgBubble = document.getElementById('demo-ai-response-bubble');
+      agentChat.scrollTop = agentChat.scrollHeight;
+    }
+
+    if (aiMsgBubble) {
+      // Move cursor away while AI generates
+      await moveTo(dr.width * 0.42, dr.height * 0.48, 620);
+      await delay(400);
+
+      const scrollChat = () => { if (agentChat) agentChat.scrollTop = agentChat.scrollHeight; };
 
       const addBlock = (html) => {
         const el = document.createElement('div');
         el.className = 'ww-section';
         el.innerHTML = html;
-        recap.appendChild(el);
-        scrollToBottom();
+        aiMsgBubble.appendChild(el);
+        scrollChat();
       };
 
-      // 1 — Label + barres (Ven au centre, Sam/Dim vides)
+      // helper: stream text into existing element
+      const typeEl = async (el, text) => {
+        for (let i = 0; i < text.length; i++) {
+          el.textContent = text.slice(0, i + 1);
+          scrollChat();
+          await delay(50 + Math.random() * 34);
+        }
+      };
+
+      // 1 — Bar chart
       addBlock(`
         <div class="ww-total-lbl" style="margin-bottom:6px">Temps d'écran · Aujourd'hui</div>
         <div class="ww-recap-lbl"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span style="color:rgba(255,255,255,0.55);font-weight:600">Ven</span><span>Sam</span><span>Dim</span></div>
@@ -517,16 +428,7 @@ function startDemoSequence() {
           <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:6"></div>
         </div>`);
 
-      // helper pour streamer un élément existant
-      const typeEl = async (el, text) => {
-        for (let i = 0; i < text.length; i++) {
-          el.textContent = text.slice(0, i + 1);
-          scrollToBottom();
-          await delay(50 + Math.random() * 34);
-        }
-      };
-
-      // 2 — Légende apps (textes streamés)
+      // 2 — Legend
       await delay(1400);
       const legendWrap = document.createElement('div');
       legendWrap.className = 'ww-section';
@@ -535,8 +437,8 @@ function startDemoSequence() {
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name" id="rl-n1"></span><span class="ww-rl-val" id="rl-v1"></span></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>`;
-      recap.appendChild(legendWrap);
-      scrollToBottom();
+      aiMsgBubble.appendChild(legendWrap);
+      scrollChat();
       await delay(200);
       await typeEl(document.getElementById('rl-n1'), 'Teams');
       await typeEl(document.getElementById('rl-v1'), '2h 48');
@@ -547,7 +449,7 @@ function startDemoSequence() {
       await typeEl(document.getElementById('rl-n3'), 'Chrome');
       await typeEl(document.getElementById('rl-v3'), '0h 54');
 
-      // 3 — Score ring (textes streamés)
+      // 3 — Score
       await delay(1300);
       const scoreWrap = document.createElement('div');
       scoreWrap.className = 'ww-section';
@@ -567,22 +469,19 @@ function startDemoSequence() {
             <div class="ww-score-lbl" id="score-lbl-el"></div>
           </div>
         </div>`;
-      recap.appendChild(scoreWrap);
-      scrollToBottom();
+      aiMsgBubble.appendChild(scoreWrap);
+      scrollChat();
       await delay(200);
       await typeEl(document.getElementById('score-pct-el'), 'Score : 75 %');
       await typeEl(document.getElementById('score-lbl-el'), 'PRODUCTIVITÉ DU JOUR');
 
-      // 4 — Tout le texte streamé comme une vraie réponse IA
+      // 4 — Streamed text response
       await delay(1400);
-
-      // Conteneur texte unique
       const streamWrap = document.createElement('div');
       streamWrap.className = 'ww-section ww-stream-block';
-      recap.appendChild(streamWrap);
-      scrollToBottom();
+      aiMsgBubble.appendChild(streamWrap);
+      scrollChat();
 
-      // Helpers : type un texte dans un span stylistique, line break instantané
       const typeInto = async (text, cls, fast = false) => {
         const span = document.createElement('span');
         if (cls) span.className = cls;
@@ -597,23 +496,21 @@ function startDemoSequence() {
             if (c === ':') ms += 55;
             if (c === '—') ms += 110;
           }
-          scrollToBottom();
+          scrollChat();
           await delay(ms);
         }
       };
       const br = (n = 1) => {
         streamWrap.insertAdjacentHTML('beforeend', '<br>'.repeat(n));
-        scrollToBottom();
+        scrollChat();
       };
-
-      // Helper : insert a "Pour demain" block then stream the task text into it
       const addDemain = async (id, taskText, redCheck = false) => {
         const checkCls = redCheck ? 'ww-st-demain-check ww-st-demain-check-red' : 'ww-st-demain-check';
         const block = document.createElement('div');
         block.className = 'ww-st-demain-block';
         block.innerHTML = `<div class="ww-st-demain-label">Pour demain</div><div class="ww-st-demain-row"><div class="${checkCls}"></div><span id="${id}"></span></div>`;
         streamWrap.appendChild(block);
-        scrollToBottom();
+        scrollChat();
         await delay(150);
         await typeEl(document.getElementById(id), taskText);
       };
