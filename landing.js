@@ -749,6 +749,9 @@ function startDemoSequence() {
       cursor.classList.remove('clicking');
       await delay(500);
 
+      // ── Close widget smoothly — let existing CSS transition run ──
+      widgetEl.classList.remove('open');
+
       // Show the OneWork dashboard
       if (winWindow) winWindow.classList.add('visible', 'expanded');
       if (tbOneWork) tbOneWork.classList.add('active');
@@ -799,13 +802,58 @@ function startDemoSequence() {
         agentViewDB.style.opacity = '1';
       }
 
-      // Cursor reads over the response
+      // ── Hover first 3 bars — show floating day tooltip ───────
       const expEl = document.getElementById('demo-agent-expanded');
-      if (expEl) {
-        const expPos = pos(expEl);
-        await moveTo(expPos.x, expPos.y - 20, 1000);
+
+      // Create tooltip element
+      let tooltip = document.getElementById('demo-bar-tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'demo-bar-tooltip';
+        tooltip.innerHTML = '<div class="demo-bar-tooltip-inner"><div class="demo-bar-tooltip-day" id="dbt-day"></div><div class="demo-bar-tooltip-time" id="dbt-time"></div></div><div class="demo-bar-tooltip-arrow"></div>';
+        desktop.appendChild(tooltip);
       }
-      await delay(3800);
+      const dbtDay  = document.getElementById('dbt-day');
+      const dbtTime = document.getElementById('dbt-time');
+
+      const showTooltip = (x, y, day, time) => {
+        dbtDay.textContent  = day;
+        dbtTime.textContent = time;
+        // Position tooltip above the cursor (offset up by ~36px)
+        tooltip.style.left = (x - 34) + 'px';
+        tooltip.style.top  = (y - 62) + 'px';
+        tooltip.classList.add('visible');
+      };
+      const hideTooltip = () => tooltip.classList.remove('visible');
+
+      const barData = [
+        { day: 'Lundi',    time: '2h 55' },
+        { day: 'Mardi',    time: '4h 03' },
+        { day: 'Mercredi', time: '3h 34' },
+      ];
+
+      if (expEl) {
+        const bars = expEl.querySelectorAll('.ww-rb');
+        for (let i = 0; i < 3 && i < bars.length; i++) {
+          const bar = bars[i];
+          // Target the top of the bar for a natural hover feel
+          const dr2  = desktop.getBoundingClientRect();
+          const br2  = bar.getBoundingClientRect();
+          const zoom = parseFloat(desktop.style.zoom) || 1;
+          const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
+          const by   = (br2.top  + 6              - dr2.top)   / zoom;
+          await moveTo(bx, by, i === 0 ? 1000 : 700);
+          await delay(120);
+          showTooltip(bx, by, barData[i].day, barData[i].time);
+          await delay(1400);
+          hideTooltip();
+          await delay(180);
+        }
+        // Drift cursor to center of chart after hovering
+        const expPos = pos(expEl);
+        await moveTo(expPos.x, expPos.y, 800);
+      }
+      await delay(2000);
     }
 
     // ── End of cycle — wait then loop ────────────────────────
