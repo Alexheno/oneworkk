@@ -805,55 +805,65 @@ function startDemoSequence() {
       // ── Hover first 3 bars — show floating day tooltip ───────
       const expEl = document.getElementById('demo-agent-expanded');
 
-      // Create tooltip element
+      // Create tooltip element (time only — plain white)
       let tooltip = document.getElementById('demo-bar-tooltip');
       if (!tooltip) {
         tooltip = document.createElement('div');
         tooltip.id = 'demo-bar-tooltip';
-        tooltip.innerHTML = '<div class="demo-bar-tooltip-inner"><div class="demo-bar-tooltip-day" id="dbt-day"></div><div class="demo-bar-tooltip-time" id="dbt-time"></div></div><div class="demo-bar-tooltip-arrow"></div>';
+        tooltip.innerHTML = '<div class="demo-bar-tooltip-inner"><div class="demo-bar-tooltip-time" id="dbt-time"></div></div><div class="demo-bar-tooltip-arrow"></div>';
         desktop.appendChild(tooltip);
       }
-      const dbtDay  = document.getElementById('dbt-day');
       const dbtTime = document.getElementById('dbt-time');
 
-      const showTooltip = (x, y, day, time) => {
-        dbtDay.textContent  = day;
+      const showTooltip = (x, y, time) => {
         dbtTime.textContent = time;
-        // Position tooltip above the cursor (offset up by ~36px)
-        tooltip.style.left = (x - 34) + 'px';
-        tooltip.style.top  = (y - 62) + 'px';
+        tooltip.style.left = (x - 24) + 'px';
+        tooltip.style.top  = (y - 52) + 'px';
         tooltip.classList.add('visible');
       };
       const hideTooltip = () => tooltip.classList.remove('visible');
 
-      const barData = [
-        { day: 'Lundi',    time: '2h 55' },
-        { day: 'Mardi',    time: '4h 03' },
-        { day: 'Mercredi', time: '3h 34' },
-      ];
+      const barTimes = ['2h 55', '4h 03', '3h 34'];
 
       if (expEl) {
         const bars = expEl.querySelectorAll('.ww-rb');
         for (let i = 0; i < 3 && i < bars.length; i++) {
           const bar = bars[i];
-          // Target the top of the bar for a natural hover feel
           const dr2  = desktop.getBoundingClientRect();
           const br2  = bar.getBoundingClientRect();
           const zoom = parseFloat(desktop.style.zoom) || 1;
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
-          const by   = (br2.top  + 6              - dr2.top)   / zoom;
-          await moveTo(bx, by, i === 0 ? 1000 : 700);
-          await delay(120);
-          showTooltip(bx, by, barData[i].day, barData[i].time);
-          await delay(1400);
+          const by   = (br2.top  + 8              - dr2.top)   / zoom;
+          await moveTo(bx, by, i === 0 ? 900 : 650);
+          // Tooltip appears immediately on arrival
+          showTooltip(bx, by, barTimes[i]);
+          await delay(2200);
           hideTooltip();
-          await delay(180);
+          await delay(160);
         }
-        // Drift cursor to center of chart after hovering
+
+        // ── Slow scroll to end of response ──
         const expPos = pos(expEl);
-        await moveTo(expPos.x, expPos.y, 800);
+        await moveTo(expPos.x, expPos.y, 700);
+        await delay(400);
+
+        const scrollEnd = () => new Promise(res => {
+          const dur  = 3200;
+          const from = expEl.scrollTop;
+          const to   = expEl.scrollHeight - expEl.clientHeight;
+          if (to <= 0) { res(); return; }
+          const start = performance.now();
+          const ease  = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+          function step(now) {
+            const p = Math.min((now - start) / dur, 1);
+            expEl.scrollTop = from + (to - from) * ease(p);
+            if (p < 1) requestAnimationFrame(step); else res();
+          }
+          requestAnimationFrame(step);
+        });
+        await scrollEnd();
+        await delay(1800);
       }
-      await delay(2000);
     }
 
     // ── End of cycle — wait then loop ────────────────────────

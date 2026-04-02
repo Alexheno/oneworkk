@@ -418,6 +418,8 @@ body {
   height: 582px;
   overflow: hidden;
   border-radius: 10px;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* OneWork floating window — invisible by default, appears in Phase 2 */
@@ -4855,33 +4857,19 @@ body {
   transform: translateY(0);
 }
 .demo-bar-tooltip-inner {
-  background: rgba(14,14,28,0.92);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 9px;
-  padding: 6px 11px 5px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.55), 0 0 0 0.5px rgba(255,255,255,0.05);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1px;
+  background: rgba(14,14,28,0.88);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 5px 10px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.5);
   white-space: nowrap;
 }
-.demo-bar-tooltip-day {
-  font-size: 0.52rem;
-  font-weight: 600;
-  color: rgba(255,255,255,0.40);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
 .demo-bar-tooltip-time {
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: linear-gradient(90deg,#8ECDF8,#9B35FF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #ffffff;
   letter-spacing: -0.01em;
 }
 .demo-bar-tooltip-arrow {
