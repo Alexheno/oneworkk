@@ -4815,24 +4815,31 @@ body {
 }
 .demo-agent-expanded::-webkit-scrollbar { display: none; }
 .demo-agent-expanded .ww-recap { display: flex; flex-direction: column; gap: 2px; }
-.demo-agent-expanded .ww-total-lbl { font-size: 0.88rem !important; font-weight: 600; margin-bottom: 8px !important; }
-.demo-agent-expanded .ww-recap-lbl span { font-size: 0.74rem !important; }
-.demo-agent-expanded .ww-recap-bars { height: 72px !important; }
+.demo-agent-expanded .ww-total-lbl { font-size: 0.96rem !important; font-weight: 600; margin-bottom: 8px !important; }
+.demo-agent-expanded .ww-recap-lbl span { font-size: 0.78rem !important; }
+.demo-agent-expanded .ww-recap-bars { height: 76px !important; }
 .demo-agent-expanded .ww-rl-item { padding: 3px 0; }
-.demo-agent-expanded .ww-rl-name { font-size: 0.80rem !important; }
-.demo-agent-expanded .ww-rl-val  { font-size: 0.80rem !important; }
-.demo-agent-expanded .ww-score-pct { font-size: 1.10rem !important; font-weight: 800 !important; letter-spacing: -0.02em !important; }
-.demo-agent-expanded .ww-score-lbl { font-size: 0.68rem !important; letter-spacing: 0.07em !important; }
-.demo-agent-expanded .ww-stream-block { font-size: 0.82rem !important; line-height: 1.85 !important; }
-.demo-agent-expanded .ww-st-label { font-size: 0.94rem !important; font-weight: 700; letter-spacing: -0.01em; }
-.demo-agent-expanded .ww-st-title { font-size: 0.86rem !important; font-weight: 600; }
-.demo-agent-expanded .ww-st-quote { font-size: 0.76rem !important; }
-.demo-agent-expanded .ww-st-voir  { font-size: 0.70rem !important; }
-.demo-agent-expanded .ww-st-summary { font-size: 0.80rem !important; }
+.demo-agent-expanded .ww-rl-name { font-size: 0.88rem !important; }
+.demo-agent-expanded .ww-rl-val  { font-size: 0.88rem !important; }
+.demo-agent-expanded .ww-score-pct { font-size: 1.18rem !important; font-weight: 800 !important; letter-spacing: -0.02em !important; }
+.demo-agent-expanded .ww-score-lbl { font-size: 0.72rem !important; letter-spacing: 0.07em !important; }
+.demo-agent-expanded .ww-stream-block { font-size: 0.90rem !important; line-height: 1.90 !important; }
+.demo-agent-expanded .ww-st-label { font-size: 1.02rem !important; font-weight: 700; letter-spacing: -0.01em; }
+.demo-agent-expanded .ww-st-title { font-size: 0.94rem !important; font-weight: 600; }
+.demo-agent-expanded .ww-st-quote { font-size: 0.82rem !important; }
+.demo-agent-expanded .ww-st-voir  { font-size: 0.76rem !important; }
+.demo-agent-expanded .ww-st-summary { font-size: 0.87rem !important; color: rgba(255,255,255,0.50) !important; }
 .demo-agent-expanded .ww-st-demain-block { padding: 9px 12px; margin: 4px 0 2px; }
-.demo-agent-expanded .ww-st-demain-label { font-size: 0.70rem !important; }
-.demo-agent-expanded .ww-st-demain-row span { font-size: 0.78rem !important; }
+.demo-agent-expanded .ww-st-demain-label { font-size: 0.74rem !important; }
+.demo-agent-expanded .ww-st-demain-row span { font-size: 0.86rem !important; }
 .demo-agent-expanded .ww-divider { margin: 10px 0; }
+/* Separator before summary phrase */
+.ww-st-sep {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin: 10px 0 8px;
+  border-radius: 1px;
+}
 .demo-agent-expanded .ww-score-ring {
   gap: 14px;
   padding: 10px 14px;

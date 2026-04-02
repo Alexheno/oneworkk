@@ -728,6 +728,9 @@ function startDemoSequence() {
       br();
       await delay(700);
 
+      streamWrap.insertAdjacentHTML('beforeend', '<div class="ww-st-sep"></div>');
+      scrollToBottom();
+      await delay(200);
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
 
       // ── Double-click on visible response text → open dashboard ──
@@ -802,6 +805,9 @@ function startDemoSequence() {
         agentViewDB.style.opacity = '1';
       }
 
+      // Wait for layout to fully settle before measuring bar positions
+      await delay(380);
+
       // ── Hover first 3 bars — show floating day tooltip ───────
       const expEl = document.getElementById('demo-agent-expanded');
 
@@ -817,8 +823,10 @@ function startDemoSequence() {
 
       const showTooltip = (x, y, time) => {
         dbtTime.textContent = time;
-        tooltip.style.left = (x - 24) + 'px';
-        tooltip.style.top  = (y - 52) + 'px';
+        // Position tooltip centred above cursor
+        const tw = tooltip.offsetWidth || 54;
+        tooltip.style.left = (x - tw / 2) + 'px';
+        tooltip.style.top  = (y - 48) + 'px';
         tooltip.classList.add('visible');
       };
       const hideTooltip = () => tooltip.classList.remove('visible');
@@ -829,17 +837,19 @@ function startDemoSequence() {
         const bars = expEl.querySelectorAll('.ww-rb');
         for (let i = 0; i < 3 && i < bars.length; i++) {
           const bar = bars[i];
+          // Re-measure every iteration so rects are always fresh
           const dr2  = desktop.getBoundingClientRect();
           const br2  = bar.getBoundingClientRect();
           const zoom = parseFloat(desktop.style.zoom) || 1;
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
-          const by   = (br2.top  + 8              - dr2.top)   / zoom;
-          await moveTo(bx, by, i === 0 ? 900 : 650);
-          // Tooltip appears immediately on arrival
+          // Center of the bar vertically (not the top) for reliable landing
+          const by   = (br2.top  + br2.height / 2  - dr2.top)  / zoom;
+          await moveTo(bx, by, i === 0 ? 950 : 680);
+          // Tooltip appears the instant the cursor lands
           showTooltip(bx, by, barTimes[i]);
-          await delay(2200);
+          await delay(2400);
           hideTooltip();
-          await delay(160);
+          await delay(180);
         }
 
         // ── Slow scroll to end of response ──
