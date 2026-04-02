@@ -1809,12 +1809,9 @@ body {
   flex-direction: column;
   flex: 1;
   gap: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
+  overflow: hidden;
   min-height: 0;
 }
-#demo-home-view::-webkit-scrollbar { display: none; }
 
 /* ── Projects panel ── */
 .demo-proj-ai-banner {
@@ -4139,12 +4136,11 @@ body {
 }
 
 /* Scrollable card body — clips content for reveal-on-scroll effect */
+/* overflow:hidden prevents ANY user-driven scroll; JS scrollTop still works */
 .demo-card-body-scroll {
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   max-height: 148px;
 }
-.demo-card-body-scroll::-webkit-scrollbar { display: none; }
 
 /* legacy compat */
 .demo-tms-dot { display: none; }
@@ -4217,40 +4213,83 @@ body {
 }
 .demo-cal-today .demo-cal-dd { color: rgba(107,142,245,1); }
 
-/* Apple Calendar events */
+/* ── Premium Agenda rows ── */
 .demo-cal-events {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 10px 12px 12px;
+  padding: 6px 0 8px;
 }
 .demo-cal-event {
   display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 10px 12px;
-  background: rgba(255,255,255,0.03);
-  border-radius: 11px;
-  border-left: 3px solid;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 14px;
+  min-height: 46px;
+  position: relative;
 }
-.demo-cal-ev-blue   { border-left-color: rgba(107,142,245,0.85); }
-.demo-cal-ev-purple { border-left-color: rgba(139,92,246,0.85); }
-.demo-cal-ev-green  { border-left-color: rgba(52,199,89,0.85); }
-.demo-cal-ev-red    { border-left-color: rgba(255,59,48,0.85); }
-.demo-cal-ev-orange { border-left-color: rgba(251,146,60,0.85); }
-.demo-cal-ev-next { background: rgba(107,142,245,0.07); }
+.demo-cal-event + .demo-cal-event { border-top: 1px solid rgba(255,255,255,0.045); }
+
+/* Time column */
 .demo-cal-ev-time {
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: rgba(107,142,245,0.85);
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.30);
   flex-shrink: 0;
-  min-width: 32px;
+  width: 36px;
+  padding-top: 13px;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Colour pill */
+.demo-cal-ev-pill {
+  width: 3px;
+  border-radius: 99px;
+  flex-shrink: 0;
+  margin: 10px 10px 10px 0;
+  align-self: stretch;
+}
+.demo-cal-ev-blue   .demo-cal-ev-pill { background: rgba(107,142,245,0.90); }
+.demo-cal-ev-purple .demo-cal-ev-pill { background: rgba(139,92,246,0.90); }
+.demo-cal-ev-green  .demo-cal-ev-pill { background: rgba(52,199,89,0.90); }
+.demo-cal-ev-red    .demo-cal-ev-pill { background: rgba(255,59,48,0.90); }
+.demo-cal-ev-orange .demo-cal-ev-pill { background: rgba(251,146,60,0.90); }
+
+/* Text block */
+.demo-cal-ev-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 0;
+  min-width: 0;
 }
 .demo-cal-ev-name {
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.90);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.demo-cal-ev-next .demo-cal-ev-name {
+  color: #fff;
+  font-weight: 600;
+}
+.demo-cal-ev-dur {
+  font-size: 0.58rem;
+  color: rgba(255,255,255,0.28);
+  font-weight: 400;
+}
+/* Highlight next event */
+.demo-cal-ev-next {
+  background: rgba(107,142,245,0.06);
+  border-radius: 10px;
+  margin: 2px 4px;
+  padding: 0 10px;
+}
+.demo-cal-ev-next + .demo-cal-event { border-top: none; }
 
 /* Legacy meeting rows (kept for compat) */
 .demo-meeting-row { display: flex; align-items: center; gap: 10px; padding: 0 14px; }
@@ -4785,14 +4824,12 @@ body {
 }
 .demo-agent-chat {
   flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-.demo-agent-chat::-webkit-scrollbar { display: none; }
 .demo-agent-msg {
   display: flex;
   gap: 8px;
@@ -4875,11 +4912,9 @@ body {
 /* ── Expanded response view in dashboard ── */
 .demo-agent-expanded {
   flex: 1;
-  overflow-y: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   padding: 14px 18px 18px;
 }
-.demo-agent-expanded::-webkit-scrollbar { display: none; }
 .demo-agent-expanded .ww-recap { display: flex; flex-direction: column; gap: 2px; }
 .demo-agent-expanded .ww-total-lbl { font-size: 0.96rem !important; font-weight: 600; margin-bottom: 8px !important; }
 .demo-agent-expanded .ww-recap-lbl span { font-size: 0.78rem !important; }
