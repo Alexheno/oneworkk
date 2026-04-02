@@ -414,8 +414,8 @@ body {
 .win-desktop {
   position: relative;
   background: #08091A;
-  width: 1060px;
-  height: 514px;
+  width: 1200px;
+  height: 582px;
   overflow: hidden;
   border-radius: 10px;
 }

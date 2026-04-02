@@ -690,7 +690,7 @@ if (laptop) {
   function fit() {
     // Use screen-scene (no padding) as the true available width
     const availW = scene.offsetWidth;
-    const scale  = availW / 1060;
+    const scale  = availW / 1200;
     desktop.style.zoom = String(scale);
   }
   window.addEventListener('resize', fit);
