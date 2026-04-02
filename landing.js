@@ -682,17 +682,20 @@ if (laptop) {
   lo.observe(laptop);
 }
 
-// ─── Scale demo to always fit hero-demo width ────────────────────────────────
+// ─── Scale demo to always fit hero-demo content width ────────────────────────
 (function () {
-  const hero    = document.querySelector('.hero-demo');
+  const scene   = document.querySelector('.screen-scene');
   const desktop = document.querySelector('.win-desktop');
-  if (!hero || !desktop) return;
+  if (!scene || !desktop) return;
   function fit() {
-    const scale = hero.offsetWidth / 1060;
+    // Use screen-scene (no padding) as the true available width
+    const availW = scene.offsetWidth;
+    const scale  = availW / 1060;
     desktop.style.zoom = String(scale);
   }
   window.addEventListener('resize', fit);
-  fit();
+  // Wait for layout to settle before measuring
+  requestAnimationFrame(fit);
 })();
 
 // ─── Smooth anchor scroll ─────────────────────────────────────────────────────
