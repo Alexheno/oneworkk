@@ -4968,12 +4968,14 @@ body {
   pointer-events: none;
   z-index: 9999;
   opacity: 0;
-  transform: scale(0.88);
-  transition: opacity 0.12s ease, transform 0.14s cubic-bezier(0.34,1.5,0.64,1);
+  transform: scale(0.92);
+  /* No delay on show — instant when cursor enters */
+  transition: opacity 0s, transform 0s;
 }
 #demo-bar-tooltip.visible {
   opacity: 1;
   transform: scale(1);
+  transition: opacity 0.08s ease, transform 0.10s cubic-bezier(0.34,1.5,0.64,1);
 }
 .demo-bar-tooltip-inner {
   background: rgba(28,28,30,0.78);

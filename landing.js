@@ -842,45 +842,57 @@ function startDemoSequence() {
       }
       const dbtTime = document.getElementById('dbt-time');
 
-      // Position tooltip (hidden) above a bar, then show it
-      const positionTooltip = (barEl, time) => {
+      const hideTooltip = () => tooltip.classList.remove('visible');
+
+      // Track cursor position against a bar rect every frame.
+      // Shows tooltip the instant cursor pixel enters the bar, hides when it exits.
+      const trackBar = (barEl, time) => {
         dbtTime.textContent = time;
+        // Pre-position tooltip above the bar
         const br = barEl.getBoundingClientRect();
-        const tx = br.left + br.width / 2;
-        const ty = br.top;
-        // Position while still hidden so offsetWidth is measured correctly
-        tooltip.style.left = '0px';
-        tooltip.style.top  = '0px';
-        // Force a paint so offsetWidth is real
-        const tw = 56; // fixed conservative width
-        const th = 30;
-        tooltip.style.left = (tx - tw / 2) + 'px';
-        tooltip.style.top  = (ty - th - 8) + 'px';
+        const tw = 56, th = 28;
+        tooltip.style.left = (br.left + br.width / 2 - tw / 2) + 'px';
+        tooltip.style.top  = (br.top - th - 8) + 'px';
+
+        let alive = true;
+        const zoom = parseFloat(desktop.style.zoom) || 1;
+        const dr   = desktop.getBoundingClientRect();
+
+        function tick() {
+          if (!alive) return;
+          // Cursor tip in viewport coords
+          const cx = parseFloat(cursor.style.left) * zoom + dr.left;
+          const cy = parseFloat(cursor.style.top)  * zoom + dr.top;
+          // Re-read bar rect every frame (it may scroll)
+          const r  = barEl.getBoundingClientRect();
+          const over = cx >= r.left && cx <= r.right && cy >= r.top && cy <= r.bottom;
+          if (over) tooltip.classList.add('visible');
+          else      tooltip.classList.remove('visible');
+          requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        return () => { alive = false; tooltip.classList.remove('visible'); };
       };
-      const showTooltip  = () => tooltip.classList.add('visible');
-      const hideTooltip  = () => tooltip.classList.remove('visible');
 
       const barTimes = ['2h 55', '4h 03', '3h 34'];
 
       if (expEl) {
         const bars = expEl.querySelectorAll('.ww-rb');
         for (let i = 0; i < 3 && i < bars.length; i++) {
-          const bar = bars[i];
+          const bar  = bars[i];
           const dr2  = desktop.getBoundingClientRect();
           const br2  = bar.getBoundingClientRect();
           const zoom = parseFloat(desktop.style.zoom) || 1;
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
           const by   = (br2.top  + br2.height / 2 - dr2.top)  / zoom;
-          // Position tooltip BEFORE cursor starts moving so it's ready to show on arrival
-          positionTooltip(bar, barTimes[i]);
+
+          // Start tracking — tooltip appears the instant cursor enters
+          const stopTracking = trackBar(bar, barTimes[i]);
           await moveTo(bx, by, i === 0 ? 950 : 680);
-          // Cursor just landed — show immediately
-          showTooltip();
-          // Stay on bar with tooltip visible
           await delay(2600);
-          // Hide tooltip, pause, then move to next bar
-          hideTooltip();
-          await delay(220);
+          // Move away — tracker will hide tooltip as cursor leaves bar
+          stopTracking();
+          await delay(200);
         }
 
         // ── Slow scroll to end of response ──
