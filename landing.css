@@ -1497,19 +1497,18 @@ body {
 @keyframes ww-blink { 50% { opacity: 0; } }
 .ww-send {
   width: 26px; height: 26px;
-  border-radius: 8px;
+  border-radius: 50%;
   border: none;
-  background: #fff;
-  color: #000;
+  background: #18181b;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.15s, box-shadow 0.15s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  transition: background 0.15s;
 }
-.ww-send svg { stroke: #000 !important; }
+.ww-send svg { stroke: #fff !important; width: 11px; height: 11px; }
 
 .ww-response {
   display: none;
