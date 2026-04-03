@@ -348,7 +348,7 @@ body {
 /* ─── HERO DEMO — Windows Laptop Frame ─── */
 .hero-demo {
   margin-top: 72px;
-  padding: 0 172px;
+  padding: 0 230px;
   position: relative;
   pointer-events: none;
   user-select: none;
@@ -4007,12 +4007,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  text-align: left;
+  align-items: flex-start;
 }
 .demo-em-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 6px;
+  width: 100%;
 }
 .demo-em-name {
   font-size: 0.75rem;
@@ -4031,6 +4034,7 @@ body {
   color: rgba(255,255,255,0.55);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   font-weight: 500;
+  width: 100%;
 }
 .demo-email-urgent .demo-em-subj { color: rgba(255,255,255,0.75); }
 .demo-em-preview {
@@ -4039,6 +4043,7 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   font-weight: 400;
   margin-top: 1px;
+  width: 100%;
 }
 
 /* ── Teams conversation rows ── */
@@ -4077,12 +4082,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  text-align: left;
+  align-items: flex-start;
 }
 .demo-tms-top {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 6px;
+  width: 100%;
 }
 .demo-tms-name {
   font-size: 0.75rem;
@@ -4101,6 +4109,7 @@ body {
   color: rgba(255,255,255,0.45);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   font-weight: 400;
+  width: 100%;
 }
 .demo-tms-urgent .demo-tms-msg { color: rgba(255,255,255,0.70); font-weight: 500; }
 .demo-tms-channel {
@@ -4108,6 +4117,7 @@ body {
   color: rgba(107,142,245,0.55);
   font-weight: 500;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  width: 100%;
 }
 .demo-tms-muted .demo-tms-name,
 .demo-tms-muted .demo-tms-msg,
