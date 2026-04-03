@@ -5022,12 +5022,10 @@ body {
   padding: 7px 9px;
   flex-shrink: 0;
 }
-.demo-agent-bar-orb {
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: conic-gradient(from 0deg, #FB923C, #F472B6, #9B35FF, #6B8EF5, #8ECDF8, #FB923C);
+.demo-agent-bar-logo {
+  width: 18px; height: 18px;
   flex-shrink: 0;
-  animation: orb-spin 3s linear infinite;
+  opacity: 0.85;
 }
 .demo-agent-bar-input {
   flex: 1;
