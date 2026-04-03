@@ -271,81 +271,61 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // ── Step 1: scroll the whole dashboard down then back up ──────────────
-    // Cursor moves to the center of the content area, then the page scrolls
+    // ── Shared scroll helper: scrolls an element while cursor drifts ────────
     const homeScrollEl = document.getElementById('demo-home-view');
+    const agendaBody   = document.getElementById('demo-agenda-body');
+
+    const scrollWithCursor = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
+      const start      = performance.now();
+      const fromScroll = el.scrollTop;
+      const fromCX     = parseFloat(cursor.style.left);
+      const fromCY     = parseFloat(cursor.style.top);
+      const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      cursor.style.transition = 'none';
+      function step(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const e = ease(p);
+        el.scrollTop      = fromScroll + (scrollTarget - fromScroll) * e;
+        cursor.style.top  = (fromCY + cursorDY * e) + 'px';
+        cursor.style.left = fromCX + 'px';
+        if (p < 1) requestAnimationFrame(step);
+        else { cursor.style.transition = ''; res(); }
+      }
+      requestAnimationFrame(step);
+    });
+
+    // ── Step 1: cursor in center, scroll dashboard DOWN — stay there ────────
     if (homeScrollEl) {
-      await moveTo(DW * 0.50, DH * 0.45, 600);
+      await moveTo(DW * 0.50, DH * 0.42, 700);
       await delay(300);
-
-      // Shared helper: animate scrollTop of an element while cursor drifts slightly
-      const scrollWithCursor = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
-        const start      = performance.now();
-        const fromScroll = el.scrollTop;
-        const fromCX     = parseFloat(cursor.style.left);
-        const fromCY     = parseFloat(cursor.style.top);
-        const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-        cursor.style.transition = 'none';
-        function step(now) {
-          const p = Math.min((now - start) / dur, 1);
-          const e = ease(p);
-          el.scrollTop          = fromScroll + (scrollTarget - fromScroll) * e;
-          cursor.style.top      = (fromCY + cursorDY * e) + 'px';
-          cursor.style.left     = fromCX + 'px';
-          if (p < 1) requestAnimationFrame(step);
-          else { cursor.style.transition = ''; res(); }
-        }
-        requestAnimationFrame(step);
-      });
-
-      // Scroll dashboard down (cursor drifts down ~20px, page reveals bottom cards)
-      await scrollWithCursor(homeScrollEl, homeScrollEl.scrollHeight, 20, 1400);
-      await delay(900);
-      // Scroll dashboard back up
-      await scrollWithCursor(homeScrollEl, 0, -20, 1100);
-      await delay(500);
+      // Scroll down — cursor drifts gently downward
+      await scrollWithCursor(homeScrollEl, homeScrollEl.scrollHeight, 22, 1500);
+      await delay(700);
+      // Dashboard stays scrolled down — Agenda card now fully visible
     }
 
-    // ── Step 2: cursor moves to Agenda, scrolls that section ──────────────
-    const agendaBody = document.getElementById('demo-agenda-body');
+    // ── Step 2: cursor glides to Agenda (already on screen), scrolls it ────
     if (cardMeetings && agendaBody) {
-      const cp = pos(cardMeetings);
-      await moveTo(cp.x, cp.y, 750);
-      await delay(350);
-
-      // Agenda starts scrolled to bottom
+      // Agenda starts at bottom so reveal happens upward
       agendaBody.scrollTop = agendaBody.scrollHeight;
 
-      const scrollWithCursor2 = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
-        const start      = performance.now();
-        const fromScroll = el.scrollTop;
-        const fromCX     = parseFloat(cursor.style.left);
-        const fromCY     = parseFloat(cursor.style.top);
-        const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
-        cursor.style.transition = 'none';
-        function step(now) {
-          const p = Math.min((now - start) / dur, 1);
-          const e = ease(p);
-          el.scrollTop      = fromScroll + (scrollTarget - fromScroll) * e;
-          cursor.style.top  = (fromCY + cursorDY * e) + 'px';
-          cursor.style.left = fromCX + 'px';
-          if (p < 1) requestAnimationFrame(step);
-          else { cursor.style.transition = ''; res(); }
-        }
-        requestAnimationFrame(step);
-      });
+      // Cursor moves to the Agenda card (smooth, natural)
+      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 900);
+      await delay(400);
 
-      // Scroll agenda up — cursor drifts up slightly
-      await scrollWithCursor2(agendaBody, 0, -14, 1200);
-      await delay(600);
-      // Scroll agenda back down
-      await scrollWithCursor2(agendaBody, agendaBody.scrollHeight, 14, 1000);
-      await delay(300);
+      // Scroll agenda up — cursor drifts up
+      await scrollWithCursor(agendaBody, 0, -14, 1300);
+      await delay(700);
+      // Scroll agenda back down — cursor drifts down
+      await scrollWithCursor(agendaBody, agendaBody.scrollHeight, 14, 1050);
+      await delay(400);
     }
 
-    // Drift back to center, breathe
-    await moveTo(DW * 0.50, DH * 0.40, 800);
-    await delay(800);
+    // ── Drift toward sidebar to click Projects — scroll home back up first ──
+    if (homeScrollEl) {
+      await scrollWithCursor(homeScrollEl, 0, -10, 600);
+    }
+    await delay(300);
 
     // Click Projects icon in sidebar
     const projIcon = document.querySelector('.demo-sb-icon[title="Projets"]');
