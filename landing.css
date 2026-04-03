@@ -930,13 +930,15 @@ body {
   max-width: 72%;
   background: linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);
   border-radius: 16px 16px 3px 16px;
-  padding: 7px 11px;
+  padding: 6px 11px;
   box-shadow: 0 2px 12px rgba(99,102,241,0.30);
+  display: flex;
+  align-items: center;
 }
 .tms-bubble-mine .tms-msg-text {
   color: rgba(255,255,255,0.95) !important;
   font-size: 0.67rem;
-  line-height: 1.5;
+  line-height: 1;
 }
 #win-teams-popup .tms-msg-mine { justify-content: flex-end; }
 #win-teams-popup .tms-msg-mine:hover { background: transparent !important; }
