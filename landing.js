@@ -197,6 +197,7 @@ function startDemoSequence() {
     // Remove expanded response block from previous cycle
     const prevExpReset = document.getElementById('demo-agent-expanded');
     if (prevExpReset) prevExpReset.remove();
+    if (wwKnob) wwKnob.classList.remove('generating');
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
     // Reset scroll positions
@@ -578,6 +579,8 @@ function startDemoSequence() {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
+    // Knob enters generating state
+    if (wwKnob) wwKnob.classList.add('generating');
 
     // Cursor drifts away while AI thinks
     await moveTo(DW * 0.42, DH * 0.48, 620);
@@ -753,6 +756,8 @@ function startDemoSequence() {
       scrollToBottom();
       await delay(200);
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
+      // Response done — knob returns to normal
+      if (wwKnob) wwKnob.classList.remove('generating');
 
       // ── Double-click on visible response text → open dashboard ──
       await delay(1000);
@@ -885,7 +890,7 @@ function startDemoSequence() {
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / z;
           const by   = (br2.top  + br2.height / 2 - dr2.top)  / z;
           await moveTo(bx, by, i === 0 ? 950 : 700);
-          await delay(2400);
+          await delay(1400);
           // Don't touch tooltip here — tracker handles it
         }
         trackerAlive = false;
