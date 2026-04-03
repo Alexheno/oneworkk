@@ -1034,17 +1034,14 @@ body {
     0 0 0 3px rgba(255,255,255,0.12);
   animation: knob-gen-pulse 1.6s ease-in-out infinite;
 }
-.ww-knob.generating .ww-knob-logo {
-  display: none;
-}
-.ww-knob.generating::after {
-  content: '';
+.ww-knob-rec {
   position: absolute;
-  inset: 9px;
+  inset: 7px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.95);
-  z-index: 10;
+  border: 2.5px solid rgba(255,255,255,0.92);
   animation: knob-record-dot 1.6s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
 }
 @keyframes knob-gen-pulse {
   0%, 100% { box-shadow: 0 6px 28px rgba(0,0,0,0.7), 0 0 0 3px rgba(255,255,255,0.10); }
@@ -1773,7 +1770,7 @@ body {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: rgba(255,255,255,0.92);
+  color: #30D158;
 }
 .ww-score-lbl {
   font-size: 0.46rem;

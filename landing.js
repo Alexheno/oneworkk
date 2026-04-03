@@ -197,7 +197,13 @@ function startDemoSequence() {
     // Remove expanded response block from previous cycle
     const prevExpReset = document.getElementById('demo-agent-expanded');
     if (prevExpReset) prevExpReset.remove();
-    if (wwKnob) wwKnob.classList.remove('generating');
+    if (wwKnob) {
+      wwKnob.classList.remove('generating');
+      const rec = wwKnob.querySelector('.ww-knob-rec');
+      if (rec) rec.remove();
+      const logo = wwKnob.querySelector('.ww-knob-logo');
+      if (logo) logo.style.display = '';
+    }
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
     // Reset scroll positions
@@ -579,8 +585,17 @@ function startDemoSequence() {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
-    // Knob enters generating state
-    if (wwKnob) wwKnob.classList.add('generating');
+    // Knob enters generating state — swap logo for record ring via JS
+    if (wwKnob) {
+      wwKnob.classList.add('generating');
+      const logo = wwKnob.querySelector('.ww-knob-logo');
+      if (logo) logo.style.display = 'none';
+      if (!wwKnob.querySelector('.ww-knob-rec')) {
+        const rec = document.createElement('div');
+        rec.className = 'ww-knob-rec';
+        wwKnob.appendChild(rec);
+      }
+    }
 
     // Cursor drifts away while AI thinks
     await moveTo(DW * 0.42, DH * 0.48, 620);
@@ -674,8 +689,8 @@ function startDemoSequence() {
         <div class="ww-divider"></div>
         <div class="ww-score-ring">
           <svg width="42" height="42" viewBox="0 0 42 42">
-            <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4.5"/>
-            <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.88)" stroke-width="4.5"
+            <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(48,209,88,0.15)" stroke-width="4.5"/>
+            <circle cx="21" cy="21" r="17" fill="none" stroke="#30D158" stroke-width="4.5"
               stroke-dasharray="106.8" stroke-dashoffset="26.7" stroke-linecap="round" transform="rotate(-90 21 21)"/>
           </svg>
           <div class="ww-score-info">
@@ -770,7 +785,13 @@ function startDemoSequence() {
       await delay(200);
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
       // Response done — knob returns to normal
-      if (wwKnob) wwKnob.classList.remove('generating');
+      if (wwKnob) {
+        wwKnob.classList.remove('generating');
+        const rec = wwKnob.querySelector('.ww-knob-rec');
+        if (rec) rec.remove();
+        const logo = wwKnob.querySelector('.ww-knob-logo');
+        if (logo) logo.style.display = '';
+      }
 
       // ── Double-click on visible response text → open dashboard ──
       await delay(1000);
