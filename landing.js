@@ -615,18 +615,35 @@ function startDemoSequence() {
         }
       };
 
-      // 1 — Bar chart
+      // 1 — Bar chart (Apple Screen Time style)
       addBlock(`
-        <div class="ww-total-lbl" style="margin-bottom:6px">Temps d'écran · Aujourd'hui</div>
-        <div class="ww-recap-lbl"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span style="color:rgba(255,255,255,0.55);font-weight:600">Ven</span><span>Sam</span><span>Dim</span></div>
-        <div class="ww-recap-bars">
-          <div class="ww-rb" style="height:45%;background:linear-gradient(180deg,#60C8FF,#3B9EFF);--d:0"></div>
-          <div class="ww-rb" style="height:62%;background:linear-gradient(180deg,#4ADDB8,#22B899);--d:1"></div>
-          <div class="ww-rb" style="height:55%;background:linear-gradient(180deg,#A78BFA,#7C5FD4);--d:2"></div>
-          <div class="ww-rb" style="height:78%;background:linear-gradient(180deg,#FB923C,#F05D1A);--d:3"></div>
-          <div class="ww-rb today" style="height:100%;background:linear-gradient(180deg,#F472B6,#9B35FF);--d:4"></div>
-          <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:5"></div>
-          <div class="ww-rb" style="height:3%;background:rgba(255,255,255,0.10);--d:6"></div>
+        <div class="ww-st-header">
+          <div class="ww-st-avg-lbl">Moyenne quotidienne</div>
+          <div class="ww-st-avg-val">5h 12min</div>
+          <div class="ww-st-trend"><span class="ww-st-trend-arrow">↓</span> 12 % par rapport à la semaine précédente</div>
+        </div>
+        <div class="ww-st-chart">
+          <div class="ww-st-y-axis">
+            <span>4h</span>
+            <span></span>
+            <span>0</span>
+          </div>
+          <div class="ww-st-bars-area">
+            <div class="ww-st-grid">
+              <div class="ww-st-grid-line"></div>
+              <div class="ww-st-grid-line ww-st-avg-line"><span class="ww-st-avg-line-lbl">moy.</span></div>
+              <div class="ww-st-grid-line"></div>
+            </div>
+            <div class="ww-st-bars">
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:38%;--d:0"></div><span>L</span></div>
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:80%;--d:1"></div><span>M</span></div>
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:62%;--d:2"></div><span>M</span></div>
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:75%;--d:3"></div><span>J</span></div>
+              <div class="ww-st-bar-col ww-stb-today"><div class="ww-stb" style="height:100%;--d:4"></div><span>V</span></div>
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:2%;--d:5"></div><span>S</span></div>
+              <div class="ww-st-bar-col"><div class="ww-stb" style="height:2%;--d:6"></div><span>D</span></div>
+            </div>
+          </div>
         </div>`);
 
       // 2 — Legend

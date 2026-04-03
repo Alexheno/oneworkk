@@ -1588,30 +1588,145 @@ body {
   font-weight: 500;
   color: rgba(255,255,255,0.38);
 }
-.ww-total-lbl {
-  font-size: 0.54rem;
-  color: rgba(255,255,255,0.28);
-  margin-top: 1px;
-  letter-spacing: 0.01em;
+/* ── Apple Screen Time chart ── */
+.ww-st-header {
+  padding: 2px 0 8px;
 }
-
-/* Bar chart */
-.ww-recap-lbl {
+.ww-st-avg-lbl {
+  font-size: 0.52rem;
+  color: rgba(255,255,255,0.38);
+  font-weight: 400;
+  margin-bottom: 1px;
+}
+.ww-st-avg-val {
+  font-size: 1.10rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 3px;
+}
+.ww-st-trend {
+  font-size: 0.50rem;
+  color: rgba(255,255,255,0.40);
+  font-weight: 400;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-  font-size: 0.46rem;
-  color: rgba(255,255,255,0.22);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.01em;
+  align-items: center;
+  gap: 3px;
 }
-.ww-recap-bars {
+.ww-st-trend-arrow {
+  color: #30D158;
+  font-size: 0.60rem;
+  font-weight: 700;
+}
+.ww-st-chart {
+  display: flex;
+  gap: 4px;
+  align-items: stretch;
+  height: 52px;
+}
+.ww-st-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 0.42rem;
+  color: rgba(255,255,255,0.22);
+  padding-bottom: 2px;
+  flex-shrink: 0;
+  width: 14px;
+}
+.ww-st-bars-area {
+  flex: 1;
+  position: relative;
+}
+.ww-st-grid {
+  position: absolute;
+  inset: 0 0 14px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.ww-st-grid-line {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.10);
+  border-style: dashed;
+  border-width: 0 0 1px 0;
+  border-color: rgba(255,255,255,0.10);
+  background: none;
+}
+.ww-st-avg-line {
+  border-color: #30D158;
+  position: relative;
+}
+.ww-st-avg-line-lbl {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  font-size: 0.42rem;
+  color: #30D158;
+  font-weight: 600;
+}
+.ww-st-bars {
+  position: absolute;
+  inset: 0 0 14px 0;
   display: flex;
   align-items: flex-end;
-  gap: 3px;
-  height: 42px;
-  margin-bottom: 6px;
+  gap: 2px;
 }
+.ww-st-bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  height: 100%;
+}
+.ww-st-bar-col span {
+  font-size: 0.42rem;
+  color: rgba(255,255,255,0.22);
+  position: absolute;
+  bottom: 0;
+}
+.ww-st-bars-area .ww-st-bars {
+  bottom: 14px;
+}
+/* Day labels row below bars */
+.ww-st-bar-col {
+  position: relative;
+  padding-bottom: 14px;
+}
+.ww-st-bar-col span {
+  bottom: 1px;
+  font-size: 0.42rem;
+  color: rgba(255,255,255,0.25);
+}
+.ww-stb-today span {
+  color: rgba(255,255,255,0.70);
+  font-weight: 600;
+}
+.ww-stb {
+  width: 100%;
+  border-radius: 3px 3px 2px 2px;
+  background: #5AC8FA;
+  transform-origin: bottom center;
+  transform: scaleY(0);
+  animation: ww-bar-grow 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--d,0) * 0.09s);
+  flex-shrink: 0;
+}
+.ww-stb-today .ww-stb {
+  background: #5AC8FA;
+  box-shadow: 0 0 6px rgba(90,200,250,0.35);
+}
+
+/* Keep old .ww-rb for compat with existing clone in dashboard */
+.ww-total-lbl { display: none; }
+.ww-recap-lbl { display: none; }
+.ww-recap-bars { display: none; }
 .ww-rb {
   flex: 1;
   border-radius: 3px 3px 1px 1px;
@@ -4956,9 +5071,13 @@ body {
   padding: 14px 18px 18px;
 }
 .demo-agent-expanded .ww-recap { display: flex; flex-direction: column; gap: 2px; }
-.demo-agent-expanded .ww-total-lbl { font-size: 0.96rem !important; font-weight: 600; margin-bottom: 8px !important; }
-.demo-agent-expanded .ww-recap-lbl span { font-size: 0.78rem !important; }
-.demo-agent-expanded .ww-recap-bars { height: 76px !important; }
+.demo-agent-expanded .ww-st-avg-val { font-size: 1.40rem !important; }
+.demo-agent-expanded .ww-st-avg-lbl { font-size: 0.64rem !important; }
+.demo-agent-expanded .ww-st-trend   { font-size: 0.60rem !important; }
+.demo-agent-expanded .ww-st-chart   { height: 80px !important; }
+.demo-agent-expanded .ww-st-y-axis  { font-size: 0.52rem !important; width: 18px !important; }
+.demo-agent-expanded .ww-st-bar-col span { font-size: 0.52rem !important; }
+.demo-agent-expanded .ww-st-avg-line-lbl { font-size: 0.52rem !important; }
 .demo-agent-expanded .ww-rl-item { padding: 3px 0; }
 .demo-agent-expanded .ww-rl-name { font-size: 0.88rem !important; }
 .demo-agent-expanded .ww-rl-val  { font-size: 0.88rem !important; }
