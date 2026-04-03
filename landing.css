@@ -3965,6 +3965,7 @@ body {
 .demo-card-body {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 }
 
 /* ── Outlook email rows ── */
