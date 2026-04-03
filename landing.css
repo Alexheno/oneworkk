@@ -1028,15 +1028,18 @@ body {
 
 /* Send button generating state */
 .demo-agent-bar-send.generating {
+  background: rgba(28,28,32,0.95) !important;
+  border: 1.5px solid rgba(255,255,255,0.18);
   animation: knob-gen-pulse 1.6s ease-in-out infinite;
 }
 .send-rec {
-  width: 10px;
-  height: 10px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.92);
+  border: 2px solid rgba(255,255,255,0.90);
   animation: knob-record-dot 1.6s ease-in-out infinite;
   pointer-events: none;
+  flex-shrink: 0;
 }
 @keyframes knob-gen-pulse {
   0%, 100% { box-shadow: 0 6px 28px rgba(0,0,0,0.7), 0 0 0 3px rgba(255,255,255,0.10); }
@@ -1765,7 +1768,7 @@ body {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: #30D158;
+  color: #5AC8FA;
 }
 .ww-score-lbl {
   font-size: 0.46rem;
