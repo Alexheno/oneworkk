@@ -352,6 +352,8 @@ function startDemoSequence() {
       const homeView = document.getElementById('demo-home-view');
       const projView = document.getElementById('demo-projects-view');
       if (homeView) homeView.style.display = 'none';
+      const tbNameProj = document.querySelector('.demo-tb-name');
+      if (tbNameProj) tbNameProj.style.display = 'none';
       if (projView) {
         projView.style.display = 'flex';
         await delay(30);
@@ -381,6 +383,8 @@ function startDemoSequence() {
     }
     if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
     if (homeView2) homeView2.style.display = 'flex';
+    const tbNameHome = document.querySelector('.demo-tb-name');
+    if (tbNameHome) tbNameHome.style.display = '';
     document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
     await delay(700);
 
@@ -636,7 +640,7 @@ function startDemoSequence() {
       addBlock(`
         <div class="ww-st-header">
           <div class="ww-st-avg-lbl">AUJOURD'HUI</div>
-          <div class="ww-st-avg-val">5h 12min</div>
+          <div class="ww-st-avg-val">6h 28min</div>
           <div class="ww-st-trend"><span class="ww-st-trend-arrow">↓</span> 12 % par rapport à la semaine précédente</div>
         </div>
         <div class="ww-st-chart">
@@ -844,6 +848,9 @@ function startDemoSequence() {
       const agentChatDB = document.getElementById('demo-agent-chat');
       if (homeViewDB)  { homeViewDB.style.display = 'none'; }
       if (projViewDB)  { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
+      // Hide greeting on non-home pages
+      const tbName = document.querySelector('.demo-tb-name');
+      if (tbName) tbName.style.display = 'none';
       document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
       const agentIconDB = document.getElementById('demo-sb-agent');
       if (agentIconDB) agentIconDB.classList.add('active');
