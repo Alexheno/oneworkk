@@ -297,18 +297,27 @@ function startDemoSequence() {
       requestAnimationFrame(step);
     });
 
-    // ── Step 1: cursor in center, scroll whole dashboard DOWN, stay there ───
+    // ── Step 1: cursor stays inside dashboard, scrolls home view DOWN ─────
     if (homeScrollEl) {
-      await moveTo(DW * 0.50, DH * 0.40, 700);
+      // Keep cursor well inside — center of content area, max Y = DH*0.72
+      const cx1 = DW * 0.50;
+      const cy1 = DH * 0.40;
+      await moveTo(cx1, clampY(cy1), 700);
       await delay(300);
-      await scrollWithCursor(homeScrollEl, homeScrollEl.scrollHeight, 18, 1500);
+      // Drift down max 16px — clamped so cursor never exits
+      await scrollWithCursor(homeScrollEl, homeScrollEl.scrollHeight, 16, 1500);
       await delay(700);
     }
 
-    // ── Step 2: cursor moves to Agenda (now visible), scrolls it ────────────
+    // ── Step 2: measure Agenda position AFTER scroll, then hover & scroll ──
     if (cardMeetings && agendaBody) {
+      // Re-measure after home has scrolled so pos() is accurate
+      const agendaPos = pos(cardMeetings);
+      // Clamp target so cursor stays inside desktop
+      const ax = Math.min(agendaPos.x, DW - 20);
+      const ay = clampY(agendaPos.y);
       agendaBody.scrollTop = agendaBody.scrollHeight;
-      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 900);
+      await moveTo(ax, ay, 900);
       await delay(350);
       await scrollWithCursor(agendaBody, 0, -12, 1300);
       await delay(650);
@@ -316,7 +325,7 @@ function startDemoSequence() {
       await delay(350);
     }
 
-    // ── Scroll dashboard back to top before Projects click ───────────────────
+    // ── Scroll dashboard back to top before Projects click ─────────────────
     if (homeScrollEl) {
       await scrollWithCursor(homeScrollEl, 0, -8, 600);
     }
@@ -833,19 +842,23 @@ function startDemoSequence() {
       }
       const dbtTime = document.getElementById('dbt-time');
 
-      const showTooltip = (barEl, time) => {
+      // Position tooltip (hidden) above a bar, then show it
+      const positionTooltip = (barEl, time) => {
         dbtTime.textContent = time;
-        tooltip.classList.add('visible');
-        // Use viewport coords from the bar element directly
         const br = barEl.getBoundingClientRect();
-        const tx = br.left + br.width  / 2;
-        const ty = br.top  + br.height / 2;
-        const tw = tooltip.offsetWidth  || 62;
-        const th = tooltip.offsetHeight || 32;
+        const tx = br.left + br.width / 2;
+        const ty = br.top;
+        // Position while still hidden so offsetWidth is measured correctly
+        tooltip.style.left = '0px';
+        tooltip.style.top  = '0px';
+        // Force a paint so offsetWidth is real
+        const tw = 56; // fixed conservative width
+        const th = 30;
         tooltip.style.left = (tx - tw / 2) + 'px';
-        tooltip.style.top  = (ty - th - 10) + 'px';
+        tooltip.style.top  = (ty - th - 8) + 'px';
       };
-      const hideTooltip = () => tooltip.classList.remove('visible');
+      const showTooltip  = () => tooltip.classList.add('visible');
+      const hideTooltip  = () => tooltip.classList.remove('visible');
 
       const barTimes = ['2h 55', '4h 03', '3h 34'];
 
@@ -858,12 +871,16 @@ function startDemoSequence() {
           const zoom = parseFloat(desktop.style.zoom) || 1;
           const bx   = (br2.left + br2.width  / 2 - dr2.left) / zoom;
           const by   = (br2.top  + br2.height / 2 - dr2.top)  / zoom;
+          // Position tooltip BEFORE cursor starts moving so it's ready to show on arrival
+          positionTooltip(bar, barTimes[i]);
           await moveTo(bx, by, i === 0 ? 950 : 680);
-          // Tooltip appears the instant the cursor lands — use bar element for fixed coords
-          showTooltip(bar, barTimes[i]);
-          await delay(2400);
+          // Cursor just landed — show immediately
+          showTooltip();
+          // Stay on bar with tooltip visible
+          await delay(2600);
+          // Hide tooltip, pause, then move to next bar
           hideTooltip();
-          await delay(180);
+          await delay(220);
         }
 
         // ── Slow scroll to end of response ──
