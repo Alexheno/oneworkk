@@ -1589,9 +1589,10 @@ body {
   padding: 2px 0 8px;
 }
 .ww-st-avg-lbl {
-  font-size: 0.52rem;
+  font-size: 0.44rem;
   color: rgba(255,255,255,0.38);
-  font-weight: 400;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   margin-bottom: 1px;
 }
 .ww-st-avg-val {

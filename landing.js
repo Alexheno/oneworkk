@@ -635,7 +635,7 @@ function startDemoSequence() {
       // 1 — Bar chart (Apple Screen Time style)
       addBlock(`
         <div class="ww-st-header">
-          <div class="ww-st-avg-lbl">Moyenne quotidienne</div>
+          <div class="ww-st-avg-lbl">AUJOURD'HUI</div>
           <div class="ww-st-avg-val">5h 12min</div>
           <div class="ww-st-trend"><span class="ww-st-trend-arrow">↓</span> 12 % par rapport à la semaine précédente</div>
         </div>
@@ -669,19 +669,23 @@ function startDemoSequence() {
       legendWrap.innerHTML = `
         <div class="ww-divider"></div>
         <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name" id="rl-n1"></span><span class="ww-rl-val" id="rl-v1"></span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>`;
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#34C759"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>
+        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n4"></span><span class="ww-rl-val" id="rl-v4"></span></div>`;
       recap.appendChild(legendWrap);
       scrollToBottom();
       await delay(200);
       await typeEl(document.getElementById('rl-n1'), 'Teams');
       await typeEl(document.getElementById('rl-v1'), '2h 48');
       await delay(100);
-      await typeEl(document.getElementById('rl-n2'), 'Outlook');
-      await typeEl(document.getElementById('rl-v2'), '1h 12');
+      await typeEl(document.getElementById('rl-n2'), 'Excel');
+      await typeEl(document.getElementById('rl-v2'), '1h 34');
       await delay(100);
-      await typeEl(document.getElementById('rl-n3'), 'Chrome');
-      await typeEl(document.getElementById('rl-v3'), '0h 54');
+      await typeEl(document.getElementById('rl-n3'), 'Outlook');
+      await typeEl(document.getElementById('rl-v3'), '1h 12');
+      await delay(100);
+      await typeEl(document.getElementById('rl-n4'), 'Chrome');
+      await typeEl(document.getElementById('rl-v4'), '0h 54');
 
       // 3 — Score
       await delay(1300);
