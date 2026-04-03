@@ -1027,9 +1027,10 @@ body {
 }
 
 /* Send button generating state */
-.demo-agent-bar-send.generating {
+.demo-agent-bar-send.generating,
+.ww-send.generating {
   background: rgba(28,28,32,0.95) !important;
-  border: 1.5px solid rgba(255,255,255,0.18);
+  border: 1.5px solid rgba(255,255,255,0.18) !important;
   animation: knob-gen-pulse 1.6s ease-in-out infinite;
 }
 .send-rec {

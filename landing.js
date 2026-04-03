@@ -197,7 +197,7 @@ function startDemoSequence() {
     // Remove expanded response block from previous cycle
     const prevExpReset = document.getElementById('demo-agent-expanded');
     if (prevExpReset) prevExpReset.remove();
-    const sendBtnReset = document.getElementById('demo-agent-send');
+    const sendBtnReset = document.getElementById('ww-chat-send');
     if (sendBtnReset) {
       sendBtnReset.classList.remove('generating');
       const rec = sendBtnReset.querySelector('.send-rec');
@@ -587,7 +587,7 @@ function startDemoSequence() {
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
     // Send button enters generating state — swap arrow SVG for record ring
-    const sendBtn = document.getElementById('demo-agent-send');
+    const sendBtn = document.getElementById('ww-chat-send');
     if (sendBtn) {
       const svgEl = sendBtn.querySelector('svg');
       if (svgEl) svgEl.style.display = 'none';
@@ -787,7 +787,7 @@ function startDemoSequence() {
       await delay(200);
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
       // Response done — send button returns to normal
-      const sendBtnEnd = document.getElementById('demo-agent-send');
+      const sendBtnEnd = document.getElementById('ww-chat-send');
       if (sendBtnEnd) {
         sendBtnEnd.classList.remove('generating');
         const rec = sendBtnEnd.querySelector('.send-rec');
