@@ -197,12 +197,13 @@ function startDemoSequence() {
     // Remove expanded response block from previous cycle
     const prevExpReset = document.getElementById('demo-agent-expanded');
     if (prevExpReset) prevExpReset.remove();
-    if (wwKnob) {
-      wwKnob.classList.remove('generating');
-      const rec = wwKnob.querySelector('.ww-knob-rec');
+    const sendBtnReset = document.getElementById('demo-agent-send');
+    if (sendBtnReset) {
+      sendBtnReset.classList.remove('generating');
+      const rec = sendBtnReset.querySelector('.send-rec');
       if (rec) rec.remove();
-      const logo = wwKnob.querySelector('.ww-knob-logo');
-      if (logo) logo.style.display = '';
+      const svgEl = sendBtnReset.querySelector('svg');
+      if (svgEl) svgEl.style.display = '';
     }
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
@@ -585,16 +586,17 @@ function startDemoSequence() {
       wwResponse.className = 'ww-response visible';
       wwResponse.innerHTML = '<div class="ww-thinking"><span></span><span></span><span></span></div>';
     }
-    // Knob enters generating state — swap logo for record ring via JS
-    if (wwKnob) {
-      wwKnob.classList.add('generating');
-      const logo = wwKnob.querySelector('.ww-knob-logo');
-      if (logo) logo.style.display = 'none';
-      if (!wwKnob.querySelector('.ww-knob-rec')) {
+    // Send button enters generating state — swap arrow SVG for record ring
+    const sendBtn = document.getElementById('demo-agent-send');
+    if (sendBtn) {
+      const svgEl = sendBtn.querySelector('svg');
+      if (svgEl) svgEl.style.display = 'none';
+      if (!sendBtn.querySelector('.send-rec')) {
         const rec = document.createElement('div');
-        rec.className = 'ww-knob-rec';
-        wwKnob.appendChild(rec);
+        rec.className = 'send-rec';
+        sendBtn.appendChild(rec);
       }
+      sendBtn.classList.add('generating');
     }
 
     // Cursor drifts away while AI thinks
@@ -784,13 +786,14 @@ function startDemoSequence() {
       scrollToBottom();
       await delay(200);
       await typeInto('Super journée Henri, 3 réunions au programme et Jean-Pierre attend ton retour avant 10h.', 'ww-st-summary');
-      // Response done — knob returns to normal
-      if (wwKnob) {
-        wwKnob.classList.remove('generating');
-        const rec = wwKnob.querySelector('.ww-knob-rec');
+      // Response done — send button returns to normal
+      const sendBtnEnd = document.getElementById('demo-agent-send');
+      if (sendBtnEnd) {
+        sendBtnEnd.classList.remove('generating');
+        const rec = sendBtnEnd.querySelector('.send-rec');
         if (rec) rec.remove();
-        const logo = wwKnob.querySelector('.ww-knob-logo');
-        if (logo) logo.style.display = '';
+        const svgEl = sendBtnEnd.querySelector('svg');
+        if (svgEl) svgEl.style.display = '';
       }
 
       // ── Double-click on visible response text → open dashboard ──

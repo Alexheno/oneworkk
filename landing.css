@@ -1026,21 +1026,16 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,0.75), 0 0 28px rgba(123,123,255,0.22);
 }
 
-/* Generating state — pulsing ring like the second screenshot */
-.ww-knob.generating {
-  border-color: rgba(255,255,255,0.80);
-  box-shadow:
-    0 6px 28px rgba(0,0,0,0.7),
-    0 0 0 3px rgba(255,255,255,0.12);
+/* Send button generating state */
+.demo-agent-bar-send.generating {
   animation: knob-gen-pulse 1.6s ease-in-out infinite;
 }
-.ww-knob-rec {
-  position: absolute;
-  inset: 7px;
+.send-rec {
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  border: 2.5px solid rgba(255,255,255,0.92);
+  border: 2px solid rgba(255,255,255,0.92);
   animation: knob-record-dot 1.6s ease-in-out infinite;
-  z-index: 10;
   pointer-events: none;
 }
 @keyframes knob-gen-pulse {
