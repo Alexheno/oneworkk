@@ -1035,11 +1035,10 @@ body {
   border: 1.5px solid rgba(255,255,255,0.18) !important;
 }
 .send-rec {
-  width: 11px;
-  height: 11px;
-  border-radius: 3px;
-  background: rgba(255,255,255,0.90);
-  animation: knob-record-dot 1.6s ease-in-out infinite;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.92);
   pointer-events: none;
   flex-shrink: 0;
 }
