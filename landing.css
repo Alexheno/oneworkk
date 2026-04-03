@@ -4405,9 +4405,11 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
   gap: 2px;
   padding: 10px 0;
   min-width: 0;
+  text-align: left;
 }
 .demo-cal-ev-name {
   font-size: 0.78rem;
@@ -4416,6 +4418,7 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: left;
 }
 .demo-cal-ev-next .demo-cal-ev-name {
   color: #fff;
@@ -4425,6 +4428,7 @@ body {
   font-size: 0.58rem;
   color: rgba(255,255,255,0.28);
   font-weight: 400;
+  text-align: left;
 }
 /* Highlight next event */
 .demo-cal-ev-next {
