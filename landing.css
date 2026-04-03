@@ -348,7 +348,7 @@ body {
 /* ─── HERO DEMO — Windows Laptop Frame ─── */
 .hero-demo {
   margin-top: 72px;
-  padding: 0 230px;
+  padding: 0 170px;
   position: relative;
   pointer-events: none;
   user-select: none;
@@ -1040,10 +1040,9 @@ body {
 .ww-knob.generating::after {
   content: '';
   position: absolute;
-  inset: 5px;
+  inset: 8px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.85);
-  box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.92);
   animation: knob-record-dot 1.6s ease-in-out infinite;
 }
 @keyframes knob-gen-pulse {
@@ -1621,20 +1620,9 @@ body {
 }
 .ww-st-chart {
   display: flex;
-  gap: 4px;
+  gap: 5px;
   align-items: stretch;
   height: 52px;
-}
-.ww-st-y-axis {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  font-size: 0.42rem;
-  color: rgba(255,255,255,0.22);
-  padding-bottom: 2px;
-  flex-shrink: 0;
-  width: 14px;
 }
 .ww-st-bars-area {
   flex: 1;
@@ -1647,62 +1635,41 @@ body {
   flex-direction: column;
   justify-content: space-between;
   pointer-events: none;
+  z-index: 1;
 }
 .ww-st-grid-line {
   width: 100%;
-  height: 1px;
-  background: rgba(255,255,255,0.10);
+  height: 0;
   border-style: dashed;
   border-width: 0 0 1px 0;
   border-color: rgba(255,255,255,0.10);
-  background: none;
 }
 .ww-st-avg-line {
-  border-color: #30D158;
-  position: relative;
-}
-.ww-st-avg-line-lbl {
-  position: absolute;
-  right: 0;
-  top: -8px;
-  font-size: 0.42rem;
-  color: #30D158;
-  font-weight: 600;
+  border-color: rgba(48,209,88,0.55);
 }
 .ww-st-bars {
   position: absolute;
   inset: 0 0 14px 0;
   display: flex;
   align-items: flex-end;
-  gap: 2px;
+  gap: 3px;
+  z-index: 2;
 }
 .ww-st-bar-col {
   flex: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  gap: 2px;
   height: 100%;
 }
 .ww-st-bar-col span {
-  font-size: 0.42rem;
-  color: rgba(255,255,255,0.22);
   position: absolute;
-  bottom: 0;
-}
-.ww-st-bars-area .ww-st-bars {
-  bottom: 14px;
-}
-/* Day labels row below bars */
-.ww-st-bar-col {
-  position: relative;
-  padding-bottom: 14px;
-}
-.ww-st-bar-col span {
-  bottom: 1px;
+  bottom: -13px;
   font-size: 0.42rem;
   color: rgba(255,255,255,0.25);
+  font-weight: 400;
 }
 .ww-stb-today span {
   color: rgba(255,255,255,0.70);
@@ -1710,7 +1677,7 @@ body {
 }
 .ww-stb {
   width: 100%;
-  border-radius: 3px 3px 2px 2px;
+  border-radius: 4px 4px 2px 2px;
   background: #5AC8FA;
   transform-origin: bottom center;
   transform: scaleY(0);
@@ -1719,8 +1686,33 @@ body {
   flex-shrink: 0;
 }
 .ww-stb-today .ww-stb {
-  background: #5AC8FA;
-  box-shadow: 0 0 6px rgba(90,200,250,0.35);
+  background: #63CFFA;
+  box-shadow: 0 0 5px rgba(90,200,250,0.28);
+}
+/* Y-axis on the right */
+.ww-st-y-axis {
+  position: relative;
+  width: 15px;
+  flex-shrink: 0;
+}
+.ww-st-y-top, .ww-st-y-moy {
+  position: absolute;
+  left: 0;
+  font-size: 0.40rem;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ww-st-y-top {
+  top: 0;
+  color: rgba(255,255,255,0.22);
+}
+.ww-st-y-moy {
+  /* avg line = middle of bar area = (total - 14px) / 2 from top */
+  top: calc((100% - 14px) / 2);
+  transform: translateY(-50%);
+  color: #30D158;
+  font-weight: 600;
+  font-size: 0.38rem;
 }
 
 /* Keep old .ww-rb for compat with existing clone in dashboard */
@@ -1769,25 +1761,41 @@ body {
 }
 
 /* Score */
-.ww-score-ring {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 4px 0 2px;
+.ww-score-block {
+  padding: 5px 0 3px;
 }
-.ww-score-info { display: flex; flex-direction: column; gap: 1px; }
+.ww-score-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.ww-score-lbl {
+  font-size: 0.46rem;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  color: rgba(255,255,255,0.28);
+}
 .ww-score-pct {
-  font-size: 0.66rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   background: linear-gradient(90deg,#6B8EF5,#9B35FF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.ww-score-lbl {
-  font-size: 0.50rem;
-  color: rgba(255,255,255,0.28);
-  letter-spacing: 0.05em;
+.ww-score-bar-track {
+  height: 5px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.ww-score-bar-fill {
+  width: 75%;
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg,#6B8EF5,#9B35FF);
 }
 
 /* Summary text */
@@ -5075,14 +5083,15 @@ body {
 .demo-agent-expanded .ww-st-avg-lbl { font-size: 0.64rem !important; }
 .demo-agent-expanded .ww-st-trend   { font-size: 0.60rem !important; }
 .demo-agent-expanded .ww-st-chart   { height: 80px !important; }
-.demo-agent-expanded .ww-st-y-axis  { font-size: 0.52rem !important; width: 18px !important; }
+.demo-agent-expanded .ww-st-y-axis  { width: 18px !important; }
+.demo-agent-expanded .ww-st-y-top, .demo-agent-expanded .ww-st-y-moy { font-size: 0.52rem !important; }
 .demo-agent-expanded .ww-st-bar-col span { font-size: 0.52rem !important; }
-.demo-agent-expanded .ww-st-avg-line-lbl { font-size: 0.52rem !important; }
 .demo-agent-expanded .ww-rl-item { padding: 3px 0; }
 .demo-agent-expanded .ww-rl-name { font-size: 0.88rem !important; }
 .demo-agent-expanded .ww-rl-val  { font-size: 0.88rem !important; }
-.demo-agent-expanded .ww-score-pct { font-size: 1.18rem !important; font-weight: 800 !important; letter-spacing: -0.02em !important; }
-.demo-agent-expanded .ww-score-lbl { font-size: 0.72rem !important; letter-spacing: 0.07em !important; }
+.demo-agent-expanded .ww-score-pct { font-size: 1.28rem !important; }
+.demo-agent-expanded .ww-score-lbl { font-size: 0.66rem !important; }
+.demo-agent-expanded .ww-score-bar-track { height: 7px !important; margin-top: 2px; }
 .demo-agent-expanded .ww-stream-block { font-size: 0.90rem !important; line-height: 1.90 !important; }
 .demo-agent-expanded .ww-st-label { font-size: 0.68rem !important; font-weight: 700; letter-spacing: 0.12em !important; color: rgba(255,255,255,0.42) !important; }
 .demo-agent-expanded .ww-st-title { font-size: 0.94rem !important; font-weight: 600; }
@@ -5100,15 +5109,13 @@ body {
   margin: 10px 0 8px;
   border-radius: 1px;
 }
-.demo-agent-expanded .ww-score-ring {
-  gap: 14px;
-  padding: 10px 14px;
+.demo-agent-expanded .ww-score-block {
+  padding: 8px 14px;
   background: rgba(107,142,245,0.06);
-  border: 1px solid rgba(107,142,245,0.15);
+  border: 1px solid rgba(107,142,245,0.14);
   border-radius: 14px;
   margin: 2px 0;
 }
-.demo-agent-expanded .ww-score-ring svg { width: 52px !important; height: 52px !important; }
 
 /* ── Bar tooltip — Apple vibes ── */
 #demo-bar-tooltip {

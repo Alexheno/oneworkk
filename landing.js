@@ -611,7 +611,7 @@ function startDemoSequence() {
         for (let i = 0; i < text.length; i++) {
           el.textContent = text.slice(0, i + 1);
           scrollToBottom();
-          await delay(50 + Math.random() * 34);
+          await delay(38 + Math.random() * 24);
         }
       };
 
@@ -623,15 +623,10 @@ function startDemoSequence() {
           <div class="ww-st-trend"><span class="ww-st-trend-arrow">↓</span> 12 % par rapport à la semaine précédente</div>
         </div>
         <div class="ww-st-chart">
-          <div class="ww-st-y-axis">
-            <span>4h</span>
-            <span></span>
-            <span>0</span>
-          </div>
           <div class="ww-st-bars-area">
             <div class="ww-st-grid">
               <div class="ww-st-grid-line"></div>
-              <div class="ww-st-grid-line ww-st-avg-line"><span class="ww-st-avg-line-lbl">moy.</span></div>
+              <div class="ww-st-grid-line ww-st-avg-line"></div>
               <div class="ww-st-grid-line"></div>
             </div>
             <div class="ww-st-bars">
@@ -643,6 +638,10 @@ function startDemoSequence() {
               <div class="ww-st-bar-col"><div class="ww-stb" style="height:2%;--d:5"></div><span>S</span></div>
               <div class="ww-st-bar-col"><div class="ww-stb" style="height:2%;--d:6"></div><span>D</span></div>
             </div>
+          </div>
+          <div class="ww-st-y-axis">
+            <span class="ww-st-y-top">4h</span>
+            <span class="ww-st-y-moy">moy.</span>
           </div>
         </div>`);
 
@@ -673,18 +672,13 @@ function startDemoSequence() {
       scoreWrap.className = 'ww-section';
       scoreWrap.innerHTML = `
         <div class="ww-divider"></div>
-        <div class="ww-score-ring">
-          <svg width="32" height="32" viewBox="0 0 32 32">
-            <circle cx="16" cy="16" r="13" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="3"/>
-            <circle cx="16" cy="16" r="13" fill="none" stroke="url(#sg2)" stroke-width="3"
-              stroke-dasharray="81.7" stroke-dashoffset="20" stroke-linecap="round" transform="rotate(-90 16 16)"/>
-            <defs><linearGradient id="sg2" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#6B8EF5"/><stop offset="100%" stop-color="#9B35FF"/>
-            </linearGradient></defs>
-          </svg>
-          <div class="ww-score-info">
-            <div class="ww-score-pct" id="score-pct-el"></div>
+        <div class="ww-score-block">
+          <div class="ww-score-top">
             <div class="ww-score-lbl" id="score-lbl-el"></div>
+            <div class="ww-score-pct" id="score-pct-el"></div>
+          </div>
+          <div class="ww-score-bar-track">
+            <div class="ww-score-bar-fill"></div>
           </div>
         </div>`;
       recap.appendChild(scoreWrap);
@@ -707,7 +701,7 @@ function startDemoSequence() {
         for (let i = 0; i < text.length; i++) {
           span.textContent = text.slice(0, i + 1);
           const c = text[i];
-          let ms = fast ? (14 + Math.random() * 10) : (34 + Math.random() * 26);
+          let ms = fast ? (11 + Math.random() * 8) : (26 + Math.random() * 20);
           if (!fast) {
             if (c === '.') ms += 200;
             if (c === ',') ms += 80;
@@ -864,10 +858,10 @@ function startDemoSequence() {
       }
       const dbtTime = document.getElementById('dbt-time');
 
-      const barTimes = ['2h 55', '4h 03', '3h 34'];
+      const barTimes = ['2h 01', '4h 03', '3h 10'];
 
       if (expEl) {
-        const bars = [...expEl.querySelectorAll('.ww-rb')].slice(0, 3);
+        const bars = [...expEl.querySelectorAll('.ww-stb')].slice(0, 3);
 
         // Single RAF loop watching all 3 bars — purely position-driven, zero timers
         let trackerAlive = true;
