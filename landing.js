@@ -666,26 +666,37 @@ function startDemoSequence() {
       await delay(1400);
       const legendWrap = document.createElement('div');
       legendWrap.className = 'ww-section';
-      legendWrap.innerHTML = `
-        <div class="ww-divider"></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#60C8FF"></div><span class="ww-rl-name" id="rl-n1"></span><span class="ww-rl-val" id="rl-v1"></span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#34C759"></div><span class="ww-rl-name" id="rl-n2"></span><span class="ww-rl-val" id="rl-v2"></span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#A78BFA"></div><span class="ww-rl-name" id="rl-n3"></span><span class="ww-rl-val" id="rl-v3"></span></div>
-        <div class="ww-rl-item"><div class="ww-rl-dot" style="background:#F472B6"></div><span class="ww-rl-name" id="rl-n4"></span><span class="ww-rl-val" id="rl-v4"></span></div>`;
+      legendWrap.innerHTML = '<div class="ww-divider"></div>';
       recap.appendChild(legendWrap);
       scrollToBottom();
       await delay(200);
-      await typeEl(document.getElementById('rl-n1'), 'Teams');
-      await typeEl(document.getElementById('rl-v1'), '2h 48');
+
+      const addLegendRow = async (color, name, val) => {
+        const row = document.createElement('div');
+        row.className = 'ww-rl-item';
+        const dot = document.createElement('div');
+        dot.className = 'ww-rl-dot';
+        dot.style.background = color;
+        const nameEl = document.createElement('span');
+        nameEl.className = 'ww-rl-name';
+        const valEl = document.createElement('span');
+        valEl.className = 'ww-rl-val';
+        row.appendChild(dot);
+        row.appendChild(nameEl);
+        row.appendChild(valEl);
+        legendWrap.appendChild(row);
+        scrollToBottom();
+        await typeEl(nameEl, name);
+        await typeEl(valEl, val);
+      };
+
+      await addLegendRow('#60C8FF', 'Teams',   '2h 48');
       await delay(100);
-      await typeEl(document.getElementById('rl-n2'), 'Excel');
-      await typeEl(document.getElementById('rl-v2'), '1h 34');
+      await addLegendRow('#34C759', 'Excel',   '1h 34');
       await delay(100);
-      await typeEl(document.getElementById('rl-n3'), 'Outlook');
-      await typeEl(document.getElementById('rl-v3'), '1h 12');
+      await addLegendRow('#A78BFA', 'Outlook', '1h 12');
       await delay(100);
-      await typeEl(document.getElementById('rl-n4'), 'Chrome');
-      await typeEl(document.getElementById('rl-v4'), '0h 54');
+      await addLegendRow('#F472B6', 'Chrome',  '0h 54');
 
       // 3 — Score
       await delay(1300);
