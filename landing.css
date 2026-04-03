@@ -415,7 +415,7 @@ body {
   position: relative;
   background: #08091A;
   width: 1200px;
-  height: 582px;
+  height: 630px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -1035,14 +1035,15 @@ body {
   animation: knob-gen-pulse 1.6s ease-in-out infinite;
 }
 .ww-knob.generating .ww-knob-logo {
-  opacity: 0;
+  display: none;
 }
 .ww-knob.generating::after {
   content: '';
   position: absolute;
-  inset: 8px;
+  inset: 9px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.92);
+  background: rgba(255,255,255,0.95);
+  z-index: 10;
   animation: knob-record-dot 1.6s ease-in-out infinite;
 }
 @keyframes knob-gen-pulse {
@@ -1761,41 +1762,24 @@ body {
 }
 
 /* Score */
-.ww-score-block {
-  padding: 5px 0 3px;
-}
-.ww-score-top {
+.ww-score-ring {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 6px;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 2px;
+}
+.ww-score-info { display: flex; flex-direction: column; gap: 2px; }
+.ww-score-pct {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.92);
 }
 .ww-score-lbl {
   font-size: 0.46rem;
-  font-weight: 600;
-  letter-spacing: 0.10em;
-  color: rgba(255,255,255,0.28);
-}
-.ww-score-pct {
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(90deg,#6B8EF5,#9B35FF);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.ww-score-bar-track {
-  height: 5px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 99px;
-  overflow: hidden;
-}
-.ww-score-bar-fill {
-  width: 75%;
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg,#6B8EF5,#9B35FF);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  color: rgba(255,255,255,0.30);
 }
 
 /* Summary text */
@@ -5089,9 +5073,8 @@ body {
 .demo-agent-expanded .ww-rl-item { padding: 3px 0; }
 .demo-agent-expanded .ww-rl-name { font-size: 0.88rem !important; }
 .demo-agent-expanded .ww-rl-val  { font-size: 0.88rem !important; }
-.demo-agent-expanded .ww-score-pct { font-size: 1.28rem !important; }
-.demo-agent-expanded .ww-score-lbl { font-size: 0.66rem !important; }
-.demo-agent-expanded .ww-score-bar-track { height: 7px !important; margin-top: 2px; }
+.demo-agent-expanded .ww-score-pct { font-size: 1.22rem !important; }
+.demo-agent-expanded .ww-score-lbl { font-size: 0.64rem !important; }
 .demo-agent-expanded .ww-stream-block { font-size: 0.90rem !important; line-height: 1.90 !important; }
 .demo-agent-expanded .ww-st-label { font-size: 0.68rem !important; font-weight: 700; letter-spacing: 0.12em !important; color: rgba(255,255,255,0.42) !important; }
 .demo-agent-expanded .ww-st-title { font-size: 0.94rem !important; font-weight: 600; }
@@ -5109,13 +5092,15 @@ body {
   margin: 10px 0 8px;
   border-radius: 1px;
 }
-.demo-agent-expanded .ww-score-block {
-  padding: 8px 14px;
-  background: rgba(107,142,245,0.06);
-  border: 1px solid rgba(107,142,245,0.14);
+.demo-agent-expanded .ww-score-ring {
+  gap: 14px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
   border-radius: 14px;
   margin: 2px 0;
 }
+.demo-agent-expanded .ww-score-ring svg { width: 58px !important; height: 58px !important; }
 
 /* ── Bar tooltip — Apple vibes ── */
 #demo-bar-tooltip {

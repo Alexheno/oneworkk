@@ -672,13 +672,15 @@ function startDemoSequence() {
       scoreWrap.className = 'ww-section';
       scoreWrap.innerHTML = `
         <div class="ww-divider"></div>
-        <div class="ww-score-block">
-          <div class="ww-score-top">
-            <div class="ww-score-lbl" id="score-lbl-el"></div>
+        <div class="ww-score-ring">
+          <svg width="42" height="42" viewBox="0 0 42 42">
+            <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="4.5"/>
+            <circle cx="21" cy="21" r="17" fill="none" stroke="rgba(255,255,255,0.88)" stroke-width="4.5"
+              stroke-dasharray="106.8" stroke-dashoffset="26.7" stroke-linecap="round" transform="rotate(-90 21 21)"/>
+          </svg>
+          <div class="ww-score-info">
             <div class="ww-score-pct" id="score-pct-el"></div>
-          </div>
-          <div class="ww-score-bar-track">
-            <div class="ww-score-bar-fill"></div>
+            <div class="ww-score-lbl" id="score-lbl-el"></div>
           </div>
         </div>`;
       recap.appendChild(scoreWrap);
