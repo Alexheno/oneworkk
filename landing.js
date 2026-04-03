@@ -271,42 +271,75 @@ function startDemoSequence() {
       await delay(1000);
     }
 
-    // Hover agenda card — cursor drifts naturally while list scrolls
-    const agendaBody = document.getElementById('demo-agenda-body');
-    if (cardMeetings && agendaBody) {
-      // Position cursor near top of the agenda card body
-      const cp = pos(cardMeetings);
-      await moveTo(cp.x, cp.y - 10, 600);
-      await delay(280);
+    // ── Step 1: scroll the whole dashboard down then back up ──────────────
+    // Cursor moves to the center of the content area, then the page scrolls
+    const homeScrollEl = document.getElementById('demo-home-view');
+    if (homeScrollEl) {
+      await moveTo(DW * 0.50, DH * 0.45, 600);
+      await delay(300);
 
-      // Initialise scrolled to bottom (hidden events below visible area)
-      agendaBody.scrollTop = agendaBody.scrollHeight;
-
-      // Scroll UP while cursor drifts gently upward — mimics natural trackpad
-      const scrollAndDrift = (scrollTarget, cursorDY, dur) => new Promise(res => {
-        const start     = performance.now();
-        const fromScroll = agendaBody.scrollTop;
-        const fromCX    = parseFloat(cursor.style.left);
-        const fromCY    = parseFloat(cursor.style.top);
-        const ease      = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      // Shared helper: animate scrollTop of an element while cursor drifts slightly
+      const scrollWithCursor = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
+        const start      = performance.now();
+        const fromScroll = el.scrollTop;
+        const fromCX     = parseFloat(cursor.style.left);
+        const fromCY     = parseFloat(cursor.style.top);
+        const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
         cursor.style.transition = 'none';
         function step(now) {
           const p = Math.min((now - start) / dur, 1);
           const e = ease(p);
-          agendaBody.scrollTop       = fromScroll + (scrollTarget - fromScroll) * e;
-          cursor.style.left          = fromCX + 'px';
-          cursor.style.top           = (fromCY + cursorDY * e) + 'px';
+          el.scrollTop          = fromScroll + (scrollTarget - fromScroll) * e;
+          cursor.style.top      = (fromCY + cursorDY * e) + 'px';
+          cursor.style.left     = fromCX + 'px';
           if (p < 1) requestAnimationFrame(step);
           else { cursor.style.transition = ''; res(); }
         }
         requestAnimationFrame(step);
       });
 
-      // Scroll up (cursor drifts up ~18px)
-      await scrollAndDrift(0, -18, 1300);
-      await delay(700);
-      // Scroll back down (cursor drifts down ~18px)
-      await scrollAndDrift(agendaBody.scrollHeight, 18, 1100);
+      // Scroll dashboard down (cursor drifts down ~20px, page reveals bottom cards)
+      await scrollWithCursor(homeScrollEl, homeScrollEl.scrollHeight, 20, 1400);
+      await delay(900);
+      // Scroll dashboard back up
+      await scrollWithCursor(homeScrollEl, 0, -20, 1100);
+      await delay(500);
+    }
+
+    // ── Step 2: cursor moves to Agenda, scrolls that section ──────────────
+    const agendaBody = document.getElementById('demo-agenda-body');
+    if (cardMeetings && agendaBody) {
+      const cp = pos(cardMeetings);
+      await moveTo(cp.x, cp.y, 750);
+      await delay(350);
+
+      // Agenda starts scrolled to bottom
+      agendaBody.scrollTop = agendaBody.scrollHeight;
+
+      const scrollWithCursor2 = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
+        const start      = performance.now();
+        const fromScroll = el.scrollTop;
+        const fromCX     = parseFloat(cursor.style.left);
+        const fromCY     = parseFloat(cursor.style.top);
+        const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+        cursor.style.transition = 'none';
+        function step(now) {
+          const p = Math.min((now - start) / dur, 1);
+          const e = ease(p);
+          el.scrollTop      = fromScroll + (scrollTarget - fromScroll) * e;
+          cursor.style.top  = (fromCY + cursorDY * e) + 'px';
+          cursor.style.left = fromCX + 'px';
+          if (p < 1) requestAnimationFrame(step);
+          else { cursor.style.transition = ''; res(); }
+        }
+        requestAnimationFrame(step);
+      });
+
+      // Scroll agenda up — cursor drifts up slightly
+      await scrollWithCursor2(agendaBody, 0, -14, 1200);
+      await delay(600);
+      // Scroll agenda back down
+      await scrollWithCursor2(agendaBody, agendaBody.scrollHeight, 14, 1000);
       await delay(300);
     }
 
