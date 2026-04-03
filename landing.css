@@ -4853,8 +4853,8 @@ body {
 }
 #win-teams-popup .tms-fmt-btn { color: #616161; font-size: 0.72rem; }
 #win-teams-popup .tms-fmt-sep { color: #C8C6C4; }
-#win-teams-popup .tms-compose-text { padding: 9px 4px 5px; }
-#win-teams-popup .tms-compose-ph { color: #B0ADAB; font-size: 0.88rem; }
+#win-teams-popup .tms-compose-text { padding: 7px 4px 7px; display: flex; align-items: center; }
+#win-teams-popup .tms-compose-ph { color: #B0ADAB; font-size: 0.88rem; line-height: 1; }
 #win-teams-popup .tms-compose-actions { gap: 10px; padding: 4px 4px 5px; border-top: 1px solid #EDEBE9; }
 #win-teams-popup .tms-compose-actions svg { stroke: #8A8886; width: 18px; height: 18px; }
 #win-teams-popup .tms-send-btn {
