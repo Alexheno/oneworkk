@@ -1035,12 +1035,19 @@ body {
   border: 1.5px solid rgba(255,255,255,0.18) !important;
 }
 .send-rec {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 9px;
   height: 9px;
   border-radius: 2px;
   background: rgba(255,255,255,0.92);
   pointer-events: none;
-  flex-shrink: 0;
+}
+.ww-send.generating,
+.demo-agent-bar-send.generating {
+  position: relative;
 }
 @keyframes knob-gen-pulse {
   0%, 100% { box-shadow: 0 6px 28px rgba(0,0,0,0.7), 0 0 0 3px rgba(255,255,255,0.10); }
