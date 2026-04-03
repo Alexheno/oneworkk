@@ -205,6 +205,8 @@ function startDemoSequence() {
       const svgEl = sendBtnReset.querySelector('svg');
       if (svgEl) svgEl.style.display = '';
     }
+    const tbLeftReset = document.querySelector('.demo-topbar-left');
+    if (tbLeftReset) tbLeftReset.style.visibility = '';
     const agentInputReset = document.getElementById('demo-agent-input');
     if (agentInputReset) agentInputReset.textContent = 'Demander à l\'Agent IA...';
     // Reset scroll positions
@@ -352,8 +354,8 @@ function startDemoSequence() {
       const homeView = document.getElementById('demo-home-view');
       const projView = document.getElementById('demo-projects-view');
       if (homeView) homeView.style.display = 'none';
-      const tbNameProj = document.querySelector('.demo-tb-name');
-      if (tbNameProj) tbNameProj.style.display = 'none';
+      const tbLeftProj = document.querySelector('.demo-topbar-left');
+      if (tbLeftProj) tbLeftProj.style.visibility = 'hidden';
       if (projView) {
         projView.style.display = 'flex';
         await delay(30);
@@ -383,8 +385,8 @@ function startDemoSequence() {
     }
     if (projView2) { projView2.style.opacity = '0'; projView2.style.display = 'none'; }
     if (homeView2) homeView2.style.display = 'flex';
-    const tbNameHome = document.querySelector('.demo-tb-name');
-    if (tbNameHome) tbNameHome.style.display = '';
+    const tbLeftHome = document.querySelector('.demo-topbar-left');
+    if (tbLeftHome) tbLeftHome.style.visibility = '';
     document.querySelectorAll('.demo-sb-icon').forEach((el, i) => { el.classList.toggle('active', i === 0); });
     await delay(700);
 
@@ -849,8 +851,8 @@ function startDemoSequence() {
       if (homeViewDB)  { homeViewDB.style.display = 'none'; }
       if (projViewDB)  { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
       // Hide greeting on non-home pages
-      const tbName = document.querySelector('.demo-tb-name');
-      if (tbName) tbName.style.display = 'none';
+      const tbLeftDB = document.querySelector('.demo-topbar-left');
+      if (tbLeftDB) tbLeftDB.style.visibility = 'hidden';
       document.querySelectorAll('.demo-sb-icon').forEach(el => el.classList.remove('active'));
       const agentIconDB = document.getElementById('demo-sb-agent');
       if (agentIconDB) agentIconDB.classList.add('active');
