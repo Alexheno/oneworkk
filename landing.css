@@ -1496,18 +1496,20 @@ body {
 }
 @keyframes ww-blink { 50% { opacity: 0; } }
 .ww-send {
-  width: 24px; height: 24px;
-  border-radius: 7px;
+  width: 26px; height: 26px;
+  border-radius: 8px;
   border: none;
-  background: rgba(107,142,245,0.75);
-  color: #fff;
+  background: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: background 0.1s;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
 }
+.ww-send svg { stroke: #000 !important; }
 
 .ww-response {
   display: none;
@@ -4705,7 +4707,7 @@ body {
 #win-teams-popup .tms-sb-av { width: 32px; height: 32px; font-size: 0.63rem; flex-shrink: 0; }
 #win-teams-popup .tms-sb-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 #win-teams-popup .tms-sb-row1 { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1px; }
-#win-teams-popup .tms-sb-name { color: #252423; font-size: 0.78rem; font-weight: 400; font-family: 'Segoe UI', system-ui, sans-serif; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#win-teams-popup .tms-sb-name { color: #252423; font-size: 0.78rem; font-weight: 400; font-family: 'Segoe UI', system-ui, sans-serif; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; text-align: left; }
 #win-teams-popup .tms-sb-time { color: #A19F9D; font-size: 0.60rem; font-weight: 400; flex-shrink: 0; padding-left: 4px; }
 #win-teams-popup .tms-sb-preview { font-size: 0.72rem; color: #8A8886; font-family: 'Segoe UI', system-ui, sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #win-teams-popup .tms-sb-unread .tms-sb-name { font-weight: 600; color: #201F1E; }
