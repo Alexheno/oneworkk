@@ -1509,7 +1509,7 @@ body {
   overflow: hidden;
   transition: background 0.15s;
 }
-.ww-send svg { stroke: #fff !important; width: 11px; height: 11px; flex-shrink: 0; }
+.ww-send svg { stroke: rgba(255,255,255,0.92) !important; width: 11px; height: 11px; flex-shrink: 0; }
 
 .ww-response {
   display: none;
@@ -1606,9 +1606,11 @@ body {
 }
 .ww-st-avg-val {
   font-size: 1.10rem;
-  font-weight: 700;
-  color: rgba(255,255,255,0.95);
-  letter-spacing: -0.03em;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.04em;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: subpixel-antialiased;
   line-height: 1.1;
   margin-bottom: 3px;
 }
