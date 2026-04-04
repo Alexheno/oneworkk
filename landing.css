@@ -4282,12 +4282,13 @@ body {
 
 /* Unread dot — Outlook blue dot */
 .demo-em-unread-dot {
-  width: 8px; height: 8px;
+  width: 10px; height: 10px;
   border-radius: 50%;
   background: #0A84FF;
   flex-shrink: 0;
-  box-shadow: 0 0 0 2px rgba(10,132,255,0.20), 0 0 7px rgba(10,132,255,0.30);
-  margin-top: 4px;
+  box-shadow: 0 0 0 2px rgba(10,132,255,0.20), 0 0 8px rgba(10,132,255,0.35);
+  align-self: center;
+  margin-top: 0;
 }
 
 /* Scrollable card body — clips content for reveal-on-scroll effect */
