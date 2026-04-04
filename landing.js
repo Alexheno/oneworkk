@@ -1018,10 +1018,13 @@ if (laptop) {
   const desktop = document.querySelector('.win-desktop');
   if (!scene || !desktop) return;
   function fit() {
-    // Use screen-scene (no padding) as the true available width
     const availW = scene.offsetWidth;
     const scale = availW / 1200;
     desktop.style.zoom = String(scale);
+    // Force GPU layer for crisp subpixel text rendering
+    desktop.style.transform = 'translateZ(0)';
+    desktop.style.backfaceVisibility = 'hidden';
+    desktop.style.webkitFontSmoothing = 'subpixel-antialiased';
   }
   window.addEventListener('resize', fit);
   // Wait for layout to settle before measuring

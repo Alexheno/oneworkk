@@ -1072,6 +1072,11 @@ body {
 }
 
 /* Carte — cachée par défaut, s'ouvre au hover ou avec .open */
+.win-desktop {
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-rendering: geometricPrecision;
+}
 .ww-card {
   position: absolute;
   bottom: 36px;
