@@ -348,7 +348,7 @@ body {
 /* ─── HERO DEMO — Windows Laptop Frame ─── */
 .hero-demo {
   margin-top: 72px;
-  padding: 0 170px;
+  padding: 0 195px;
   position: relative;
   pointer-events: none;
   user-select: none;
@@ -415,7 +415,7 @@ body {
   position: relative;
   background: #08091A;
   width: 1200px;
-  height: 630px;
+  height: 590px;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -586,8 +586,17 @@ body {
 .win-tray {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
   justify-self: end;
+}
+.win-qs-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 6px;
+  padding: 4px 8px;
+  height: 30px;
 }
 .win-tray-chevron {
   width: 22px; height: 28px;
