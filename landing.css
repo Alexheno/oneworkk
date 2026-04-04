@@ -1499,7 +1499,7 @@ body {
   width: 26px; height: 26px;
   border-radius: 8px;
   border: none;
-  background: rgba(18,18,24,0.98);
+  background: rgba(58,58,72,0.95);
   color: #fff;
   display: flex;
   align-items: center;
@@ -5057,7 +5057,7 @@ body {
   width: 24px; height: 24px;
   border-radius: 7px;
   border: none;
-  background: rgba(107,142,245,0.75);
+  background: rgba(58,58,72,0.95);
   color: #fff;
   display: flex;
   align-items: center;
