@@ -52,10 +52,10 @@ function startDemoSequence() {
   const blocker = desktop.querySelector('.demo-interaction-blocker');
   if (blocker) {
     const absorb = e => { e.preventDefault(); e.stopPropagation(); };
-    blocker.addEventListener('wheel',      absorb, { passive: false, capture: true });
+    blocker.addEventListener('wheel', absorb, { passive: false, capture: true });
     blocker.addEventListener('touchstart', absorb, { passive: false, capture: true });
-    blocker.addEventListener('touchmove',  absorb, { passive: false, capture: true });
-    blocker.addEventListener('touchend',   absorb, { passive: false, capture: true });
+    blocker.addEventListener('touchmove', absorb, { passive: false, capture: true });
+    blocker.addEventListener('touchend', absorb, { passive: false, capture: true });
   }
 
   // Pause automatically when user scrolls away, resume when they return
@@ -73,8 +73,8 @@ function startDemoSequence() {
     const er = el.getBoundingClientRect();
     const zoom = parseFloat(desktop.style.zoom) || 1;
     return {
-      x: (er.left + er.width  / 2 - dr.left) / zoom,
-      y: (er.top  + er.height / 2 - dr.top)  / zoom
+      x: (er.left + er.width / 2 - dr.left) / zoom,
+      y: (er.top + er.height / 2 - dr.top) / zoom
     };
   }
 
@@ -82,32 +82,32 @@ function startDemoSequence() {
   function moveTo(x, y, ms = 1200) {
     if (ms === 0) {
       cursor.style.left = x + 'px';
-      cursor.style.top  = y + 'px';
+      cursor.style.top = y + 'px';
       return delay(0);
     }
     const startX = parseFloat(cursor.style.left) || x;
-    const startY = parseFloat(cursor.style.top)  || y;
+    const startY = parseFloat(cursor.style.top) || y;
     const dx = x - startX, dy = y - startY;
     const dist = Math.hypot(dx, dy) || 1;
     // Slight random perpendicular arc — human cursors never move in straight lines
-    const arc  = (Math.random() - 0.5) * Math.min(dist * 0.20, 28);
-    const cx   = (startX + x) / 2 + (-dy / dist) * arc;
-    const cy   = (startY + y) / 2 + ( dx / dist) * arc;
+    const arc = (Math.random() - 0.5) * Math.min(dist * 0.20, 28);
+    const cx = (startX + x) / 2 + (-dy / dist) * arc;
+    const cy = (startY + y) / 2 + (dx / dist) * arc;
     // Ease-in-out-cubic
-    const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    const ease = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     cursor.style.transition = 'none';
     return new Promise(resolve => {
       const t0 = performance.now();
       function frame(now) {
         const raw = Math.min((now - t0) / ms, 1);
-        const e   = ease(raw);
-        cursor.style.left = ((1-e)*(1-e)*startX + 2*(1-e)*e*cx + e*e*x) + 'px';
-        cursor.style.top  = ((1-e)*(1-e)*startY + 2*(1-e)*e*cy + e*e*y) + 'px';
+        const e = ease(raw);
+        cursor.style.left = ((1 - e) * (1 - e) * startX + 2 * (1 - e) * e * cx + e * e * x) + 'px';
+        cursor.style.top = ((1 - e) * (1 - e) * startY + 2 * (1 - e) * e * cy + e * e * y) + 'px';
         if (raw < 1) { requestAnimationFrame(frame); }
         else {
           cursor.style.left = x + 'px';
-          cursor.style.top  = y + 'px';
+          cursor.style.top = y + 'px';
           cursor.style.transition = '';
           resolve();
         }
@@ -259,8 +259,8 @@ function startDemoSequence() {
     // ══════════════════════════════════════════════════════════
     // PHASE 1 — Dashboard → Projects
     // ══════════════════════════════════════════════════════════
-    const DW   = 1200; // CSS design width (fixed, zoom-independent)
-    const DH   = 582;  // CSS design height
+    const DW = 1200; // CSS design width (fixed, zoom-independent)
+    const DH = 582;  // CSS design height
 
     // Cursor appears in dashboard content area
     moveTo(DW * 0.48, DH * 0.32, 0);
@@ -274,32 +274,34 @@ function startDemoSequence() {
       await delay(1100);
     }
 
-    // Hover meetings card — linger
-    const cardMeetings = document.getElementById('demo-card-meetings');
-    if (cardMeetings) {
-      await moveTo(pos(cardMeetings).x, pos(cardMeetings).y, 720);
+    // Hover Teams card — linger
+    const cardTeams = document.getElementById('demo-card-teams');
+    if (cardTeams) {
+      await moveTo(pos(cardTeams).x, pos(cardTeams).y, 720);
       await delay(1000);
     }
 
+    const cardMeetings = document.getElementById('demo-card-meetings');
+
     // ── Shared scroll helper: scrolls an element while cursor drifts ────────
     const homeScrollEl = document.getElementById('demo-home-view');
-    const agendaBody   = document.getElementById('demo-agenda-body');
+    const agendaBody = document.getElementById('demo-agenda-body');
 
     // Clamp cursor Y inside the desktop
     const clampY = y => Math.max(10, Math.min(DH - 10, y));
 
     const scrollWithCursor = (el, scrollTarget, cursorDY, dur) => new Promise(res => {
-      const start      = performance.now();
+      const start = performance.now();
       const fromScroll = el.scrollTop;
-      const fromCX     = parseFloat(cursor.style.left);
-      const fromCY     = parseFloat(cursor.style.top);
-      const ease       = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+      const fromCX = parseFloat(cursor.style.left);
+      const fromCY = parseFloat(cursor.style.top);
+      const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
       cursor.style.transition = 'none';
       function step(now) {
         const p = Math.min((now - start) / dur, 1);
         const e = ease(p);
-        el.scrollTop      = fromScroll + (scrollTarget - fromScroll) * e;
-        cursor.style.top  = clampY(fromCY + cursorDY * e) + 'px';
+        el.scrollTop = fromScroll + (scrollTarget - fromScroll) * e;
+        cursor.style.top = clampY(fromCY + cursorDY * e) + 'px';
         cursor.style.left = fromCX + 'px';
         if (p < 1) requestAnimationFrame(step);
         else { cursor.style.transition = ''; res(); }
@@ -564,7 +566,7 @@ function startDemoSequence() {
       await delay(270);
       await click(null);
       await delay(180);
-      await typeIn('Fais moi un récap de ma journée', wwChatInput);
+      await typeIn('Fais moi un récap de ma journée.', wwChatInput);
       await delay(340);
     }
 
@@ -696,13 +698,13 @@ function startDemoSequence() {
         await typeEl(valEl, val);
       };
 
-      await addLegendRow('#60C8FF', 'Teams',   '2h 48');
+      await addLegendRow('#5cc5fdff', 'Teams', '2h 48');
       await delay(100);
-      await addLegendRow('#34C759', 'Excel',   '1h 34');
+      await addLegendRow('#34C759', 'Excel', '1h 34');
       await delay(100);
       await addLegendRow('#A78BFA', 'Outlook', '1h 12');
       await delay(100);
-      await addLegendRow('#F472B6', 'Chrome',  '0h 54');
+      await addLegendRow('#F472B6', 'Chrome', '0h 54');
 
       // 3 — Score
       await delay(1300);
@@ -845,11 +847,11 @@ function startDemoSequence() {
 
       // Switch to Agent IA page in dashboard
       const agentViewDB = document.getElementById('demo-agent-view');
-      const homeViewDB  = document.getElementById('demo-home-view');
-      const projViewDB  = document.getElementById('demo-projects-view');
+      const homeViewDB = document.getElementById('demo-home-view');
+      const projViewDB = document.getElementById('demo-projects-view');
       const agentChatDB = document.getElementById('demo-agent-chat');
-      if (homeViewDB)  { homeViewDB.style.display = 'none'; }
-      if (projViewDB)  { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
+      if (homeViewDB) { homeViewDB.style.display = 'none'; }
+      if (projViewDB) { projViewDB.style.opacity = '0'; projViewDB.style.display = 'none'; }
       // Hide greeting on non-home pages
       const tbLeftDB = document.querySelector('.demo-topbar-left');
       if (tbLeftDB) tbLeftDB.style.visibility = 'hidden';
@@ -915,14 +917,14 @@ function startDemoSequence() {
 
         // Single RAF loop watching all 3 bars — purely position-driven, zero timers
         let trackerAlive = true;
-        let activeBar    = -1;
-        ;(function tick() {
+        let activeBar = -1;
+        ; (function tick() {
           if (!trackerAlive) return;
-          const z  = parseFloat(desktop.style.zoom) || 1;
+          const z = parseFloat(desktop.style.zoom) || 1;
           const dr = desktop.getBoundingClientRect();
           // Cursor tip in viewport coords
           const cx = parseFloat(cursor.style.left) * z + dr.left;
-          const cy = parseFloat(cursor.style.top)  * z + dr.top;
+          const cy = parseFloat(cursor.style.top) * z + dr.top;
           let hit = -1;
           for (let i = 0; i < bars.length; i++) {
             const r = bars[i].getBoundingClientRect();
@@ -932,9 +934,9 @@ function startDemoSequence() {
             activeBar = hit;
             if (hit >= 0) {
               dbtTime.textContent = barTimes[hit];
-              const r  = bars[hit].getBoundingClientRect();
+              const r = bars[hit].getBoundingClientRect();
               tooltip.style.left = (r.left + r.width / 2 - 28) + 'px';
-              tooltip.style.top  = (r.top - 38) + 'px';
+              tooltip.style.top = (r.top - 38) + 'px';
               tooltip.classList.add('visible');
             } else {
               tooltip.classList.remove('visible');
@@ -945,11 +947,11 @@ function startDemoSequence() {
 
         // Move cursor over each bar, linger, then move to next
         for (let i = 0; i < bars.length; i++) {
-          const dr2  = desktop.getBoundingClientRect();
-          const br2  = bars[i].getBoundingClientRect();
-          const z    = parseFloat(desktop.style.zoom) || 1;
-          const bx   = (br2.left + br2.width  / 2 - dr2.left) / z;
-          const by   = (br2.top  + br2.height / 2 - dr2.top)  / z;
+          const dr2 = desktop.getBoundingClientRect();
+          const br2 = bars[i].getBoundingClientRect();
+          const z = parseFloat(desktop.style.zoom) || 1;
+          const bx = (br2.left + br2.width / 2 - dr2.left) / z;
+          const by = (br2.top + br2.height / 2 - dr2.top) / z;
           await moveTo(bx, by, i === 0 ? 950 : 700);
           await delay(1400);
           // Don't touch tooltip here — tracker handles it
@@ -964,12 +966,12 @@ function startDemoSequence() {
         await delay(400);
 
         const scrollEnd = () => new Promise(res => {
-          const dur  = 3200;
+          const dur = 3200;
           const from = expEl.scrollTop;
-          const to   = expEl.scrollHeight - expEl.clientHeight;
+          const to = expEl.scrollHeight - expEl.clientHeight;
           if (to <= 0) { res(); return; }
           const start = performance.now();
-          const ease  = t => t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+          const ease = t => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
           function step(now) {
             const p = Math.min((now - start) / dur, 1);
             expEl.scrollTop = from + (to - from) * ease(p);
@@ -1012,13 +1014,13 @@ if (laptop) {
 
 // ─── Scale demo to always fit hero-demo content width ────────────────────────
 (function () {
-  const scene   = document.querySelector('.screen-scene');
+  const scene = document.querySelector('.screen-scene');
   const desktop = document.querySelector('.win-desktop');
   if (!scene || !desktop) return;
   function fit() {
     // Use screen-scene (no padding) as the true available width
     const availW = scene.offsetWidth;
-    const scale  = availW / 1200;
+    const scale = availW / 1200;
     desktop.style.zoom = String(scale);
   }
   window.addEventListener('resize', fit);
