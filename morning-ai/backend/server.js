@@ -152,6 +152,8 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
+const WAITLIST_OFFSET = 512; // Affiche à partir de 513 (n°réel + offset)
+
 app.post('/waitlist', waitlistLimiter, async (req, res) => {
     try {
         const email = req.body?.email?.trim().toLowerCase() || null;
@@ -165,7 +167,7 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
         );
         if (existing.length > 0) {
             const { rows: countRows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
-            const pos = countRows[0].n;
+            const pos = countRows[0].n + WAITLIST_OFFSET;
             console.log(`[Waitlist] Déjà inscrit: ${email} (position #${pos}) — email renvoyé`);
             sendWaitlistEmail(email, pos);
             return res.json({ success: true, position: pos, alreadyRegistered: true });
@@ -173,7 +175,7 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
 
         await neonPool.query('INSERT INTO waitlist (email) VALUES ($1)', [email]);
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
-        const position = rows[0].n;
+        const position = rows[0].n + WAITLIST_OFFSET;
         res.json({ success: true, position });
         sendWaitlistEmail(email, position);
     } catch (err) {
