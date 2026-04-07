@@ -16,7 +16,7 @@
     .win-titlebar { display: flex !important; }
     .win-window { border-radius: 0 !important; }
     #demo-laptop {
-      width: 1160px;
+      width: 1100px;
       height: 700px;
       flex-shrink: 0;
       transform-origin: center center;
@@ -1333,7 +1333,7 @@
   function scaleDemo() {
     var d = document.getElementById("demo-laptop");
     if (!d) return;
-    var scale = Math.max(window.innerWidth / 1160, window.innerHeight / 700);
+    var scale = Math.max(window.innerWidth / 1100, window.innerHeight / 700);
     d.style.transform = "scale(" + scale + ")";
   }
   document.addEventListener("DOMContentLoaded", scaleDemo);
