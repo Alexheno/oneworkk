@@ -104,7 +104,7 @@ async function sendWaitlistEmail(email, position) {
     console.log(`[Email] Tentative envoi → ${email} | RESEND_API_KEY=${process.env.RESEND_API_KEY ? 'ok' : 'MANQUANT'}`);
     if (!process.env.RESEND_API_KEY) {
         console.warn('[Email] RESEND_API_KEY manquante — email non envoyé');
-        return;
+        return false;
     }
 
     try {
@@ -125,11 +125,13 @@ async function sendWaitlistEmail(email, position) {
         const data = await res.json();
         if (!res.ok) {
             console.error('[Email] Resend error:', res.status, JSON.stringify(data));
-            return;
+            return false;
         }
         console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) id=${data.id}`);
+        return true;
     } catch (err) {
         console.error('[Email] Erreur Resend:', err.message);
+        return false;
     }
 }
 

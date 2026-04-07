@@ -154,6 +154,10 @@ const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
 const WAITLIST_OFFSET = 2319; // count actuel=9 → 9+2319=2328 déjà inscrits, prochain=2329
 
+// Ajoute la colonne email_sent si elle n'existe pas encore
+neonPool.query('ALTER TABLE waitlist ADD COLUMN IF NOT EXISTS email_sent BOOLEAN DEFAULT FALSE')
+    .catch(e => console.warn('[Waitlist] Migration email_sent:', e.message));
+
 app.post('/waitlist', waitlistLimiter, async (req, res) => {
     try {
         const email = req.body?.email?.trim().toLowerCase() || null;
@@ -169,7 +173,8 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
             const { rows: countRows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
             const pos = countRows[0].n + WAITLIST_OFFSET;
             console.log(`[Waitlist] Déjà inscrit: ${email} (position #${pos}) — email renvoyé`);
-            await sendWaitlistEmail(email, pos);
+            const sent = await sendWaitlistEmail(email, pos);
+            if (sent) await neonPool.query('UPDATE waitlist SET email_sent = TRUE WHERE email = $1', [email]);
             return res.json({ success: true, position: pos, alreadyRegistered: true });
         }
 
@@ -177,7 +182,8 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
         const position = rows[0].n + WAITLIST_OFFSET;
         res.json({ success: true, position });
-        await sendWaitlistEmail(email, position);
+        const sent = await sendWaitlistEmail(email, position);
+        if (sent) await neonPool.query('UPDATE waitlist SET email_sent = TRUE WHERE email = $1', [email]);
     } catch (err) {
         console.error('[Waitlist] Erreur:', err.message);
         res.json({ success: true, position: null });
@@ -189,6 +195,24 @@ app.get('/waitlist/live-count', async (_req, res) => {
     try {
         const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
         res.json({ count: rows[0].n + WAITLIST_OFFSET });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// ─── GET /waitlist/stats ──────────────────────────────────────────────────────
+app.get('/waitlist/stats', async (_req, res) => {
+    try {
+        const { rows } = await neonPool.query(`
+            SELECT
+                COUNT(*)::int AS total,
+                COUNT(*) FILTER (WHERE email_sent = TRUE)::int AS emails_sent
+            FROM waitlist
+        `);
+        res.json({
+            total:      rows[0].total + WAITLIST_OFFSET,
+            emailsSent: rows[0].emails_sent,
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

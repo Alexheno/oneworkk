@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneWork — Waitlist Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 40px 20px;
+    }
+    h1 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #64748b;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .cards {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 20px;
+      padding: 36px 48px;
+      text-align: center;
+      min-width: 220px;
+    }
+    .card .label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .card .value {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1;
+    }
+    .card.purple .value { background: linear-gradient(135deg, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .card.green  .value { background: linear-gradient(135deg, #10b981, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .card.orange .value { background: linear-gradient(135deg, #f97316, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: #475569;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .updated { color: #475569; font-size: 0.78rem; }
+    .rate {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+    .rate span { color: #10b981; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <h1>OneWork · Waitlist Dashboard</h1>
+
+  <div class="cards">
+    <div class="card purple">
+      <div class="label">Personnes inscrites</div>
+      <div class="value" id="total">—</div>
+    </div>
+    <div class="card green">
+      <div class="label">Emails confirmés envoyés</div>
+      <div class="value" id="sent">—</div>
+    </div>
+    <div class="card orange">
+      <div class="label">Taux de livraison</div>
+      <div class="value" id="rate">—</div>
+    </div>
+  </div>
+
+  <div class="status">
+    <div class="dot"></div>
+    <span>Live · mise à jour toutes les 10 secondes</span>
+  </div>
+  <div class="updated" id="updated"></div>
+
+  <script>
+    const BACKEND = 'https://oneworkk-production.up.railway.app';
+
+    async function refresh() {
+      try {
+        const res = await fetch(BACKEND + '/waitlist/stats');
+        const data = await res.json();
+
+        document.getElementById('total').textContent = data.total?.toLocaleString('fr-FR') ?? '—';
+        document.getElementById('sent').textContent  = data.emailsSent?.toLocaleString('fr-FR') ?? '—';
+
+        const pct = data.total > 0 ? Math.round((data.emailsSent / (data.total - 2319)) * 100) : 0;
+        document.getElementById('rate').textContent = isFinite(pct) ? pct + '%' : '—';
+
+        const now = new Date().toLocaleTimeString('fr-FR');
+        document.getElementById('updated').textContent = `Dernière mise à jour : ${now}`;
+      } catch (e) {
+        document.getElementById('updated').textContent = 'Erreur de connexion — nouvelle tentative...';
+      }
+    }
+
+    refresh();
+    setInterval(refresh, 10000);
+  </script>
+
+</body>
+</html>
