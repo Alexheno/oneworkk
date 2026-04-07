@@ -1,7 +1,5 @@
 'use strict';
 
-const nodemailer = require('nodemailer');
-
 // ─── Template HTML ────────────────────────────────────────────────────────────
 function buildWaitlistEmail({ position }) {
     return `<!DOCTYPE html>
@@ -85,9 +83,9 @@ function buildWaitlistEmail({ position }) {
               <p style="margin:0;font-size:12px;color:#94a3b8;">
                 © 2026 OneWork
                 &nbsp;·&nbsp;
-                <a href="https://build-two-cyan.vercel.app" style="color:#6366f1;text-decoration:none;">Visiter le site</a>
+                <a href="https://oneworkkfront.vercel.app" style="color:#6366f1;text-decoration:none;">Visiter le site</a>
                 &nbsp;·&nbsp;
-                <a href="mailto:Henoumontalex@gmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
+                <a href="mailto:ge0.pro860@gmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
               </p>
             </td>
           </tr>
@@ -101,36 +99,37 @@ function buildWaitlistEmail({ position }) {
 </html>`;
 }
 
-// ─── Transporter Gmail ────────────────────────────────────────────────────────
-function createTransporter() {
-    return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_APP_PASSWORD,
-        },
-    });
-}
-
-// ─── Send waitlist confirmation email via Gmail ───────────────────────────────
+// ─── Send waitlist confirmation email via Resend ──────────────────────────────
 async function sendWaitlistEmail(email, position) {
-    console.log(`[Email] Tentative envoi → ${email} | GMAIL_USER=${process.env.GMAIL_USER ? 'ok' : 'MANQUANT'} | GMAIL_APP_PASSWORD=${process.env.GMAIL_APP_PASSWORD ? 'ok' : 'MANQUANT'}`);
-    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-        console.warn('[Email] Variables manquantes — email non envoyé');
+    console.log(`[Email] Tentative envoi → ${email} | RESEND_API_KEY=${process.env.RESEND_API_KEY ? 'ok' : 'MANQUANT'}`);
+    if (!process.env.RESEND_API_KEY) {
+        console.warn('[Email] RESEND_API_KEY manquante — email non envoyé');
         return;
     }
 
     try {
-        const transporter = createTransporter();
-        const info = await transporter.sendMail({
-            from:    `"OneWork" <${process.env.GMAIL_USER}>`,
-            to:      email,
-            subject: 'Vous êtes sur la liste — OneWork',
-            html:    buildWaitlistEmail({ position }),
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+                'Content-Type':  'application/json',
+            },
+            body: JSON.stringify({
+                from:    'OneWork <onboarding@resend.dev>',
+                to:      [email],
+                subject: 'Vous êtes sur la liste — OneWork',
+                html:    buildWaitlistEmail({ position }),
+            }),
         });
-        console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) messageId=${info.messageId}`);
+
+        const data = await res.json();
+        if (!res.ok) {
+            console.error('[Email] Resend error:', res.status, JSON.stringify(data));
+            return;
+        }
+        console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) id=${data.id}`);
     } catch (err) {
-        console.error('[Email] Erreur Gmail:', err.message, err.code || '', err.response || '');
+        console.error('[Email] Erreur Resend:', err.message);
     }
 }
 
