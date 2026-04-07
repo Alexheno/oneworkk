@@ -13,11 +13,10 @@
       display: flex; align-items: center; justify-content: center;
     }
     .hero-demo, .screen-scene { display: contents; }
-    .win-taskbar { display: none !important; }
     .win-titlebar { display: block !important; }
     #demo-laptop {
       width: 1060px;
-      height: 622px;
+      height: 664px;
       flex-shrink: 0;
       transform-origin: center center;
       border-radius: 0 !important;
@@ -1333,7 +1332,7 @@
   function scaleDemo() {
     var d = document.getElementById("demo-laptop");
     if (!d) return;
-    var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 622);
+    var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 664);
     d.style.transform = "scale(" + scale + ")";
   }
   document.addEventListener("DOMContentLoaded", scaleDemo);
