@@ -114,22 +114,23 @@ function createTransporter() {
 
 // ─── Send waitlist confirmation email via Gmail ───────────────────────────────
 async function sendWaitlistEmail(email, position) {
+    console.log(`[Email] Tentative envoi → ${email} | GMAIL_USER=${process.env.GMAIL_USER ? 'ok' : 'MANQUANT'} | GMAIL_APP_PASSWORD=${process.env.GMAIL_APP_PASSWORD ? 'ok' : 'MANQUANT'}`);
     if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-        console.warn('[Email] GMAIL_USER ou GMAIL_APP_PASSWORD manquant — email non envoyé');
+        console.warn('[Email] Variables manquantes — email non envoyé');
         return;
     }
 
     try {
         const transporter = createTransporter();
-        await transporter.sendMail({
+        const info = await transporter.sendMail({
             from:    `"OneWork" <${process.env.GMAIL_USER}>`,
             to:      email,
             subject: 'Vous êtes sur la liste — OneWork',
             html:    buildWaitlistEmail({ position }),
         });
-        console.log(`[Email] Confirmation envoyée → ${email} (position #${position})`);
+        console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) messageId=${info.messageId}`);
     } catch (err) {
-        console.error('[Email] Erreur Gmail:', err.message);
+        console.error('[Email] Erreur Gmail:', err.message, err.code || '', err.response || '');
     }
 }
 
