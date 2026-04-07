@@ -1346,32 +1346,27 @@
     </div>
 <script src="landing.js"></script>
 <script>
-  // Restore getElementById after landing.js ran
   document.getElementById = _gi;
   document.querySelector = _qs;
+
+  // Move #demo-laptop to <body> directly — escapes all ancestor transforms/perspectives
+  var d = _gi("demo-laptop");
+  if (d) {
+    document.body.appendChild(d);
+    d.style.cssText = "position:fixed;top:0;left:0;width:1060px;height:700px;transform-origin:top left;border-radius:0;filter:none;overflow:hidden;z-index:9999;";
+  }
 
   function scaleDemo() {
     var d = _gi("demo-laptop");
     if (!d) return;
     var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
-    var t = "translate(-50%, -50%) scale(" + scale + ")";
-
-    // Intercept landing.js trying to change transform
-    try {
-      Object.defineProperty(d.style, 'transform', {
-        get: function() { return t; },
-        set: function() { /* block */ },
-        configurable: true
-      });
-    } catch(e) {}
-
-    // Force via setAttribute to bypass style property
-    d.setAttribute('style', d.getAttribute('style') || '');
-    d.style.cssText = "position:fixed!important;top:50%!important;left:50%!important;width:1060px!important;height:700px!important;transform:" + t + "!important;border-radius:0!important;filter:none!important;overflow:hidden!important;";
+    var tx = (window.innerWidth - 1060 * scale) / 2;
+    var ty = (window.innerHeight - 700 * scale) / 2;
+    d.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
   }
+
   window.addEventListener("resize", scaleDemo);
-  [0, 50, 200, 500, 1000, 2000, 4000].forEach(function(t) { setTimeout(scaleDemo, t); });
-  // Start demo sequence manually since IntersectionObserver was blocked
+  [0, 100, 500, 1500].forEach(function(t) { setTimeout(scaleDemo, t); });
   if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
 </script>
 </body>
