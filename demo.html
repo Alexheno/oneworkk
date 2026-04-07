@@ -1336,11 +1336,23 @@
     var d = document.getElementById("demo-laptop");
     if (!d) return;
     var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
-    d.style.cssText += ";position:fixed!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%) scale(" + scale + ")!important;";
+    var t = "translate(-50%, -50%) scale(" + scale + ")";
+
+    // Intercept landing.js trying to change transform
+    try {
+      Object.defineProperty(d.style, 'transform', {
+        get: function() { return t; },
+        set: function() { /* block */ },
+        configurable: true
+      });
+    } catch(e) {}
+
+    // Force via setAttribute to bypass style property
+    d.setAttribute('style', d.getAttribute('style') || '');
+    d.style.cssText = "position:fixed!important;top:50%!important;left:50%!important;width:1060px!important;height:700px!important;transform:" + t + "!important;border-radius:0!important;filter:none!important;overflow:hidden!important;";
   }
   window.addEventListener("resize", scaleDemo);
-  // Reapply repeatedly to override landing.js animations
-  [0, 100, 300, 600, 1000, 2000].forEach(function(t) { setTimeout(scaleDemo, t); });
+  [0, 50, 200, 500, 1000, 2000, 4000].forEach(function(t) { setTimeout(scaleDemo, t); });
 </script>
 </body>
 </html>
