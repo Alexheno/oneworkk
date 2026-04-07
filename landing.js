@@ -8,12 +8,14 @@ if (new URLSearchParams(window.location.search).has('demo')) {
     * { box-sizing: border-box; }
     .navbar, .hero-content, .features, .how-section, .security-section,
     .cta-section, footer, .waitlist-overlay, .hero-bg { display: none !important; }
-    body, html { background: #0f0f0f; margin: 0; padding: 0; overflow: hidden; width: 100vw; height: 100vh; }
-    .hero { padding: 0 !important; margin: 0 !important; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .hero-demo { margin: 0 !important; padding: 0 !important; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .screen-scene { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-    .screen-frame { transform: none !important; transition: none !important; width: 96vw !important; max-width: 96vw !important; border-radius: 12px; }
-    .win-desktop { width: 100% !important; }
+    body, html { margin: 0; padding: 0; overflow: hidden; width: 100vw; height: 100vh; background: #1a1a2e; }
+    .hero { padding: 0 !important; margin: 0 !important; width: 100vw; height: 100vh; }
+    .hero-demo { margin: 0 !important; padding: 0 !important; width: 100vw; height: 100vh; }
+    .screen-scene { width: 100vw; height: 100vh; perspective: none !important; }
+    .screen-frame { transform: none !important; transition: none !important; width: 100vw !important; max-width: 100vw !important; height: 100vh !important; border-radius: 0 !important; overflow: hidden; filter: none !important; }
+    .win-titlebar, .win-taskbar { display: none !important; }
+    .win-desktop { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
+    .demo-app { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
   `;
   document.head.appendChild(style);
 }
