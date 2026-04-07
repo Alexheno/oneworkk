@@ -14,7 +14,7 @@
     .hero-demo { margin: 0 !important; padding: 0 !important; }
     .win-desktop {
       width: 1060px !important;
-      height: 642px !important;
+      height: 590px !important;
       border-radius: 0 !important;
       transform-origin: top left !important;
     }
@@ -1326,10 +1326,10 @@
   function scaleDemo() {
     var d = document.getElementById("win-desktop");
     if (!d) return;
-    var W = 1060, H = 642;
+    var W = 1060, H = 590;
     var scaleX = window.innerWidth / W;
     var scaleY = window.innerHeight / H;
-    var scale = Math.max(scaleX, scaleY) * 1.08;
+    var scale = Math.max(scaleX, scaleY);
     var offsetX = (window.innerWidth - W * scale) / 2;
     var offsetY = (window.innerHeight - H * scale) / 2;
     d.style.transform = "translate(" + offsetX + "px, " + offsetY + "px) scale(" + scale + ")";
