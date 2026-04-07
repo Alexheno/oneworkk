@@ -1093,7 +1093,7 @@ async function submitWaitlist() {
       `🎉 Vous êtes n°${pos} sur la liste. On vous tient au courant dès l'ouverture !`;
     // Mise à jour du badge compteur
     const badge = document.getElementById('waitlist-count-badge');
-    if (badge) badge.textContent = `${pos} personnes sont déjà sur la liste !`;
+    if (badge) badge.textContent = `${pos} personnes sont déjà sur la liste !  · +500 entreprises`;
     document.querySelectorAll('.btn-waitlist').forEach(b => {
       b.textContent = '✅ Vous êtes sur la liste !';
       b.disabled = true;

@@ -152,7 +152,7 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
-const WAITLIST_OFFSET = 512; // Affiche à partir de 513 (n°réel + offset)
+const WAITLIST_OFFSET = 2327; // Affiche à partir de 2328 (n°réel + offset)
 
 app.post('/waitlist', waitlistLimiter, async (req, res) => {
     try {
