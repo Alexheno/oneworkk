@@ -8,18 +8,22 @@
   <link rel="stylesheet" href="landing.css">
   <style>
     *, html, body { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { overflow: hidden; width: 100vw; height: 100vh; background: #08091A; }
-    .screen-scene { perspective: none !important; }
-    .screen-frame { transform: none !important; filter: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: hidden !important; }
-    .hero-demo { margin: 0 !important; padding: 0 !important; }
-    /* win-titlebar (32px) + win-desktop (590px) = 622px total */
-    .win-titlebar { display: block !important; }
+    html, body {
+      overflow: hidden; width: 100vw; height: 100vh; background: #08091A;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-demo, .screen-scene { display: contents; }
     .win-taskbar { display: none !important; }
-    #win-desktop {
-      width: 1060px !important;
-      height: 590px !important;
+    .win-titlebar { display: block !important; }
+    #demo-laptop {
+      width: 1060px;
+      height: 622px;
+      flex-shrink: 0;
+      transform-origin: center center;
       border-radius: 0 !important;
-      transform-origin: top left !important;
+      filter: none !important;
+      box-shadow: none !important;
+      overflow: hidden;
     }
   </style>
 </head>
@@ -1329,17 +1333,8 @@
   function scaleDemo() {
     var d = document.getElementById("demo-laptop");
     if (!d) return;
-    var W = 1060, H = 622; /* titlebar 32px + desktop 590px */
-    d.style.width = W + "px";
-    d.style.height = H + "px";
-    var scaleX = window.innerWidth / W;
-    var scaleY = window.innerHeight / H;
-    var scale = Math.max(scaleX, scaleY);
-    var offsetX = (window.innerWidth - W * scale) / 2;
-    var offsetY = (window.innerHeight - H * scale) / 2;
-    d.style.transformOrigin = "top left";
-    d.style.transform = "translate(" + offsetX + "px, " + offsetY + "px) scale(" + scale + ")";
-    d.style.overflow = "hidden";
+    var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 622);
+    d.style.transform = "scale(" + scale + ")";
   }
   document.addEventListener("DOMContentLoaded", scaleDemo);
   window.addEventListener("resize", scaleDemo);
