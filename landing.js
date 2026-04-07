@@ -1088,10 +1088,12 @@ async function submitWaitlist() {
     const data = await res.json();
     document.getElementById('waitlist-form-view').style.display = 'none';
     document.getElementById('waitlist-success-view').style.display = 'block';
-    if (data.position) {
-      document.getElementById('modal-position-text').textContent =
-        `Vous êtes le n°${data.position} sur la liste. On vous tient au courant !`;
-    }
+    const pos = data.position || 2328;
+    document.getElementById('modal-position-text').textContent =
+      `🎉 Vous êtes n°${pos} sur la liste. On vous tient au courant dès l'ouverture !`;
+    // Mise à jour du badge compteur
+    const badge = document.getElementById('waitlist-count-badge');
+    if (badge) badge.textContent = `${pos} personnes sont déjà sur la liste !`;
     document.querySelectorAll('.btn-waitlist').forEach(b => {
       b.textContent = '✅ Vous êtes sur la liste !';
       b.disabled = true;
