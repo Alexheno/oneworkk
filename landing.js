@@ -1,5 +1,20 @@
 'use strict';
 
+// ─── Embed mode (?demo) — show only the demo screen ──────────────────────────
+if (new URLSearchParams(window.location.search).has('demo')) {
+  document.documentElement.style.setProperty('--embed', '1');
+  const style = document.createElement('style');
+  style.textContent = `
+    .navbar, .hero-content, .features, .how-section, .security-section,
+    .cta-section, footer, .waitlist-overlay, .hero-bg { display: none !important; }
+    body { background: #0f0f0f; margin: 0; overflow: hidden; }
+    .hero { padding: 0 !important; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .hero-demo { margin: 0 !important; padding: 0 40px !important; width: 100%; }
+    .screen-frame { transform: none !important; transition: none !important; }
+  `;
+  document.head.appendChild(style);
+}
+
 // ─── Navbar scroll effect ─────────────────────────────────────────────────────
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
