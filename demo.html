@@ -12,7 +12,10 @@
     .screen-scene { perspective: none !important; }
     .screen-frame { transform: none !important; filter: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: hidden !important; }
     .hero-demo { margin: 0 !important; padding: 0 !important; }
-    .win-desktop {
+    /* win-titlebar (32px) + win-desktop (590px) = 622px total */
+    .win-titlebar { display: block !important; }
+    .win-taskbar { display: none !important; }
+    #win-desktop {
       width: 1060px !important;
       height: 590px !important;
       border-radius: 0 !important;
@@ -1324,15 +1327,19 @@
 <script src="landing.js"></script>
 <script>
   function scaleDemo() {
-    var d = document.getElementById("win-desktop");
+    var d = document.getElementById("demo-laptop");
     if (!d) return;
-    var W = 1060, H = 590;
+    var W = 1060, H = 622; /* titlebar 32px + desktop 590px */
+    d.style.width = W + "px";
+    d.style.height = H + "px";
     var scaleX = window.innerWidth / W;
     var scaleY = window.innerHeight / H;
     var scale = Math.max(scaleX, scaleY);
     var offsetX = (window.innerWidth - W * scale) / 2;
     var offsetY = (window.innerHeight - H * scale) / 2;
+    d.style.transformOrigin = "top left";
     d.style.transform = "translate(" + offsetX + "px, " + offsetY + "px) scale(" + scale + ")";
+    d.style.overflow = "hidden";
   }
   document.addEventListener("DOMContentLoaded", scaleDemo);
   window.addEventListener("resize", scaleDemo);
