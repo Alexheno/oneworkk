@@ -5,12 +5,15 @@ if (new URLSearchParams(window.location.search).has('demo')) {
   document.documentElement.style.setProperty('--embed', '1');
   const style = document.createElement('style');
   style.textContent = `
+    * { box-sizing: border-box; }
     .navbar, .hero-content, .features, .how-section, .security-section,
     .cta-section, footer, .waitlist-overlay, .hero-bg { display: none !important; }
-    body { background: #0f0f0f; margin: 0; overflow: hidden; }
-    .hero { padding: 0 !important; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-    .hero-demo { margin: 0 !important; padding: 0 40px !important; width: 100%; }
-    .screen-frame { transform: none !important; transition: none !important; }
+    body, html { background: #0f0f0f; margin: 0; padding: 0; overflow: hidden; width: 100vw; height: 100vh; }
+    .hero { padding: 0 !important; margin: 0 !important; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .hero-demo { margin: 0 !important; padding: 0 !important; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .screen-scene { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .screen-frame { transform: none !important; transition: none !important; width: 96vw !important; max-width: 96vw !important; border-radius: 12px; }
+    .win-desktop { width: 100% !important; }
   `;
   document.head.appendChild(style);
 }
