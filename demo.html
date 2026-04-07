@@ -28,6 +28,20 @@
       overflow: hidden;
     }
   </style>
+  <script>
+    // Run BEFORE landing.js — intercept its querySelector/getElementById calls
+    var _qs = document.querySelector.bind(document);
+    document.querySelector = function(sel) {
+      if (sel === '.screen-scene') return { offsetWidth: 1060 };
+      if (sel === '.win-desktop') return { style: { zoom: '', transform: '', backfaceVisibility: '', webkitFontSmoothing: '' } };
+      return _qs(sel);
+    };
+    var _gi = document.getElementById.bind(document);
+    document.getElementById = function(id) {
+      if (id === 'demo-laptop') return null; // hide from landing.js tilt logic
+      return _gi(id);
+    };
+  </script>
 </head>
 <body>
     <div class="hero-demo">
@@ -1332,8 +1346,12 @@
     </div>
 <script src="landing.js"></script>
 <script>
+  // Restore getElementById after landing.js ran
+  document.getElementById = _gi;
+  document.querySelector = _qs;
+
   function scaleDemo() {
-    var d = document.getElementById("demo-laptop");
+    var d = _gi("demo-laptop");
     if (!d) return;
     var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
     var t = "translate(-50%, -50%) scale(" + scale + ")";
@@ -1353,18 +1371,8 @@
   }
   window.addEventListener("resize", scaleDemo);
   [0, 50, 200, 500, 1000, 2000, 4000].forEach(function(t) { setTimeout(scaleDemo, t); });
-  // Block landing.js fit() from overriding zoom/transform on win-desktop
-  var wd = document.querySelector('.win-desktop');
-  if (wd) {
-    Object.defineProperty(wd.style, 'zoom', { get: function(){ return '1'; }, set: function(){}, configurable: true });
-    Object.defineProperty(wd.style, 'transform', { get: function(){ return 'none'; }, set: function(){}, configurable: true });
-  }
-  // Block laptop leveled class from changing transform
-  var lp = document.getElementById('demo-laptop');
-  if (lp) {
-    var _add = lp.classList.add.bind(lp.classList);
-    lp.classList.add = function(cls) { if (cls !== 'leveled') _add(cls); };
-  }
+  // Start demo sequence manually since IntersectionObserver was blocked
+  if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
 </script>
 </body>
 </html>
