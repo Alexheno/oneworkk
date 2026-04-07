@@ -1349,25 +1349,38 @@
   document.getElementById = _gi;
   document.querySelector = _qs;
 
-  // Move #demo-laptop to <body> directly — escapes all ancestor transforms/perspectives
   var d = _gi("demo-laptop");
   if (d) {
     document.body.appendChild(d);
-    d.style.cssText = "position:fixed;top:0;left:0;width:1060px;height:700px;transform-origin:top left;border-radius:0;filter:none;overflow:hidden;z-index:9999;";
-  }
 
-  function scaleDemo() {
-    var d = _gi("demo-laptop");
-    if (!d) return;
-    var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
-    var tx = (window.innerWidth - 1060 * scale) / 2;
-    var ty = (window.innerHeight - 700 * scale) / 2;
-    d.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
-  }
+    function getScale() {
+      return Math.max(window.innerWidth / 1060, window.innerHeight / 700);
+    }
+    function getStyle() {
+      var sc = getScale();
+      var tx = (window.innerWidth  - 1060 * sc) / 2;
+      var ty = (window.innerHeight - 700  * sc) / 2;
+      return "position:fixed!important;top:0!important;left:0!important;" +
+             "width:1060px!important;height:700px!important;" +
+             "transform:translate("+tx+"px,"+ty+"px) scale("+sc+")!important;" +
+             "transform-origin:top left!important;" +
+             "border-radius:0!important;filter:none!important;" +
+             "overflow:hidden!important;z-index:9999!important;";
+    }
 
-  window.addEventListener("resize", scaleDemo);
-  [0, 100, 500, 1500].forEach(function(t) { setTimeout(scaleDemo, t); });
-  if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
+    var locking = false;
+    var obs = new MutationObserver(function() {
+      if (locking) return;
+      locking = true;
+      d.setAttribute('style', getStyle());
+      locking = false;
+    });
+    obs.observe(d, { attributes: true, attributeFilter: ['style', 'class'] });
+
+    d.setAttribute('style', getStyle());
+    window.addEventListener('resize', function() { d.setAttribute('style', getStyle()); });
+    if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
+  }
 </script>
 </body>
 </html>
