@@ -152,7 +152,7 @@ function logResponse(req, statusCode) {
 const R2_PUBLIC_URL = 'https://pub-8d4d1b141063478e960d8a6968b13f3e.r2.dev';
 
 // ─── POST /waitlist ───────────────────────────────────────────────────────────
-const WAITLIST_OFFSET = 2327; // Affiche à partir de 2328 (n°réel + offset)
+const WAITLIST_OFFSET = 2319; // count actuel=9 → 9+2319=2328 déjà inscrits, prochain=2329
 
 app.post('/waitlist', waitlistLimiter, async (req, res) => {
     try {
@@ -181,6 +181,16 @@ app.post('/waitlist', waitlistLimiter, async (req, res) => {
     } catch (err) {
         console.error('[Waitlist] Erreur:', err.message);
         res.json({ success: true, position: null });
+    }
+});
+
+// ─── GET /waitlist/live-count ─────────────────────────────────────────────────
+app.get('/waitlist/live-count', async (_req, res) => {
+    try {
+        const { rows } = await neonPool.query('SELECT COUNT(*)::int AS n FROM waitlist');
+        res.json({ count: rows[0].n + WAITLIST_OFFSET });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 });
 

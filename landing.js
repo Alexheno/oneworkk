@@ -1041,6 +1041,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 
 // ─── Waitlist modal ───────────────────────────────────────────────────────────
 const BACKEND = 'https://oneworkk-production.up.railway.app';
+
+// ─── Live count badge ─────────────────────────────────────────────────────────
+function updateWaitlistBadge(count) {
+  const badge = document.getElementById('waitlist-count-badge');
+  if (badge) badge.textContent = `${count.toLocaleString('fr-FR')} personnes sont déjà sur la liste · +500 entreprises`;
+}
+async function fetchLiveCount() {
+  try {
+    const res = await fetch(BACKEND + '/waitlist/live-count');
+    const data = await res.json();
+    if (data.count) updateWaitlistBadge(data.count);
+  } catch (_) {}
+}
+fetchLiveCount();
+setInterval(fetchLiveCount, 15000);
 const _overlay = document.getElementById('waitlist-overlay');
 const _emailInput = document.getElementById('waitlist-email');
 
@@ -1093,7 +1108,7 @@ async function submitWaitlist() {
       `🎉 Vous êtes n°${pos} sur la liste. On vous tient au courant dès l'ouverture !`;
     // Mise à jour du badge compteur
     const badge = document.getElementById('waitlist-count-badge');
-    if (badge) badge.textContent = `${pos} personnes sont déjà sur la liste !  · +500 entreprises`;
+    if (badge) updateWaitlistBadge(pos);
     document.querySelectorAll('.btn-waitlist').forEach(b => {
       b.textContent = '✅ Vous êtes sur la liste !';
       b.disabled = true;
