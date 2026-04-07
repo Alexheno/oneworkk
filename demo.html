@@ -9,87 +9,18 @@
   <style>
     *, html, body { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { overflow: hidden; width: 100vw; height: 100vh; background: #08091A; }
-    /* Hide everything except the win-desktop content */
-    .hero { position: fixed !important; inset: 0 !important; padding: 0 !important; background: #08091A !important; overflow: hidden !important; }
-    .hero-inner, .hero-bg { display: none !important; }
-    .hero-demo { position: absolute !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
-    .screen-scene { perspective: none !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+    .screen-scene { perspective: none !important; }
     .screen-frame { transform: none !important; filter: none !important; box-shadow: none !important; border-radius: 0 !important; overflow: hidden !important; }
-    .win-titlebar, .win-taskbar { display: none !important; }
+    .hero-demo { margin: 0 !important; padding: 0 !important; }
     .win-desktop {
       width: 1060px !important;
-      height: 590px !important;
+      height: 642px !important;
       border-radius: 0 !important;
       transform-origin: top left !important;
     }
   </style>
 </head>
 <body>
-<section class="hero">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  
-    <div class="hero-bg">
-      <div class="hero-orb orb-1"></div>
-      <div class="hero-orb orb-2"></div>
-      <div class="hero-grid"></div>
-    </div>
-
-    <div class="hero-inner">
-      <!-- Floating logo orb -->
-      <div class="hero-logo">
-        <img src="morning-ai/desktop-app/logo.svg" alt="OneWork" width="80" height="80">
-      </div>
-
-      <div
-        style="display:inline-flex; align-items:center; gap:8px; background:#f1f5f9; border:1px solid #e2e8f0; border-radius:100px; padding:6px 14px; font-size:0.8rem; font-weight:600; color:#6366f1; margin-bottom:20px; letter-spacing:0.04em;">
-        <span style="width:7px; height:7px; background:#6366f1; border-radius:50%; display:inline-block;"></span>
-        À VENIR · Bientôt disponible
-      </div>
-
-      <h1 class="hero-title">
-        L'IA qui optimise<br><span class="gradient-text">votre journée de travail.</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        OneWork analyse vos emails, réunions, Teams et fichiers avec l'IA — et vous donne en quelques secondes vos
-        priorités du jour.
-      </p>
-
-      <div class="hero-actions">
-        <button class="btn-primary btn-waitlist">
-          Rejoindre la liste d'attente
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-        <a href="#how" class="btn-ghost">
-          Voir comment ça marche
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </a>
-      </div>
-
-      <div class="hero-social-proof">
-        <div class="proof-avatars">
-          <div class="proof-avatar" style="background: linear-gradient(135deg,#F472B6,#9B35FF)"></div>
-          <div class="proof-avatar" style="background: linear-gradient(135deg,#6B8EF5,#8ECDF8)"></div>
-          <div class="proof-avatar" style="background: linear-gradient(135deg,#FB923C,#F472B6)"></div>
-          <div class="proof-avatar" style="background: linear-gradient(135deg,#9B35FF,#6B8EF5)"></div>
-        </div>
-        <span class="proof-text"><strong>+500 entreprises</strong> sur la liste d'attente</span>
-      </div>
-    </div><!-- /hero-inner -->
-
-    <!-- DEMO — Screen only -->
     <div class="hero-demo">
       <div class="screen-scene">
         <div class="screen-frame" id="demo-laptop">
@@ -1390,23 +1321,22 @@
         </div>
       </div>
     </div>
-  
-</section>
 <script src="landing.js"></script>
 <script>
   function scaleDemo() {
     var d = document.getElementById("win-desktop");
     if (!d) return;
-    var scaleX = window.innerWidth / 1060;
-    var scaleY = window.innerHeight / 590;
-    var scale = Math.max(scaleX, scaleY);
-    var offsetX = (window.innerWidth - 1060 * scale) / 2;
-    var offsetY = (window.innerHeight - 590 * scale) / 2;
+    var W = 1060, H = 642;
+    var scaleX = window.innerWidth / W;
+    var scaleY = window.innerHeight / H;
+    var scale = Math.max(scaleX, scaleY) * 1.08;
+    var offsetX = (window.innerWidth - W * scale) / 2;
+    var offsetY = (window.innerHeight - H * scale) / 2;
     d.style.transform = "translate(" + offsetX + "px, " + offsetY + "px) scale(" + scale + ")";
   }
   document.addEventListener("DOMContentLoaded", scaleDemo);
   window.addEventListener("resize", scaleDemo);
-  setTimeout(scaleDemo, 100);
+  setTimeout(scaleDemo, 200);
 </script>
 </body>
 </html>
