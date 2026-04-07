@@ -5178,3 +5178,50 @@ body {
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
 }
+
+/* ─── Demo embed mode (?demo) ─────────────────────────────────────────────── */
+[data-demo="1"] body, [data-demo="1"] html {
+  margin: 0; padding: 0; overflow: hidden;
+  width: 100vw; height: 100vh; background: #111;
+}
+[data-demo="1"] .navbar,
+[data-demo="1"] .hero-inner,
+[data-demo="1"] .hero-bg,
+[data-demo="1"] .features,
+[data-demo="1"] .how-section,
+[data-demo="1"] .security-section,
+[data-demo="1"] .cta-section,
+[data-demo="1"] footer,
+[data-demo="1"] .waitlist-overlay { display: none !important; }
+[data-demo="1"] .hero {
+  position: fixed; inset: 0;
+  padding: 0 !important; margin: 0 !important;
+  width: 100vw; height: 100vh;
+  overflow: hidden; background: #111;
+}
+[data-demo="1"] .hero-demo {
+  margin: 0 !important; padding: 0 !important;
+  width: 100vw; height: 100vh;
+}
+[data-demo="1"] .screen-scene {
+  width: 100vw; height: 100vh;
+  perspective: none !important;
+}
+[data-demo="1"] .screen-frame {
+  transform: none !important;
+  width: 100vw !important; max-width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+[data-demo="1"] .win-titlebar,
+[data-demo="1"] .win-taskbar { display: none !important; }
+[data-demo="1"] .win-desktop {
+  width: 100vw !important; height: 100vh !important;
+  border-radius: 0 !important;
+}
+[data-demo="1"] .demo-app {
+  width: 100vw !important; height: 100vh !important;
+  border-radius: 0 !important;
+}

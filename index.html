@@ -14,19 +14,7 @@
     if (new URLSearchParams(window.location.search).has('demo')) {
       document.documentElement.style.cssText = 'overflow:hidden;background:#1a1a2e;';
       var s = document.createElement('style');
-      s.textContent = `
-        .navbar, .hero-inner, .features, .how-section, .security-section,
-        .cta-section, footer, .waitlist-overlay, .hero-bg { display: none !important; }
-        *, body, html { margin: 0 !important; padding: 0 !important; box-sizing: border-box; }
-        body, html { overflow: hidden !important; width: 100vw !important; height: 100vh !important; background: #111 !important; }
-        .hero { all: unset; display: block; width: 100vw !important; height: 100vh !important; }
-        .hero-demo { all: unset; display: block; width: 100vw !important; height: 100vh !important; }
-        .screen-scene { all: unset; display: block; width: 100vw !important; height: 100vh !important; }
-        .screen-frame { all: unset; display: block; width: 100vw !important; height: 100vh !important; overflow: hidden !important; }
-        .win-titlebar, .win-taskbar { display: none !important; }
-        .win-desktop { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
-        .demo-app { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
-      `;
+      document.documentElement.setAttribute('data-demo', '1');
       document.head.appendChild(s);
     }
   </script>
