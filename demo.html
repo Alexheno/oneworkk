@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneWork — Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="landing.css">
+  <style>
+    html, body { margin: 0; padding: 0; overflow: hidden; width: 100vw; height: 100vh; background: #111; }
+    .screen-scene { width: 100vw !important; height: 100vh !important; perspective: none !important; display: block !important; }
+    .screen-frame { transform: none !important; width: 100vw !important; max-width: 100vw !important; height: 100vh !important; border-radius: 0 !important; filter: none !important; box-shadow: none !important; }
+    .win-titlebar, .win-taskbar { display: none !important; }
+    .win-desktop { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
+    .demo-app { width: 100vw !important; height: 100vh !important; border-radius: 0 !important; }
+    .hero-demo { margin: 0 !important; padding: 0 !important; width: 100vw !important; height: 100vh !important; }
+  </style>
+</head>
+<body>
+    <div class="hero-demo">
+      <div class="screen-scene">
+        <div class="screen-frame" id="demo-laptop">
+          <div class="demo-black-overlay" id="demo-black-overlay"></div>
+          <div class="win-desktop" id="win-desktop">
+
+            <!-- Background: Outlook window -->
+            <div class="bg-app-window fading" id="bg-outlook-window">
+              <!-- Header: Outlook branding + search + controls -->
+              <div class="bg-ol-header">
+                <div class="bg-ol-header-left">
+                  <span class="bg-ol-hamburger">≡</span>
+                  <img src="logos/outlook.svg" width="18" height="18" alt="Outlook">
+                  <span class="bg-ol-brand">Outlook</span>
+                </div>
+                <div class="bg-ol-search">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#605E5C" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <span>Rechercher</span>
+                </div>
+                <div class="bg-ol-header-right">
+                  <span class="bg-ol-hicon">🔔</span>
+                  <span class="bg-ol-hicon">⚙</span>
+                  <div class="bg-ol-hav">HB</div>
+                  <button class="win-btn win-minimize" style="color:rgba(0,0,0,0.5)"><svg width="11" height="1"
+                      viewBox="0 0 11 1">
+                      <line x1="0" y1="0.5" x2="11" y2="0.5" stroke="currentColor" stroke-width="1.2" />
+                    </svg></button>
+                  <button class="win-btn win-maximize" style="color:rgba(0,0,0,0.5)"><svg width="10" height="10"
+                      viewBox="0 0 10 10">
+                      <rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1.1" fill="none" />
+                    </svg></button>
+                  <button class="win-btn win-close" style="color:rgba(0,0,0,0.5)"><svg width="10" height="10"
+                      viewBox="0 0 10 10">
+                      <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.4" />
+                      <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.4" />
+                    </svg></button>
+                </div>
+              </div>
+              <!-- Ribbon menu -->
+              <div class="bg-ol-ribbon">
+                <span class="bg-ol-rib-item">Fichier</span>
+                <span class="bg-ol-rib-item bg-ol-rib-active">Accueil</span>
+                <span class="bg-ol-rib-item">Afficher</span>
+                <span class="bg-ol-rib-item">Aide</span>
+              </div>
+              <!-- Action toolbar -->
+              <div class="bg-ol-toolbar">
+                <button class="bg-ol-new-btn">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Nouveau message
+                </button>
+                <span class="bg-ol-tb-sep"></span>
+                <button class="bg-ol-act-btn">🗑 Supprimer</button>
+                <button class="bg-ol-act-btn">📁 Archiver</button>
+                <button class="bg-ol-act-btn">🚩 Marquer</button>
+              </div>
+              <!-- Body -->
+              <div class="bg-ol-body">
+                <!-- Left nav -->
+                <div class="bg-ol-nav">
+                  <div class="bg-ol-nav-section">
+                    <span class="bg-ol-nav-sec-title">Favoris</span>
+                  </div>
+                  <div class="bg-ol-folder bg-ol-folder-active">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    Boîte de réception <span class="bg-ol-count">12</span>
+                  </div>
+                  <div class="bg-ol-folder">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <line x1="22" y1="2" x2="11" y2="13" />
+                      <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                    </svg>
+                    Éléments envoyés
+                  </div>
+                  <div class="bg-ol-sep"></div>
+                  <div class="bg-ol-nav-section">
+                    <span class="bg-ol-nav-sec-title">h.bertrand@corp.fr</span>
+                  </div>
+                  <div class="bg-ol-folder">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    Boîte de réce… <span class="bg-ol-count">12</span>
+                  </div>
+                  <div class="bg-ol-folder">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <path d="M12 20h9" />
+                      <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+                    </svg>
+                    Brouillons <span class="bg-ol-count">3</span>
+                  </div>
+                  <div class="bg-ol-folder">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                    </svg>
+                    Éléments supprimés
+                  </div>
+                  <div class="bg-ol-folder">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.8">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                    Calendrier
+                  </div>
+                </div>
+                <!-- Email list -->
+                <div class="bg-ol-list">
+                  <div class="bg-ol-list-tabs">
+                    <span class="bg-ol-tab bg-ol-tab-active">Prioritaire</span>
+                    <span class="bg-ol-tab">Autres</span>
+                    <div style="flex:1"></div>
+                    <span class="bg-ol-sort-icon">↓</span>
+                    <span class="bg-ol-sort-icon">≡</span>
+                    <span class="bg-ol-sort-icon">⇅</span>
+                  </div>
+                  <div class="bg-ol-email bg-ol-unread bg-ol-urgent bg-ol-selected">
+                    <div class="bg-ol-em-av" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
+                    <div class="bg-ol-em-body">
+                      <div class="bg-ol-em-row1"><span class="bg-ol-em-name">Jean-Pierre Duval</span><span
+                          class="bg-ol-em-t">08:02 🔴</span></div>
+                      <div class="bg-ol-em-subj">Term sheet — retour avant 10h00</div>
+                      <div class="bg-ol-em-prev">Bonjour Henri, merci de me faire un retour...</div>
+                    </div>
+                  </div>
+                  <div class="bg-ol-email bg-ol-unread">
+                    <div class="bg-ol-em-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">EF</div>
+                    <div class="bg-ol-em-body">
+                      <div class="bg-ol-em-row1"><span class="bg-ol-em-name">Équipe Finance</span><span
+                          class="bg-ol-em-t">07:48</span></div>
+                      <div class="bg-ol-em-subj">Rapport Q1 en attente de validation</div>
+                      <div class="bg-ol-em-prev">Le rapport Q1 est prêt pour votre validation...</div>
+                    </div>
+                  </div>
+                  <div class="bg-ol-email" id="bg-ol-sarah">
+                    <div class="bg-ol-em-av" style="background:linear-gradient(135deg,#6B8EF5,#9B35FF)">SM</div>
+                    <div class="bg-ol-em-body">
+                      <div class="bg-ol-em-row1"><span class="bg-ol-em-name">Sarah Martin</span><span
+                          class="bg-ol-em-t">07:31</span></div>
+                      <div class="bg-ol-em-subj">Campagne Q2 — validation requise</div>
+                      <div class="bg-ol-em-prev">Peux-tu valider les visuels avant la fin de matinée ?</div>
+                    </div>
+                  </div>
+                  <div class="bg-ol-email">
+                    <div class="bg-ol-em-av" style="background:linear-gradient(135deg,#d4870e,#b5720c)">TL</div>
+                    <div class="bg-ol-em-body">
+                      <div class="bg-ol-em-row1"><span class="bg-ol-em-name">Thomas Laurent</span><span
+                          class="bg-ol-em-t">Hier</span></div>
+                      <div class="bg-ol-em-subj">CR réunion commerciale sem. 12</div>
+                      <div class="bg-ol-em-prev">Voici le compte-rendu de notre réunion...</div>
+                    </div>
+                  </div>
+                  <div class="bg-ol-email">
+                    <div class="bg-ol-em-av" style="background:linear-gradient(135deg,#2471a3,#1a5f8a)">AL</div>
+                    <div class="bg-ol-em-body">
+                      <div class="bg-ol-em-row1"><span class="bg-ol-em-name">Antoine Leblanc</span><span
+                          class="bg-ol-em-t">Hier</span></div>
+                      <div class="bg-ol-em-subj">Suivi projet Renault — démo 14h</div>
+                      <div class="bg-ol-em-prev">Rappel : démo client Renault cet après-midi...</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Reading pane -->
+                <div class="bg-ol-reading">
+                  <div class="bg-ol-read-toolbar">
+                    <button class="bg-ol-tb-btn">↩ Répondre</button>
+                    <button class="bg-ol-tb-btn">↪ Transférer</button>
+                    <button class="bg-ol-tb-btn">⋯ Plus</button>
+                  </div>
+                  <div class="bg-ol-read-subj">Term sheet — retour avant 10h00</div>
+                  <div class="bg-ol-read-from-row">
+                    <div class="bg-ol-em-av sm" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
+                    <div>
+                      <div class="bg-ol-read-name">Jean-Pierre Duval <span
+                          class="bg-ol-read-addr">&lt;jp.duval@investco.fr&gt;</span></div>
+                      <div class="bg-ol-read-to">À : Henri Bertrand · Aujourd'hui 08:02</div>
+                    </div>
+                  </div>
+                  <div class="bg-ol-read-body">
+                    <p>Bonjour Henri,</p>
+                    <p>Merci de me faire un retour sur les conditions du term sheet <strong>avant 10h ce matin</strong>.
+                      Il est essentiel que nous alignions nos positions avant la réunion du Conseil.</p>
+                    <p><strong>Points à valider :</strong></p>
+                    <div class="bg-ol-list-items">
+                      <div>• Valorisation pre-money : <strong>8,5M€</strong></div>
+                      <div>• Participation investisseur : <strong>22%</strong></div>
+                      <div>• Clauses de liquidité préférentielle</div>
+                      <div>• Droits de veto sur décisions stratégiques</div>
+                    </div>
+                    <p>Dans l'attente de votre retour,<br><strong>Jean-Pierre</strong></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Background: Excel window (Phase 2) -->
+            <div class="bg-excel-window visible" id="bg-excel-window">
+              <div class="bg-titlebar">
+                <div class="bg-title-left">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <rect width="24" height="24" rx="3" fill="#1D6F42" />
+                    <path d="M6 7l3.5 5L6 17h2.5l2-3 2 3H15l-3.5-5L15 7h-2.5l-2 3-2-3H6z" fill="white" />
+                  </svg>
+                  <span>Budget_2026_Analyse.xlsx — Microsoft Excel</span>
+                </div>
+                <div class="win-controls">
+                  <button class="win-btn win-minimize"><svg width="11" height="1" viewBox="0 0 11 1" fill="none">
+                      <line x1="0" y1="0.5" x2="11" y2="0.5" stroke="currentColor" stroke-width="1.2" />
+                    </svg></button>
+                  <button class="win-btn win-maximize"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1.1" />
+                    </svg></button>
+                  <button class="win-btn win-close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.4" />
+                      <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.4" />
+                    </svg></button>
+                </div>
+              </div>
+              <div class="bg-xl-ribbon-tabs">
+                <span class="xl-tab xl-tab-active">Accueil</span><span class="xl-tab">Insertion</span><span
+                  class="xl-tab">Formules</span><span class="xl-tab">Données</span><span
+                  class="xl-tab">Révision</span><span class="xl-tab">Affichage</span>
+              </div>
+              <div class="bg-xl-formulabar">
+                <span class="xl-cellref">E10</span>
+                <div class="xl-fb-div"></div>
+                <span class="xl-formula">=SUM(E6:E9)</span>
+              </div>
+              <div class="bg-xl-sheet-area">
+                <div class="bg-xl-col-hdrs">
+                  <div class="xl-corner"></div>
+                  <div class="xl-ch xl-ch-a">A</div>
+                  <div class="xl-ch xl-ch-b">B</div>
+                  <div class="xl-ch xl-ch-c">C</div>
+                  <div class="xl-ch xl-ch-d">D</div>
+                  <div class="xl-ch xl-ch-e xl-ch-sel">E</div>
+                  <div class="xl-ch xl-ch-f">F</div>
+                  <div class="xl-ch xl-ch-g">G</div>
+                  <div class="xl-ch xl-ch-h">H</div>
+                </div>
+                <table class="bg-xl-table">
+                  <tr class="xl-row xl-row-title">
+                    <td class="xl-rh">1</td>
+                    <td colspan="8" class="xl-cell xl-big-title">BUDGET 2026 — ANALYSE FINANCIÈRE CONSOLIDÉE</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">2</td>
+                    <td class="xl-cell xl-sub-title" colspan="8">en milliers d'euros · mise à jour 26/03/2026</td>
+                  </tr>
+                  <tr class="xl-row xl-spacer">
+                    <td class="xl-rh">3</td>
+                    <td colspan="8"></td>
+                  </tr>
+                  <tr class="xl-row xl-hdr-row">
+                    <td class="xl-rh">4</td>
+                    <td class="xl-cell xl-hdr">Catégorie</td>
+                    <td class="xl-cell xl-hdr xl-num">Janv.</td>
+                    <td class="xl-cell xl-hdr xl-num">Fév.</td>
+                    <td class="xl-cell xl-hdr xl-num">Mars</td>
+                    <td class="xl-cell xl-hdr xl-num xl-hdr-sel">Q1 Réel</td>
+                    <td class="xl-cell xl-hdr xl-num">Q1 Budget</td>
+                    <td class="xl-cell xl-hdr xl-num">Écart</td>
+                    <td class="xl-cell xl-hdr xl-num">Var%</td>
+                  </tr>
+                  <tr class="xl-row xl-section-hdr-row">
+                    <td class="xl-rh">5</td>
+                    <td colspan="8" class="xl-cell xl-section-green">▲ &nbsp;REVENUS</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">6</td>
+                    <td class="xl-cell">SaaS MRR</td>
+                    <td class="xl-cell xl-num">245</td>
+                    <td class="xl-cell xl-num">268</td>
+                    <td class="xl-cell xl-num">291</td>
+                    <td class="xl-cell xl-num xl-cell-sel">804</td>
+                    <td class="xl-cell xl-num">920</td>
+                    <td class="xl-cell xl-num xl-neg">-116</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-12.6%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">7</td>
+                    <td class="xl-cell">Services Pro</td>
+                    <td class="xl-cell xl-num">89</td>
+                    <td class="xl-cell xl-num">94</td>
+                    <td class="xl-cell xl-num">102</td>
+                    <td class="xl-cell xl-num xl-cell-sel">285</td>
+                    <td class="xl-cell xl-num">310</td>
+                    <td class="xl-cell xl-num xl-neg">-25</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-8.1%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">8</td>
+                    <td class="xl-cell">Licences Ent.</td>
+                    <td class="xl-cell xl-num">145</td>
+                    <td class="xl-cell xl-num">152</td>
+                    <td class="xl-cell xl-num">158</td>
+                    <td class="xl-cell xl-num xl-cell-sel">455</td>
+                    <td class="xl-cell xl-num">450</td>
+                    <td class="xl-cell xl-num xl-pos">+5</td>
+                    <td class="xl-cell xl-num xl-pos xl-bold">+1.1%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">9</td>
+                    <td class="xl-cell">Autres revenus</td>
+                    <td class="xl-cell xl-num">32</td>
+                    <td class="xl-cell xl-num">35</td>
+                    <td class="xl-cell xl-num">38</td>
+                    <td class="xl-cell xl-num xl-cell-sel">105</td>
+                    <td class="xl-cell xl-num">90</td>
+                    <td class="xl-cell xl-num xl-pos">+15</td>
+                    <td class="xl-cell xl-num xl-pos xl-bold">+16.7%</td>
+                  </tr>
+                  <tr class="xl-row xl-total-row">
+                    <td class="xl-rh">10</td>
+                    <td class="xl-cell xl-bold">TOTAL REVENUS</td>
+                    <td class="xl-cell xl-num xl-bold">511</td>
+                    <td class="xl-cell xl-num xl-bold">549</td>
+                    <td class="xl-cell xl-num xl-bold">589</td>
+                    <td class="xl-cell xl-num xl-bold xl-cell-sel xl-total-sel">1 649</td>
+                    <td class="xl-cell xl-num xl-bold">1 770</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-121</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-6.8%</td>
+                  </tr>
+                  <tr class="xl-row xl-spacer">
+                    <td class="xl-rh">11</td>
+                    <td colspan="8"></td>
+                  </tr>
+                  <tr class="xl-row xl-section-hdr-row">
+                    <td class="xl-rh">12</td>
+                    <td colspan="8" class="xl-cell xl-section-red">▼ &nbsp;CHARGES OPÉRATIONNELLES</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">13</td>
+                    <td class="xl-cell">Coût des ventes</td>
+                    <td class="xl-cell xl-num">183</td>
+                    <td class="xl-cell xl-num">197</td>
+                    <td class="xl-cell xl-num">211</td>
+                    <td class="xl-cell xl-num xl-cell-sel">591</td>
+                    <td class="xl-cell xl-num">560</td>
+                    <td class="xl-cell xl-num xl-neg">-31</td>
+                    <td class="xl-cell xl-num xl-neg">-5.5%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">14</td>
+                    <td class="xl-cell">R&amp;D</td>
+                    <td class="xl-cell xl-num">145</td>
+                    <td class="xl-cell xl-num">148</td>
+                    <td class="xl-cell xl-num">152</td>
+                    <td class="xl-cell xl-num xl-cell-sel">445</td>
+                    <td class="xl-cell xl-num">420</td>
+                    <td class="xl-cell xl-num xl-neg">-25</td>
+                    <td class="xl-cell xl-num xl-neg">-6.0%</td>
+                  </tr>
+                  <tr class="xl-row xl-alert-row">
+                    <td class="xl-rh">15</td>
+                    <td class="xl-cell xl-alert-cell">Marketing ⚠</td>
+                    <td class="xl-cell xl-num">98</td>
+                    <td class="xl-cell xl-num">134</td>
+                    <td class="xl-cell xl-num">122</td>
+                    <td class="xl-cell xl-num xl-cell-sel">354</td>
+                    <td class="xl-cell xl-num">264</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-90</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold xl-alert">-34.1%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">16</td>
+                    <td class="xl-cell">G&amp;A</td>
+                    <td class="xl-cell xl-num">67</td>
+                    <td class="xl-cell xl-num">69</td>
+                    <td class="xl-cell xl-num">71</td>
+                    <td class="xl-cell xl-num xl-cell-sel">207</td>
+                    <td class="xl-cell xl-num">215</td>
+                    <td class="xl-cell xl-num xl-pos">+8</td>
+                    <td class="xl-cell xl-num xl-pos">+3.7%</td>
+                  </tr>
+                  <tr class="xl-row xl-total-row">
+                    <td class="xl-rh">17</td>
+                    <td class="xl-cell xl-bold">TOTAL CHARGES</td>
+                    <td class="xl-cell xl-num xl-bold">493</td>
+                    <td class="xl-cell xl-num xl-bold">548</td>
+                    <td class="xl-cell xl-num xl-bold">556</td>
+                    <td class="xl-cell xl-num xl-bold xl-cell-sel xl-total-sel">1 597</td>
+                    <td class="xl-cell xl-num xl-bold">1 459</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-138</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-9.5%</td>
+                  </tr>
+                  <tr class="xl-row xl-spacer">
+                    <td class="xl-rh">18</td>
+                    <td colspan="8"></td>
+                  </tr>
+                  <tr class="xl-row xl-ebitda-row">
+                    <td class="xl-rh">19</td>
+                    <td class="xl-cell xl-bold">EBITDA</td>
+                    <td class="xl-cell xl-num xl-bold">18</td>
+                    <td class="xl-cell xl-num xl-bold">1</td>
+                    <td class="xl-cell xl-num xl-bold">33</td>
+                    <td class="xl-cell xl-num xl-bold xl-cell-sel xl-ebitda-sel">52</td>
+                    <td class="xl-cell xl-num xl-bold">311</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold">-259</td>
+                    <td class="xl-cell xl-num xl-neg xl-bold xl-alert">-83.3%</td>
+                  </tr>
+                  <tr class="xl-row">
+                    <td class="xl-rh">20</td>
+                    <td class="xl-cell xl-italic">Marge EBITDA %</td>
+                    <td class="xl-cell xl-num xl-italic">3.5%</td>
+                    <td class="xl-cell xl-num xl-italic">0.2%</td>
+                    <td class="xl-cell xl-num xl-italic">5.6%</td>
+                    <td class="xl-cell xl-num xl-italic xl-cell-sel">3.2%</td>
+                    <td class="xl-cell xl-num xl-italic">17.6%</td>
+                    <td class="xl-cell xl-num xl-neg xl-italic">-14.4pp</td>
+                    <td class="xl-cell"></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="bg-xl-sheet-tabs">
+                <span class="xl-sheet active">Synthèse Q1</span><span class="xl-sheet">Q2 Forecast</span><span
+                  class="xl-sheet">Charges détail</span><span class="xl-sheet">KPIs</span>
+              </div>
+            </div>
+
+            <!-- OneWork app window — hidden in Phase 1, appears in Phase 2 -->
+            <div class="win-window visible expanded" id="win-onework">
+              <div class="win-titlebar">
+                <div class="win-title-app">
+                  <img src="morning-ai/desktop-app/logo.svg" width="14" height="14" alt="">
+                  <span class="win-title-text">OneWork</span>
+                </div>
+                <div class="win-controls">
+                  <button class="win-btn win-minimize"><svg width="11" height="1" viewBox="0 0 11 1" fill="none">
+                      <line x1="0" y1="0.5" x2="11" y2="0.5" stroke="currentColor" stroke-width="1.2" />
+                    </svg></button>
+                  <button class="win-btn win-maximize"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1.1" />
+                    </svg></button>
+                  <button class="win-btn win-close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.4" />
+                      <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.4" />
+                    </svg></button>
+                </div>
+              </div>
+              <!-- Real app layout: sidebar + main -->
+              <div class="demo-app">
+                <div class="demo-sidebar">
+                  <div class="demo-sb-logo"><img src="morning-ai/desktop-app/logo.svg" width="20" height="20" alt="">
+                  </div>
+                  <div class="demo-sb-icons">
+                    <div class="demo-sb-icon active" title="Accueil"><svg width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                      </svg></div>
+                    <div class="demo-sb-icon" title="Projets"><svg width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                      </svg></div>
+                    <div class="demo-sb-icon" title="Plan du jour"><svg width="14" height="14" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                      </svg></div>
+                    <div class="demo-sb-icon" id="demo-sb-agent" title="Agent IA"><svg width="14" height="14"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                        <path d="M12 2a8 8 0 018 8c0 3-1.5 5.5-4 7l-.5 3H8.5L8 17C5.5 13.5 4 11 4 10a8 8 0 018-8z" />
+                        <line x1="9" y1="21" x2="15" y2="21" />
+                      </svg></div>
+                  </div>
+                  <div class="demo-sb-avatar">HB</div>
+                </div>
+                <div class="demo-main">
+                  <!-- Topbar: matches real app -->
+                  <div class="demo-topbar">
+                    <div class="demo-topbar-left">
+                      <div class="demo-tb-avatar">HB</div>
+                      <div>
+                        <div class="demo-tb-name">Bonjour, Henri 👋</div>
+                        <div class="demo-tb-date">Vendredi 27 mars 2026</div>
+                      </div>
+                    </div>
+                    <div class="demo-topbar-right">
+                    </div>
+                  </div>
+                  <!-- HOME VIEW -->
+                  <div id="demo-home-view">
+                    <!-- AI recap banner — matches .recap-card in real app -->
+                    <div class="demo-recap-card" id="demo-ai-banner">
+                      <span class="demo-banner-star">✦</span>
+                      <span id="demo-recap-text">3 urgences · Réunion 09h30 · Jean-Pierre attend votre réponse</span>
+                    </div>
+                    <!-- Bento 2×2 — always visible, matches real app -->
+                    <div class="demo-bento" id="demo-grid-view">
+                      <!-- Emails -->
+                      <div class="demo-card" id="demo-card-emails">
+                        <div class="demo-card-head">
+                          <img src="logos/outlook.svg" width="18" height="18" alt="Outlook" style="flex-shrink:0">
+                          <span class="demo-card-title">Emails</span>
+                        </div>
+                        <div class="demo-card-body">
+                          <div class="demo-email-row demo-email-urgent">
+                            <div class="demo-em-av" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
+                            <div class="demo-em-body">
+                              <div class="demo-em-top"><span class="demo-em-name">Jean-Pierre Duval</span><span
+                                  class="demo-em-t">08:02</span></div>
+                              <div class="demo-em-subj">Term sheet — retour avant 10h</div>
+                              <div class="demo-em-preview">Bonjour Henri, merci de confirmer avant la réunion...</div>
+                            </div>
+                            <div class="demo-em-unread-dot"></div>
+                          </div>
+                          <div class="demo-email-row">
+                            <div class="demo-em-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">EF</div>
+                            <div class="demo-em-body">
+                              <div class="demo-em-top"><span class="demo-em-name">Équipe Finance</span><span
+                                  class="demo-em-t">07:48</span></div>
+                              <div class="demo-em-subj">Rapport Q1 en attente</div>
+                              <div class="demo-em-preview">Voici le récapitulatif des chiffres du trimestre...</div>
+                            </div>
+                          </div>
+                          <div class="demo-email-row">
+                            <div class="demo-em-av" style="background:linear-gradient(135deg,#6B8EF5,#9B35FF)">SM</div>
+                            <div class="demo-em-body">
+                              <div class="demo-em-top"><span class="demo-em-name">Sarah Martin</span><span
+                                  class="demo-em-t">07:31</span></div>
+                              <div class="demo-em-subj">Campagne Q2 — validation</div>
+                              <div class="demo-em-preview">Les visuels sont prêts, j'attends ton feu vert...</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Teams -->
+                      <div class="demo-card" id="demo-card-teams">
+                        <div class="demo-card-head">
+                          <img src="logos/teams.svg" width="18" height="18" alt="Teams" style="flex-shrink:0">
+                          <span class="demo-card-title">Teams</span>
+                        </div>
+                        <div class="demo-card-body">
+                          <div class="demo-tms-item demo-tms-urgent" id="tms-click-row">
+                            <div class="demo-tms-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
+                            <div class="demo-tms-body">
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Sarah Martin</span>
+                                <span class="demo-tms-time">09h04</span>
+                              </div>
+                              <span class="demo-tms-msg">Valider les visuels Q2 maintenant</span>
+                              <span class="demo-tms-channel">· Équipe Design</span>
+                            </div>
+                            <div class="demo-tms-unread">3</div>
+                          </div>
+                          <div class="demo-tms-item">
+                            <div class="demo-tms-av" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
+                            <div class="demo-tms-body">
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Jean-Pierre</span>
+                                <span class="demo-tms-time">08h45</span>
+                              </div>
+                              <span class="demo-tms-msg">Budget Q1 partagé</span>
+                              <span class="demo-tms-channel">· Finance</span>
+                            </div>
+                            <div class="demo-tms-unread">1</div>
+                          </div>
+                          <div class="demo-tms-item">
+                            <div class="demo-tms-av" style="background:linear-gradient(135deg,#6B8EF5,#9B35FF)">MC</div>
+                            <div class="demo-tms-body">
+                              <div class="demo-tms-top">
+                                <span class="demo-tms-name">Marie C.</span>
+                                <span class="demo-tms-time">Hier</span>
+                              </div>
+                              <span class="demo-tms-msg">On se call demain ?</span>
+                              <span class="demo-tms-channel">· Général</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Agenda -->
+                      <div class="demo-card" id="demo-card-meetings">
+                        <div class="demo-card-head">
+                          <button class="demo-cal-nav-btn">‹</button>
+                          <span class="demo-card-title">Agenda</span>
+                          <span class="demo-cal-date-label">Mar 1</span>
+                          <button class="demo-cal-nav-btn">›</button>
+                        </div>
+                        <div class="demo-card-body demo-card-body-scroll" id="demo-agenda-body">
+                          <div class="demo-cal-events">
+                            <div class="demo-cal-event demo-cal-ev-blue">
+                              <div class="demo-cal-ev-time">09h30</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Comité Finance</div>
+                                <div class="demo-cal-ev-dur">1h · Salle Étoile</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-purple">
+                              <div class="demo-cal-ev-time">11h00</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">1:1 Sarah Martin</div>
+                                <div class="demo-cal-ev-dur">30 min · Visio</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-green">
+                              <div class="demo-cal-ev-time">12h30</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Déjeuner Équipe</div>
+                                <div class="demo-cal-ev-dur">1h · Restaurant Le Dome</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-red">
+                              <div class="demo-cal-ev-time">14h00</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Deadline · Rapport Q1</div>
+                                <div class="demo-cal-ev-dur">Journée entière</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-orange">
+                              <div class="demo-cal-ev-time">16h00</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Démo Renault</div>
+                                <div class="demo-cal-ev-dur">45 min · Visio Teams</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-blue">
+                              <div class="demo-cal-ev-time">17h00</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Weekly Produit</div>
+                                <div class="demo-cal-ev-dur">1h · Salle Étoile</div>
+                              </div>
+                            </div>
+                            <div class="demo-cal-event demo-cal-ev-purple demo-cal-ev-next">
+                              <div class="demo-cal-ev-time">18h30</div>
+                              <div class="demo-cal-ev-pill"></div>
+                              <div class="demo-cal-ev-body">
+                                <div class="demo-cal-ev-name">Bilan de journée</div>
+                                <div class="demo-cal-ev-dur">30 min</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- To-Do -->
+                      <div class="demo-card" id="demo-card-todos">
+                        <div class="demo-card-head">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(251,146,60,0.7)"
+                            stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                          </svg>
+                          <span class="demo-card-title">To-Do</span>
+                        </div>
+                        <div class="demo-card-body" id="demo-todo-body">
+                          <div class="demo-task-row demo-task-urgent">
+                            <div class="demo-task-dot demo-dot-urgent"></div>
+                            <span>Répondre à Jean-Pierre</span>
+                          </div>
+                          <div class="demo-task-row demo-task-urgent">
+                            <div class="demo-task-dot demo-dot-urgent"></div>
+                            <span>Valider campagne Q2</span>
+                          </div>
+                          <div class="demo-task-row">
+                            <div class="demo-task-dot"></div>
+                            <span>Préparer démo 14h</span>
+                          </div>
+                          <div class="demo-task-row demo-task-muted">
+                            <div class="demo-task-dot"></div>
+                            <span>Review rapport Q1</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- /demo-home-view -->
+
+                  <!-- PROJECTS VIEW -->
+                  <div id="demo-projects-view"
+                    style="display:none;flex-direction:column;flex:1;overflow:hidden;gap:8px;opacity:0;transition:opacity 0.3s ease;">
+                    <div class="demo-proj-ai-banner">
+                      <span class="demo-banner-star">✦</span>
+                      <span class="demo-proj-ai-text">L'IA comprend vos projets pour un suivi encore plus
+                        personnalisé.</span>
+                    </div>
+                    <div class="demo-projects-list">
+
+                      <div class="demo-project-row">
+                        <div class="demo-proj-dot" style="background:#6366f1;"></div>
+                        <div class="demo-proj-content">
+                          <div class="demo-proj-line"><span class="demo-proj-name">Term Sheet Renault</span><span
+                              class="demo-proj-sep"> · </span><span class="demo-proj-meta">Jean-Pierre · deadline
+                              vendredi</span></div>
+                        </div>
+                        <div class="demo-proj-progress-track">
+                          <div class="demo-proj-progress-fill"
+                            style="width:72%;background:linear-gradient(90deg,#6366f1,#818cf8);"></div>
+                        </div>
+                        <span class="demo-proj-pill demo-proj-pill-urgent">Deadline</span>
+                        <div class="demo-proj-actions">
+                          <button class="demo-proj-icon-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2">
+                              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z" />
+                            </svg></button>
+                          <button class="demo-proj-icon-btn demo-proj-icon-del"><svg width="10" height="10"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                            </svg></button>
+                        </div>
+                      </div>
+
+                      <div class="demo-project-row">
+                        <div class="demo-proj-dot" style="background:#a855f7;"></div>
+                        <div class="demo-proj-content">
+                          <div class="demo-proj-line"><span class="demo-proj-name">Campagne Q2 Marketing</span><span
+                              class="demo-proj-sep"> · </span><span class="demo-proj-meta">Sarah Martin · validation
+                              visuels</span></div>
+                        </div>
+                        <div class="demo-proj-progress-track">
+                          <div class="demo-proj-progress-fill"
+                            style="width:45%;background:linear-gradient(90deg,#a855f7,#c084fc);"></div>
+                        </div>
+                        <span class="demo-proj-pill demo-proj-pill-waiting">En attente</span>
+                        <div class="demo-proj-actions">
+                          <button class="demo-proj-icon-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2">
+                              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z" />
+                            </svg></button>
+                          <button class="demo-proj-icon-btn demo-proj-icon-del"><svg width="10" height="10"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                            </svg></button>
+                        </div>
+                      </div>
+
+                      <div class="demo-project-row">
+                        <div class="demo-proj-dot" style="background:#f97316;"></div>
+                        <div class="demo-proj-content">
+                          <div class="demo-proj-line"><span class="demo-proj-name">Rapport Q1 Finance</span><span
+                              class="demo-proj-sep"> · </span><span class="demo-proj-meta">Présentation CODIR · 28
+                              mars</span></div>
+                        </div>
+                        <div class="demo-proj-progress-track">
+                          <div class="demo-proj-progress-fill"
+                            style="width:88%;background:linear-gradient(90deg,#f97316,#fb923c);"></div>
+                        </div>
+                        <span class="demo-proj-pill demo-proj-pill-soon">Bientôt</span>
+                        <div class="demo-proj-actions">
+                          <button class="demo-proj-icon-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2">
+                              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z" />
+                            </svg></button>
+                          <button class="demo-proj-icon-btn demo-proj-icon-del"><svg width="10" height="10"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                            </svg></button>
+                        </div>
+                      </div>
+
+                      <div class="demo-project-row">
+                        <div class="demo-proj-dot" style="background:#10b981;"></div>
+                        <div class="demo-proj-content">
+                          <div class="demo-proj-line"><span class="demo-proj-name">Recrutement Tech Lead</span><span
+                              class="demo-proj-sep"> · </span><span class="demo-proj-meta">3 candidats shortlistés ·
+                              RH</span></div>
+                        </div>
+                        <div class="demo-proj-progress-track">
+                          <div class="demo-proj-progress-fill"
+                            style="width:33%;background:linear-gradient(90deg,#10b981,#34d399);"></div>
+                        </div>
+                        <span class="demo-proj-pill demo-proj-pill-active">En cours</span>
+                        <div class="demo-proj-actions">
+                          <button class="demo-proj-icon-btn"><svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2">
+                              <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                              <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4z" />
+                            </svg></button>
+                          <button class="demo-proj-icon-btn demo-proj-icon-del"><svg width="10" height="10"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                              <polyline points="3 6 5 6 21 6" />
+                              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+                            </svg></button>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="demo-add-proj-btn">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                      Nouveau projet
+                    </div>
+                  </div><!-- /demo-projects-view -->
+
+                  <!-- AGENT IA VIEW — ChatGPT-style full page -->
+                  <div id="demo-agent-view"
+                    style="display:none;flex-direction:column;flex:1;overflow:hidden;opacity:0;transition:opacity 0.3s ease;">
+                    <div class="demo-agent-header" style="display:none;"></div>
+                    <div class="demo-agent-chat" id="demo-agent-chat">
+                      <div class="demo-agent-msg demo-agent-msg-ai">
+                        <img src="morning-ai/desktop-app/logo.svg" width="20" height="20" class="demo-agent-avatar"
+                          alt="">
+                        <div class="demo-agent-bubble-ai">Bonjour Henri 👋 Je suis prêt à analyser votre journée. Que
+                          souhaitez-vous savoir ?</div>
+                      </div>
+                    </div>
+                    <div class="demo-agent-bar">
+                      <img src="morning-ai/desktop-app/logo.svg" width="18" height="18" alt=""
+                        class="demo-agent-bar-logo">
+                      <span class="demo-agent-bar-input" id="demo-agent-input">Demander à l'Agent IA...</span>
+                      <button class="demo-agent-bar-send" id="demo-agent-send">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5">
+                          <line x1="22" y1="2" x2="11" y2="13" />
+                          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div><!-- /demo-agent-view -->
+
+                </div>
+              </div>
+            </div>
+
+            <!-- Teams conversation window — opens Phase 2 when clicking Teams message -->
+            <div class="win-window win-tms" id="win-teams-popup">
+              <div class="win-titlebar">
+                <div class="win-title-app">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 8a3 3 0 100-6 3 3 0 000 6z" fill="#7B83EB" />
+                    <path d="M21 9h-6v7a3 3 0 003 3h3V9z" fill="#7B83EB" />
+                    <path d="M9 10.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" fill="#5059C9" />
+                    <path d="M2 9h14v9a4 4 0 01-4 4H6a4 4 0 01-4-4V9z" fill="#7B83EB" />
+                  </svg>
+                  <span class="win-title-text">Microsoft Teams</span>
+                </div>
+                <div class="tms-tb-center">
+                  <button class="tms-nav-btn">&#8249;</button>
+                  <button class="tms-nav-btn">&#8250;</button>
+                  <div class="tms-search-pill">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)"
+                      stroke-width="2">
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <span>Rechercher</span>
+                  </div>
+                </div>
+                <div class="win-controls">
+                  <button class="win-btn win-minimize"><svg width="11" height="1" viewBox="0 0 11 1" fill="none">
+                      <line x1="0" y1="0.5" x2="11" y2="0.5" stroke="currentColor" stroke-width="1.2" />
+                    </svg></button>
+                  <button class="win-btn win-maximize"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <rect x="0.5" y="0.5" width="9" height="9" stroke="currentColor" stroke-width="1.1" />
+                    </svg></button>
+                  <button class="win-btn win-close"><svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" stroke-width="1.4" />
+                      <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" stroke-width="1.4" />
+                    </svg></button>
+                </div>
+              </div>
+              <div class="tms-layout">
+                <!-- Left icon rail -->
+                <div class="tms-rail">
+                  <div class="tms-rail-av">HB</div>
+                  <div class="tms-rail-icon" title="Activité"><svg width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                      <path d="M13.73 21a2 2 0 01-3.46 0" />
+                    </svg></div>
+                  <div class="tms-rail-icon tms-rail-active" title="Chat"><svg width="14" height="14"
+                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg></div>
+                  <div class="tms-rail-icon" title="Teams"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8">
+                      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                      <path d="M16 3.13a4 4 0 010 7.75" />
+                    </svg></div>
+                  <div class="tms-rail-icon" title="Calendrier"><svg width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="1.8">
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg></div>
+                  <div class="tms-rail-icon" title="Appels"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="1.8">
+                      <path
+                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82a19.79 19.79 0 01-3.07-8.64A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                    </svg></div>
+                </div>
+                <!-- Sidebar -->
+                <div class="tms-sidebar">
+                  <div class="tms-sb-head">
+                    <span class="tms-sb-title">Chat</span>
+                    <div class="tms-sb-actions">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)"
+                        stroke-width="2">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="tms-filter-row">
+                    <span class="tms-filter-btn tms-filter-active">Non lu</span>
+                    <span class="tms-filter-btn">Discussions</span>
+                    <span class="tms-filter-btn">Canaux</span>
+                  </div>
+                  <div class="tms-sb-list">
+                    <div class="tms-sb-section-lbl">Discussions</div>
+                    <div class="tms-sb-item tms-sb-active tms-sb-unread">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
+                      <span class="tms-sb-name">Sarah Martin</span>
+                    </div>
+                    <div class="tms-sb-item tms-sb-unread">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#c0392b,#922b21)">JP</div>
+                      <span class="tms-sb-name">Jean-Pierre Duval</span>
+                    </div>
+                    <div class="tms-sb-item">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#2980b9,#1a5276)">LD</div>
+                      <span class="tms-sb-name">Lucas D.</span>
+                    </div>
+                    <div class="tms-sb-item">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#6B8EF5,#9B35FF)">MC</div>
+                      <span class="tms-sb-name">Marie C.</span>
+                    </div>
+                    <div class="tms-sb-section-lbl">Équipes et canaux</div>
+                    <div class="tms-sb-item tms-sb-unread">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#FF6B35,#c0392b)">MK</div>
+                      <span class="tms-sb-name">marketing-q2</span>
+                    </div>
+                    <div class="tms-sb-item">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#217346,#1a5c38)">FI</div>
+                      <span class="tms-sb-name">finance</span>
+                    </div>
+                    <div class="tms-sb-item">
+                      <div class="tms-sb-av" style="background:linear-gradient(135deg,#6264A7,#4B4D8F)">GN</div>
+                      <span class="tms-sb-name">général</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Conversation -->
+                <div class="tms-conv">
+                  <div class="tms-conv-hdr">
+                    <div class="tms-conv-hdr-left">
+                      <div class="tms-conv-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
+                      <div class="tms-conv-info">
+                        <div class="tms-conv-name-row">
+                          <span class="tms-conv-name">Sarah Martin</span>
+                          <span class="tms-conv-tabs-inline">
+                            <span class="tms-ctab tms-ctab-active">Chat</span>
+                            <span class="tms-ctab">Partagé</span>
+                            <span class="tms-ctab-add">+</span>
+                          </span>
+                        </div>
+                        <div class="tms-conv-status"><span class="tms-online-dot"></span>Disponible</div>
+                      </div>
+                    </div>
+                    <div class="tms-conv-hdr-right">
+                      <button class="tms-meet-btn">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2">
+                          <polygon points="23 7 16 12 23 17 23 7" />
+                          <rect x="1" y="5" width="15" height="14" rx="2" />
+                        </svg>
+                        Meet now
+                      </button>
+                      <button class="tms-hdr-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2">
+                          <path
+                            d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82 19.79 19.79 0 01.09 1.18 2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                        </svg></button>
+                      <button class="tms-hdr-btn tms-hdr-more">···</button>
+                    </div>
+                  </div>
+                  <div class="tms-msgs" id="tms-msgs-area">
+                    <div class="tms-date-sep">Hier</div>
+                    <div class="tms-msg">
+                      <div class="tms-msg-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
+                      <div class="tms-msg-content">
+                        <div class="tms-msg-meta"><span class="tms-msg-name">Sarah Martin</span><span
+                            class="tms-msg-time">16h32</span></div>
+                        <div class="tms-msg-text">Henri, les maquettes de la campagne Q2 sont prêtes sur Figma. On
+                          attend ta validation avant lundi pour lancer la production.</div>
+                      </div>
+                    </div>
+                    <div class="tms-msg">
+                      <div class="tms-msg-av" style="background:linear-gradient(135deg,#6264A7,#4B4D8F)">HB</div>
+                      <div class="tms-msg-content">
+                        <div class="tms-msg-meta"><span class="tms-msg-name">Henri B.</span><span
+                            class="tms-msg-time">16h48</span></div>
+                        <div class="tms-msg-text">J'ai jeté un œil — les maquettes ont l'air très bien. Je valide lundi
+                          matin.</div>
+                      </div>
+                    </div>
+                    <div class="tms-date-sep">Aujourd'hui</div>
+                    <div class="tms-msg tms-msg-hl" id="tms-urgent-msg">
+                      <div class="tms-msg-av" style="background:linear-gradient(135deg,#1a7340,#145c33)">SM</div>
+                      <div class="tms-msg-content">
+                        <div class="tms-msg-meta"><span class="tms-msg-name">Sarah Martin</span><span
+                            class="tms-msg-time">09h04</span></div>
+                        <div class="tms-msg-text">Henri, c'est urgent — présentation client <strong>vendredi
+                            14h</strong>. Peux-tu valider les visuels Q2 aujourd'hui ?</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tms-composer">
+                    <div class="tms-compose-inner">
+                      <div class="tms-compose-text"><span class="tms-compose-ph" id="tms-compose-ph">Répondre à Sarah
+                          Martin...</span></div>
+                      <div class="tms-compose-actions">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="1.8">
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                          <line x1="9" y1="9" x2="9.01" y2="9" />
+                          <line x1="15" y1="9" x2="15.01" y2="9" />
+                        </svg>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="1.8">
+                          <path
+                            d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+                        </svg>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="1.8">
+                          <circle cx="12" cy="12" r="10" />
+                          <line x1="12" y1="8" x2="12" y2="16" />
+                          <line x1="8" y1="12" x2="16" y2="12" />
+                        </svg>
+                        <button class="tms-send-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                          </svg></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Windows 11 taskbar — authentique -->
+            <div class="win-taskbar">
+              <div class="win-taskbar-spacer"></div>
+              <!-- Centre: Start + Search + Apps -->
+              <div class="win-taskbar-center">
+                <button class="win-start-btn">
+                  <img src="logos/win11-perfect.png" style="width: 22px; height: 22px; object-fit: contain;"
+                    alt="Démarrer">
+                </button>
+                <div class="win-tb-search">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <span>Rechercher</span>
+                </div>
+                <div class="win-taskbar-apps">
+                  <!-- Task View -->
+                  <div class="win-tb-item" title="Affichage des tâches">
+                    <img src="logos/taskview.jpg"
+                      style="width: 20px; height: 20px; mix-blend-mode: screen; object-fit: contain;"
+                      alt="Affichage des tâches">
+                  </div>
+                  <!-- File Explorer -->
+                  <div class="win-tb-item" title="Explorateur de fichiers">
+                    <img src="logos/explorer.png" style="width: 20px; height: 20px; object-fit: contain;"
+                      alt="Explorateur">
+                  </div>
+                  <!-- Outlook -->
+                  <div class="win-tb-item win-tb-has-dot" title="Outlook">
+                    <img src="logos/outlook.svg" width="24" height="24" alt="Outlook">
+                    <span class="win-tb-dot"></span>
+                  </div>
+                  <!-- Word -->
+                  <div class="win-tb-item" title="Microsoft Word">
+                    <img src="logos/word.svg" width="24" height="24" alt="Word">
+                  </div>
+                  <!-- Excel -->
+                  <div class="win-tb-item" title="Microsoft Excel">
+                    <img src="logos/excel.svg" width="24" height="24" alt="Excel">
+                  </div>
+                  <!-- Teams -->
+                  <div class="win-tb-item win-tb-has-dot" title="Microsoft Teams">
+                    <img src="logos/teams.svg" width="24" height="24" alt="Teams">
+                    <span class="win-tb-dot"></span>
+                  </div>
+                  <div class="win-tb-item" id="tb-onework" title="OneWork">
+                    <img src="morning-ai/desktop-app/logo.svg" width="20" height="20" alt="">
+                  </div>
+                </div>
+              </div>
+              <!-- Tray (far right) -->
+
+              <div class="win-tray">
+                <!-- Quick settings pill — wifi + volume + battery -->
+                <div class="win-qs-pill">
+                  <svg width="14" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.88)"
+                    stroke-width="2.2" stroke-linecap="round">
+                    <path d="M5 12.55a11 11 0 0114.08 0" />
+                    <path d="M1.42 9a16 16 0 0121.16 0" />
+                    <path d="M8.53 16.11a6 6 0 016.95 0" />
+                    <circle cx="12" cy="20" r="1.2" fill="rgba(255,255,255,0.88)" stroke="none" />
+                  </svg>
+                  <svg width="14" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.88)"
+                    stroke-width="2.2" stroke-linecap="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="rgba(255,255,255,0.88)" stroke="none" />
+                    <path d="M15.54 8.46a5 5 0 010 7.07" />
+                  </svg>
+                  <svg width="24" height="13" viewBox="0 0 26 13" fill="none">
+                    <rect x="0.5" y="0.5" width="22" height="12" rx="2.5" stroke="rgba(255,255,255,0.45)"
+                      stroke-width="1.2" />
+                    <path d="M25 4.5v4" stroke="rgba(255,255,255,0.45)" stroke-width="2" stroke-linecap="round" />
+                    <rect x="1.5" y="1.5" width="17" height="10" rx="1.5" fill="#FFD60A" />
+                  </svg>
+                </div>
+                <div class="win-tray-time">
+                  <span class="win-time">09:04</span>
+                  <span class="win-date">27/03/2026</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Widget — knob au repos, carte s'ouvre au clic -->
+            <div class="win-widget" id="win-widget-popup">
+              <!-- Knob: toujours visible, rond avec logo -->
+              <div class="ww-knob" id="ww-knob">
+                <img src="morning-ai/desktop-app/logo.svg" width="22" height="22" alt="" class="ww-knob-logo">
+              </div>
+              <!-- Carte: cachée par défaut, s'ouvre avec .open -->
+              <div class="ww-card">
+                <!-- Mode bar -->
+                <div class="ww-mode-bar">
+                  <div class="ww-mode-pill" id="ww-mode-pill"></div>
+                  <span class="ww-mode-btn ww-mode-active" id="ww-mode-brief">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 11 12 14 22 4" />
+                      <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                    </svg>
+                    To-Do
+                  </span>
+                  <span class="ww-mode-btn" id="ww-mode-agent">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg>
+                    Agent IA
+                  </span>
+                </div>
+                <!-- Panels wrapper (grid-row animation) -->
+                <div class="ww-panels">
+                  <!-- Brief panel -->
+                  <div id="ww-brief-panel">
+                    <div class="ww-card-header">
+                      <div>
+                        <div class="ww-greeting">Bonjour</div>
+                        <div class="ww-meta">Vendredi 27 mars</div>
+                      </div>
+                      <div class="ww-status-dot"></div>
+                    </div>
+                    <div class="ww-meetings">
+                      <div class="ww-section-label" style="margin-bottom:4px">
+                        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(107,142,245,0.85)"
+                          stroke-width="2.5">
+                          <rect x="3" y="4" width="18" height="18" rx="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        <span style="color:rgba(107,142,245,0.85)">Réunions</span>
+                      </div>
+                      <div class="ww-meeting-item">
+                        <span class="ww-mt">09h30</span>
+                        <div class="ww-mi-body">
+                          <div class="ww-mi-title">Comité Finance</div>
+                        </div>
+                      </div>
+                      <div class="ww-meeting-item">
+                        <span class="ww-mt">11h00</span>
+                        <div class="ww-mi-body">
+                          <div class="ww-mi-title">1:1 Sarah Martin</div>
+                        </div>
+                      </div>
+                      <div class="ww-meeting-item">
+                        <span class="ww-mt">14h00</span>
+                        <div class="ww-mi-body">
+                          <div class="ww-mi-title">Démo Renault</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ww-tasks">
+                      <div class="ww-task urgent" id="ww-task-1">
+                        <div class="ww-dot"></div>
+                        <span>Répondre à Jean-Pierre</span>
+                        <span class="ww-urgent-badge">URGENT</span>
+                      </div>
+                      <div class="ww-task urgent" id="ww-task-2">
+                        <div class="ww-dot"></div>
+                        <span>Valider campagne</span>
+                        <span class="ww-urgent-badge">URGENT</span>
+                      </div>
+                      <div class="ww-task" id="ww-task-3">
+                        <div class="ww-dot"></div>
+                        <span>Préparer démo 14h</span>
+                      </div>
+                      <div class="ww-task" id="ww-task-4">
+                        <div class="ww-dot"></div>
+                        <span>Envoyer CR réunion</span>
+                      </div>
+                    </div>
+                    <div class="ww-add-task">
+                      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.28)"
+                        stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                      </svg>
+                      Ajouter une tâche
+                    </div>
+                  </div><!-- /ww-brief-panel -->
+
+                  <!-- Agent IA panel -->
+                  <div class="ww-agent-panel" id="ww-agent-panel">
+                    <div class="ww-agent-content">
+                      <div class="ww-agent-hero">
+                        <img src="morning-ai/desktop-app/logo.svg" width="38" height="38" alt="" class="ww-agent-logo">
+                        <div class="ww-agent-title">Agent IA</div>
+                      </div>
+                      <div class="ww-response" id="ww-response"></div>
+                    </div>
+                    <div class="ww-agent-input-row">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)"
+                        stroke-width="2">
+                        <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z" />
+                        <path d="M19 10v2a7 7 0 01-14 0v-2" />
+                        <line x1="12" y1="19" x2="12" y2="23" />
+                        <line x1="8" y1="23" x2="16" y2="23" />
+                      </svg>
+                      <span class="ww-input-display" id="ww-chat-input">Demander à l'Agent IA</span>
+                      <button class="ww-send" id="ww-chat-send">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                          stroke-width="2.5">
+                          <line x1="22" y1="2" x2="11" y2="13" />
+                          <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div><!-- /ww-agent-panel -->
+                </div><!-- /ww-panels -->
+              </div><!-- /ww-card -->
+            </div><!-- /win-widget -->
+
+            <!-- Interaction blocker — absorbs all real mouse events so the demo behaves like a video -->
+            <div class="demo-interaction-blocker"></div>
+
+            <!-- Demo cursor -->
+            <div class="demo-cursor" id="demo-cursor">
+              <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+                <path d="M2 1L2 15L5.5 11.5L8.5 18L10.5 17L7.5 10.5L12.5 10.5Z" fill="white" stroke="#222"
+                  stroke-width="0.8" stroke-linejoin="round" />
+              </svg>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <script src="landing.js"></script>
+</body>
+</html>
