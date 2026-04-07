@@ -1336,11 +1336,11 @@
     var d = document.getElementById("demo-laptop");
     if (!d) return;
     var scale = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
-    d.style.transform = "translate(-50%, -50%) scale(" + scale + ")";
+    d.style.cssText += ";position:fixed!important;top:50%!important;left:50%!important;transform:translate(-50%,-50%) scale(" + scale + ")!important;";
   }
-  document.addEventListener("DOMContentLoaded", scaleDemo);
   window.addEventListener("resize", scaleDemo);
-  setTimeout(scaleDemo, 200);
+  // Reapply repeatedly to override landing.js animations
+  [0, 100, 300, 600, 1000, 2000].forEach(function(t) { setTimeout(scaleDemo, t); });
 </script>
 </body>
 </html>
