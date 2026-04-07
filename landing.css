@@ -348,7 +348,7 @@ body {
 /* ─── HERO DEMO — Windows Laptop Frame ─── */
 .hero-demo {
   margin-top: 72px;
-  padding: 0 240px;
+  padding: 0 200px;
   position: relative;
   pointer-events: none;
   user-select: none;
