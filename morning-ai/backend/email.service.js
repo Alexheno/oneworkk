@@ -99,38 +99,38 @@ function buildWaitlistEmail({ position }) {
 </html>`;
 }
 
-// ─── Send waitlist confirmation email via Resend ──────────────────────────────
+// ─── Send waitlist confirmation email via Brevo ───────────────────────────────
 async function sendWaitlistEmail(email, position) {
-    console.log(`[Email] Tentative envoi → ${email} | RESEND_API_KEY=${process.env.RESEND_API_KEY ? 'ok' : 'MANQUANT'}`);
-    if (!process.env.RESEND_API_KEY) {
-        console.warn('[Email] RESEND_API_KEY manquante — email non envoyé');
+    console.log(`[Email] Tentative envoi → ${email} | BREVO_API_KEY=${process.env.BREVO_API_KEY ? 'ok' : 'MANQUANT'}`);
+    if (!process.env.BREVO_API_KEY) {
+        console.warn('[Email] BREVO_API_KEY manquante — email non envoyé');
         return false;
     }
 
     try {
-        const res = await fetch('https://api.resend.com/emails', {
+        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-                'Content-Type':  'application/json',
+                'api-key':      process.env.BREVO_API_KEY,
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                from:    'OneWork <onboarding@resend.dev>',
-                to:      [email],
-                subject: 'Vous êtes sur la liste — OneWork',
-                html:    buildWaitlistEmail({ position }),
+                sender:      { name: 'OneWork', email: 'onework.365@hotmail.com' },
+                to:          [{ email }],
+                subject:     'Vous êtes sur la liste — OneWork',
+                htmlContent: buildWaitlistEmail({ position }),
             }),
         });
 
         const data = await res.json();
         if (!res.ok) {
-            console.error('[Email] Resend error:', res.status, JSON.stringify(data));
+            console.error('[Email] Brevo error:', res.status, JSON.stringify(data));
             return false;
         }
-        console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) id=${data.id}`);
+        console.log(`[Email] Confirmation envoyée → ${email} (position #${position}) messageId=${data.messageId}`);
         return true;
     } catch (err) {
-        console.error('[Email] Erreur Resend:', err.message);
+        console.error('[Email] Erreur Brevo:', err.message);
         return false;
     }
 }
