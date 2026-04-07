@@ -39,19 +39,17 @@ function buildWaitlistEmail({ position }) {
 
                 <!-- HERO -->
                 <tr>
-                  <td align="center" style="background:linear-gradient(160deg,#f8f6ff 0%,#eef2ff 40%,#fdf4ff 100%);padding:56px 56px 48px;border-radius:28px 28px 0 0;">
+                  <td align="center" style="background:linear-gradient(160deg,#f8f6ff 0%,#eef2ff 40%,#fdf4ff 100%);padding:64px 56px 52px;border-radius:28px 28px 0 0;">
 
-                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#8ECDF8 0%,#6B8EF5 22%,#9B35FF 45%,#F472B6 70%,#FB923C 100%);padding:13px;box-sizing:border-box;margin:0 auto 28px;"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(160deg,#f8f6ff,#eef2ff);"></div></div>
-
-                    <div style="display:inline-block;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:100px;padding:6px 16px;margin-bottom:24px;">
+                    <div style="display:inline-block;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:100px;padding:6px 16px;margin-bottom:32px;">
                       <span style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:0.08em;text-transform:uppercase;">✦ Accès anticipé confirmé</span>
                     </div>
 
-                    <h1 style="margin:0 0 4px;font-size:46px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1.1;">
-                      Vous êtes
-                    </h1>
-                    <h1 style="margin:0 0 0;font-size:46px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;">
-                      <span style="color:#6366f1;">s</span><span style="color:#7B55F4;">u</span><span style="color:#9244F6;">r</span> <span style="color:#A855F7;">l</span><span style="color:#BF4FD8;">a</span> <span style="color:#D44BB8;">l</span><span style="color:#E44D96;">i</span><span style="color:#EF5E6A;">s</span><span style="color:#F56D42;">t</span><span style="color:#F97316;">e.</span>
+                    <div style="font-size:13px;font-weight:600;color:#94a3b8;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;">OneWork</div>
+
+                    <h1 style="margin:0 0 0;font-size:52px;font-weight:900;color:#0f172a;letter-spacing:-2px;line-height:1.05;">
+                      Vous êtes<br>
+                      <span style="background:linear-gradient(135deg,#6366f1 0%,#a855f7 50%,#f97316 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">sur la liste.</span>
                     </h1>
 
                   </td>
@@ -68,19 +66,9 @@ function buildWaitlistEmail({ position }) {
                       On vous contacte dès que votre accès est prêt.
                     </p>
 
-                    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:44px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
                       <tr>
                         <td style="border-top:1px solid #f1f5f9;font-size:0;line-height:0;">&nbsp;</td>
-                      </tr>
-                    </table>
-
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                      <tr>
-                        <td align="center">
-                          <a href="https://build-two-cyan.vercel.app" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#a855f7);color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;padding:18px 56px;border-radius:980px;letter-spacing:-0.1px;box-shadow:0 8px 32px rgba(99,102,241,0.35);">
-                            OneWork
-                          </a>
-                        </td>
                       </tr>
                     </table>
 
