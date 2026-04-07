@@ -1353,6 +1353,18 @@
   }
   window.addEventListener("resize", scaleDemo);
   [0, 50, 200, 500, 1000, 2000, 4000].forEach(function(t) { setTimeout(scaleDemo, t); });
+  // Block landing.js fit() from overriding zoom/transform on win-desktop
+  var wd = document.querySelector('.win-desktop');
+  if (wd) {
+    Object.defineProperty(wd.style, 'zoom', { get: function(){ return '1'; }, set: function(){}, configurable: true });
+    Object.defineProperty(wd.style, 'transform', { get: function(){ return 'none'; }, set: function(){}, configurable: true });
+  }
+  // Block laptop leveled class from changing transform
+  var lp = document.getElementById('demo-laptop');
+  if (lp) {
+    var _add = lp.classList.add.bind(lp.classList);
+    lp.classList.add = function(cls) { if (cls !== 'leveled') _add(cls); };
+  }
 </script>
 </body>
 </html>
