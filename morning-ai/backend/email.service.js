@@ -1,5 +1,7 @@
 'use strict';
 
+const nodemailer = require('nodemailer');
+
 // ─── Template HTML ────────────────────────────────────────────────────────────
 function buildWaitlistEmail({ position }) {
     return `<!DOCTYPE html>
@@ -22,7 +24,6 @@ function buildWaitlistEmail({ position }) {
               <table cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center" valign="middle" style="padding-right:10px;">
-                    <!-- Ring logo CSS (SVG unsupported in email clients) -->
                     <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#8ECDF8 0%,#6B8EF5 22%,#9B35FF 45%,#F472B6 70%,#FB923C 100%);padding:5px;box-sizing:border-box;display:inline-block;"><div style="width:18px;height:18px;border-radius:50%;background:#f4f1ff;"></div></div>
                   </td>
                   <td style="font-size:17px;font-weight:700;color:#0f172a;letter-spacing:-0.4px;">OneWork</td>
@@ -36,19 +37,16 @@ function buildWaitlistEmail({ position }) {
             <td style="background:#ffffff;border-radius:28px;overflow:hidden;box-shadow:0 2px 40px rgba(99,102,241,0.10),0 1px 4px rgba(0,0,0,0.06);">
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
 
-                <!-- HERO avec fond dégradé comme le site -->
+                <!-- HERO -->
                 <tr>
                   <td align="center" style="background:linear-gradient(160deg,#f8f6ff 0%,#eef2ff 40%,#fdf4ff 100%);padding:56px 56px 48px;border-radius:28px 28px 0 0;">
 
-                    <!-- Ring logo grand CSS -->
                     <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#8ECDF8 0%,#6B8EF5 22%,#9B35FF 45%,#F472B6 70%,#FB923C 100%);padding:13px;box-sizing:border-box;margin:0 auto 28px;"><div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(160deg,#f8f6ff,#eef2ff);"></div></div>
 
-                    <!-- Badge -->
                     <div style="display:inline-block;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:100px;padding:6px 16px;margin-bottom:24px;">
                       <span style="font-size:11px;font-weight:700;color:#6366f1;letter-spacing:0.08em;text-transform:uppercase;">✦ Accès anticipé confirmé</span>
                     </div>
 
-                    <!-- Titre — même style que le site, mot par mot -->
                     <h1 style="margin:0 0 4px;font-size:46px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;line-height:1.1;">
                       Vous êtes
                     </h1>
@@ -59,11 +57,10 @@ function buildWaitlistEmail({ position }) {
                   </td>
                 </tr>
 
-                <!-- BODY BLANC -->
+                <!-- BODY -->
                 <tr>
                   <td style="background:#ffffff;padding:48px 56px 56px;">
 
-                    <!-- Phrase premium -->
                     <p style="margin:0 0 12px;font-size:17px;font-weight:600;color:#0f172a;line-height:1.6;text-align:center;">
                       Vous serez parmi les premiers à découvrir<br>une nouvelle façon de travailler.
                     </p>
@@ -71,14 +68,12 @@ function buildWaitlistEmail({ position }) {
                       On vous contacte dès que votre accès est prêt.
                     </p>
 
-                    <!-- Divider -->
                     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:44px;">
                       <tr>
                         <td style="border-top:1px solid #f1f5f9;font-size:0;line-height:0;">&nbsp;</td>
                       </tr>
                     </table>
 
-                    <!-- CTA -->
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                       <tr>
                         <td align="center">
@@ -104,7 +99,7 @@ function buildWaitlistEmail({ position }) {
                 &nbsp;·&nbsp;
                 <a href="https://build-two-cyan.vercel.app" style="color:#6366f1;text-decoration:none;">Visiter le site</a>
                 &nbsp;·&nbsp;
-                <a href="mailto:onework.365@hotmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
+                <a href="mailto:Henoumontalex@gmail.com" style="color:#6366f1;text-decoration:none;">Nous contacter</a>
               </p>
             </td>
           </tr>
@@ -118,36 +113,35 @@ function buildWaitlistEmail({ position }) {
 </html>`;
 }
 
-// ─── Send waitlist confirmation email via Brevo ───────────────────────────────
+// ─── Transporter Gmail ────────────────────────────────────────────────────────
+function createTransporter() {
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_APP_PASSWORD,
+        },
+    });
+}
+
+// ─── Send waitlist confirmation email via Gmail ───────────────────────────────
 async function sendWaitlistEmail(email, position) {
-    if (!process.env.BREVO_API_KEY) {
-        console.warn('[Email] BREVO_API_KEY manquante — email non envoyé');
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+        console.warn('[Email] GMAIL_USER ou GMAIL_APP_PASSWORD manquant — email non envoyé');
         return;
     }
 
     try {
-        const res = await fetch('https://api.brevo.com/v3/smtp/email', {
-            method:  'POST',
-            headers: {
-                'api-key':      process.env.BREVO_API_KEY,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                sender:      { name: 'OneWork', email: 'onework.365@hotmail.com' },
-                to:          [{ email }],
-                subject:     'Vous êtes sur la liste — OneWork',
-                htmlContent: buildWaitlistEmail({ position }),
-            }),
+        const transporter = createTransporter();
+        await transporter.sendMail({
+            from:    `"OneWork" <${process.env.GMAIL_USER}>`,
+            to:      email,
+            subject: 'Vous êtes sur la liste — OneWork',
+            html:    buildWaitlistEmail({ position }),
         });
-
-        if (!res.ok) {
-            const err = await res.text();
-            console.error('[Email] Brevo error:', res.status, err.slice(0, 200));
-            return;
-        }
         console.log(`[Email] Confirmation envoyée → ${email} (position #${position})`);
     } catch (err) {
-        console.error('[Email] Erreur Brevo:', err.message);
+        console.error('[Email] Erreur Gmail:', err.message);
     }
 }
 
