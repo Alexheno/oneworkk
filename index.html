@@ -12,9 +12,18 @@
   <link rel="stylesheet" href="landing.css">
   <script>
     if (new URLSearchParams(window.location.search).has('demo')) {
-      document.documentElement.style.cssText = 'overflow:hidden;background:#1a1a2e;';
       var s = document.createElement('style');
-      document.documentElement.setAttribute('data-demo', '1');
+      s.textContent = [
+        'html,body{margin:0!important;padding:0!important;overflow:hidden!important;width:100vw!important;height:100vh!important;background:#111!important}',
+        '.navbar,.hero-inner,.hero-bg,.features,.how-section,.security-section,.cta-section,footer,.waitlist-overlay{display:none!important}',
+        '.hero{position:fixed!important;inset:0!important;padding:0!important;margin:0!important;width:100vw!important;height:100vh!important;overflow:hidden!important;background:#111!important}',
+        '.hero-demo{margin:0!important;padding:0!important;width:100vw!important;height:100vh!important}',
+        '.screen-scene{width:100vw!important;height:100vh!important;perspective:none!important;display:block!important}',
+        '.screen-frame{transform:none!important;width:100vw!important;max-width:100vw!important;height:100vh!important;border-radius:0!important;filter:none!important;box-shadow:none!important;position:static!important}',
+        '.win-titlebar,.win-taskbar{display:none!important}',
+        '.win-desktop{width:100vw!important;height:100vh!important;border-radius:0!important}',
+        '.demo-app{width:100vw!important;height:100vh!important;border-radius:0!important}'
+      ].join('');
       document.head.appendChild(s);
     }
   </script>
