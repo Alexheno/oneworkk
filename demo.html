@@ -8,24 +8,34 @@
   <link rel="stylesheet" href="landing.css">
   <style>
     *, html, body { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      overflow: hidden; width: 100vw; height: 100vh; background: #08091A;
-      display: flex; align-items: center; justify-content: center;
+    html, body { overflow: hidden; width: 100vw; height: 100vh; background: #08091A; }
+    #demo-outer {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #08091A;
+    }
+    #demo-scale {
+      width: 1060px;
+      height: 700px;
+      transform-origin: center center;
+      overflow: hidden;
+      flex-shrink: 0;
     }
     .hero-demo, .screen-scene { display: contents; }
     .win-titlebar { display: flex !important; }
     .win-window { border-radius: 0 !important; }
     #demo-laptop {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 1060px;
-      height: 700px;
-      transform-origin: center center;
+      position: relative !important;
+      width: 1060px !important;
+      height: 700px !important;
+      transform: none !important;
       border-radius: 0 !important;
       filter: none !important;
       box-shadow: none !important;
-      overflow: hidden;
+      overflow: hidden !important;
     }
   </style>
   <script>
@@ -44,9 +54,11 @@
   </script>
 </head>
 <body>
+  <div id="demo-outer">
+    <div id="demo-scale">
     <div class="hero-demo">
       <div class="screen-scene">
-        <div class="screen-frame" id="demo-laptop">
+        <div class="screen-frame leveled" id="demo-laptop">
           <div class="demo-black-overlay" id="demo-black-overlay"></div>
           <div class="win-desktop" id="win-desktop">
 
@@ -1344,43 +1356,24 @@
         </div>
       </div>
     </div>
+    </div><!-- /demo-scale -->
+  </div><!-- /demo-outer -->
 <script src="landing.js"></script>
 <script>
+  // Restore DOM APIs
   document.getElementById = _gi;
-  document.querySelector = _qs;
 
-  var d = _gi("demo-laptop");
-  if (d) {
-    document.body.appendChild(d);
-
-    function getScale() {
-      return Math.max(window.innerWidth / 1060, window.innerHeight / 700);
-    }
-    function getStyle() {
-      var sc = getScale();
-      var tx = (window.innerWidth  - 1060 * sc) / 2;
-      var ty = (window.innerHeight - 700  * sc) / 2;
-      return "position:fixed!important;top:0!important;left:0!important;" +
-             "width:1060px!important;height:700px!important;" +
-             "transform:translate("+tx+"px,"+ty+"px) scale("+sc+")!important;" +
-             "transform-origin:top left!important;" +
-             "border-radius:0!important;filter:none!important;" +
-             "overflow:hidden!important;z-index:9999!important;";
-    }
-
-    var locking = false;
-    var obs = new MutationObserver(function() {
-      if (locking) return;
-      locking = true;
-      d.setAttribute('style', getStyle());
-      locking = false;
-    });
-    obs.observe(d, { attributes: true, attributeFilter: ['style', 'class'] });
-
-    d.setAttribute('style', getStyle());
-    window.addEventListener('resize', function() { d.setAttribute('style', getStyle()); });
-    if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
+  // Scale the demo container to fill the viewport
+  var scaleEl = document.getElementById('demo-scale');
+  function updateScale() {
+    var sc = Math.max(window.innerWidth / 1060, window.innerHeight / 700);
+    scaleEl.style.transform = 'scale(' + sc + ')';
   }
+  updateScale();
+  window.addEventListener('resize', updateScale);
+
+  // Start animations
+  if (typeof startDemoSequence === 'function') setTimeout(startDemoSequence, 300);
 </script>
 </body>
 </html>
